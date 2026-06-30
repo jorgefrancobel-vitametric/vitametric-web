@@ -1,0 +1,2 @@
+#hero { background: darkblue; height: 300px; color: white; display: flex; align-items: center; justify-content: center; }
+#whatsapp { position: fixed; bottom: 20px; right: 20px; background: green; color: white; padding: 15px; border-radius: 50%; }
