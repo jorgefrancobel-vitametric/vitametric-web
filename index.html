@@ -19,12 +19,39 @@
   <link rel="stylesheet" href="css/style.css">
   <meta name="theme-color" content="#005C8A">
   <link rel="icon" type="image/png" href="assets/img/logo.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MedicalBusiness",
+  "name": "Vitametric",
+  "description": "Centro de medicina preventiva en Ciudad de México. Tecnología avanzada no invasiva y nutrición celular.",
+  "url": "https://vitametric.com",
+  "telephone": "+52-55-1234-5678",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Calle Isabel Lozano Vda. de Betti 127, Col. Vertiz Narvarte",
+    "addressLocality": "Ciudad de México",
+    "addressCountry": "MX"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "19.3985",
+    "longitude": "-99.1578"
+  },
+  "openingHoursSpecification": {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+    "opens": "09:00",
+    "closes": "18:00"
+  }
+}
+</script>
 </head>
 <body>
   <nav class="navbar" id="navbar" role="navigation" aria-label="Navegación principal">
     <div class="nav-container">
       <a href="#inicio" class="nav-logo" aria-label="Vitametric - Inicio">
-        <img src="assets/img/logo.png" alt="Vitametric" class="nav-logo-img">
+        <img loading="lazy" src="assets/img/logo.png" alt="Vitametric" class="nav-logo-img">
       </a>
       <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false">
         <span class="hamburger"></span>
@@ -144,7 +171,7 @@
       <div class="tech-grid">
         <div class="tech-card reveal">
           <div class="tech-card-badge">Análisis no invasivo</div>
-          <img src="assets/img/technology/escomplex.jpg" alt="ES-Complex" class="tech-card-img" loading="lazy">
+          <img src="assets/img/technology/escomplex.jpg" alt="Análisis de composición corporal con tecnología ES-Complex" class="tech-card-img" loading="lazy">
           <h3 class="tech-card-title">ES-Complex</h3>
           <p class="tech-card-desc">Tecnología no invasiva de análisis del cuerpo humano. Evalua el estado funcional de órganos y sistemas mediante bioimpedancia avanzada.</p>
           <ul class="tech-card-features">
@@ -156,7 +183,7 @@
         </div>
         <div class="tech-card reveal">
           <div class="tech-card-badge">Bio-cibernética</div>
-          <img src="assets/img/technology/scenar.jpg" alt="Scenar" class="tech-card-img" loading="lazy">
+          <img src="assets/img/technology/scenar.jpg" alt="Terapia de biorretroalimentación con dispositivo Scenar" class="tech-card-img" loading="lazy">
           <h3 class="tech-card-title">Scenar</h3>
           <p class="tech-card-desc">Tecnología bio-cibernética desarrollada por neurologos rusos de la Agencia Aeroespacial Soviética. Estimula la autorregulación del cuerpo.</p>
           <ul class="tech-card-features">
@@ -180,7 +207,7 @@
         </div>
         <div class="tech-card reveal">
           <div class="tech-card-badge">Desintoxicación</div>
-          <img src="assets/img/technology/rife.jpg" alt="Bio Royal Rife" class="tech-card-img" loading="lazy">
+          <img src="assets/img/technology/rife.jpg" alt="Terapia de desintoxiación con frecuencias Bio Royal Rife" class="tech-card-img" loading="lazy">
           <h3 class="tech-card-title">Bio Royal Rife</h3>
           <p class="tech-card-desc">Terapia de desintoxicación basada en las investigaciones del Dr. Royal Rife. Frecuencias específicas para eliminar toxinas.</p>
           <ul class="tech-card-features">
@@ -204,7 +231,7 @@
         <div class="product-card reveal">
           <div class="product-card-top">
             <div class="product-badge">Más popular</div>
-            <img src="assets/img/products/immunocal.jpg" alt="Immunocal" class="product-img" loading="lazy">
+            <img src="assets/img/products/immunocal.jpg" alt="Immunocal - Proteína aislada de suero para producción de glutatión" class="product-img" loading="lazy">
             <h3>Immunocal</h3>
             <p class="product-tagline">Proteina aislada de suero de leche con cisteína</p>
           </div>
@@ -222,7 +249,7 @@
         <div class="product-card reveal">
           <div class="product-card-top">
             <div class="product-badge product-badge-alt">Premium</div>
-            <img src="assets/img/products/immunocal-platinum.jpg" alt="Immunocal Platinum" class="product-img" loading="lazy">
+            <img src="assets/img/products/immunocal-platinum.jpg" alt="Immunocal Platinum - Fórmula avanzada con vitamina D y cúrcuma" class="product-img" loading="lazy">
             <h3>Immunocal Platinum</h3>
             <p class="product-tagline">Concentrado proteico bioactivo</p>
           </div>
@@ -335,7 +362,7 @@
           </div>
         </div>
         <div class="contacto-form-wrapper reveal">
-          <form class="contacto-form" id="contactForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+          <form class="contacto-form" id="contactForm" action="https://formspree.io/f/xovdnoqz" method="POST">
             <h3>Envíanos un mensaje</h3>
             <p class="form-note">Completa el fórmulario y te contactaremos.</p>
             <div class="form-group"><label for="nombre">Nombre completo</label><input type="text" id="nombre" name="nombre" required placeholder="Tu nombre"></div>
@@ -361,7 +388,7 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <img src="assets/img/logo.png" alt="Vitametric" class="footer-logo">
+          <img loading="lazy" src="assets/img/logo.png" alt="Vitametric" class="footer-logo">
           <p>Centro de Medicina de Prevención en Ciudad de México. Tecnología avanzada no invasiva para tu bienestar.</p>
           <span class="footer-tag">#Vivemás</span>
         </div>
