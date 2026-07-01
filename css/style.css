@@ -166,8 +166,8 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
 .nav-link.active { color: var(--c-secondary); }
 .nav-cta {
   background: var(--c-secondary) ;
-  color: white !important;
-  padding: 0.5rem 1.25rem !important;
+  color: white;
+  padding: 0.5rem 1.25rem;
   border-radius: var(--radius-full) ;
   margin-left: 0.5rem;
 }
@@ -734,7 +734,7 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
     align-items: stretch;
   }
   .nav-menu.open { right: 0; }
-  .nav-link { color: var(--c-text) !important; padding: 0.75rem 1rem; font-size: var(--fs-base); border-bottom: 1px solid var(--c-border-light); }
+  .nav-link { color: var(--c-text); padding: 0.75rem 1rem; font-size: var(--fs-base); border-bottom: 1px solid var(--c-border-light); }
   .nav-link:hover { background: var(--c-surface); }
   .nav-cta { text-align: center; margin-left: 0 ; margin-top: var(--sp-sm); border-bottom: none ; }
   .hero { min-height: auto; padding: calc(var(--nav-h) + var(--sp-xl)) 0 var(--sp-xl); }
