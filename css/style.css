@@ -146,8 +146,8 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
 }
 .nav-logo { display: flex; align-items: center; z-index: 10; }
 
-/* FIX: Logo bigger — 50px height for 732x289 source */
-.nav-logo-img { height: 50px; width: auto; object-fit: contain; }
+/* FIX: Logo bigger — 70px height for 732x289 source */
+.nav-logo-img { height: 70px; width: auto; object-fit: contain; }
 .navbar:not(.scrolled) .nav-logo-img { filter: brightness(0) invert(1); }
 .nav-menu { display: flex; align-items: center; gap: 0.25rem; }
 .nav-link {
