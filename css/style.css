@@ -148,7 +148,7 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
 
 /* FIX: Logo bigger — 70px height for 732x289 source */
 .nav-logo-img { height: 70px; width: auto; object-fit: contain; }
-.navbar:not(.scrolled) #nav-logo-png { /* PNG already has white/transparent design - no filter needed */ }
+
 .nav-menu { display: flex; align-items: center; gap: 0.25rem; }
 .nav-link {
   display: block;
@@ -830,7 +830,7 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
 }
 
 .navbar.scrolled #nav-logo-jpg {
-  display: block;
+  display: inline-block;
 }
 
 .navbar.scrolled .nav-logo-tagline {
@@ -838,11 +838,17 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
   border-left-color: var(--c-border);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .nav-logo-tagline {
     display: none;
   }
   .nav-logo-img {
     height: 70px;
+  }
+}
+
+@media (max-width: 1024px) and (min-width: 769px) {
+  .nav-logo-img {
+    height: 80px;
   }
 }
