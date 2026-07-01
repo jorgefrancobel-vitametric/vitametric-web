@@ -843,7 +843,7 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
     display: none;
   }
   .nav-logo-img {
-    height: 70px;
+    height: 80px;
   }
 }
 
