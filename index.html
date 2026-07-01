@@ -1,21 +1,387 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es-MX">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vitametric - Salud Preventiva Integral</title>
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vitametric | Centro de Medicina de Prevención en CDMX</title>
+  <meta name="description" content="Clínica de medicina preventiva en Ciudad de México. Tecnología avanzada no invasiva (ES-Complex, Scenar) y nutrición celular (Immunocal). #Vivemás con Vitametric.">
+  <meta name="keywords" content="medicina preventiva, CDMX, Vitametric, ES-Complex, Scenar, Immunocal, salud celular, clínica médica, Ciudad de México, columna vertebral, bio royal rife">
+  <meta name="author" content="Vitametric">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="Vitametric — Centro de Medicina de Prevención">
+  <meta property="og:description" content="La salud depende de cada uno de nosotros. Tecnología avanzada no invasiva para tu bienestar en Ciudad de México.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://vitametric.com/">
+  <meta property="og:image" content="assets/img/logo.png">
+  <meta property="og:locale" content="es_MX">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Vitametric — Centro de Medicina de Prevención">
+  <meta name="twitter:description" content="Tecnología avanzada no invasiva para tu bienestar. #Vivemás">
+  <link rel="canonical" href="https://vitametric.com/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <meta name="theme-color" content="#005C8A">
+  <link rel="icon" type="image/png" href="assets/img/logo.png">
 </head>
 <body>
-    <nav>Navbar</nav>
-    <section id="hero">Hero</section>
-    <section id="nosotros">Nosotros</section>
-    <section id="tecnologia">Tecnología</section>
-    <section id="productos">Productos</section>
-    <section id="testimonios">Testimonios</section>
-    <section id="contacto">Contacto</section>
-    <footer>Footer</footer>
-    <div id="whatsapp">WhatsApp</div>
-    <script src="js/script.js"></script>
+  <nav class="navbar" id="navbar" role="navigation" aria-label="Navegación principal">
+    <div class="nav-container">
+      <a href="#inicio" class="nav-logo" aria-label="Vitametric - Inicio">
+        <img src="assets/img/logo.png" alt="Vitametric" class="nav-logo-img" width="160" height="40">
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false">
+        <span class="hamburger"></span>
+      </button>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="#inicio" class="nav-link active">Inicio</a></li>
+        <li><a href="#nosotros" class="nav-link">Nosotros</a></li>
+        <li><a href="#tecnologia" class="nav-link">Tecnología</a></li>
+        <li><a href="#productos" class="nav-link">Productos</a></li>
+        <li><a href="#testimonios" class="nav-link">Testimonios</a></li>
+        <li><a href="#contacto" class="nav-link nav-cta">Contacto</a></li>
+      </ul>
+    </div>
+  </nav>
+  <section class="hero" id="inicio">
+    <div class="hero-bg">
+      <div class="hero-gradient"></div>
+      <div class="hero-pattern"></div>
+    </div>
+    <div class="hero-container">
+      <div class="hero-content">
+        <div class="hero-badge reveal">
+          <span class="badge-dot"></span>
+          Medicina de Prevención
+        </div>
+        <h1 class="hero-title reveal">
+          La salud depende<br>
+          <span class="hero-accent">de cada uno</span><br>
+          de nosotros
+        </h1>
+        <p class="hero-subtitle reveal">
+          Tecnología avanzada no invasiva para entender tu cuerpo, prevenir enfermedades y vivir con plenitud. En Ciudad de México.
+        </p>
+        <div class="hero-actions reveal">
+          <a href="#contacto" class="btn btn-primary btn-lg">
+            Agendar consulta
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+          <a href="#tecnologia" class="btn btn-outline btn-lg">Conoce la tecnología</a>
+        </div>
+        <div class="hero-stats reveal">
+          <div class="stat"><span class="stat-number">4</span><span class="stat-label">Tecnologías avanzadas</span></div>
+          <div class="stat-divider"></div>
+          <div class="stat"><span class="stat-number">100%</span><span class="stat-label">No invasivo</span></div>
+          <div class="stat-divider"></div>
+          <div class="stat"><span class="stat-number">#Vivemás</span><span class="stat-label">Nuestra filosofía</span></div>
+        </div>
+      </div>
+      <div class="hero-visual reveal">
+        <div class="hero-image-wrapper">
+          <div class="hero-glow"></div>
+          <div class="hero-card hero-card-1">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#005C8A" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            <span>Análisis corporal</span>
+          </div>
+          <div class="hero-card hero-card-2">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <span>Prevención</span>
+          </div>
+          <div class="hero-card hero-card-3">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#005C8A" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span>Bienestar continuo</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-scroll-indicator">
+      <span>Descubre más</span>
+      <div class="scroll-arrow"></div>
+    </div>
+  </section>
+  <section class="section section-tecnologia" id="tecnologia">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">Nuestra tecnología</span>
+        <h2 class="section-title">Ciencia avanzada<br>al servicio de tu salud</h2>
+        <p class="section-subtitle">Cuatro tecnologías complementarias que nos permiten ofrecerte un diagnóstico integral y tratamientos efectivos, siempre sin invasión.</p>
+      </div>
+      <div class="tech-grid">
+        <div class="tech-card reveal" data-tech="escomplex">
+          <div class="tech-card-badge">Análisis no invasivo</div>
+          <div class="tech-card-icon"><img src="assets/img/technology/escomplex.png" alt="ES-Complex tecnología" loading="lazy"></div>
+          <h3 class="tech-card-title">ES-Complex</h3>
+          <p class="tech-card-desc">Tecnología no invasiva de análisis del cuerpo humano. Evalúa el estado funcional de órganos y sistemas mediante bioimpedancia avanzada, ofreciendo un panorama completo de tu salud en una sola sesión.</p>
+          <ul class="tech-card-features">
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Diagnóstico integral en una sesión</li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Sin dolor, sin radiación</li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Resultados inmediatos</li>
+          </ul>
+          <a href="#contacto" class="tech-card-link">Solicitar análisis <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+        </div>
+        <div class="tech-card reveal" data-tech="scenar">
+          <div class="tech-card-badge">Bio-cibernética</div>
+          <div class="tech-card-icon"><img src="assets/img/technology/scenar.jpg" alt="Scenar terapia" loading="lazy"></div>
+          <h3 class="tech-card-title">Scenar</h3>
+          <p class="tech-card-desc">Tecnología bio-cibernética desarrollada por neurólogos rusos de la Agencia Aeroespacial Soviética. Estimula los mecanismos de autorregulación del cuerpo para aliviar el dolor y acelerar la recuperación.</p>
+          <ul class="tech-card-features">
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Alivio de dolor crónico y agudo</li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Origen aeroespacial ruso</li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Autorregulación corporal</li>
+          </ul>
+          <a href="#contacto" class="tech-card-link">Conocer tratamiento <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+        </div>
+        <div class="tech-card reveal" data-tech="columna">
+          <div class="tech-card-badge">Alineación natural</div>
+          <div class="tech-card-icon"><img src="assets/img/technology/columna.png" alt="Columna vertebral" loading="lazy"></div>
+          <h3 class="tech-card-title">Columna Vertebral</h3>
+          <p class="tech-card-desc">Método natural para la corrección y alineación vertebral. Restaura la postura ideal del cuerpo sin medicamentos ni cirugías, mejorando la calidad de vida de manera progresiva.</p>
+          <ul class="tech-card-features">
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Corrección postural natural</li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Sin medicamentos ni cirugía</li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Resultados progresivos</li>
+          </ul>
+          <a href="#contacto" class="tech-card-link">Agendar valoración <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+        </div>
+        <div class="tech-card reveal" data-tech="rife">
+          <div class="tech-card-badge">Desintoxicación</div>
+          <div class="tech-card-icon"><img src="assets/img/technology/rife.jpg" alt="Bio Royal Rife" loading="lazy"></div>
+          <h3 class="tech-card-title">Bio Royal Rife</h3>
+          <p class="tech-card-desc">Terapia de desintoxicación basada en las investigaciones del Dr. Royal Rife. Utiliza frecuencias específicas para eliminar toxinas y patógenos, promoviendo la regeneración celular natural.</p>
+          <ul class="tech-card-features">
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Desintoxicación profunda</li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Frecuencias específicas</li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Regeneración celular</li>
+          </ul>
+          <a href="#contacto" class="tech-card-link">Más información <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="section section-nosotros" id="nosotros">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">Quiénes somos</span>
+        <h2 class="section-title">Medicina que previene,<br>no solo que cura</h2>
+        <p class="section-subtitle">En Vitametric creemos que la verdadera medicina comienza antes de la enfermedad. Combinamos tecnología de vanguardia con un enfoque humano para ayudarte a entender tu cuerpo y tomar el control de tu salud.</p>
+      </div>
+      <div class="nosotros-grid">
+        <div class="nosotros-card reveal">
+          <div class="nosotros-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div>
+          <h3>Prevención primero</h3>
+          <p>Identificamos desequilibrios en tu cuerpo antes de que se conviertan en enfermedades. La prevención es la mejor medicina.</p>
+        </div>
+        <div class="nosotros-card reveal">
+          <div class="nosotros-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div>
+          <h3>Tecnología no invasiva</h3>
+          <p>Utilizamos equipos de última generación que analizan tu cuerpo sin procedimientos dolorosos ni radiación.</p>
+        </div>
+        <div class="nosotros-card reveal">
+          <div class="nosotros-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg></div>
+          <h3>Enfoque humano</h3>
+          <p>Cada persona es única. Nuestro acompañamiento es personalizado, empático y centrado en tu bienestar integral.</p>
+        </div>
+        <div class="nosotros-card reveal">
+          <div class="nosotros-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
+          <h3>Nutrición celular</h3>
+          <p>Complementamos con suplementos de alta calidad que nutren tus células desde adentro, potenciando tu sistema inmunológico.</p>
+        </div>
+      </div>
+      <div class="nosotros-cta reveal">
+        <blockquote class="nosotros-quote"><p>"#Vivemás — porque tu salud es tu decisión más importante."</p></blockquote>
+      </div>
+    </div>
+  </section>
+  <section class="section section-productos" id="productos">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">Nutrición celular</span>
+        <h2 class="section-title">Potencia tu salud<br>desde la célula</h2>
+        <p class="section-subtitle">Suplementos de alta calidad basados en ciencia. Nutren tus células, fortalecen tu sistema inmunológico y aumentan tus niveles de glutatión — el antioxidante maestro del cuerpo.</p>
+      </div>
+      <div class="products-grid">
+        <div class="product-card reveal">
+          <div class="product-card-top">
+            <div class="product-badge">Más popular</div>
+            <div class="product-icon"><img src="assets/img/products/immunocal.png" alt="Immunocal" loading="lazy"></div>
+            <h3>Immunocal</h3>
+            <p class="product-tagline">Proteína aislada de suero de leche con cisteína</p>
+          </div>
+          <div class="product-card-body">
+            <p>El producto insignia. Aislado proteico de suero de leche que proporciona los precursores necesarios para que tu cuerpo produzca glutatión de forma natural.</p>
+            <ul class="product-benefits">
+              <li>Fortalece el sistema inmunológico</li>
+              <li>Incrementa los niveles de glutatión</li>
+              <li>Proteína de alta biodisponibilidad</li>
+              <li>Respaldado por estudios clínicos</li>
+            </ul>
+          </div>
+          <div class="product-card-footer"><a href="#contacto" class="btn btn-primary btn-sm btn-block">Solicitar información</a></div>
+        </div>
+        <div class="product-card reveal">
+          <div class="product-card-top">
+            <div class="product-badge product-badge-alt">Premium</div>
+            <div class="product-icon"><img src="assets/img/products/immunocal-platinum.png" alt="Immunocal Platinum" loading="lazy"></div>
+            <h3>Immunocal Platinum</h3>
+            <p class="product-tagline">Concentrado proteico bioactivo de leche de vaca</p>
+          </div>
+          <div class="product-card-body">
+            <p>La versión premium de Immunocal. Concentrado proteico bioactivo con ingredientes adicionales que potencian la absorción y los beneficios del glutatión.</p>
+            <ul class="product-benefits">
+              <li>Fórmula avanzada con péptidos bioactivos</li>
+              <li>Mayor absorción celular</li>
+              <li>Ideal para adultos mayores</li>
+              <li>Complemento de Immunocal</li>
+            </ul>
+          </div>
+          <div class="product-card-footer"><a href="#contacto" class="btn btn-outline btn-sm btn-block">Solicitar información</a></div>
+        </div>
+        <div class="product-card reveal">
+          <div class="product-card-top">
+            <div class="product-icon"><img src="assets/img/products/immunocal-optimizer.png" alt="K-21 Optimizer" loading="lazy"></div>
+            <h3>K-21 & Optimizer</h3>
+            <p class="product-tagline">Soporte para producción de glutatión</p>
+          </div>
+          <div class="product-card-body">
+            <p>Complementos diseñados para potenciar la producción de glutatión del cuerpo. K-21 proporciona los nutrientes clave y Optimizer maximiza la utilización celular.</p>
+            <ul class="product-benefits">
+              <li>Potencia la producción de glutatión</li>
+              <li>Mejora la utilización celular</li>
+              <li>Complemento ideal de Immunocal</li>
+              <li>Fórmula sinérgica</li>
+            </ul>
+          </div>
+          <div class="product-card-footer"><a href="#contacto" class="btn btn-outline btn-sm btn-block">Solicitar información</a></div>
+        </div>
+      </div>
+      <div class="products-info reveal">
+        <div class="info-card">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#005C8A" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          <div><strong>¿Qué es el glutatión?</strong><p>Es el antioxidante principal del cuerpo humano. Protege tus células del daño oxidativo, desintoxica el hígado y fortalece el sistema inmunológico. Después de los 20 años, la producción natural disminuye.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <img src="assets/img/logo.png" alt="Vitametric" class="footer-logo" width="140" height="35">
+          <p>Centro de Medicina de Prevención en Ciudad de México. Tecnología avanzada no invasiva para tu bienestar.</p>
+          <span class="footer-tag">#Vivemás</span>
+        </div>
+        <div class="footer-nav">
+          <h4>Navegación</h4>
+          <ul><li><a href="#inicio">Inicio</a></li><li><a href="#nosotros">Nosotros</a></li><li><a href="#tecnologia">Tecnología</a></li><li><a href="#productos">Productos</a></li><li><a href="#testimonios">Testimonios</a></li><li><a href="#contacto">Contacto</a></li></ul>
+        </div>
+        <div class="footer-servicios">
+          <h4>Servicios</h4>
+          <ul><li><a href="#tecnologia">ES-Complex</a></li><li><a href="#tecnologia">Scenar</a></li><li><a href="#tecnologia">Columna Vertebral</a></li><li><a href="#tecnologia">Bio Royal Rife</a></li><li><a href="#productos">Immunocal</a></li></ul>
+        </div>
+        <div class="footer-contacto">
+          <h4>Contacto</h4>
+          <p>Col. Vértiz Narvarte,<br>03600 CDMX</p>
+          <p><a href="tel:+525585327421">55 8532 7421</a></p>
+          <p><a href="mailto:contacto@vitametric.com">contacto@vitametric.com</a></p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025–2026 Vitametric. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
+  <a href="https://wa.me/525585327421?text=Hola%2C%20me%20interesa%20conocer%20más%20sobre%20los%20servicios%20de%20Vitametric" class="whatsapp-fab" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+  <script src="js/main.js"></script>
 </body>
 </html>
+  <section class="section section-testimonios" id="testimonios">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">Testimonios</span>
+        <h2 class="section-title">Lo que dicen<br>nuestros pacientes</h2>
+      </div>
+      <div class="testimonial-slider reveal">
+        <div class="testimonial-track" id="testimonialTrack">
+          <div class="testimonial-slide">
+            <div class="testimonial-stars">★★★★★</div>
+            <blockquote class="testimonial-text">"Después de años con dolor crónico, las sesiones de Scenar cambiaron mi vida. No podía creer que algo no invasivo pudiera ser tan efectivo. Hoy duermo bien y puedo jugar con mis hijos."</blockquote>
+            <div class="testimonial-author"><div class="testimonial-avatar">MR</div><div><strong>María R.</strong><span>Paciente de Scenar</span></div></div>
+          </div>
+          <div class="testimonial-slide">
+            <div class="testimonial-stars">★★★★★</div>
+            <blockquote class="testimonial-text">"El análisis con ES-Complex me reveló problemas que no sabía que tenía. La prevención es todo. Vitametric me ayudó a entender mi cuerpo como nadie antes."</blockquote>
+            <div class="testimonial-author"><div class="testimonial-avatar">CL</div><div><strong>Carlos L.</strong><span>Análisis ES-Complex</span></div></div>
+          </div>
+          <div class="testimonial-slide">
+            <div class="testimonial-stars">★★★★★</div>
+            <blockquote class="testimonial-text">"Mi postura ha mejorado increíblemente. Llevaba años con molestias en la espalda y en pocas sesiones de alineación vertebral sentí el cambio. El equipo es muy profesional y humano."</blockquote>
+            <div class="testimonial-author"><div class="testimonial-avatar">AP</div><div><strong>Ana P.</strong><span>Columna vertebral</span></div></div>
+          </div>
+          <div class="testimonial-slide">
+            <div class="testimonial-stars">★★★★★</div>
+            <blockquote class="testimonial-text">"Immunocal me devolvió la energía. Lo tomo desde hace un año y la diferencia es notable. Mi sistema inmunológico está más fuerte y me siento mejor que nunca."</blockquote>
+            <div class="testimonial-author"><div class="testimonial-avatar">JG</div><div><strong>Jorge G.</strong><span>Immunocal</span></div></div>
+          </div>
+        </div>
+        <div class="testimonial-controls">
+          <button class="testimonial-btn" id="prevTestimonial" aria-label="Testimonio anterior"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></button>
+          <div class="testimonial-dots" id="testimonialDots">
+            <button class="dot active" aria-label="Testimonio 1"></button><button class="dot" aria-label="Testimonio 2"></button><button class="dot" aria-label="Testimonio 3"></button><button class="dot" aria-label="Testimonio 4"></button>
+          </div>
+          <button class="testimonial-btn" id="nextTestimonial" aria-label="Siguiente testimonio"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="section section-contacto" id="contacto">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">Contacto</span>
+        <h2 class="section-title">Da el primer paso<br>hacia tu bienestar</h2>
+        <p class="section-subtitle">Agenda tu consulta o escríbenos. Responderemos a la brevedad para ayudarte a comenzar tu camino hacia una vida más saludable.</p>
+      </div>
+      <div class="contacto-grid">
+        <div class="contacto-info reveal">
+          <div class="contacto-info-card">
+            <h3>Visítanos</h3>
+            <div class="contacto-item">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#005C8A" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <div><strong>Dirección</strong><p>Calle Isabel Lozano Vda. de Betti 127,<br>Esquina Montealbán, Col. Vértiz Narvarte,<br>03600 Ciudad de México</p></div>
+            </div>
+            <div class="contacto-item">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#005C8A" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+              <div><strong>Teléfono</strong><p><a href="tel:+525585327421">55 8532 7421</a></p><p><a href="tel:+525552150674">55 5215 0674</a></p></div>
+            </div>
+            <div class="contacto-item">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#005C8A" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              <div><strong>Email</strong><p><a href="mailto:contacto@vitametric.com">contacto@vitametric.com</a></p></div>
+            </div>
+          </div>
+          <div class="contacto-map">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3762.8!2d-99.1585!3d19.3968!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d1ff44a48b5e2b%3A0x3a5e7e2c0b0a0b0a!2sCalle+Isabel+Lozano+Vda.+de+Betti+127%2C+V%C3%A9rtiz+Narvarte%2C+03600+Ciudad+de+M%C3%A9xico%2C+CDMX!5e0!3m2!1ses!2smx!4v1" width="100%" height="200" style="border:0; border-radius: 12px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Ubicación de Vitametric en Google Maps"></iframe>
+          </div>
+        </div>
+        <div class="contacto-form-wrapper reveal">
+          <form class="contacto-form" id="contactForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+            <h3>Envíanos un mensaje</h3>
+            <p class="form-note">Completa el formulario y te contactaremos con precio preferencial.</p>
+            <div class="form-group"><label for="nombre">Nombre completo</label><input type="text" id="nombre" name="nombre" required placeholder="Tu nombre" autocomplete="name"></div>
+            <div class="form-row">
+              <div class="form-group"><label for="email">Email</label><input type="email" id="email" name="email" required placeholder="tu@email.com" autocomplete="email"></div>
+              <div class="form-group"><label for="telefono">Teléfono</label><input type="tel" id="telefono" name="telefono" placeholder="55 1234 5678" autocomplete="tel"></div>
+            </div>
+            <div class="form-group"><label for="servicio">Servicio de interés</label><select id="servicio" name="servicio"><option value="">Selecciona un servicio</option><option value="escomplex">Análisis ES-Complex</option><option value="scenar">Terapia Scenar</option><option value="columna">Alineación de Columna</option><option value="rife">Bio Royal Rife</option><option value="immunocal">Immunocal / Nutrición Celular</option><option value="general">Consulta general</option></select></div>
+            <div class="form-group"><label for="mensaje">Mensaje</label><textarea id="mensaje" name="mensaje" rows="4" placeholder="Cuéntanos cómo podemos ayudarte..."></textarea></div>
+            <input type="text" name="_gotcha" style="display:none">
+            <button type="submit" class="btn btn-primary btn-lg btn-block" id="submitBtn"><span class="btn-text">Enviar mensaje</span><span class="btn-loading" style="display:none"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spinner"><circle cx="12" cy="12" r="10" opacity="0.25"/><path d="M12 2a10 10 0 0110 10" stroke-linecap="round"/></svg>Enviando...</span></button>
+            <div class="form-success" id="formSuccess" style="display:none"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><p><strong>¡Mensaje enviado!</strong><br>Te contactaremos pronto.</p></div>
+            <div class="form-error" id="formError" style="display:none"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg><p><strong>Error al enviar.</strong><br>Intenta de nuevo o escríbenos a <a href="mailto:contacto@vitametric.com">contacto@vitametric.com</a></p></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
