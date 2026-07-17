@@ -125,25 +125,201 @@
 
   function setupContactForm() {
     if (!contactForm) return;
-    contactForm.addEventListener('submit', async function (e) {
+    var workerUrl = 'https://turnstile-siteverify-vitametric.elnoruegosh.workers.dev';
+
+    contactForm.addEventListener('submit', function (e) {
       e.preventDefault();
+      if (submitBtn && submitBtn.disabled) return;
+      var tokenEl = document.querySelector('[name="cf-turnstile-response"]');
+      if (!tokenEl || !tokenEl.value) {
+        formError.style.display = 'flex';
+        formError.querySelector('p').innerHTML = '<strong>Verificación pendiente.</strong><br>Por favor completa el captcha de seguridad.';
+        return;
+      }
+
       var btnText = submitBtn.querySelector('.btn-text');
       var btnLoading = submitBtn.querySelector('.btn-loading');
-      btnText.style.display = 'none';
-      btnLoading.style.display = 'inline-flex';
+      if (btnText) btnText.style.display = 'none';
+      if (btnLoading) btnLoading.style.display = 'inline-flex';
       submitBtn.disabled = true;
       formSuccess.style.display = 'none';
       formError.style.display = 'none';
-      try {
-        var formData = new FormData(contactForm);
-        var response = await fetch(contactForm.action, {
-          method: 'POST', body: formData, headers: { Accept: 'application/json' }
-        });
-        if (response.ok) { formSuccess.style.display = 'flex'; contactForm.reset(); }
-        else { throw new Error('fail'); }
-      } catch (err) { formError.style.display = 'flex'; }
-      finally { btnText.style.display = 'inline'; btnLoading.style.display = 'none'; submitBtn.disabled = false; }
+
+      fetch(workerUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: tokenEl.value })
+      })
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        if (data.success) {
+          var formData = new FormData(contactForm);
+          fetch(contactForm.action, {
+            method: 'POST',
+            body: formData,
+            headers: { 'Accept': 'application/json' }
+          })
+          .then(function (r) {
+            if (r.ok) {
+              formSuccess.style.display = 'flex';
+              formError.style.display = 'none';
+              contactForm.reset();
+            } else {
+              throw new Error('Formspree status ' + r.status);
+            }
+          })
+          .catch(function () {
+            formError.style.display = 'flex';
+            formError.querySelector('p').innerHTML = '<strong>Error al enviar.</strong><br>Intenta de nuevo o escríbenos a <a href="mailto:jorge.franco@vitametric.com">jorge.franco@vitametric.com</a>';
+          })
+          .finally(function () {
+            if (btnText) btnText.style.display = 'inline';
+            if (btnLoading) btnLoading.style.display = 'none';
+            submitBtn.disabled = false;
+            if (typeof turnstile !== 'undefined') turnstile.reset();
+          });
+        } else {
+          formError.style.display = 'flex';
+          formError.querySelector('p').innerHTML = '<strong>Verificación fallida.</strong><br>Intenta de nuevo o escríbenos a <a href="mailto:jorge.franco@vitametric.com">jorge.franco@vitametric.com</a>';
+          if (btnText) btnText.style.display = 'inline';
+          if (btnLoading) btnLoading.style.display = 'none';
+          submitBtn.disabled = false;
+          if (typeof turnstile !== 'undefined') turnstile.reset();
+        }
+      })
+      .catch(function () {
+        formError.style.display = 'flex';
+        formError.querySelector('p').innerHTML = '<strong>Error de conexión.</strong><br>Intenta de nuevo o escríbenos a <a href="mailto:jorge.franco@vitametric.com">jorge.franco@vitametric.com</a>';
+        if (btnText) btnText.style.display = 'inline';
+        if (btnLoading) btnLoading.style.display = 'none';
+        submitBtn.disabled = false;
+      });
     });
+  }
+
+  function setupHeroParticles() {
+    const canvas = document.getElementById('heroCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    
+    let width = canvas.width = canvas.offsetWidth;
+    let height = canvas.height = canvas.offsetHeight;
+
+    window.addEventListener('resize', throttle(function() {
+      if (canvas.offsetWidth !== width || canvas.offsetHeight !== height) {
+        width = canvas.width = canvas.offsetWidth;
+        height = canvas.height = canvas.offsetHeight;
+      }
+    }, 100), { passive: true });
+
+    const particles = [];
+    const particleCount = 60; // Keep it optimal for performance
+    const connectionDistance = 110;
+    const speedFactor = 0.4;
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.vx = (Math.random() - 0.5) * speedFactor;
+        this.vy = (Math.random() - 0.5) * speedFactor;
+        this.radius = Math.random() * 1.5 + 1;
+        this.color = Math.random() > 0.5 ? 'rgba(0, 200, 255, 0.35)' : 'rgba(0, 255, 157, 0.35)';
+      }
+
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+
+        if (this.x < 0 || this.x > width) this.vx = -this.vx;
+        if (this.y < 0 || this.y > height) this.vy = -this.vy;
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < particleCount; i++) {
+      particles.push(new Particle());
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, width, height);
+
+      particles.forEach(function (p) {
+        p.update();
+        p.draw();
+      });
+
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const p1 = particles[i];
+          const p2 = particles[j];
+          const dx = p1.x - p2.x;
+          const dy = p1.y - p2.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < connectionDistance) {
+            const alpha = (1 - dist / connectionDistance) * 0.12;
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.strokeStyle = 'rgba(0, 200, 255, ' + alpha + ')';
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        }
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  }
+
+  function setupCounters() {
+    const counters = document.querySelectorAll('.counter-number');
+    if (counters.length === 0) return;
+
+    const animateCounter = function (counter) {
+      const target = parseInt(counter.getAttribute('data-target'), 10);
+      const suffix = counter.getAttribute('data-suffix') || '';
+      const duration = 2000;
+      const startTime = performance.now();
+
+      const updateCount = function (currentTime) {
+        const elapsedTime = currentTime - startTime;
+        const progress = Math.min(elapsedTime / duration, 1);
+        
+        const easeProgress = progress * (2 - progress);
+        const currentValue = Math.floor(easeProgress * target);
+
+        counter.textContent = currentValue + suffix;
+
+        if (progress < 1) {
+          requestAnimationFrame(updateCount);
+        } else {
+          counter.textContent = target + suffix;
+        }
+      };
+
+      requestAnimationFrame(updateCount);
+    };
+
+    const observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          animateCounter(entry.target);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -50px 0px', threshold: 0.1 });
+
+    counters.forEach(function (counter) { observer.observe(counter); });
   }
 
   function setupSmoothScroll() {
@@ -173,6 +349,8 @@
     setupTestimonialSlider();
     setupContactForm();
     setupSmoothScroll();
+    setupHeroParticles();
+    setupCounters();
     handleNavScroll();
   }
 

@@ -3,28 +3,36 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vitametric | Centro de Medicina de Prevención en CDMX</title>
-  <meta name="description" content="Clínica de medicina preventiva en Ciudad de México. Tecnología avanzada no invasiva (ES-Complex, Scenar) y nutrición célular (Immunocal). #Vivemás con Vitametric.">
-  <meta name="keywords" content="medicina preventiva, CDMX, Vitametric, ES-Complex, Scenar, Immunocal">
-  <meta property="og:title" content="Vitametric — Centro de Medicina de Prevención">
-  <meta property="og:description" content="La salud depende de cada uno de nosotros.">
+  <title>Vitametric | Centro de Salud Preventiva en CDMX</title>
+  <meta name="description" content="Clínica de salud preventiva en Ciudad de México. Tecnología avanzada no invasiva (ES-Complex, Scenar) y nutrición celular (Immunocal). #Vivemás con Vitametric.">
+  <meta name="keywords" content="salud preventiva, CDMX, Vitametric, ES-Complex, Scenar, Immunocal, AtlasPROfilax, Rife, ozonoterapia, salud celular, clínica médica, Ciudad de México">
+  <meta name="author" content="Vitametric">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="Vitametric — Centro de Salud Preventiva">
+  <meta property="og:description" content="Centro de salud preventiva en CDMX. Tecnología avanzada no invasiva, nutrición celular y diagnóstico predictivo con ES-Complex.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://vitametric.com/">
-  <meta property="og:image" content="assets/img/logo.png">
+  <meta property="og:image" content="https://vitametric.com/assets/img/logo.png">
+  <meta property="og:image:width" content="732">
+  <meta property="og:image:height" content="289">
   <meta property="og:locale" content="es_MX">
   <link rel="canonical" href="https://vitametric.com/">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
-  <meta name="theme-color" content="#005C8A">
-  <link rel="icon" type="image/png" href="assets/img/logo.png">
+  <meta name="theme-color" content="#020C1B">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="assets/img/favicon-64.png">
+  <link rel="icon" type="image/png" sizes="128x128" href="assets/img/favicon-128.png">
+  <link rel="apple-touch-icon" sizes="256x256" href="assets/img/favicon-256.png">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "MedicalBusiness",
   "name": "Vitametric",
-  "description": "Centro de medicina preventiva en Ciudad de México. Tecnología avanzada no invasiva y nutrición celular.",
+  "description": "Centro de salud preventiva en Ciudad de México. Tecnología avanzada no invasiva y nutrición celular.",
   "url": "https://vitametric.com",
   "telephone": "+52-55-5559-2060",
   "address": {
@@ -53,7 +61,7 @@
     <div class="nav-container">
       <a href="#inicio" class="nav-logo" aria-label="Vitametric - Inicio">
         <img src="assets/img/logo.png" alt="Vitametric" class="nav-logo-img" id="nav-logo-png">
-        <img src="assets/img/logo.jpg" alt="Vitametric" class="nav-logo-img" id="nav-logo-jpg" aria-hidden="true" loading="lazy">
+
         <span class="nav-logo-tagline">Innovación Integral al Servicio de tu Salud</span>
       </a>
       <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false">
@@ -76,17 +84,21 @@
     <div class="hero-bg">
       <div class="hero-gradient"></div>
       <div class="hero-pattern"></div>
+      <div class="hero-orb hero-orb-1"></div>
+      <div class="hero-orb hero-orb-2"></div>
+      <div class="hero-orb hero-orb-3"></div>
+      <canvas id="heroCanvas"></canvas>
     </div>
     <div class="hero-container">
       <div class="hero-content">
         <div class="hero-badge reveal">
           <span class="badge-dot"></span>
-          Medicina de Prevención
+          Salud Preventiva
         </div>
         <h1 class="hero-title reveal">
-          La salud depende<br>
-          <span class="hero-accent">de cada uno</span><br>
-          de nosotros
+          La verdadera salud<br>
+          <span class="hero-accent">comienza en cada</span><br>
+          célula
         </h1>
         <p class="hero-subtitle reveal">
           Tecnología avanzada no invasiva para entender tu cuerpo, prevenir enfermedades y vivir con plenitud. En Ciudad de México.
@@ -109,16 +121,19 @@
       <div class="hero-visual reveal">
         <div class="hero-image-wrapper">
           <div class="hero-glow"></div>
+          <div class="hero-visual-img-wrap">
+            <img src="assets/img/hero-visual.webp" alt="Vitametric - Cuerpo de Partículas Bioluminiscentes y ADN" class="hero-visual-img">
+          </div>
           <div class="hero-card hero-card-1">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#005C8A" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00C8FF" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
             <span>Análisis corporal</span>
           </div>
           <div class="hero-card hero-card-2">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00FF9D" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
             <span>Prevención</span>
           </div>
           <div class="hero-card hero-card-3">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#005C8A" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00C8FF" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
             <span>Bienestar continuo</span>
           </div>
         </div>
@@ -129,10 +144,17 @@
       <div class="scroll-arrow"></div>
     </div>
   </section>
+
+  <section class="dna-divider">
+    <div class="dna-divider-content">
+      <h2>"La prevención inteligente comienza a nivel molecular"</h2>
+    </div>
+  </section>
+
   <section class="section section-nosotros" id="nosotros">
     <div class="container">
       <div class="section-header reveal">
-        <span class="section-tag">Quienes somos</span>
+        <span class="section-tag">Quiénes somos</span>
         <h2 class="section-title">Medicina que previene,<br>no solo que cura</h2>
         <p class="section-subtitle">En Vitametric creemos que la verdadera medicina comienza antes de la enfermedad. Combinamos tecnología de vanguardia con un enfoque humano para ayudarte a entender tu cuerpo.</p>
       </div>
@@ -145,7 +167,7 @@
         <div class="nosotros-card reveal">
           <div class="nosotros-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div>
           <h3>Tecnología no invasiva</h3>
-          <p>Equipos de ultima generacion que analizan tu cuerpo sin procedimientos dolorosos.</p>
+          <p>Equipos de última generación que analizan tu cuerpo sin procedimientos dolorosos.</p>
         </div>
         <div class="nosotros-card reveal">
           <div class="nosotros-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg></div>
@@ -154,12 +176,35 @@
         </div>
         <div class="nosotros-card reveal">
           <div class="nosotros-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
-          <h3>Nutrición célular</h3>
+          <h3>Nutrición celular</h3>
           <p>Suplementos de alta calidad que nutren tus células y potencian tu sistema inmunológico.</p>
         </div>
       </div>
+
+      <div class="nosotros-split reveal">
+        <div class="nosotros-split-left">
+          <div class="cell-img-wrap">
+            <img src="assets/img/cell-section.webp" alt="Análisis Celular Bioluminiscente" class="cell-img" loading="lazy">
+          </div>
+        </div>
+        <div class="nosotros-split-right">
+          <div class="stat-counter">
+            <span class="counter-number" data-target="95" data-suffix="%">0%</span>
+            <span class="counter-label">Precisión en diagnóstico predictivo</span>
+          </div>
+          <div class="stat-counter">
+            <span class="counter-number" data-target="100" data-suffix="%">0%</span>
+            <span class="counter-label">Tratamientos no invasivos y seguros</span>
+          </div>
+          <div class="stat-counter">
+            <span class="counter-number" data-target="1500" data-suffix="+">0+</span>
+            <span class="counter-label">Pacientes beneficiados en Ciudad de México</span>
+          </div>
+        </div>
+      </div>
+
       <div class="nosotros-cta reveal">
-        <blockquote class="nosotros-quote"><p>"#Vivemás — porque tu salud es tu decisión mas importante."</p></blockquote>
+        <blockquote class="nosotros-quote"><p>"#Vivemás — porque tu salud es tu decisión más importante."</p></blockquote>
       </div>
     </div>
   </section>
@@ -174,11 +219,11 @@
       <div class="tech-grid">
         <div class="tech-card reveal">
           <div class="tech-card-badge">Análisis no invasivo</div>
-          <img src="assets/img/technology/escomplex.jpg" alt="Análisis de composición corporal con tecnología ES-Complex" class="tech-card-img" loading="lazy">
+          <img src="assets/img/technology/escomplex.webp" alt="Análisis de composición corporal con tecnología ES-Complex" class="tech-card-img" loading="lazy">
           <h3 class="tech-card-title">ES-Complex</h3>
-          <p class="tech-card-desc">Tecnología no invasiva de análisis del cuerpo humano. Evalua el estado funcional de órganos y sistemas mediante bioimpedancia avanzada.</p>
+          <p class="tech-card-desc">Tecnología no invasiva de análisis del cuerpo humano. Evalúa el estado funcional de órganos y sistemas mediante bioimpedancia avanzada.</p>
           <ul class="tech-card-features">
-            <li>Diagnostico integral en una sesión</li>
+            <li>Diagnóstico integral en una sesión</li>
             <li>Sin dolor, sin radiación</li>
             <li>Resultados inmediatos</li>
           </ul>
@@ -187,7 +232,7 @@
         </div>
         <div class="tech-card reveal">
           <div class="tech-card-badge">Bio-cibernética</div>
-          <img src="assets/img/technology/scenar.jpg" alt="Terapia de biorretroalimentación con dispositivo Scenar" class="tech-card-img" loading="lazy">
+          <img src="assets/img/technology/scenar.webp" alt="Terapia de biorretroalimentación con dispositivo Scenar" class="tech-card-img" loading="lazy">
           <h3 class="tech-card-title">Scenar</h3>
           <p class="tech-card-desc">Tecnología bio-cibernética desarrollada por neurologos rusos de la Agencia Aeroespacial Soviética. Estimula la autorregulación del cuerpo.</p>
           <ul class="tech-card-features">
@@ -199,7 +244,7 @@
         </div>
         <div class="tech-card reveal">
           <div class="tech-card-badge">Masaje neuromuscular</div>
-          <img src="assets/img/technology/columna.jpg" alt="AtlasPROfilax® - Método suizo de corrección atlas" class="tech-card-img" loading="lazy">
+          <img src="assets/img/technology/columna.webp" alt="AtlasPROfilax® - Método suizo de corrección atlas" class="tech-card-img" loading="lazy">
           <h3 class="tech-card-title">AtlasPROfilax®</h3>
           <p class="tech-card-desc">Método original suizo creado por René C. Schümperli (1997). Masaje neuromuscular vibracional de los músculos suboccipitales. No es manipulación quiropráctica ni cracking vertebral. Generalmente una sola sesión con resultado permanente.</p>
           <ul class="tech-card-features">
@@ -213,24 +258,89 @@
         </div>
         <div class="tech-card reveal">
           <div class="tech-card-badge">Desintoxicación</div>
-          <img src="assets/img/technology/rife.jpg" alt="Terapia de desintoxiación con frecuencias Bio Royal Rife" class="tech-card-img" loading="lazy">
+          <img src="assets/img/technology/rife.webp" alt="Terapia de desintoxicación con frecuencias Bio Royal Rife" class="tech-card-img" loading="lazy">
           <h3 class="tech-card-title">Bio Royal Rife</h3>
           <p class="tech-card-desc">Terapia de desintoxicación basada en las investigaciones del Dr. Royal Rife. Frecuencias específicas para eliminar toxinas.</p>
           <ul class="tech-card-features">
             <li>Desintoxicación profunda</li>
             <li>Frecuencias específicas</li>
-            <li>Regeneración célular</li>
+            <li>Regeneración celular</li>
           </ul>
           <a href="#contacto" class="tech-card-link">Más información</a>
           <p class="tech-card-disclaimer">Uso terapéutico complementario. No diagnosticamos, tratamos ni curamos enfermedad alguna.</p>
         </div>
       </div>
+
+      <div class="tech-dna-deco reveal">
+        <svg viewBox="0 0 800 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10 30 Q 30 10, 50 30 T 90 30 T 130 30 T 170 30 T 210 30 T 250 30 T 290 30 T 330 30 T 370 30 T 410 30 T 450 30 T 490 30 T 530 30 T 570 30 T 610 30 T 650 30 T 690 30 T 730 30 T 770 30 T 790 30" stroke="#00C8FF" stroke-width="2" stroke-dasharray="4 4" />
+          <path d="M10 30 Q 30 50, 50 30 T 90 30 T 130 30 T 170 30 T 210 30 T 250 30 T 290 30 T 330 30 T 370 30 T 410 30 T 450 30 T 490 30 T 530 30 T 570 30 T 610 30 T 650 30 T 690 30 T 730 30 T 770 30 T 790 30" stroke="#00FF9D" stroke-width="2" stroke-dasharray="4 4" />
+          <line x1="30" y1="16" x2="30" y2="44" stroke="rgba(0, 200, 255, 0.4)" stroke-width="1.5" />
+          <circle cx="30" cy="16" r="3" fill="#00C8FF" />
+          <circle cx="30" cy="44" r="3" fill="#00FF9D" />
+          <line x1="70" y1="44" x2="70" y2="16" stroke="rgba(0, 255, 157, 0.4)" stroke-width="1.5" />
+          <circle cx="70" cy="44" r="3" fill="#00C8FF" />
+          <circle cx="70" cy="16" r="3" fill="#00FF9D" />
+          <line x1="110" y1="16" x2="110" y2="44" stroke="rgba(0, 200, 255, 0.4)" stroke-width="1.5" />
+          <circle cx="110" cy="16" r="3" fill="#00C8FF" />
+          <circle cx="110" cy="44" r="3" fill="#00FF9D" />
+          <line x1="150" y1="44" x2="150" y2="16" stroke="rgba(0, 255, 157, 0.4)" stroke-width="1.5" />
+          <circle cx="150" cy="44" r="3" fill="#00C8FF" />
+          <circle cx="150" cy="16" r="3" fill="#00FF9D" />
+          <line x1="190" y1="16" x2="190" y2="44" stroke="rgba(0, 200, 255, 0.4)" stroke-width="1.5" />
+          <circle cx="190" cy="16" r="3" fill="#00C8FF" />
+          <circle cx="190" cy="44" r="3" fill="#00FF9D" />
+          <line x1="230" y1="44" x2="230" y2="16" stroke="rgba(0, 255, 157, 0.4)" stroke-width="1.5" />
+          <circle cx="230" cy="44" r="3" fill="#00C8FF" />
+          <circle cx="230" cy="16" r="3" fill="#00FF9D" />
+          <line x1="270" y1="16" x2="270" y2="44" stroke="rgba(0, 200, 255, 0.4)" stroke-width="1.5" />
+          <circle cx="270" cy="16" r="3" fill="#00C8FF" />
+          <circle cx="270" cy="44" r="3" fill="#00FF9D" />
+          <line x1="310" y1="44" x2="310" y2="16" stroke="rgba(0, 255, 157, 0.4)" stroke-width="1.5" />
+          <circle cx="310" cy="44" r="3" fill="#00C8FF" />
+          <circle cx="310" cy="16" r="3" fill="#00FF9D" />
+          <line x1="350" y1="16" x2="350" y2="44" stroke="rgba(0, 200, 255, 0.4)" stroke-width="1.5" />
+          <circle cx="350" cy="16" r="3" fill="#00C8FF" />
+          <circle cx="350" cy="44" r="3" fill="#00FF9D" />
+          <line x1="390" y1="44" x2="390" y2="16" stroke="rgba(0, 255, 157, 0.4)" stroke-width="1.5" />
+          <circle cx="390" cy="44" r="3" fill="#00C8FF" />
+          <circle cx="390" cy="16" r="3" fill="#00FF9D" />
+          <line x1="430" y1="16" x2="430" y2="44" stroke="rgba(0, 200, 255, 0.4)" stroke-width="1.5" />
+          <circle cx="430" cy="16" r="3" fill="#00C8FF" />
+          <circle cx="430" cy="44" r="3" fill="#00FF9D" />
+          <line x1="470" y1="44" x2="470" y2="16" stroke="rgba(0, 255, 157, 0.4)" stroke-width="1.5" />
+          <circle cx="470" cy="44" r="3" fill="#00C8FF" />
+          <circle cx="470" cy="16" r="3" fill="#00FF9D" />
+          <line x1="510" y1="16" x2="510" y2="44" stroke="rgba(0, 200, 255, 0.4)" stroke-width="1.5" />
+          <circle cx="510" cy="16" r="3" fill="#00C8FF" />
+          <circle cx="510" cy="44" r="3" fill="#00FF9D" />
+          <line x1="550" y1="44" x2="550" y2="16" stroke="rgba(0, 255, 157, 0.4)" stroke-width="1.5" />
+          <circle cx="550" cy="44" r="3" fill="#00C8FF" />
+          <circle cx="550" cy="16" r="3" fill="#00FF9D" />
+          <line x1="590" y1="16" x2="590" y2="44" stroke="rgba(0, 200, 255, 0.4)" stroke-width="1.5" />
+          <circle cx="590" cy="16" r="3" fill="#00C8FF" />
+          <circle cx="590" cy="44" r="3" fill="#00FF9D" />
+          <line x1="630" y1="44" x2="630" y2="16" stroke="rgba(0, 255, 157, 0.4)" stroke-width="1.5" />
+          <circle cx="630" cy="44" r="3" fill="#00C8FF" />
+          <circle cx="630" cy="16" r="3" fill="#00FF9D" />
+          <line x1="670" y1="16" x2="670" y2="44" stroke="rgba(0, 200, 255, 0.4)" stroke-width="1.5" />
+          <circle cx="670" cy="16" r="3" fill="#00C8FF" />
+          <circle cx="670" cy="44" r="3" fill="#00FF9D" />
+          <line x1="710" y1="44" x2="710" y2="16" stroke="rgba(0, 255, 157, 0.4)" stroke-width="1.5" />
+          <circle cx="710" cy="44" r="3" fill="#00C8FF" />
+          <circle cx="710" cy="16" r="3" fill="#00FF9D" />
+          <line x1="750" y1="16" x2="750" y2="44" stroke="rgba(0, 200, 255, 0.4)" stroke-width="1.5" />
+          <circle cx="750" cy="16" r="3" fill="#00C8FF" />
+          <circle cx="750" cy="44" r="3" fill="#00FF9D" />
+        </svg>
+      </div>
     </div>
   </section>
+
   <section class="section section-productos" id="productos">
     <div class="container">
       <div class="section-header reveal">
-        <span class="section-tag">Nutrición célular</span>
+        <span class="section-tag">Nutrición celular</span>
         <h2 class="section-title">Potencia tu salud<br>desde la célula</h2>
         <p class="section-subtitle">Suplementos de alta calidad basados en ciencia. Nutren tus células y aumentan tus niveles de glutatión.</p>
       </div>
@@ -238,17 +348,17 @@
         <div class="product-card reveal">
           <div class="product-card-top">
             <div class="product-badge">Más popular</div>
-            <img src="assets/img/products/immunocal.jpg" alt="Immunocal - Proteína aislada de suero para producción de glutatión" class="product-img" loading="lazy">
+            <img src="assets/img/products/immunocal.webp" alt="Immunocal - Proteína aislada de suero para producción de glutatión" class="product-img" loading="lazy">
             <h3>Immunocal</h3>
-            <p class="product-tagline">Proteina aislada de suero de leche con cisteína</p>
+            <p class="product-tagline">Proteína aislada de suero de leche con cisteína</p>
           </div>
           <div class="product-card-body">
             <p>El producto insignia. Aislado proteico que proporciona precursores para que tu cuerpo produzca glutatión de forma natural.</p>
             <ul class="product-benefits">
               <li>Fortalece el sistema inmunológico</li>
               <li>Incrementa niveles de glutatión</li>
-              <li>Proteina de alta biodisponibilidad</li>
-              <li>Respaldado por estudios clinicos</li>
+              <li>Proteína de alta biodisponibilidad</li>
+              <li>Respaldado por estudios clínicos</li>
             </ul>
           </div>
           <div class="product-card-footer"><a href="#contacto" class="btn btn-primary btn-sm btn-block">Solicitar información</a></div>
@@ -256,15 +366,15 @@
         <div class="product-card reveal">
           <div class="product-card-top">
             <div class="product-badge product-badge-alt">Premium</div>
-            <img src="assets/img/products/immunocal-platinum.jpg" alt="Immunocal Platinum - Fórmula avanzada con vitamina D y cúrcuma" class="product-img" loading="lazy">
+            <img src="assets/img/products/immunocal-platinum.webp" alt="Immunocal Platinum - Fórmula avanzada con vitamina D y cúrcuma" class="product-img" loading="lazy">
             <h3>Immunocal Platinum</h3>
             <p class="product-tagline">Concentrado proteico bioactivo</p>
           </div>
           <div class="product-card-body">
-            <p>La version premium. Concentrado proteico bioactivo con ingredientes que potencian la absorción del glutatión.</p>
+            <p>La versión premium. Concentrado proteico bioactivo con ingredientes que potencian la absorción del glutatión.</p>
             <ul class="product-benefits">
               <li>Fórmula avanzada con péptidos bioactivos</li>
-              <li>Mayor absorción célular</li>
+              <li>Mayor absorción celular</li>
               <li>Ideal para adultos mayores</li>
               <li>Complemento de Immunocal</li>
             </ul>
@@ -273,17 +383,34 @@
         </div>
         <div class="product-card reveal">
           <div class="product-card-top">
-            <img src="assets/img/products/immunocal-optimizer.jpg" alt="K-21 Optimizer" class="product-img" loading="lazy">
-            <h3>K-21 & Optimizer</h3>
+            <img src="assets/img/products/k21.webp" alt="K-21 - Soporte para producción de glutatión" class="product-img" loading="lazy">
+            <h3>K-21</h3>
             <p class="product-tagline">Soporte para producción de glutatión</p>
           </div>
           <div class="product-card-body">
-            <p>Complementos para potenciar la producción de glutatión. K-21 aporta nutrientes clave y Optimizer maximiza la utilización célular.</p>
+            <p>Complemento que potencia la producción de glutatión. Aporta nutrientes clave para maximizar la defensa antioxidante de tu cuerpo.</p>
             <ul class="product-benefits">
               <li>Potencia la producción de glutatión</li>
-              <li>Mejora la utilización célular</li>
+              <li>Mejora la utilización celular</li>
               <li>Complemento ideal de Immunocal</li>
               <li>Fórmula sinérgica</li>
+            </ul>
+          </div>
+          <div class="product-card-footer"><a href="#contacto" class="btn btn-outline btn-sm btn-block">Solicitar información</a></div>
+        </div>
+        <div class="product-card reveal">
+          <div class="product-card-top">
+            <img src="assets/img/products/optimizer.webp" alt="Optimizer - Potenciador genético Nrf2" class="product-img" loading="lazy">
+            <h3>Optimizer</h3>
+            <p class="product-tagline">Potenciador genético Nrf2</p>
+          </div>
+          <div class="product-card-body">
+            <p>Optimizador genético que activa la vía Nrf2 para multiplicar la eficacia del glutatión. Con sulforafano, selenio y vitaminas B12 y C para energía celular.</p>
+            <ul class="product-benefits">
+              <li>Activa la producción natural de glutatión</li>
+              <li>Sulforafano de brócoli + selenio</li>
+              <li>Mejora la desintoxicación celular</li>
+              <li>Ideal para fatiga crónica y estrés ambiental</li>
             </ul>
           </div>
           <div class="product-card-footer"><a href="#contacto" class="btn btn-outline btn-sm btn-block">Solicitar información</a></div>
@@ -291,9 +418,17 @@
       </div>
       <div class="products-info reveal">
         <div class="info-card">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#005C8A" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-          <div><strong>¿Que es el glutatión?</strong><p>Es el antioxidante principal del cuerpo. Protege tus células, desintoxica el higado y fortalece el sistema inmunológico.</p></div>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00C8FF" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          <div><strong>¿Qué es el glutatión?</strong><p>Es el antioxidante principal del cuerpo. Protege tus células, desintoxica el hígado y fortalece el sistema inmunológico.</p></div>
         </div>
+          <div class="info-card consultor-card">
+            <img src="assets/img/consultor-independiente.webp" alt="Consultor Independiente Immunotec" class="consultor-badge" width="180" height="101" loading="lazy">
+            <div>
+              <strong>Jorge Franco</strong>
+              <p class="consultor-title">Consultor Independiente Autorizado de Immunotec</p>
+              <p class="consultor-disclaimer">Los productos Immunotec no están evaluados por la FDA ni COFEPRIS. No diagnostican, tratan ni curan enfermedades. <a href="https://www.immunotec.com/en-US/alma795688" target="_blank" rel="noopener">Visita nuestro sitio oficial</a> para compras y más información.</p>
+            </div>
+          </div>
       </div>
     </div>
   </section>
@@ -308,7 +443,7 @@
         <div class="testimonial-track" id="testimonialTrack">
           <div class="testimonial-slide">
             <div class="testimonial-stars">★★★★★</div>
-            <blockquote class="testimonial-text">"Despues de años con dolor crónico, las sesiónes de Scenar cambiaron mi vida. Hoy duermo bien y puedo jugar con mis hijos."</blockquote>
+            <blockquote class="testimonial-text">"Después de años con dolor crónico, las sesiones de Scenar cambiaron mi vida. Hoy duermo bien y puedo jugar con mis hijos."</blockquote>
             <div class="testimonial-author"><div class="testimonial-avatar">MR</div><div><strong>María R.</strong><span>Paciente de Scenar</span></div></div>
           </div>
           <div class="testimonial-slide">
@@ -318,12 +453,12 @@
           </div>
           <div class="testimonial-slide">
             <div class="testimonial-stars">★★★★★</div>
-            <blockquote class="testimonial-text">"Mi postura ha mejorado increíblemente. En pocas sesiónes de alineación vertebral sentí el cambio. El equipo es muy profesional."</blockquote>
+            <blockquote class="testimonial-text">"Mi postura ha mejorado increíblemente. En pocas sesiones de alineación vertebral sentí el cambio. El equipo es muy profesional."</blockquote>
             <div class="testimonial-author"><div class="testimonial-avatar">AP</div><div><strong>Ana P.</strong><span>Columna vertebral</span></div></div>
           </div>
           <div class="testimonial-slide">
             <div class="testimonial-stars">★★★★★</div>
-            <blockquote class="testimonial-text">"Immunocal me devolvió la energia. Lo tomo desde hace un año y la diferencia es notable. Mi sistema inmunológico esta mas fuerte."</blockquote>
+            <blockquote class="testimonial-text">"Immunocal me devolvió la energía. Lo tomo desde hace un año y la diferencia es notable. Mi sistema inmunológico está más fuerte."</blockquote>
             <div class="testimonial-author"><div class="testimonial-avatar">JG</div><div><strong>Jorge G.</strong><span>Immunocal</span></div></div>
           </div>
         </div>
@@ -353,7 +488,7 @@
             <h3>Visítanos</h3>
             <div class="contacto-item">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#005C8A" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              <div><strong>Dirección</strong><p>Calle Playa Tecolutla 452,<br>Col. Vértiz Narvarte, 08830 CDMX</p></div>
+              <div><strong>Dirección</strong><p>Calle Playa Tecolutla 452,<br>Col. Militar Marte, 08830 CDMX</p></div>
             </div>
             <div class="contacto-item">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#005C8A" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
@@ -361,32 +496,41 @@
             </div>
             <div class="contacto-item">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#005C8A" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-              <div><strong>Email</strong><p><a href="mailto:contacto@vitametric.com">contacto@vitametric.com</a></p></div>
+              <div><strong>Email</strong><p><a href="mailto:jorge.franco@vitametric.com">jorge.franco@vitametric.com</a></p></div>
             </div>
           </div>
           <div class="contacto-map">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3762.8!2d-99.1585!3d19.3968!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d1ff44a48b5e2b%3A0x3a5e7e2c0b0a0b0a!2sCalle+Playa+Tecolutla+Vda.+de+452%2C+Vértiz+Narvarte%2C+08830+CDMX!5e0!3m2!1ses!2smx!4v1" width="100%" height="200" style="border:0; border-radius: 12px;" allowfullscreen loading="lazy" title="Ubicacion Vitametric"></iframe>
+            <iframe src="https://maps.google.com/maps?q=Playa%20Tecolutla%20452,%20Militar%20Marte,%2008830%20Ciudad%20de%20M%C3%A9xico,%20CDMX&t=&z=15&ie=UTF8&iwloc=&output=embed" width="100%" height="200" style="border:0; border-radius: 12px;" allowfullscreen loading="lazy" title="Ubicacion Vitametric"></iframe>
           </div>
         </div>
         <div class="contacto-form-wrapper reveal">
           <form class="contacto-form" id="contactForm" action="https://formspree.io/f/xykqnebq" method="POST">
             <h3>Envíanos un mensaje</h3>
-            <p class="form-note">Completa el fórmulario y te contactaremos.</p>
+            <p class="form-note">Completa el formulario y te contactaremos.</p>
             <div class="form-group"><label for="nombre">Nombre completo</label><input type="text" id="nombre" name="nombre" required placeholder="Tu nombre"></div>
             <div class="form-row">
               <div class="form-group"><label for="email">Email</label><input type="email" id="email" name="email" required placeholder="tu@email.com"></div>
               <div class="form-group"><label for="teléfono">Teléfono</label><input type="tel" id="teléfono" name="teléfono" placeholder="55 1234 5678"></div>
             </div>
             <div class="form-group"><label for="servicio">Servicio de interés</label><select id="servicio" name="servicio"><option value="">Selecciona un servicio</option><option value="escomplex">Análisis ES-Complex</option><option value="scenar">Terapia Scenar</option><option value="columna">Alineación de Columna</option><option value="rife">Bio Royal Rife</option><option value="immunocal">Immunocal / Nutrición Celular</option><option value="general">Consulta general</option></select></div>
-            <div class="form-group"><label for="mensaje">Mensaje</label><textarea id="mensaje" name="mensaje" rows="4" placeholder="Cuéntanos como podemos ayudarte..."></textarea></div>
+            <div class="form-group"><label for="mensaje">Mensaje</label><textarea id="mensaje" name="mensaje" rows="4" placeholder="Cuéntanos cómo podemos ayudarte..."></textarea></div>
             <input type="text" name="_gotcha" style="display:none">
             <div class="cf-turnstile" data-sitekey="0x4AAAAAAD2DNBXtGXkUnHXM" data-action="turnstile-spin-v1"></div>
             <button type="submit" class="btn btn-primary btn-lg btn-block" id="submitBtn"><span class="btn-text">Enviar mensaje</span><span class="btn-loading" style="display:none">Enviando...</span></button>
-            <div class="form-success" id="formSuccess" style="display:none"><p><strong>Mensaje enviado!</strong> Te contactaremos pronto.</p></div>
-            <div class="form-error" id="formError" style="display:none"><p><strong>Error al enviar.</strong> Intenta de nuevo o escríbenos a <a href="mailto:contacto@vitametric.com">contacto@vitametric.com</a></p></div>
+            <div class="form-success" id="formSuccess" style="display:none"><p><strong>¡Mensaje enviado!</strong> Te contactaremos pronto.</p></div>
+            <div class="form-error" id="formError" style="display:none"><p><strong>Error al enviar.</strong> Intenta de nuevo o escríbenos a <a href="mailto:jorge.franco@vitametric.com">jorge.franco@vitametric.com</a></p></div>
           </form>
         </div>
       </div>
+    </div>
+  </section>
+
+  <section class="section cta-banner reveal">
+    <div class="cta-banner-bg"></div>
+    <div class="container cta-banner-container">
+      <h2>¿Listo para transformar tu salud?</h2>
+      <p>Agenda hoy mismo tu consulta de valoración no invasiva y descubre el estado real de tus células.</p>
+      <a href="#contacto" class="btn btn-primary btn-lg btn-glow">Agendar valoración ahora</a>
     </div>
   </section>
 
@@ -397,7 +541,7 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <img loading="lazy" src="assets/img/logo.png" alt="Vitametric" class="footer-logo">
-          <p>Centro de Medicina de Prevención en Ciudad de México. Tecnología avanzada no invasiva para tu bienestar.</p>
+          <p>Centro de Salud Preventiva en Ciudad de México. Tecnología avanzada no invasiva para tu bienestar.</p>
           <span class="footer-tag">#Vivemás</span>
         </div>
         <div class="footer-nav">
@@ -410,9 +554,9 @@
         </div>
         <div class="footer-contacto">
           <h4>Contacto</h4>
-          <p>Col. Vértiz Narvarte, 08830 CDMX</p>
+          <p>Col. Militar Marte, 08830 CDMX</p>
           <p><a href="tel:+525585327421">55 8532 7421</a></p>
-          <p><a href="mailto:contacto@vitametric.com">contacto@vitametric.com</a></p>
+          <p><a href="mailto:jorge.franco@vitametric.com">jorge.franco@vitametric.com</a></p>
         </div>
       </div>
       <div class="footer-disclaimer">
@@ -428,85 +572,6 @@
   <a href="https://wa.me/525585327421?text=Hola%2C%20me%20interesa%20conocer%20m%C3%A1s%20sobre%20los%20servicios%20de%20Vitametric" class="whatsapp-fab" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
     <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
   </a>
-  <script>
-    (function() {
-      var form = document.getElementById('contactForm');
-      if (!form) return;
-      var workerUrl = 'https://turnstile-siteverify-vitametric.elnoruegosh.workers.dev';
-      var submitBtn = document.getElementById('submitBtn');
-      var successMsg = document.getElementById('formSuccess');
-      var errorMsg = document.getElementById('formError');
-      var btnText = submitBtn ? submitBtn.querySelector('.btn-text') : null;
-      var btnLoading = submitBtn ? submitBtn.querySelector('.btn-loading') : null;
-
-      form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        if (submitBtn && submitBtn.disabled) return;
-        var tokenEl = document.querySelector('[name="cf-turnstile-response"]');
-        if (!tokenEl || !tokenEl.value) {
-          if (errorMsg) {
-            errorMsg.style.display = 'block';
-            errorMsg.querySelector('p').innerHTML = '<strong>Verificación pendiente.</strong><br>Por favor completa el captcha de seguridad.';
-          }
-          return;
-        }
-
-        if (btnText) btnText.style.display = 'none';
-        if (btnLoading) btnLoading.style.display = 'inline-flex';
-        if (submitBtn) submitBtn.disabled = true;
-
-        fetch(workerUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ token: tokenEl.value })
-        }).then(function(r) { return r.json(); }).then(function(data) {
-          if (data.success) {
-            var formData = new FormData(form);
-            fetch(form.action, {
-              method: 'POST',
-              body: formData,
-              headers: { 'Accept': 'application/json' }
-            }).then(function(r) {
-              if (r.ok) {
-                if (successMsg) successMsg.style.display = 'block';
-                if (errorMsg) errorMsg.style.display = 'none';
-                form.reset();
-              } else {
-                throw new Error('Formspree status ' + r.status);
-              }
-            }).catch(function() {
-              if (btnText) btnText.style.display = '';
-              if (btnLoading) btnLoading.style.display = 'none';
-              if (submitBtn) submitBtn.disabled = false;
-              if (errorMsg) {
-                errorMsg.style.display = 'block';
-                errorMsg.querySelector('p').innerHTML = '<strong>Error al enviar.</strong><br>Intenta de nuevo o escríbenos a <a href="mailto:contacto@vitametric.com">contacto@vitametric.com</a>';
-              }
-            }).finally(function() {
-              if (typeof turnstile !== 'undefined') turnstile.reset();
-            });
-          } else {
-            if (btnText) btnText.style.display = '';
-            if (btnLoading) btnLoading.style.display = 'none';
-            if (submitBtn) submitBtn.disabled = false;
-            if (errorMsg) {
-              errorMsg.style.display = 'block';
-              errorMsg.querySelector('p').innerHTML = '<strong>Verificación fallida.</strong><br>Intenta de nuevo. Si el problema persiste, escríbenos a <a href="mailto:contacto@vitametric.com">contacto@vitametric.com</a>';
-            }
-            if (typeof turnstile !== 'undefined') turnstile.reset();
-          }
-        }).catch(function() {
-          if (btnText) btnText.style.display = '';
-          if (btnLoading) btnLoading.style.display = 'none';
-          if (submitBtn) submitBtn.disabled = false;
-          if (errorMsg) {
-            errorMsg.style.display = 'block';
-            errorMsg.querySelector('p').innerHTML = '<strong>Error de conexión.</strong><br>Intenta de nuevo o escríbenos a <a href="mailto:contacto@vitametric.com">contacto@vitametric.com</a>';
-          }
-        });
-      });
-    })();
-  </script>
   <script src="js/main.js"></script>
 </body>
 </html>
