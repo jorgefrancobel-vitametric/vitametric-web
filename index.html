@@ -580,7 +580,32 @@
   <script src="js/main.js"></script>
   <!-- Cal element-click embed code begins -->
   <script type="text/javascript">
-    (function (C, A, L) { _c = C._c || {}; _c[L] = _c[L] || {}; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.q = []; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const constr = ar[1]; api.q = api.q || []; if (typeof constr === "string") { api.ns = constr; C.Cal[constr] = api; } return api; } p(cal, ar); }; })(window, document, "init");
+    (function (C, A, L) {
+      let p = function (a, ar) { a.q.push(ar); };
+      C.Cal = C.Cal || function () {
+        let cal = C.Cal;
+        let ar = arguments;
+        if (!cal.loaded) {
+          cal.q = [];
+          cal.loaded = true;
+          let s = A.createElement("script");
+          s.src = "https://assets.cal.com/embed/embed.js";
+          let  h = A.getElementsByTagName("head")[0];
+          h.appendChild(s);
+        }
+        if (ar[0] === L) {
+          const api = function () { p(api, arguments); };
+          const constr = ar[1];
+          api.q = api.q || [];
+          if (typeof constr === "string") {
+            api.ns = constr;
+            C.Cal[constr] = api;
+          }
+          return api;
+        }
+        p(cal, ar);
+      };
+    })(window, document, "init");
     Cal("init", { origin: "https://cal.com" });
 
     Cal("ui", {"theme":"dark","styles":{"branding":{"brandColor":"#005C8A"}},"hideEventTypeDetails":false,"layout":"month_view"});
