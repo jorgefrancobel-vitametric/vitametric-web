@@ -21,6 +21,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <noscript><style>.reveal { opacity: 1 !important; transform: none !important; }</style></noscript>
   <meta name="theme-color" content="#020C1B">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
   <link rel="icon" type="image/png" sizes="64x64" href="assets/img/favicon-64.png">
@@ -60,7 +61,7 @@
   <nav class="navbar" id="navbar" role="navigation" aria-label="Navegación principal">
     <div class="nav-container">
       <a href="#inicio" class="nav-logo" aria-label="Vitametric - Inicio">
-        <img src="assets/img/logo.png" alt="Vitametric" class="nav-logo-img" id="nav-logo-png">
+        <img src="assets/img/logo.png" alt="Vitametric" class="nav-logo-img" id="nav-logo-png" decoding="async">
 
         <span class="nav-logo-tagline">Innovación Integral al Servicio de tu Salud</span>
       </a>
@@ -122,7 +123,7 @@
         <div class="hero-image-wrapper">
           <div class="hero-glow"></div>
           <div class="hero-visual-img-wrap">
-            <img src="assets/img/hero-visual.webp" alt="Vitametric - Cuerpo de Partículas Bioluminiscentes y ADN" class="hero-visual-img">
+            <img src="assets/img/hero-visual.webp" alt="Vitametric - Cuerpo de Partículas Bioluminiscentes y ADN" class="hero-visual-img" decoding="async">
           </div>
           <div class="hero-card hero-card-1">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00C8FF" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
@@ -142,6 +143,49 @@
     <div class="hero-scroll-indicator">
       <span>Descubre más</span>
       <div class="scroll-arrow"></div>
+    </div>
+  </section>
+
+  <section class="trust-bar reveal" aria-label="Validadores de confianza">
+    <div class="container">
+      <div class="trust-items">
+        <div class="trust-item">
+          <div class="trust-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <div>
+            <strong>Tecnología médica avanzada</strong>
+            <span>Equipos certificados y protocolos validados</span>
+          </div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div>
+            <strong>100% no invasivo</strong>
+            <span>Diagnóstico y terapia sin procedimientos invasivos</span>
+          </div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><circle cx="16" cy="8" r="4"/></svg>
+          </div>
+          <div>
+            <strong>Atención personalizada</strong>
+            <span>Planes diseñados para cada paciente</span>
+          </div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div>
+            <strong>Años de experiencia</strong>
+            <span>Trayectoria en salud preventiva en CDMX</span>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -184,7 +228,7 @@
       <div class="nosotros-split reveal">
         <div class="nosotros-split-left">
           <div class="cell-img-wrap">
-            <img src="assets/img/cell-section.webp" alt="Análisis Celular Bioluminiscente" class="cell-img" loading="lazy">
+            <img src="assets/img/cell-section.webp" alt="Análisis Celular Bioluminiscente" class="cell-img" loading="lazy" decoding="async">
           </div>
         </div>
         <div class="nosotros-split-right">
@@ -219,7 +263,7 @@
       <div class="tech-grid">
         <div class="tech-card reveal">
           <div class="tech-card-badge">Análisis no invasivo</div>
-          <img src="assets/img/technology/escomplex.webp" alt="Análisis de composición corporal con tecnología ES-Complex" class="tech-card-img" loading="lazy">
+          <img src="assets/img/technology/escomplex.webp" alt="Análisis de composición corporal con tecnología ES-Complex" class="tech-card-img" loading="lazy" decoding="async">
           <h3 class="tech-card-title">ES-Complex</h3>
           <p class="tech-card-desc">Tecnología no invasiva de análisis del cuerpo humano. Evalúa el estado funcional de órganos y sistemas mediante bioimpedancia avanzada.</p>
           <ul class="tech-card-features">
@@ -232,7 +276,7 @@
         </div>
         <div class="tech-card reveal">
           <div class="tech-card-badge">Bio-cibernética</div>
-          <img src="assets/img/technology/scenar.webp" alt="Terapia de biorretroalimentación con dispositivo Scenar" class="tech-card-img" loading="lazy">
+          <img src="assets/img/technology/scenar.webp" alt="Terapia de biorretroalimentación con dispositivo Scenar" class="tech-card-img" loading="lazy" decoding="async">
           <h3 class="tech-card-title">Scenar</h3>
           <p class="tech-card-desc">Tecnología bio-cibernética desarrollada por neurologos rusos de la Agencia Aeroespacial Soviética. Estimula la autorregulación del cuerpo.</p>
           <ul class="tech-card-features">
@@ -244,7 +288,7 @@
         </div>
         <div class="tech-card reveal">
           <div class="tech-card-badge">Masaje neuromuscular</div>
-          <img src="assets/img/technology/columna.webp" alt="AtlasPROfilax® - Método suizo de corrección atlas" class="tech-card-img" loading="lazy">
+          <img src="assets/img/technology/columna.webp" alt="AtlasPROfilax® - Método suizo de corrección atlas" class="tech-card-img" loading="lazy" decoding="async">
           <h3 class="tech-card-title">AtlasPROfilax®</h3>
           <p class="tech-card-desc">Método original suizo creado por René C. Schümperli (1997). Masaje neuromuscular vibracional de los músculos suboccipitales. No es manipulación quiropráctica ni cracking vertebral. Generalmente una sola sesión con resultado permanente.</p>
           <ul class="tech-card-features">
@@ -258,7 +302,7 @@
         </div>
         <div class="tech-card reveal">
           <div class="tech-card-badge">Desintoxicación</div>
-          <img src="assets/img/technology/rife.webp" alt="Terapia de desintoxicación con frecuencias Bio Royal Rife" class="tech-card-img" loading="lazy">
+          <img src="assets/img/technology/rife.webp" alt="Terapia de desintoxicación con frecuencias Bio Royal Rife" class="tech-card-img" loading="lazy" decoding="async">
           <h3 class="tech-card-title">Bio Royal Rife</h3>
           <p class="tech-card-desc">Terapia de desintoxicación basada en las investigaciones del Dr. Royal Rife. Frecuencias específicas para eliminar toxinas.</p>
           <ul class="tech-card-features">
@@ -348,7 +392,7 @@
         <div class="product-card reveal">
           <div class="product-card-top">
             <div class="product-badge">Más popular</div>
-            <img src="assets/img/products/immunocal.webp" alt="Immunocal - Proteína aislada de suero para producción de glutatión" class="product-img" loading="lazy">
+            <img src="assets/img/products/immunocal.webp" alt="Immunocal - Proteína aislada de suero para producción de glutatión" class="product-img" loading="lazy" decoding="async">
             <h3>Immunocal</h3>
             <p class="product-tagline">Proteína aislada de suero de leche con cisteína</p>
           </div>
@@ -366,7 +410,7 @@
         <div class="product-card reveal">
           <div class="product-card-top">
             <div class="product-badge product-badge-alt">Premium</div>
-            <img src="assets/img/products/immunocal-platinum.webp" alt="Immunocal Platinum - Fórmula avanzada con vitamina D y cúrcuma" class="product-img" loading="lazy">
+            <img src="assets/img/products/immunocal-platinum.webp" alt="Immunocal Platinum - Fórmula avanzada con vitamina D y cúrcuma" class="product-img" loading="lazy" decoding="async">
             <h3>Immunocal Platinum</h3>
             <p class="product-tagline">Concentrado proteico bioactivo</p>
           </div>
@@ -383,7 +427,7 @@
         </div>
         <div class="product-card reveal">
           <div class="product-card-top">
-            <img src="assets/img/products/k21.webp" alt="K-21 - Soporte para producción de glutatión" class="product-img" loading="lazy">
+            <img src="assets/img/products/k21.webp" alt="K-21 - Soporte para producción de glutatión" class="product-img" loading="lazy" decoding="async">
             <h3>K-21</h3>
             <p class="product-tagline">Soporte para producción de glutatión</p>
           </div>
@@ -400,7 +444,7 @@
         </div>
         <div class="product-card reveal">
           <div class="product-card-top">
-            <img src="assets/img/products/optimizer.webp" alt="Optimizer - Potenciador genético Nrf2" class="product-img" loading="lazy">
+            <img src="assets/img/products/optimizer.webp" alt="Optimizer - Potenciador genético Nrf2" class="product-img" loading="lazy" decoding="async">
             <h3>Optimizer</h3>
             <p class="product-tagline">Potenciador genético Nrf2</p>
           </div>
@@ -422,7 +466,7 @@
           <div><strong>¿Qué es el glutatión?</strong><p>Es el antioxidante principal del cuerpo. Protege tus células, desintoxica el hígado y fortalece el sistema inmunológico.</p></div>
         </div>
           <div class="info-card consultor-card">
-            <img src="assets/img/consultor-independiente.webp" alt="Consultor Independiente Immunotec" class="consultor-badge" width="180" height="101" loading="lazy">
+            <img src="assets/img/consultor-independiente.webp" alt="Consultor Independiente Immunotec" class="consultor-badge" width="180" height="101" loading="lazy" decoding="async">
             <div>
               <strong>Jorge Franco</strong>
               <p class="consultor-title">Consultor Independiente Autorizado de Immunotec</p>
@@ -541,7 +585,7 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <img loading="lazy" src="assets/img/logo.png" alt="Vitametric" class="footer-logo">
+          <img loading="lazy" src="assets/img/logo.png" alt="Vitametric" class="footer-logo" decoding="async">
           <p>Centro de Salud Preventiva en Ciudad de México. Tecnología avanzada no invasiva para tu bienestar.</p>
           <span class="footer-tag">#Vivemás</span>
         </div>

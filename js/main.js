@@ -17,6 +17,8 @@
   const formSuccess = document.getElementById('formSuccess');
   const formError = document.getElementById('formError');
 
+  var validateAllFields;
+
   function handleNavScroll() {
     if (window.scrollY > 50) { navbar.classList.add('scrolled'); }
     else { navbar.classList.remove('scrolled'); }
@@ -120,7 +122,56 @@
       var diff = touchStartX - e.changedTouches[0].screenX;
       if (Math.abs(diff) > 50) { diff > 0 ? nextSlide() : prevSlide(); resetAutoSlide(); }
     }, { passive: true });
+
+    var sliderContainer = testimonialTrack.parentElement;
+    sliderContainer.addEventListener('mouseenter', function () { clearInterval(autoSlideInterval); });
+    sliderContainer.addEventListener('mouseleave', function () { clearInterval(autoSlideInterval); autoSlideInterval = setInterval(nextSlide, 5000); });
+
+    document.addEventListener('keydown', function (e) {
+      var tag = e.target.tagName.toLowerCase();
+      if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
+      if (e.key === 'ArrowLeft') { prevSlide(); resetAutoSlide(); }
+      if (e.key === 'ArrowRight') { nextSlide(); resetAutoSlide(); }
+    });
+
     startAutoSlide();
+  }
+
+  function setupFormValidation() {
+    if (!contactForm) return;
+    var fields = Array.prototype.slice.call(contactForm.querySelectorAll('input:not([name="_gotcha"]), select, textarea'));
+    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    var phoneRegex = /^(\+?\d{1,3}[-.\s]?)?\(?\d{2,4}\)?[-.\s]?\d{2,4}[-.\s]?\d{2,4}$/;
+
+    function markField(field, valid) {
+      field.classList.remove('valid', 'invalid');
+      field.classList.add(valid ? 'valid' : 'invalid');
+    }
+
+    function validateField(field) {
+      var value = field.value.trim();
+      var valid = true;
+      if (field.hasAttribute('required') && !value) valid = false;
+      if (valid && field.type === 'email' && value && !emailRegex.test(value)) valid = false;
+      if (valid && field.type === 'tel' && value && !phoneRegex.test(value)) valid = false;
+      markField(field, valid);
+      return valid;
+    }
+
+    validateAllFields = function () {
+      var allValid = true;
+      fields.forEach(function (field) {
+        if (!validateField(field)) allValid = false;
+      });
+      return allValid;
+    };
+
+    fields.forEach(function (field) {
+      field.addEventListener('blur', function () { validateField(field); });
+      field.addEventListener('input', function () {
+        if (field.classList.contains('invalid')) validateField(field);
+      });
+    });
   }
 
   function setupContactForm() {
@@ -130,6 +181,13 @@
     contactForm.addEventListener('submit', function (e) {
       e.preventDefault();
       if (submitBtn && submitBtn.disabled) return;
+
+      if (typeof validateAllFields !== 'function' || !validateAllFields()) {
+        formError.style.display = 'flex';
+        formError.querySelector('p').innerHTML = '<strong>Campos incompletos.</strong><br>Por favor revisa los campos marcados en rojo.';
+        return;
+      }
+
       var tokenEl = document.querySelector('[name="cf-turnstile-response"]');
       if (!tokenEl || !tokenEl.value) {
         formError.style.display = 'flex';
@@ -164,6 +222,9 @@
               formSuccess.style.display = 'flex';
               formError.style.display = 'none';
               contactForm.reset();
+              contactForm.querySelectorAll('input, select, textarea').forEach(function (el) {
+                el.classList.remove('valid', 'invalid');
+              });
             } else {
               throw new Error('Formspree status ' + r.status);
             }
@@ -213,9 +274,9 @@
     }, 100), { passive: true });
 
     const particles = [];
-    const particleCount = 60; // Keep it optimal for performance
-    const connectionDistance = 110;
-    const speedFactor = 0.4;
+    const particleCount = 40; // Reduced for calmer, more clinical feel
+    const connectionDistance = 90;
+    const speedFactor = 0.25;
 
     class Particle {
       constructor() {
@@ -264,7 +325,7 @@
           const dist = Math.sqrt(dx * dx + dy * dy);
 
           if (dist < connectionDistance) {
-            const alpha = (1 - dist / connectionDistance) * 0.12;
+            const alpha = (1 - dist / connectionDistance) * 0.08;
             ctx.beginPath();
             ctx.moveTo(p1.x, p1.y);
             ctx.lineTo(p2.x, p2.y);
@@ -347,6 +408,7 @@
     setupMobileMenu();
     setupRevealObserver();
     setupTestimonialSlider();
+    setupFormValidation();
     setupContactForm();
     setupSmoothScroll();
     setupHeroParticles();
