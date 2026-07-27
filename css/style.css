@@ -581,7 +581,7 @@ h1, h2, h3, h4, h5, h6 {
 .section-tecnología { background: var(--c-bg-surface); }
 .tech-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   grid-auto-rows: 1fr;
   gap: var(--sp-md);
 }
@@ -655,11 +655,9 @@ h1, h2, h3, h4, h5, h6 {
 /* ── PRODUCTOS ── */
 .section-productos { background: var(--c-bg-mid); }
 .products-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr);
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 1fr;
   gap: var(--sp-md); margin-bottom: var(--sp-2xl);
-}
-.product-card:first-child {
-  grid-column: span 2;
 }
 .product-card {
   background: rgba(10,36,64,0.88);
@@ -923,9 +921,7 @@ h1, h2, h3, h4, h5, h6 {
   .nosotros-grid   { grid-template-columns: repeat(2, 1fr); }
   .tech-grid       { grid-template-columns: repeat(2, 1fr); }
   .tech-grid { grid-template-columns: repeat(2, 1fr); }
-  .product-card:first-child { grid-column: span 2; }
   .products-grid   { grid-template-columns: repeat(2, 1fr); }
-  .product-card:first-child { grid-column: span 2; }
   .footer-grid     { grid-template-columns: repeat(2, 1fr); }
   .contacto-grid   { grid-template-columns: 1fr; }
   .nav-logo-tagline { display: none; }
@@ -975,7 +971,6 @@ h1, h2, h3, h4, h5, h6 {
   .nosotros-quote  { font-size: var(--fs-lg); }
   .tech-grid       { grid-template-columns: 1fr; }
   .products-grid   { grid-template-columns: 1fr; }
-  .product-card:first-child { grid-column: span 1; }
   .form-row        { grid-template-columns: 1fr; }
   .footer-grid     { grid-template-columns: 1fr; gap: var(--sp-lg); }
   .whatsapp-fab    { width: 52px; height: 52px; bottom: var(--sp-sm); right: var(--sp-sm); }
