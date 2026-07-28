@@ -437,6 +437,28 @@
     });
   }
 
+  function setupLazyMap() {
+    var mapEl = document.getElementById('contactMap');
+    if (!mapEl) return;
+    var mapSrc = mapEl.getAttribute('data-src');
+    if (!mapSrc) return;
+
+    if ('IntersectionObserver' in window) {
+      var mapObserver = new IntersectionObserver(function (entries, observer) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            mapEl.setAttribute('src', mapSrc);
+            mapEl.removeAttribute('data-src');
+            observer.unobserve(mapEl);
+          }
+        });
+      }, { rootMargin: '200px 0px' });
+      mapObserver.observe(mapEl);
+    } else {
+      mapEl.setAttribute('src', mapSrc);
+    }
+  }
+
   function throttle(fn, wait) {
     var last = 0;
     return function () {
@@ -456,6 +478,7 @@
     setupSmoothScroll();
     setupHeroParticles();
     setupCounters();
+    setupLazyMap();
     handleNavScroll();
   }
 
