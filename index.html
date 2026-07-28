@@ -19,8 +19,11 @@
   <link rel="canonical" href="https://vitametric.com/">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" as="style">
+  <link rel="preload" href="assets/img/hero-visual.webp" as="image" type="image/webp">
+  <link rel="preload" href="css/style.css?v=5" as="style">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=4">
+  <link rel="stylesheet" href="css/style.css?v=5">
   <noscript><style>.reveal { opacity: 1 !important; transform: none !important; }</style></noscript>
   <meta name="theme-color" content="#020C1B">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
@@ -58,7 +61,8 @@
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
-  <nav class="navbar" id="navbar" role="navigation" aria-label="Navegación principal">
+  <a href="#main-content" class="skip-link">Ir al contenido principal</a>
+  <nav class="navbar" id="navbar" aria-label="Navegación principal">
     <div class="nav-container">
       <a href="#inicio" class="nav-logo" aria-label="Vitametric - Inicio">
         <img src="assets/img/logo.png" alt="Vitametric" class="nav-logo-img" id="nav-logo-png" decoding="async">
@@ -79,7 +83,7 @@
     </div>
   </nav>
 
-  <main>
+  <main id="main-content">
 
   <section class="hero" id="inicio">
     <div class="hero-bg">
@@ -88,26 +92,21 @@
       <div class="hero-orb hero-orb-1"></div>
       <div class="hero-orb hero-orb-2"></div>
       <div class="hero-orb hero-orb-3"></div>
-      <canvas id="heroCanvas"></canvas>
+      <canvas id="heroCanvas" aria-hidden="true"></canvas>
     </div>
     <div class="hero-container">
       <div class="hero-content">
         <div class="hero-badge reveal">
           <span class="badge-dot"></span>
           Salud Preventiva
-        </div>
-        <h1 class="hero-title reveal">
-          La verdadera salud<br>
-          <span class="hero-accent">comienza en cada</span><br>
-          célula
-        </h1>
+        </div>            <h1 class="hero-title reveal">La verdadera salud <span class="hero-accent">comienza en cada</span> célula</h1>
         <p class="hero-subtitle reveal">
           Tecnología avanzada no invasiva para entender tu cuerpo, prevenir enfermedades y vivir con plenitud. En Ciudad de México.
         </p>
         <div class="hero-actions reveal">
           <a href="#contacto" class="btn btn-primary btn-lg">
             Agendar consulta
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </a>
           <a href="#tecnología" class="btn btn-outline btn-lg">Conoce la tecnología</a>
         </div>
@@ -126,15 +125,15 @@
             <img src="assets/img/hero-visual.webp" alt="Vitametric - Cuerpo de Partículas Bioluminiscentes y ADN" class="hero-visual-img" decoding="async">
           </div>
           <div class="hero-card hero-card-1">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00C8FF" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            <svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00C8FF" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
             <span>Análisis corporal</span>
           </div>
           <div class="hero-card hero-card-2">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00FF9D" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00FF9D" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
             <span>Prevención</span>
           </div>
           <div class="hero-card hero-card-3">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00C8FF" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00C8FF" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
             <span>Bienestar continuo</span>
           </div>
         </div>
@@ -151,7 +150,7 @@
       <div class="trust-items">
         <div class="trust-item">
           <div class="trust-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <svg aria-hidden="true" focusable="false" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
           </div>
           <div>
             <strong>Tecnología médica avanzada</strong>
@@ -160,7 +159,7 @@
         </div>
         <div class="trust-item">
           <div class="trust-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <svg aria-hidden="true" focusable="false" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           </div>
           <div>
             <strong>100% no invasivo</strong>
@@ -169,7 +168,7 @@
         </div>
         <div class="trust-item">
           <div class="trust-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><circle cx="16" cy="8" r="4"/></svg>
+            <svg aria-hidden="true" focusable="false" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><circle cx="16" cy="8" r="4"/></svg>
           </div>
           <div>
             <strong>Atención personalizada</strong>
@@ -178,7 +177,7 @@
         </div>
         <div class="trust-item">
           <div class="trust-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <svg aria-hidden="true" focusable="false" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
           </div>
           <div>
             <strong>Años de experiencia</strong>
@@ -199,27 +198,27 @@
     <div class="container">
       <div class="section-header reveal">
         <span class="section-tag">Quiénes somos</span>
-        <h2 class="section-title">Medicina que previene,<br>no solo que cura</h2>
+        <h2 class="section-title">Medicina que previene, no solo que cura</h2>
         <p class="section-subtitle">En Vitametric creemos que la verdadera medicina comienza antes de la enfermedad. Combinamos tecnología de vanguardia con un enfoque humano para ayudarte a entender tu cuerpo.</p>
       </div>
       <div class="nosotros-grid">
         <div class="nosotros-card reveal">
-          <div class="nosotros-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div>
+          <div class="nosotros-icon"><svg aria-hidden="true" focusable="false" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div>
           <h3>Prevención primero</h3>
           <p>Identificamos desequilibrios en tu cuerpo antes de que se conviertan en enfermedades.</p>
         </div>
         <div class="nosotros-card reveal">
-          <div class="nosotros-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div>
+          <div class="nosotros-icon"><svg aria-hidden="true" focusable="false" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div>
           <h3>Tecnología no invasiva</h3>
           <p>Equipos de última generación que analizan tu cuerpo sin procedimientos dolorosos.</p>
         </div>
         <div class="nosotros-card reveal">
-          <div class="nosotros-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg></div>
+          <div class="nosotros-icon"><svg aria-hidden="true" focusable="false" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg></div>
           <h3>Enfoque humano</h3>
           <p>Cada persona es unica. Acompanamiento personalizado y centrado en tu bienestar.</p>
         </div>
         <div class="nosotros-card reveal">
-          <div class="nosotros-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
+          <div class="nosotros-icon"><svg aria-hidden="true" focusable="false" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
           <h3>Nutrición celular</h3>
           <p>Suplementos de alta calidad que nutren tus células y potencian tu sistema inmunológico.</p>
         </div>
@@ -257,7 +256,7 @@
     <div class="container">
       <div class="section-header reveal">
         <span class="section-tag">Nuestra tecnología</span>
-        <h2 class="section-title">Ciencia avanzada<br>al servicio de tu salud</h2>
+        <h2 class="section-title">Ciencia avanzada al servicio de tu salud</h2>
         <p class="section-subtitle">Cuatro tecnologías complementarias para un diagnóstico integral y tratamientos efectivos, siempre sin invasión.</p>
       </div>
       <div class="tech-grid">
@@ -316,7 +315,7 @@
       </div>
 
       <div class="tech-dna-deco reveal">
-        <svg viewBox="0 0 800 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg aria-hidden="true" focusable="false" viewBox="0 0 800 60" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M10 30 Q 30 10, 50 30 T 90 30 T 130 30 T 170 30 T 210 30 T 250 30 T 290 30 T 330 30 T 370 30 T 410 30 T 450 30 T 490 30 T 530 30 T 570 30 T 610 30 T 650 30 T 690 30 T 730 30 T 770 30 T 790 30" stroke="#00C8FF" stroke-width="2" stroke-dasharray="4 4" />
           <path d="M10 30 Q 30 50, 50 30 T 90 30 T 130 30 T 170 30 T 210 30 T 250 30 T 290 30 T 330 30 T 370 30 T 410 30 T 450 30 T 490 30 T 530 30 T 570 30 T 610 30 T 650 30 T 690 30 T 730 30 T 770 30 T 790 30" stroke="#00FF9D" stroke-width="2" stroke-dasharray="4 4" />
           <line x1="30" y1="16" x2="30" y2="44" stroke="rgba(0, 200, 255, 0.4)" stroke-width="1.5" />
@@ -385,7 +384,7 @@
     <div class="container">
       <div class="section-header reveal">
         <span class="section-tag">Nutrición celular</span>
-        <h2 class="section-title">Potencia tu salud<br>desde la célula</h2>
+        <h2 class="section-title">Potencia tu salud desde la célula</h2>
         <p class="section-subtitle">Suplementos de alta calidad basados en ciencia. Nutren tus células y aumentan tus niveles de glutatión.</p>
       </div>
       <div class="products-grid">
@@ -462,7 +461,7 @@
       </div>
       <div class="products-info reveal">
         <div class="info-card">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00C8FF" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          <svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00C8FF" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
           <div><strong>¿Qué es el glutatión?</strong><p>Es el antioxidante principal del cuerpo. Protege tus células, desintoxica el hígado y fortalece el sistema inmunológico.</p></div>
         </div>
           <div class="info-card consultor-card">
@@ -481,10 +480,10 @@
     <div class="container">
       <div class="section-header reveal">
         <span class="section-tag">Testimonios</span>
-        <h2 class="section-title">Lo que dicen<br>nuestros pacientes</h2>
+        <h2 class="section-title">Lo que dicen nuestros pacientes</h2>
       </div>
-      <div class="testimonial-slider reveal">
-        <div class="testimonial-track" id="testimonialTrack">
+      <div class="testimonial-slider reveal" role="region" aria-roledescription="carrusel" aria-label="Testimonios de pacientes">
+        <div class="testimonial-track" id="testimonialTrack" aria-live="polite" aria-atomic="true">
           <div class="testimonial-slide">
             <div class="testimonial-stars">★★★★★</div>
             <blockquote class="testimonial-text">"Después de años con dolor crónico, las sesiones de Scenar cambiaron mi vida. Hoy duermo bien y puedo jugar con mis hijos."</blockquote>
@@ -507,14 +506,14 @@
           </div>
         </div>
         <div class="testimonial-controls">
-          <button class="testimonial-btn" id="prevTestimonial" aria-label="Anterior"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></button>
-          <div class="testimonial-dots" id="testimonialDots">
-            <button class="dot active" aria-label="1"></button>
-            <button class="dot" aria-label="2"></button>
-            <button class="dot" aria-label="3"></button>
-            <button class="dot" aria-label="4"></button>
+          <button class="testimonial-btn" id="prevTestimonial" aria-label="Anterior testimonio" aria-controls="testimonialTrack"><svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></button>
+          <div class="testimonial-dots" id="testimonialDots" role="tablist" aria-label="Páginas del carrusel">
+            <button class="dot active" role="tab" aria-selected="true" aria-label="Ver testimonio 1" aria-controls="testimonialTrack"></button>
+            <button class="dot" role="tab" aria-selected="false" aria-label="Ver testimonio 2" aria-controls="testimonialTrack"></button>
+            <button class="dot" role="tab" aria-selected="false" aria-label="Ver testimonio 3" aria-controls="testimonialTrack"></button>
+            <button class="dot" role="tab" aria-selected="false" aria-label="Ver testimonio 4" aria-controls="testimonialTrack"></button>
           </div>
-          <button class="testimonial-btn" id="nextTestimonial" aria-label="Siguiente"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+          <button class="testimonial-btn" id="nextTestimonial" aria-label="Siguiente testimonio" aria-controls="testimonialTrack"><svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
         </div>
       </div>
     </div>
@@ -523,7 +522,7 @@
     <div class="container">
       <div class="section-header reveal">
         <span class="section-tag">Contacto</span>
-        <h2 class="section-title">Da el primer paso<br>hacia tu bienestar</h2>
+        <h2 class="section-title">Da el primer paso hacia tu bienestar</h2>
         <p class="section-subtitle">Agenda tu consulta o escríbenos. Responderemos a la brevedad.</p>
       </div>
       <div class="contacto-grid">
@@ -531,15 +530,15 @@
           <div class="contacto-info-card">
             <h3>Visítanos</h3>
             <div class="contacto-item">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#005C8A" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#005C8A" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
               <div><strong>Dirección</strong><p>Calle Playa Tecolutla 452,<br>Col. Militar Marte, 08830 CDMX</p></div>
             </div>
             <div class="contacto-item">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#005C8A" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+              <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#005C8A" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
               <div><strong>Teléfono</strong><p><a href="tel:+525585327421">55 8532 7421</a></p><p><a href="tel:+525552150674">55 5215 0674</a></p></div>
             </div>
             <div class="contacto-item">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#005C8A" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#005C8A" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
               <div><strong>Email</strong><p><a href="mailto:jorge.franco@vitametric.com">jorge.franco@vitametric.com</a></p></div>
             </div>
           </div>
@@ -555,10 +554,16 @@
             <div class="form-group"><label for="nombre">Nombre completo</label><input type="text" id="nombre" name="nombre" required placeholder="Tu nombre"></div>
             <div class="form-row">
               <div class="form-group"><label for="email">Email</label><input type="email" id="email" name="email" required placeholder="tu@email.com"></div>
-              <div class="form-group"><label for="teléfono">Teléfono</label><input type="tel" id="teléfono" name="teléfono" placeholder="55 1234 5678"></div>
+              <div class="form-group"><label for="telefono">Teléfono</label><input type="tel" id="telefono" name="telefono" placeholder="55 1234 5678"></div>
             </div>
             <div class="form-group"><label for="servicio">Servicio de interés</label><select id="servicio" name="servicio"><option value="">Selecciona un servicio</option><option value="escomplex">Análisis ES-Complex</option><option value="scenar">Terapia Scenar</option><option value="columna">Alineación de Columna</option><option value="rife">Bio Royal Rife</option><option value="immunocal">Immunocal / Nutrición Celular</option><option value="general">Consulta general</option></select></div>
             <div class="form-group"><label for="mensaje">Mensaje</label><textarea id="mensaje" name="mensaje" rows="4" placeholder="Cuéntanos cómo podemos ayudarte..."></textarea></div>
+            <div class="form-group form-privacy">
+              <label class="privacy-label">
+                <input type="checkbox" id="privacy" name="privacy" required>
+                <span>Acepto que Vitametric utilice mis datos para contactarme.</span>
+              </label>
+            </div>
             <input type="text" name="_gotcha" style="display:none">
             <div class="cf-turnstile" data-sitekey="0x4AAAAAAD2DNBXtGXkUnHXM" data-action="turnstile-spin-v1"></div>
             <button type="submit" class="btn btn-primary btn-lg btn-block" id="submitBtn"><span class="btn-text">Enviar mensaje</span><span class="btn-loading" style="display:none">Enviando...</span></button>
@@ -615,9 +620,9 @@
   </footer>
 
   <a href="https://wa.me/525585327421?text=Hola%2C%20me%20interesa%20conocer%20m%C3%A1s%20sobre%20los%20servicios%20de%20Vitametric" class="whatsapp-fab" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    <svg aria-hidden="true" focusable="false" width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
   </a>
-  <script src="js/main.js?v=3"></script>
+  <script src="js/main.js?v=4"></script>
 
 </body>
 </html>

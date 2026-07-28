@@ -17,6 +17,8 @@
   const formSuccess = document.getElementById('formSuccess');
   const formError = document.getElementById('formError');
 
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   var validateAllFields;
 
   function handleNavScroll() {
@@ -31,7 +33,10 @@
           if (entry.isIntersecting) {
             const id = entry.target.getAttribute('id');
             navLinks.forEach((link) => {
-              link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+              const isActive = link.getAttribute('href') === '#' + id;
+              link.classList.toggle('active', isActive);
+              if (isActive) link.setAttribute('aria-current', 'page');
+              else link.removeAttribute('aria-current');
             });
           }
         });
@@ -75,6 +80,10 @@
   }
 
   function setupRevealObserver() {
+    if (prefersReducedMotion) {
+      reveals.forEach((el) => el.classList.add('visible'));
+      return;
+    }
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -100,15 +109,23 @@
     slideCount = slides.length;
     var dots = testimonialDots.querySelectorAll('.dot');
 
+    function updateDots() {
+      dots.forEach(function (dot, i) {
+        var isActive = i === currentSlide;
+        dot.classList.toggle('active', isActive);
+        dot.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      });
+    }
+
     function goToSlide(index) {
       currentSlide = ((index % slideCount) + slideCount) % slideCount;
       testimonialTrack.style.transform = 'translateX(-' + (currentSlide * 100) + '%)';
-      dots.forEach(function (dot, i) { dot.classList.toggle('active', i === currentSlide); });
+      updateDots();
     }
     function nextSlide() { goToSlide(currentSlide + 1); }
     function prevSlide() { goToSlide(currentSlide - 1); }
-    function startAutoSlide() { autoSlideInterval = setInterval(nextSlide, 5000); }
-    function resetAutoSlide() { clearInterval(autoSlideInterval); startAutoSlide(); }
+    function startAutoSlide() { if (prefersReducedMotion) return; autoSlideInterval = setInterval(nextSlide, 5000); }
+    function resetAutoSlide() { if (prefersReducedMotion) return; clearInterval(autoSlideInterval); startAutoSlide(); }
 
     if (nextBtn) nextBtn.addEventListener('click', function () { nextSlide(); resetAutoSlide(); });
     if (prevBtn) prevBtn.addEventListener('click', function () { prevSlide(); resetAutoSlide(); });
@@ -125,7 +142,7 @@
 
     var sliderContainer = testimonialTrack.parentElement;
     sliderContainer.addEventListener('mouseenter', function () { clearInterval(autoSlideInterval); });
-    sliderContainer.addEventListener('mouseleave', function () { clearInterval(autoSlideInterval); autoSlideInterval = setInterval(nextSlide, 5000); });
+    sliderContainer.addEventListener('mouseleave', function () { resetAutoSlide(); });
 
     document.addEventListener('keydown', function (e) {
       var tag = e.target.tagName.toLowerCase();
@@ -151,9 +168,13 @@
     function validateField(field) {
       var value = field.value.trim();
       var valid = true;
-      if (field.hasAttribute('required') && !value) valid = false;
-      if (valid && field.type === 'email' && value && !emailRegex.test(value)) valid = false;
-      if (valid && field.type === 'tel' && value && !phoneRegex.test(value)) valid = false;
+      if (field.type === 'checkbox') {
+        if (field.hasAttribute('required') && !field.checked) valid = false;
+      } else {
+        if (field.hasAttribute('required') && !value) valid = false;
+        if (valid && field.type === 'email' && value && !emailRegex.test(value)) valid = false;
+        if (valid && field.type === 'tel' && value && !phoneRegex.test(value)) valid = false;
+      }
       markField(field, valid);
       return valid;
     }
@@ -259,6 +280,7 @@
   }
 
   function setupHeroParticles() {
+    if (prefersReducedMotion) return;
     const canvas = document.getElementById('heroCanvas');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -308,7 +330,11 @@
       particles.push(new Particle());
     }
 
+    var rafId;
+    var isVisible = true;
+
     function animate() {
+      if (!isVisible) return;
       ctx.clearRect(0, 0, width, height);
 
       particles.forEach(function (p) {
@@ -336,15 +362,32 @@
         }
       }
 
-      requestAnimationFrame(animate);
+      rafId = requestAnimationFrame(animate);
     }
 
-    animate();
+    var canvasObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        isVisible = entry.isIntersecting;
+        if (isVisible && !rafId) {
+          rafId = requestAnimationFrame(animate);
+        }
+      });
+    }, { threshold: 0 });
+
+    canvasObserver.observe(canvas);
+    rafId = requestAnimationFrame(animate);
   }
 
   function setupCounters() {
     const counters = document.querySelectorAll('.counter-number');
     if (counters.length === 0) return;
+
+    if (prefersReducedMotion) {
+      counters.forEach(function (counter) {
+        counter.textContent = counter.getAttribute('data-target') + (counter.getAttribute('data-suffix') || '');
+      });
+      return;
+    }
 
     const animateCounter = function (counter) {
       const target = parseInt(counter.getAttribute('data-target'), 10);
