@@ -223,7 +223,7 @@ h1, h2, h3, h4, h5, h6 {
   justify-content: space-between;
 }
 .nav-logo { display: flex; align-items: center; gap: 0.75rem; z-index: 10; }
-.nav-logo-img { height: 52px; max-height: 52px; width: auto; object-fit: contain; }
+.nav-logo-img { height: 90px; max-height: 95px; width: auto; object-fit: contain; filter: drop-shadow(0 2px 8px rgba(0,200,255,0.2)); }
 .nav-menu { display: flex; align-items: center; gap: 0.25rem; }
 .nav-link {
   display: block;
@@ -991,7 +991,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media (max-width: 768px) {
-  :root { --fs-4xl: 2.25rem; --fs-3xl: 1.875rem; --nav-h: 64px; }
+  :root { --fs-4xl: 2.25rem; --fs-3xl: 1.875rem; --nav-h: 85px; }
   .section { padding: 3rem 0; }
   .section-header { margin-bottom: 2rem; }
   .hero { min-height: 90vh; }
@@ -1023,33 +1023,12 @@ h1, h2, h3, h4, h5, h6 {
   .whatsapp-fab    { width: 52px; height: 52px; bottom: var(--sp-sm); right: var(--sp-sm); }
   .whatsapp-fab svg { width: 24px; height: 24px; }
   .hero-scroll-indicator { display: none; }
-}
-
-@media (max-width: 768px) {
-  .nosotros-card,
-  .tech-card,
-  .product-card,
-  .contacto-form,
-  .trust-item {
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
-}
-
-@media (max-width: 768px) {
-  .nosotros-card,
-  .tech-card,
-  .product-card,
-  .contacto-form,
-  .trust-item {
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
+  .nav-logo-img    { height: 72px; max-height: 75px; max-width: calc(100vw - 90px); width: auto; object-fit: contain; }
 }
 
 @media (max-width: 480px) {
-  :root { --fs-4xl: 1.875rem; --fs-3xl: 1.5rem; }
-  .nav-logo-img { height: 36px; max-height: 36px; max-width: 150px; }
+  :root { --fs-4xl: 1.875rem; --fs-3xl: 1.5rem; --nav-h: 75px; }
+  .nav-logo-img { height: 62px; max-height: 65px; max-width: calc(100vw - 80px); width: auto; object-fit: contain; }
   .section { padding: 2.5rem 0; }
   .hero { min-height: 85vh; }
   .hero-actions { flex-direction: column; }
@@ -1058,7 +1037,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media (max-width: 1024px) and (min-width: 769px) {
-  .nav-logo-img { height: 48px; max-height: 48px; }
+  .nav-logo-img { height: 82px; max-height: 85px; }
 }
 
 /* ── NEW BIOLUMINISCENT REDESIGN CLASSES ── */
