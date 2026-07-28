@@ -1,0 +1,49 @@
+name: Lighthouse CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  statuses: write
+  pull-requests: write
+
+jobs:
+  lighthouse:
+    name: Lighthouse Audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup Chrome
+        uses: browser-actions/setup-chrome@v1.7.2
+        id: setup-chrome
+        with:
+          chrome-version: stable
+
+      - name: Install Lighthouse CI
+        run: npm install -g @lhci/cli@0.14.0
+
+      - name: Run Lighthouse CI
+        run: lhci autorun
+        env:
+          # Path to the Chrome binary installed in the previous step.
+          # LHCI_GITHUB_APP_TOKEN can be set to the LHCI GitHub App token if you want PR comments.
+          LHCI_CHROME_PATH: ${{ steps.setup-chrome.outputs.chrome-path }}
+          CHROME_PATH: ${{ steps.setup-chrome.outputs.chrome-path }}
+
+      - name: Upload Lighthouse reports artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-reports
+          path: .lighthouseci
