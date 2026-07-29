@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VALIDACIÓN — Documental Rife subtitulado | Vitametric</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="../css/style.css?v=7">
+</head>
+<body>
+  <header class="header" id="header">
+    <div class="container header-inner">
+      <a href="../index.html" class="logo-link">
+        <img src="../assets/img/logo.webp" alt="Vitametric Logo" class="logo-img" width="180" height="71">
+      </a>
+      <nav class="nav">
+        <ul class="nav-list">
+          <li><a href="rife.html" class="nav-link">Página real de Rife</a></li>
+          <li><a href="../index.html" class="nav-link">Inicio</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main style="padding-top: calc(var(--nav-h) + 2rem); padding-bottom: 5rem;">
+    <div class="container">
+
+      <div style="background: rgba(255,180,0,0.08); border: 1px solid rgba(255,180,0,0.45); border-left: 4px solid #ffb400; border-radius: var(--radius-md); padding: 1.25rem 1.5rem; margin-bottom: 2.5rem;">
+        <p style="margin: 0; color: var(--c-text); font-size: var(--fs-sm); line-height: 1.6;">
+          <strong style="color: #ffb400;">Página de validación — no publicar.</strong>
+          Reproduce el <strong>máster reparado local</strong> con los <strong>subtítulos nuevos</strong>.
+          <code>rife-es.vtt</code> ya es la versión validada (1301 cues), pero
+          <code>rife.html</code> sigue mostrando el iframe de Archive.org, cuyo vídeo <strong>enmudece
+          pasado el minuto 22</strong>. Es decir: los subtítulos ya están desplegados, el vídeo reparado
+          todavía no.
+        </p>
+      </div>
+
+      <h1 style="font-size: var(--fs-2xl); color: var(--c-heading); margin-bottom: 0.5rem;">Documental de Rife — validación de subtítulos</h1>
+      <p style="color: var(--c-muted); margin-bottom: 2rem; font-size: var(--fs-sm);">
+        <em>The Rise and Fall of a Scientific Genius: The Forgotten Story of Royal Raymond Rife</em> (2003), de Shawn Montgomery.
+      </p>
+
+      <video
+        id="rife-video"
+        controls
+        preload="metadata"
+        style="width: 100%; max-width: 1100px; border-radius: var(--radius-lg); border: 1px solid var(--c-border); box-shadow: var(--shadow-lg); background: #000; display: block; margin-bottom: 1.5rem;">
+        <!-- PRIMARIO: máster reparado local. Es el objeto de esta validación: el remoto
+             de Archive.org tiene la pista AAC muerta pasado el minuto 22. -->
+        <source src="../assets/video/rife-REPARADO.mp4" type="video/mp4">
+        <!-- Respaldo, solo si el local no estuviera disponible. OJO: enmudece tras 22 min. -->
+        <source src="https://archive.org/download/vitametric-rife-documental-es/rife.mp4" type="video/mp4">
+        <track id="pista-es" label="Español" kind="subtitles" srclang="es" src="../assets/vtt/rife-es.vtt" default>
+        Tu navegador no reproduce vídeo HTML5.
+      </video>
+
+      <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 2.5rem;">
+        <button onclick="ir(2)" class="btn btn-primary">Intro OCR (0:02)</button>
+        <button onclick="ir(119)" class="btn btn-primary">Primer diálogo (1:59)</button>
+        <button onclick="ir(1340)" class="btn btn-primary">Audio dañado del máster (22:20)</button>
+        <button onclick="ir(4779)" class="btn btn-primary">Antes del bucle viejo (1:19:39)</button>
+        <button onclick="ir(7400)" class="btn btn-primary">Tramo final (2:03)</button>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+
+        <div style="background: var(--c-bg-card); border: 1px solid var(--c-border); border-radius: var(--radius-lg); padding: 1.75rem;">
+          <h2 style="color: var(--c-cyan); font-size: var(--fs-lg); margin-bottom: 1rem;">Qué conviene comprobar</h2>
+          <ul style="color: var(--c-text); line-height: 1.9; padding-left: 1.1rem; font-size: var(--fs-sm);">
+            <li><strong>Que hay sonido pasado el minuto 22.</strong> Es la reparación principal: el máster publicado enmudece ahí.</li>
+            <li><strong>Que los subtítulos van sincronizados</strong> en los cinco saltos de arriba.</li>
+            <li><strong>Que la intro (0:02–0:20)</strong> muestra el texto de las placas.</li>
+            <li><strong>Que el volumen es cómodo</strong> sin subir el sistema al máximo.</li>
+            <li><strong>Que no aparece «Thank you.»</strong> en ningún momento.</li>
+          </ul>
+        </div>
+
+        <div style="background: var(--c-bg-card); border: 1px solid var(--c-border); border-radius: var(--radius-lg); padding: 1.75rem;">
+          <h2 style="color: var(--c-cyan); font-size: var(--fs-lg); margin-bottom: 1rem;">Qué se reparó</h2>
+          <ul style="color: var(--c-text); line-height: 1.9; padding-left: 1.1rem; font-size: var(--fs-sm);">
+            <li><strong>Audio:</strong> la pista AAC del máster no entrega muestras pasado el minuto 22. Se sustituyó por el audio íntegro de 125,4 min.</li>
+            <li><strong>Volumen:</strong> el original promediaba −45 dB. Normalizado a −16 LUFS.</li>
+            <li><strong>Vídeo:</strong> intacto, copiado sin recodificar.</li>
+            <li><strong>Subtítulos:</strong> de 69 a 111,7 min útiles; sin el bucle de 112 repeticiones.</li>
+          </ul>
+        </div>
+      </div>
+
+      <p id="diag" style="color: var(--c-muted); font-size: var(--fs-sm); margin-top: 2rem;"></p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container" style="text-align: center; color: var(--c-muted); font-size: var(--fs-sm);">
+      <p>Página de validación interna — Vitametric</p>
+    </div>
+  </footer>
+
+  <script>
+    var v = document.getElementById('rife-video');
+    var diag = document.getElementById('diag');
+
+    function ir(s) { v.currentTime = s; v.play(); }
+
+    function nota(t) { diag.textContent = t; }
+
+    v.addEventListener('loadedmetadata', function () {
+      nota('Vídeo cargado: ' + (v.duration / 60).toFixed(1) + ' min. Esperado 125,4.');
+    });
+    v.addEventListener('error', function () {
+      nota('No se pudo cargar el vídeo. ¿Está rife.mp4 en Archive.org?');
+    });
+    v.addEventListener('leavepictureinpicture', function () {
+      if (v.textTracks && v.textTracks[0]) v.textTracks[0].mode = 'showing';
+    });
+    document.getElementById('pista-es').addEventListener('load', function () {
+      var c = this.track && this.track.cues ? this.track.cues.length : 0;
+      nota(diag.textContent + ' · Subtítulos cargados: ' + c + ' cues (esperado 1301).');
+    });
+  </script>
+</body>
+</html>

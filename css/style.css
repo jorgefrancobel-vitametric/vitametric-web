@@ -1339,3 +1339,44 @@ h1, h2, h3, h4, h5, h6 {
     animation: none !important;
   }
 }
+
+/* ── CARDS CLICKEABLES UI/UX ── */
+.tech-card-link-block, .product-card-link-block {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: var(--c-text);
+  cursor: pointer;
+  height: 100%;
+}
+.tech-card-link-block:hover .tech-card-title,
+.product-card-link-block:hover h3 {
+  color: var(--c-cyan) !important;
+  text-shadow: 0 0 12px rgba(0, 200, 255, 0.4);
+}
+.tech-card-link-block:hover .tech-card-img,
+.product-card-link-block:hover .product-img {
+  transform: scale(1.03);
+  border-color: var(--c-cyan);
+}
+.tech-card-action-bar {
+  margin-top: auto;
+  padding: 0.65rem 1rem;
+  background: var(--c-cyan-soft);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-md);
+  color: var(--c-cyan);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-sm);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all var(--t-fast) ease;
+}
+.tech-card-link-block:hover .tech-card-action-bar,
+.product-card-link-block:hover .tech-card-action-bar {
+  background: var(--c-cyan);
+  color: var(--c-bg);
+  box-shadow: 0 0 16px rgba(0, 200, 255, 0.4);
+}
+
