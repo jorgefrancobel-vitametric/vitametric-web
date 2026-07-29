@@ -108,7 +108,7 @@
 
           <h2 style="color: var(--c-cyan); font-size: var(--fs-xl); margin-top: 2.5rem; margin-bottom: 1rem;">Reportaje Informativo — Evaluación Bioeléctrica (ES-Complex)</h2>
           <p style="margin-bottom: 1.5rem; color: var(--c-text); line-height: 1.6;">
-            Reportaje especial transmitido por el noticiero Hechos de TV Azteca con el Dr. Jorge Franco Beltrán, detallando el funcionamiento clínico y la aplicación médica del sistema de pre-diagnóstico ES-Complex.
+            Reportaje especial transmitido por el noticiero Hechos de TV Azteca con Jorge Franco Beltrán, detallando el funcionamiento clínico y la aplicación médica del sistema de pre-diagnóstico ES-Complex.
           </p>
           <div id="video-cover-container" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; border-radius: var(--radius-lg); border: 1px solid var(--c-border); box-shadow: var(--shadow-lg); margin-bottom: 2rem; background: var(--c-bg-surface);">
             <div id="video-poster-overlay" onclick="cargarVideoESComplex()" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; cursor: pointer; background: linear-gradient(180deg, rgba(2,12,27,0.45) 0%, rgba(2,12,27,0.88) 100%), url('../assets/img/technology/es-complex.png') center/cover no-repeat; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.25rem;">
@@ -126,7 +126,7 @@
               container.style.paddingBottom = '0';
               container.style.height = 'auto';
               container.style.overflow = 'visible';
-              container.innerHTML = '<video id="escomplex-video" controls autoplay preload="auto" style="width: 100%; border-radius: var(--radius-lg); border: 1px solid var(--c-border); box-shadow: var(--shadow-lg); background: #000; display: block;">' +
+              container.innerHTML = '<video id="escomplex-video" controls autoplay preload="metadata" style="width: 100%; border-radius: var(--radius-lg); border: 1px solid var(--c-border); box-shadow: var(--shadow-lg); background: #000; display: block;">' +
                 '<source src="https://archive.org/download/vitametric-escomplex-hechos-tvaz/sinergia_hd_final.mp4" type="video/mp4">' +
                 'Tu navegador no reproduce vídeo HTML5.</video>';
             }
