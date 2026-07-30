@@ -903,7 +903,145 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
 
   </main>
 
-  <footer class="footer">
+  
+<section id="clinical-selector-section" style="background: var(--c-bg-mid); padding: 5rem 0; border-top: 1px solid var(--c-border); border-bottom: 1px solid var(--c-border); font-family: var(--font);">
+  <div class="container">
+    <div style="text-align: center; max-width: 800px; margin: 0 auto 3rem;">
+      <span class="card-badge" style="background: var(--c-cyan-soft); color: var(--c-cyan); border: 1px solid var(--c-border); font-weight: 600; padding: 0.35rem 1rem; border-radius: var(--radius-full); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;">Orientación Clínica y Tecnológica</span>
+      <h2 style="font-size: var(--fs-3xl); color: var(--c-heading); margin-top: 1rem; margin-bottom: 1rem; font-weight: var(--fw-bold);">Explorador de Tecnologías Fisiológicas</h2>
+      <p style="color: var(--c-text); font-size: var(--fs-md); line-height: 1.6;">Consulta las variables biofísicas específicas que evalúa y aborda cada una de las tecnologías no invasivas de Vitametric CDMX.</p>
+    </div>
+
+    <div style="background: var(--c-bg-surface); border: 1px solid var(--c-border); border-radius: var(--radius-xl); padding: 2.5rem; box-shadow: var(--shadow-lg); display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem;">
+      <div>
+        <h3 style="color: var(--c-cyan); font-size: var(--fs-lg); margin-bottom: 1.25rem; font-weight: var(--fw-semibold);">Selecciona la Tecnología a Consultar:</h3>
+        <div style="display: flex; flex-direction: column; gap: 0.85rem;">
+          <button onclick="showClinicalTech('escomplex')" id="btn-tech-escomplex" class="tech-tab-btn active-tech-btn" style="padding: 1.125rem 1.25rem; border-radius: var(--radius-md); background: var(--c-cyan-soft); border: 1px solid var(--c-cyan); color: #FFF; font-weight: var(--fw-semibold); text-align: left; cursor: pointer; transition: all 0.2s; font-family: var(--font);">
+            <div style="font-size: 1.05rem; color: #FFF;">ES-Complex — Pre-Diagnóstico Electrointersticial</div>
+            <div style="font-size: 0.8rem; color: var(--c-muted); font-weight: normal; margin-top: 0.25rem;">Conductividad intersticial · HRV · Balance Autónomo</div>
+          </button>
+          
+          <button onclick="showClinicalTech('rife')" id="btn-tech-rife" class="tech-tab-btn" style="padding: 1.125rem 1.25rem; border-radius: var(--radius-md); background: var(--c-bg-card); border: 1px solid var(--c-border-light); color: var(--c-text); font-weight: var(--fw-semibold); text-align: left; cursor: pointer; transition: all 0.2s; font-family: var(--font);">
+            <div style="font-size: 1.05rem; color: var(--c-primary);">Frecuencias de Rife — Resonancia Biológica</div>
+            <div style="font-size: 0.8rem; color: var(--c-muted); font-weight: normal; margin-top: 0.25rem;">Espectro electromagnético (1 Hz – 10 kHz) · Armonización celular</div>
+          </button>
+
+          <button onclick="showClinicalTech('scenar')" id="btn-tech-scenar" class="tech-tab-btn" style="padding: 1.125rem 1.25rem; border-radius: var(--radius-md); background: var(--c-bg-card); border: 1px solid var(--c-border-light); color: var(--c-text); font-weight: var(--fw-semibold); text-align: left; cursor: pointer; transition: all 0.2s; font-family: var(--font);">
+            <div style="font-size: 1.05rem; color: var(--c-primary);">Scenar — Terapia de Biorretroalimentación</div>
+            <div style="font-size: 0.8rem; color: var(--c-muted); font-weight: normal; margin-top: 0.25rem;">Impulsos neuroadaptativos (15 Hz – 350 Hz) · Alivio neuromodulado</div>
+          </button>
+
+          <button onclick="showClinicalTech('immunocal')" id="btn-tech-immunocal" class="tech-tab-btn" style="padding: 1.125rem 1.25rem; border-radius: var(--radius-md); background: var(--c-bg-card); border: 1px solid var(--c-border-light); color: var(--c-text); font-weight: var(--fw-semibold); text-align: left; cursor: pointer; transition: all 0.2s; font-family: var(--font);">
+            <div style="font-size: 1.05rem; color: var(--c-primary);">Immunocal — Nutrición & Glutatión Celular</div>
+            <div style="font-size: 0.8rem; color: var(--c-muted); font-weight: normal; margin-top: 0.25rem;">Donador de Cisteína Enlazada · Síntesis de Glutatión (GSH)</div>
+          </button>
+        </div>
+      </div>
+
+      <div style="background: var(--c-bg-card-alt); border: 1px solid var(--c-border); border-radius: var(--radius-lg); padding: 2rem; display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <span id="tech-tag" style="font-size: 0.75rem; background: var(--c-green-soft); color: var(--c-green); border: 1px solid var(--c-green-dark); padding: 4px 12px; border-radius: var(--radius-full); font-weight: 600; text-transform: uppercase;">Evaluación Médica No Invasiva</span>
+            <span id="tech-time" style="font-size: 0.8rem; color: var(--c-muted);">Duración: 30 minutos</span>
+          </div>
+
+          <h4 id="tech-title" style="font-size: var(--fs-xl); color: #FFF; margin-bottom: 1rem; font-weight: var(--fw-bold);">Pre-Diagnóstico Electrointersticial (ES-Complex)</h4>
+          <p id="tech-desc" style="font-size: var(--fs-base); color: var(--c-text); line-height: 1.6; margin-bottom: 1.5rem;">Procesamiento computarizado de 50,000 cálculos por segundo mediante electrodos de titanio purificado para analizar el pH del líquido intersticial, el balance del sistema nervioso autónomo (simpático/parasimpático) y la micro-circulación tisular.</p>
+
+          <div style="background: var(--c-bg-surface); border-left: 3px solid var(--c-cyan); padding: 1rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem;">
+            <div style="font-size: 0.8rem; color: var(--c-cyan); font-weight: 600; text-transform: uppercase; margin-bottom: 0.5rem;">Variables Fisiológicas Medidas:</div>
+            <ul id="tech-variables" style="font-size: var(--fs-sm); color: var(--c-text); line-height: 1.6; padding-left: 1.2rem;">
+              <li>Conductividad electrointersticial tisular (mV).</li>
+              <li>Variabilidad de la Frecuencia Cardíaca (HRV).</li>
+              <li>Estimación de saturación O2 y flujo micro-vascular.</li>
+            </ul>
+          </div>
+        </div>
+
+        <a id="tech-wa-link" href="https://api.whatsapp.com/send?phone=525552150674&text=Consulta%20sobre%20ES-Complex%20en%20Vitametric" target="_blank" class="btn btn-primary btn-glow" style="width: 100%; text-align: center; justify-content: center;">Información & Cita por WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+const clinicalTechData = {
+  escomplex: {
+    tag: 'Evaluación Médica No Invasiva',
+    time: 'Duración: 30 a 45 min',
+    title: 'Pre-Diagnóstico Electrointersticial (ES-Complex)',
+    desc: 'Procesamiento computarizado de 50,000 cálculos por segundo mediante electrodos de titanio purificado para analizar el pH del líquido intersticial, el balance del sistema nervioso autónomo (simpático/parasimpático) y la micro-circulación tisular.',
+    vars: [
+      'Conductividad electrointersticial tisular (mV).',
+      'Variabilidad de la Frecuencia Cardíaca (HRV).',
+      'Estimación de saturación O2 y flujo micro-vascular.'
+    ],
+    waMsg: 'Consulta sobre evaluación ES-Complex en Vitametric'
+  },
+  rife: {
+    tag: 'Resonancia Bioelectromagnética',
+    time: 'Sesión: 45 a 60 min',
+    title: 'Frecuencias de Resonancia Biológica de Rife',
+    desc: 'Emisión dirigida de micro-frecuencias armónicas específicas para equilibrar el terreno bioeléctrico celular y neutralizar campos de interferencia en tejidos biológicos.',
+    vars: [
+      'Emisión frecuencial controlada (1 Hz a 10,000 Hz).',
+      'Estimulación de resonancia armónica de membrana.',
+      'Armonización complementaria del bio-campo tisular.'
+    ],
+    waMsg: 'Consulta sobre terapia de Frecuencias de Rife en Vitametric'
+  },
+  scenar: {
+    tag: 'Terapia Neuroadaptativa',
+    time: 'Sesión: 30 a 45 min',
+    title: 'Biorretroalimentación Neuromodulada (Scenar)',
+    desc: 'Dispositivo electro-terapéutico de origen neuroadaptativo que emite micro-impulsos de respuesta biológica continua para la estimulación de neuropéptidos y alivio muscular.',
+    vars: [
+      'Biorretroalimentación de impedancia cutánea en tiempo real.',
+      'Frecuencias neuro-adaptativas de 15 Hz a 350 Hz.',
+      'Estimulación no farmacológica de endorfinas y neuropéptidos.'
+    ],
+    waMsg: 'Consulta sobre terapia Scenar en Vitametric'
+  },
+  immunocal: {
+    tag: 'Nutrición Celular Preventiva',
+    time: 'Complemento Diario',
+    title: 'Precursor de Glutatión (Immunocal)',
+    desc: 'Aislado de proteína de suero de leche no desnaturalizada rico en Cisteína Enlazada de alta biodisponibilidad para la síntesis intracelular del antioxidante maestro (Glutatión - GSH).',
+    vars: [
+      'Donación de cisteína bio-disponible para la síntesis de GSH.',
+      'Protección mitocondrial contra el estrés oxidativo.',
+      'Sostén inmunológico de alta eficiencia metabólica.'
+    ],
+    waMsg: 'Consulta sobre Immunocal y nutrición celular en Vitametric'
+  }
+};
+
+function showClinicalTech(key) {
+  document.querySelectorAll('.tech-tab-btn').forEach(b => {
+    b.style.background = 'var(--c-bg-card)';
+    b.style.borderColor = 'var(--c-border-light)';
+    b.querySelector('div').style.color = 'var(--c-primary)';
+  });
+  const activeBtn = document.getElementById('btn-tech-' + key);
+  if(activeBtn) {
+    activeBtn.style.background = 'var(--c-cyan-soft)';
+    activeBtn.style.borderColor = 'var(--c-cyan)';
+    activeBtn.querySelector('div').style.color = '#FFF';
+  }
+
+  const d = clinicalTechData[key];
+  document.getElementById('tech-tag').innerText = d.tag;
+  document.getElementById('tech-time').innerText = d.time;
+  document.getElementById('tech-title').innerText = d.title;
+  document.getElementById('tech-desc').innerText = d.desc;
+  
+  const varUl = document.getElementById('tech-variables');
+  varUl.innerHTML = d.vars.map(v => '<li>' + v + '</li>').join('');
+  document.getElementById('tech-wa-link').href = 'https://api.whatsapp.com/send?phone=525552150674&text=' + encodeURIComponent(d.waMsg);
+}
+</script>
+
+<footer class="footer">
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
