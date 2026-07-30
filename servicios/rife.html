@@ -213,11 +213,31 @@
       container.style.paddingBottom = '0';
       container.style.height = 'auto';
       container.style.overflow = 'visible';
-      container.innerHTML = '<video id="rife-video" controls autoplay preload="metadata" crossorigin="anonymous" style="width: 100%; border: 1px solid var(--c-border); background: #000; display: block;">' +
+      // 2026-07-30 — Reproducción retirada mientras se gestiona la licencia con el
+      // titular de la obra (Zero Zero Two Productions, dir. Shawn Montgomery).
+      // El documental es una obra comercial: se vende en DVD en zerozerotwo.org y
+      // en Amazon Prime Video. Alojar una copia completa sin permiso es infracción.
+      // Para restituirlo cuando haya autorización, ver el bloque comentado abajo.
+      container.innerHTML =
+        '<div style="border: 1px solid var(--c-border); background: var(--c-bg-surface); padding: 2rem; text-align: left;">' +
+          '<p style="font-weight: 600; margin-bottom: 0.75rem;">Documental no disponible en este sitio</p>' +
+          '<p style="margin-bottom: 1rem;">«The Rise and Fall of a Scientific Genius: The Forgotten Story of Royal Raymond Rife» ' +
+          'es una obra de <strong>Zero Zero Two Productions</strong>, dirigida por Shawn Montgomery. ' +
+          'Respetamos los derechos de sus autores, así que no la reproducimos aquí.</p>' +
+          '<p style="margin-bottom: 1rem;">Puedes verla en sus canales oficiales:</p>' +
+          '<p><a href="https://zerozerotwo.org" target="_blank" rel="noopener noreferrer">zerozerotwo.org</a> ' +
+          '&nbsp;·&nbsp; ' +
+          '<a href="https://www.amazon.com/Rise-Fall-Scientific-Genius/dp/B00P7PHHTK" target="_blank" rel="noopener noreferrer">Amazon Prime Video</a></p>' +
+        '</div>';
+
+      /* RESTITUCIÓN — descomentar SOLO con autorización escrita del titular.
+         La pista de subtítulos en español (1.320 cues) es trabajo propio de
+         Vitametric y está lista en ../assets/vtt/rife-es.vtt
+      container.innerHTML = '<video id="rife-video" controls preload="metadata" crossorigin="anonymous" style="width: 100%; border: 1px solid var(--c-border); background: #000; display: block;">' +
         '<source src="https://video.vitametric.com/rife-v11.mp4" type="video/mp4">' +
-        '<source src="https://archive.org/download/vitametric-rife-documental-es/rife_perfecto_v10.mp4" type="video/mp4">' +
         '<track id="pista-es" label="Español" kind="subtitles" srclang="es" src="../assets/vtt/rife-es.vtt?v=20260729" default>' +
         'Tu navegador no reproduce vídeo HTML5.</video>';
+      */
 
       var v = document.getElementById('rife-video');
       var track = document.getElementById('pista-es');
