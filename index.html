@@ -32,6 +32,7 @@
   --c-bg-surface: #071E33;
   --c-bg-card: #0A2440;
   --c-bg-card-alt: #081D37;
+  --font-display: 'Clash Display', 'Inter', system-ui, sans-serif;
   --c-primary: #E0F4FF;
   --c-heading: #FFFFFF;
   --c-text: rgba(210,235,255,0.82);
@@ -94,6 +95,13 @@
   --t-reveal: 600ms;
   --max-w: 1200px;
   --nav-h: 100px;
+}
+
+
+h1, h2, h3, h4, .hero-title, .section-title, .stat-number {
+  font-family: var(--font-display) !important;
+  letter-spacing: -0.02em;
+  font-variant-numeric: lining-nums tabular-nums;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
