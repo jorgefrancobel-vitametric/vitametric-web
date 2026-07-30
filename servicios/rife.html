@@ -48,86 +48,133 @@
     </div>
   </header>
 
-  <main style="padding-top: calc(var(--nav-h) + 2rem); padding-bottom: 5rem;">
+  
+  <main style="padding-top: calc(var(--nav-h) + 1.5rem); padding-bottom: 5rem; background: var(--c-bg); color: var(--c-text); font-family: var(--font);">
     <div class="container">
-      <div style="margin-bottom: 2rem; font-size: var(--fs-sm); color: var(--c-muted);">
-        <a href="../index.html">Inicio</a> &nbsp;/&nbsp; <a href="../index.html#tecnologias">Tecnologías</a> &nbsp;/&nbsp; <span style="color: var(--c-cyan);">Frecuencias de Rife</span>
+      <!-- Breadcrumb & Header Banner -->
+      <div style="margin-bottom: 1.5rem; font-size: var(--fs-xs); color: var(--c-muted); text-transform: uppercase; letter-spacing: 0.1em;">
+        <a href="../index.html" style="color: var(--c-muted); text-decoration: none;">Inicio</a> &nbsp;/&nbsp; <a href="../index.html#tecnologias" style="color: var(--c-muted); text-decoration: none;">Tecnologías</a> &nbsp;/&nbsp; <span style="color: var(--c-cyan); font-weight: 600;">Frecuencias de Rife</span>
       </div>
 
-      <div style="background: var(--c-bg-surface); border: 1px solid var(--c-border); border-radius: var(--radius-xl); padding: 3rem; margin-bottom: 3rem; box-shadow: var(--shadow-lg);">
-        <span class="card-badge" style="background: var(--c-cyan-soft); color: var(--c-cyan); border: 1px solid var(--c-border); font-weight: 600; padding: 0.25rem 0.75rem; border-radius: var(--radius-full); font-size: 0.8rem; text-transform: uppercase;">Resonancia Biológica</span>
-        <h1 style="font-size: var(--fs-3xl); color: var(--c-heading); margin-top: 1rem; margin-bottom: 1rem;">Frecuencias de Rife</h1>
-        <p style="font-size: var(--fs-md); color: var(--c-text); max-width: 850px; line-height: 1.7;">
-          Terapia bioelectromagnética complementaria basada en el principio de frecuencia de resonancia biológica para devolver la armonía al terreno celular.
-        </p>
+      <!-- Subpage Hero Header (Full Width Panel) -->
+      <div style="background: var(--c-bg-surface); border: 1px solid rgba(0, 200, 255, 0.25); border-radius: 0px; padding: 2.5rem; margin-bottom: 2rem;">
+        <div style="display: inline-block; background: var(--c-cyan-soft); border: 1px solid var(--c-cyan); color: var(--c-cyan); padding: 4px 12px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 1rem;">Resonancia Biológica & Bio-Campo</div>
+        <h1 style="font-family: var(--font-display, 'Clash Display', sans-serif); font-size: clamp(2.2rem, 3.8vw, 3.2rem); color: #FFF; margin-bottom: 1rem; letter-spacing: -0.02em; font-weight: 700;">Frecuencias de Rife & Resonancia Celular</h1>
+        <p style="font-size: var(--fs-md); color: var(--c-text); max-width: 900px; line-height: 1.6;">Terapia bioelectromagnética complementaria basada en la transmisión de micro-frecuencias armónicas para la neutralización de campos de interferencia tisular y reactivación del terreno celular.</p>
       </div>
 
-      <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2.5rem;">
-        <article style="background: var(--c-bg-card); border: 1px solid var(--c-border); border-radius: var(--radius-lg); padding: 2.5rem;">
-          <img src="../assets/img/technology/rife.jpg" alt="Frecuencias Bioactivas y Resonancia Rife" style="width: 100%; height: 320px; object-fit: cover; border-radius: var(--radius-md); margin-bottom: 2rem; border: 1px solid var(--c-border); box-shadow: var(--shadow-md);">
-          <h2 style="color: var(--c-cyan); font-size: var(--fs-xl); margin-bottom: 1rem;">Principios Biofísicos</h2>
-          <p style="margin-bottom: 1.5rem;">
-            Cada estructura biológica posee un espectro de frecuencia oscilatoria característico. Mediante la emisión de micro-corrientes específicas en ambiente controlado, se busca neutralizar campos de interferencia y restaurar la vitalidad electromagnética tisular.
-          </p>
+      <!-- 12-Column Grid Composition -->
+      <div style="display: grid; grid-template-columns: repeat(12, 1fr); gap: 2rem; align-items: start;">
+        
+        <!-- Left Column: Video Stage & Main Content (Span 8) -->
+        <div style="grid-column: span 8; display: flex; flex-direction: column; gap: 2rem;">
+          
+          <!-- Cinematic Video Panel (Span 8) -->
+          <div style="background: var(--c-bg-card); border: 1px solid rgba(0, 200, 255, 0.3); padding: 1.5rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid rgba(0, 200, 255, 0.15); padding-bottom: 0.75rem;">
+              <span style="font-size: 0.8rem; color: #00FF9D; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em;">● DOCUMENTAL HISTÓRICO EN VIVO</span>
+              <span style="font-size: 0.8rem; color: var(--c-muted);">Subtítulos en Español · 125 min</span>
+            </div>
 
-          <h2 style="color: var(--c-cyan); font-size: var(--fs-xl); margin-top: 2.5rem; margin-bottom: 1rem;">Documental Histórico — Frecuencias de Rife y Resonancia Biológica</h2>
-          <p style="margin-bottom: 1.5rem; color: var(--c-text); line-height: 1.6;">
-            Documental científico e histórico sobre los fundamentos biofísicos y el desarrollo de las frecuencias de resonancia celular en el cuidado colectivo y preventivo de la salud.
-          </p>
-
-          <div id="rife-video-container" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; border-radius: var(--radius-lg); border: 1px solid var(--c-border); box-shadow: var(--shadow-lg); margin-bottom: 1.5rem; background: var(--c-bg-surface);">
-            <div id="rife-poster-overlay" onclick="cargarVideoRife()" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; cursor: pointer; background: linear-gradient(180deg, rgba(2,12,27,0.45) 0%, rgba(2,12,27,0.88) 100%), url('../assets/img/technology/rife.jpg') center/cover no-repeat; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.25rem;">
-              <div style="background: rgba(2, 12, 27, 0.85); border: 2px solid var(--c-cyan); width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 30px rgba(0, 200, 255, 0.6); backdrop-filter: blur(8px); transition: transform 0.2s ease;">
-                <span style="color: var(--c-cyan); font-size: 2.4rem; margin-left: 6px; line-height: 1;">▶</span>
+            <div id="rife-video-container" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; border: 1px solid rgba(0, 200, 255, 0.2); background: #000;">
+              <div id="rife-poster-overlay" onclick="cargarVideoRife()" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; cursor: pointer; background: linear-gradient(180deg, rgba(2,12,27,0.3) 0%, rgba(2,12,27,0.85) 100%), url('../assets/img/technology/rife.jpg') center/cover no-repeat; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.25rem;">
+                <div style="background: rgba(2, 12, 27, 0.9); border: 2px solid var(--c-cyan); width: 75px; height: 75px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 25px rgba(0, 200, 255, 0.5);">
+                  <span style="color: var(--c-cyan); font-size: 2.2rem; margin-left: 5px;">▶</span>
+                </div>
+                <span style="color: white; font-weight: 600; font-size: 0.9rem; text-shadow: 0 2px 4px rgba(0,0,0,0.8); background: rgba(7, 30, 51, 0.9); padding: 0.5rem 1.25rem; border: 1px solid var(--c-border); letter-spacing: 0.5px;">Reproducir Documental Histórico</span>
               </div>
-              <span style="color: white; font-weight: 600; font-size: 0.95rem; text-shadow: 0 2px 4px rgba(0,0,0,0.8); background: rgba(7, 30, 51, 0.85); padding: 0.5rem 1.25rem; border-radius: var(--radius-full); border: 1px solid var(--c-border); letter-spacing: 0.5px;">Reproducir Documental Histórico</span>
+            </div>
+
+            <script>
+              function cargarVideoRife() {
+                var container = document.getElementById('rife-video-container');
+                if (!container) return;
+                container.style.paddingBottom = '0';
+                container.style.height = 'auto';
+                container.style.overflow = 'visible';
+                container.innerHTML = '<video id="rife-video" controls autoplay preload="metadata" style="width: 100%; border: 1px solid var(--c-border); background: #000; display: block;">' +
+                  '<source src="../assets/video/rife-SANADO.mp4?v=2" type="video/mp4">' +
+                  '<source src="../assets/video/rife-REPARADO.mp4?v=2" type="video/mp4">' +
+                  '<source src="https://archive.org/download/vitametric-rife-documental-es/rife_sanado.mp4" type="video/mp4">' +
+                  '<source src="https://archive.org/download/vitametric-rife-documental-es/rife_faststart.mp4" type="video/mp4">' +
+                  '<source src="https://archive.org/download/vitametric-rife-documental-es/rife.mp4" type="video/mp4">' +
+                  '<track id="pista-es" label="Español" kind="subtitles" srclang="es" src="../assets/vtt/rife-es.vtt?v=20260729" default>' +
+                  'Tu navegador no reproduce vídeo HTML5.</video>';
+                
+                var v = document.getElementById('rife-video');
+                var track = document.getElementById('pista-es');
+                if (v) {
+                  function activarSubtitulos() {
+                    if (v.textTracks && v.textTracks.length > 0) {
+                      for (var i = 0; i < v.textTracks.length; i++) {
+                        v.textTracks[i].mode = 'showing';
+                      }
+                    }
+                  }
+                  if (track) { track.addEventListener('load', activarSubtitulos); }
+                  v.addEventListener('play', activarSubtitulos);
+                  v.addEventListener('loadeddata', activarSubtitulos);
+                  activarSubtitulos();
+                }
+              }
+            </script>
+          </div>
+
+          <!-- Technical & Historical Principles -->
+          <div style="background: var(--c-bg-card); border: 1px solid rgba(0, 200, 255, 0.2); padding: 2rem;">
+            <h2 style="font-family: var(--font-display, 'Clash Display', sans-serif); color: var(--c-cyan); font-size: 1.5rem; margin-bottom: 1rem;">Principios Biofísicos de la Resonancia</h2>
+            <p style="line-height: 1.7; color: var(--c-text); margin-bottom: 1.5rem;">Cada microorganismo y estructura celular posee un espectro de frecuencia de oscilación armónica característico. Mediante la aplicación controlada de ondas bioelectromagnéticas en resonancia, se neutraliza la actividad de agentes de interferencia sin alterar los tejidos sanos circundantes.</p>
+
+            <div style="background: var(--c-bg-surface); border-left: 4px solid var(--c-cyan); padding: 1.25rem;">
+              <p style="font-size: var(--fs-sm); color: var(--c-muted); margin: 0; line-height: 1.5;">
+                <em>Nota Legal & Regulatoria:</em> En Vitametric las frecuencias de Rife son una herramienta complementaria holística de bienestar no farmacológico. El video documental compartido tiene valor estrictamente informativo e histórico.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Clinical Sidebar & Action Panel (Span 4) -->
+        <div style="grid-column: span 4; display: flex; flex-direction: column; gap: 1.5rem;">
+          
+          <!-- Clinical Tech Specs Panel -->
+          <div style="background: var(--c-bg-card-alt); border: 1px solid rgba(0, 200, 255, 0.25); padding: 1.75rem;">
+            <h3 style="font-family: var(--font-display, 'Clash Display', sans-serif); color: #FFF; font-size: 1.2rem; margin-bottom: 1.25rem; border-bottom: 1px solid rgba(0,200,255,0.15); padding-bottom: 0.5rem;">Ficha Técnica del Tratamiento</h3>
+            
+            <div style="display: flex; flex-direction: column; gap: 1rem; font-size: 0.9rem;">
+              <div style="display:flex; justify-style:space-between; border-bottom: 1px solid rgba(0,200,255,0.1); padding-bottom:0.5rem;">
+                <span style="color: var(--c-muted);">Modo de Emisión:</span>
+                <span style="color: #FFF; font-weight: 600; text-align:right;">Ondas Armónicas</span>
+              </div>
+
+              <div style="display:flex; justify-style:space-between; border-bottom: 1px solid rgba(0,200,255,0.1); padding-bottom:0.5rem;">
+                <span style="color: var(--c-muted);">Espectro Frecuencial:</span>
+                <span style="color: var(--c-cyan); font-weight: 600; text-align:right;">1 Hz a 10,000 Hz</span>
+              </div>
+
+              <div style="display:flex; justify-style:space-between; border-bottom: 1px solid rgba(0,200,255,0.1); padding-bottom:0.5rem;">
+                <span style="color: var(--c-muted);">Duración por Sesión:</span>
+                <span style="color: #FFF; font-weight: 600; text-align:right;">45 a 60 Minutos</span>
+              </div>
+
+              <div style="display:flex; justify-style:space-between;">
+                <span style="color: var(--c-muted);">Carácter Médico:</span>
+                <span style="color: #00FF9D; font-weight: 600; text-align:right;">No Invasivo</span>
+              </div>
             </div>
           </div>
 
-          <script>
-            function cargarVideoRife() {
-              var container = document.getElementById('rife-video-container');
-              if (!container) return;
-              container.style.paddingBottom = '0';
-              container.style.height = 'auto';
-              container.style.overflow = 'visible';
-              container.innerHTML = '<video id="rife-video" controls autoplay preload="metadata" style="width: 100%; border-radius: var(--radius-lg); border: 1px solid var(--c-border); box-shadow: var(--shadow-lg); background: #000; display: block;">' +
-                '<source src="../assets/video/rife-SANADO.mp4?v=2" type="video/mp4">' +
-                '<source src="https://archive.org/download/vitametric-rife-documental-es/rife_faststart.mp4" type="video/mp4">' +
-                '<track id="pista-es" label="Español" kind="subtitles" srclang="es" src="../assets/vtt/rife-es.vtt?v=20260729" default>' +
-                'Tu navegador no reproduce vídeo HTML5.</video>';
-              
-              var v = document.getElementById('rife-video');
-              var track = document.getElementById('pista-es');
-              if (v) {
-                function activarSubtitulos() {
-                  if (v.textTracks && v.textTracks.length > 0) {
-                    for (var i = 0; i < v.textTracks.length; i++) {
-                      v.textTracks[i].mode = 'showing';
-                    }
-                  }
-                }
-                if (track) {
-                  track.addEventListener('load', activarSubtitulos);
-                }
-                v.addEventListener('leavepictureinpicture', activarSubtitulos);
-                v.addEventListener('play', activarSubtitulos);
-                v.addEventListener('loadeddata', activarSubtitulos);
-                v.addEventListener('canplay', activarSubtitulos);
-                activarSubtitulos();
-              }
-            }
-          </script>
-
-          <div style="background: var(--c-bg-surface); border-left: 4px solid var(--c-cyan); padding: 1.25rem; border-radius: var(--radius-sm); margin-top: 1.5rem;">
-            <p style="font-size: var(--fs-sm); color: var(--c-muted); margin: 0;">
-              <em>Nota Legal & Regulatoria:</em> En Vitametric las frecuencias de Rife son una herramienta complementaria holística de bienestar no farmacológico. El video documental compartido tiene valor estrictamente informativo e histórico, y no pretende diagnosticar, tratar ni sustituir el tratamiento médico convencional.
-            </p>
+          <!-- Appointment Booking Card -->
+          <div style="background: var(--c-bg-surface); border: 1px solid var(--c-cyan); padding: 1.75rem;">
+            <h3 style="font-family: var(--font-display, 'Clash Display', sans-serif); color: var(--c-cyan); font-size: 1.15rem; margin-bottom: 0.75rem;">¿Deseas Agendar una Sesión?</h3>
+            <p style="font-size: 0.85rem; color: var(--c-text); line-height: 1.5; margin-bottom: 1.25rem;">Consulta con nuestros especialistas en Vitametric CDMX para integrar las frecuencias de Rife a tu plan de salud preventiva.</p>
+            <a href="https://api.whatsapp.com/send?phone=525552150674&text=Consulta%20sobre%20Frecuencias%20Rife" target="_blank" class="btn btn-primary" style="width: 100%; text-align: center; justify-content: center; font-weight: 600;">💬 Solicitar Cita por WhatsApp</a>
           </div>
-        </article>
+
+        </div>
       </div>
     </div>
   </main>
+
 
   <footer class="footer">
     <div class="container" style="text-align: center; color: var(--c-muted); font-size: var(--fs-sm);">

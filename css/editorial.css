@@ -261,3 +261,22 @@ body::after {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
+
+
+/* ERRADICACION TOTAL DE BORDES REDONDEADOS - SEGMENTACION HAIRLINE */
+:root {
+  --radius-sm: 0px !important;
+  --radius-md: 0px !important;
+  --radius-lg: 0px !important;
+  --radius-xl: 0px !important;
+  --radius-full: 0px !important;
+}
+
+*, *::before, *::after {
+  border-radius: 0px !important;
+}
+
+/* Enfoque de segmentacion por Hairlines continuas */
+.tech-card, .card, .product-card, .trust-item, .header, .footer, article, section {
+  border: 1px solid rgba(0, 200, 255, 0.2) !important;
+}

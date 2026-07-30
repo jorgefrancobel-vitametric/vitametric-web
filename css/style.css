@@ -1409,3 +1409,22 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 
+
+
+/* ERRADICACION TOTAL DE BORDES REDONDEADOS - SEGMENTACION HAIRLINE */
+:root {
+  --radius-sm: 0px !important;
+  --radius-md: 0px !important;
+  --radius-lg: 0px !important;
+  --radius-xl: 0px !important;
+  --radius-full: 0px !important;
+}
+
+*, *::before, *::after {
+  border-radius: 0px !important;
+}
+
+/* Enfoque de segmentacion por Hairlines continuas */
+.tech-card, .card, .product-card, .trust-item, .header, .footer, article, section {
+  border: 1px solid rgba(0, 200, 255, 0.2) !important;
+}
