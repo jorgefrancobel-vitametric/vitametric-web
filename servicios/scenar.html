@@ -3,17 +3,38 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#020C1B">
+  <link rel="apple-touch-icon" href="../assets/img/favicon-256.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
   <title>Scenar (Neurorregulación Biointeractiva) | Vitametric CDMX</title>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "MedicalWebPage",
+    "about": { "@type": "MedicalProcedure", "name": "Scenar (Neurorregulación Biointeractiva)" },
+    "publisher": {
+      "@type": "MedicalClinic",
+      "name": "Vitametric",
+      "url": "https://vitametric.com",
+      "telephone": "+525585327421"
+    },
+    "audience": "https://schema.org/Patient",
+    "inLanguage": "es-MX"
+  }
+  </script>
   <meta name="description" content="Terapia bio-cibernética de neurorregulación Scenar en Vitametric CDMX. Diálogo electrofisiológico en tiempo real con el sistema nervioso para dolor agudo y crónico.">
   <link rel="canonical" href="https://vitametric.com/servicios/scenar.html">
-  <link rel="stylesheet" href="../css/style.css?v=7">
+  <link rel="stylesheet" href="../css/style.css?v=9">
 </head>
 <body>
 
   <header class="header" id="header">
     <div class="container header-inner">
       <a href="../index.html" class="logo-link">
-        <img src="../assets/img/logo.webp" alt="Vitametric Logo" class="logo-img" width="180" height="71">
+        <img src="../assets/img/logo.webp" alt="Vitametric Logo" class="logo-img" width="180" height="71" fetchpriority="high">
       </a>
       <nav class="nav">
         <ul class="nav-list">
@@ -23,7 +44,7 @@
           <li><a href="../index.html#contacto" class="nav-link">Contacto</a></li>
         </ul>
       </nav>
-      <a href="https://api.whatsapp.com/send?phone=525552150674&text=Hola,%20quisiera%20agendar%20una%20sesión%20Scenar" target="_blank" rel="noopener" class="btn btn-primary btn-glow">Agendar Cita</a>
+<a href="https://api.whatsapp.com/send?phone=525552150674&text=Hola,%20quisiera%20agendar%20una%20sesión%20Scenar" target="_blank" rel="noopener" class="btn btn-primary btn-glow">Agendar Cita</a>
     </div>
   </header>
 
@@ -106,5 +127,6 @@
     </div>
   </footer>
 
-</body>
+
+
 </html>

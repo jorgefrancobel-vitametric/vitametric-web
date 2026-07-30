@@ -1,0 +1,262 @@
+/* ==========================================================================
+   VITAMETRIC — Capa Editorial · "Instrumento Clínico" v1
+   --------------------------------------------------------------------------
+   ADITIVA: se carga DESPUÉS de style.css. Quitar su <link> revierte todo.
+   No redefine la paleta: usa los tokens existentes de Vitametric
+   (--c-bg #020C1B, --c-cyan #00C8FF, --c-green #00FF9D).
+
+   Técnica tomada del Frontend Web Engine (canon Jero) — NO su look & feel:
+     · display font ≠ Inter (Inter se queda solo para cuerpo/UI)
+     · font-variant-numeric: lining-nums tabular-nums (los números no bailan)
+     · Double-Bezel en tarjetas (cáscara + núcleo + radios concéntricos)
+     · entradas cubic-bezier(0.16,1,0.3,1) · micro 150–300ms · nada >500ms
+     · stagger 0.02–0.06s por item
+     · button physics: press scale(0.98) + icono que se traslada
+   ========================================================================== */
+
+:root {
+  /* Display propio de Vitametric — geométrico, técnico, no editorial-lujo */
+  --font-display: 'Clash Display', 'Inter', system-ui, sans-serif;
+
+  /* Escala fluida con contraste real (antes: 3.5rem fijo para el h1).
+     Techo calibrado a 4.25rem: a 5rem el H1 caía en 4 líneas y el canon
+     de cirugía del H1 pide 3. Verificado por captura a 1440. */
+  --fs-hero:    clamp(2.5rem, 4.7vw, 4.25rem);
+  --fs-section: clamp(1.85rem, 3.4vw, 3rem);
+
+  --tracking-display: -0.03em;
+  --tracking-label:    0.16em;
+
+  /* Hairlines: sustituyen la sensación de "tarjeta flotante" */
+  --hair:        rgba(0, 200, 255, 0.16);
+  --hair-strong: rgba(0, 200, 255, 0.34);
+
+  --ease-entry: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ── 1. Jerarquía tipográfica ─────────────────────────────────────────────
+   El cuerpo sigue en Inter. Solo los display cambian de voz.              */
+
+h1, h2, h3,
+.hero-title, .section-title, .tech-card-title, .stat-number {
+  font-family: var(--font-display);
+  letter-spacing: var(--tracking-display);
+  font-variant-numeric: lining-nums tabular-nums;
+  text-wrap: balance;
+}
+
+.hero-title {
+  font-size: var(--fs-hero);
+  font-weight: 600;
+  line-height: 0.96;
+  max-width: 18ch;
+}
+/* Cirugía del H1: un solo acento, sin degradado decorativo */
+.hero-accent {
+  color: var(--c-cyan);
+  -webkit-text-fill-color: var(--c-cyan);
+  background: none;
+}
+
+.section-title {
+  font-size: var(--fs-section);
+  font-weight: 600;
+  line-height: 1.02;
+  max-width: 24ch;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* ── 2. Cabeceras de sección: editorial numerada, no centrada ─────────────
+   Antes: text-align center + max-width 680px (patrón genérico).
+   Ahora: rejilla asimétrica, filete superior y número de sección.         */
+
+main { counter-reset: vm-section; }
+.section { counter-increment: vm-section; }
+
+.section-header {
+  display: grid;
+  grid-template-columns: minmax(0, 13rem) minmax(0, 1fr);
+  gap: clamp(1.25rem, 4vw, 4rem);
+  align-items: start;
+  text-align: left;
+  max-width: none;
+  margin: 0 0 var(--sp-2xl);
+  padding-top: clamp(1.1rem, 2vw, 1.9rem);
+  border-top: 1px solid var(--hair);
+}
+.section-header > .section-title,
+.section-header > .section-subtitle { grid-column: 2; }
+
+/* Micro-etiqueta: se va la píldora, entra el rótulo de instrumento */
+.section-tag {
+  grid-row: 1 / span 2;
+  grid-column: 1;
+  align-self: start;
+  display: block;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  letter-spacing: var(--tracking-label);
+  line-height: 1.4;
+  color: var(--c-cyan);
+}
+.section-tag::before {
+  content: counter(vm-section, decimal-leading-zero);
+  display: block;
+  margin-bottom: 0.45rem;
+  font-size: var(--fs-sm);
+  font-variant-numeric: lining-nums tabular-nums;
+  color: var(--c-muted);
+  letter-spacing: 0;
+}
+
+.section-subtitle { max-width: 58ch; }
+
+@media (max-width: 860px) {
+  .section-header { grid-template-columns: 1fr; gap: 0.75rem; }
+  .section-header > .section-title,
+  .section-header > .section-subtitle { grid-column: 1; }
+  .section-tag { grid-row: auto; }
+  .section-tag::before { display: inline; margin: 0 0.5rem 0 0; }
+}
+
+/* ── 3. Double-Bezel en las tarjetas de tecnología ────────────────────────
+   Cáscara + núcleo + radios concéntricos + realce interior.
+   Sustituye el glow difuso por hairline: precisión de instrumento.        */
+
+.tech-card {
+  background:
+    linear-gradient(180deg, rgba(0,200,255,0.05) 0%, rgba(0,200,255,0) 42%),
+    rgba(7, 30, 51, 0.92);
+  border: 1px solid var(--hair);
+  border-radius: 8px;
+  padding: 5px;                       /* la cáscara */
+  box-shadow: inset 0 1px 0 rgba(190, 235, 255, 0.07);
+  backdrop-filter: blur(10px) saturate(125%);
+  transition:
+    transform 220ms var(--ease-entry),
+    border-color 220ms var(--ease-entry),
+    box-shadow 220ms var(--ease-entry);
+}
+.tech-card > .tech-card-link-block {
+  display: block;
+  height: 100%;
+  padding: var(--sp-lg);
+  border: 1px solid rgba(0, 200, 255, 0.08);
+  border-radius: 4px;                 /* radio concéntrico: 8 − 5 + 1 */
+  background: rgba(2, 12, 27, 0.28);
+}
+.tech-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--hair-strong);
+  box-shadow:
+    inset 0 1px 0 rgba(190, 235, 255, 0.12),
+    0 12px 28px rgba(0, 0, 0, 0.45);
+}
+.tech-card > .tech-card-disclaimer { padding: 0.75rem var(--sp-lg) 0.25rem; }
+
+/* Badge: rótulo cuadrado con filete lateral, no píldora */
+.tech-card-badge {
+  border-radius: 0;
+  background: none;
+  border: 0;
+  border-left: 2px solid var(--c-green);
+  padding: 0.1rem 0 0.1rem 0.6rem;
+  font-family: var(--font-display);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+.tech-card-img {
+  border-radius: 2px;
+  filter: saturate(108%) contrast(104%);
+}
+
+/* Barra de acción: el icono se traslada en hover (button-in-button) */
+.tech-card-action-bar > span:last-child {
+  display: inline-block;
+  transition: transform 200ms var(--ease-entry);
+}
+.tech-card:hover .tech-card-action-bar > span:last-child { transform: translateX(5px); }
+
+/* ── 4. Cifras: rótulo de aparato de medición ─────────────────────────────  */
+
+.stat-number {
+  font-size: clamp(1.65rem, 2.6vw, 2.4rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.stat-label {
+  font-size: var(--fs-xs);
+  letter-spacing: 0.07em;          /* 0.16em partía "TECNOLOGÍAS AVANZADAS" en dos */
+  text-transform: uppercase;
+  color: var(--c-muted);
+  text-wrap: nowrap;
+}
+.stat-divider { background: var(--hair); }
+
+/* El indicador de scroll se pegaba a las cifras al crecer el H1 */
+.hero-stats { margin-bottom: var(--sp-lg); }
+
+/* ── 4b. Coherencia del marco del visual ─────────────────────────────────
+   El bloque de imagen conservaba esquinas muy redondeadas: chocaba con
+   la sintaxis filosa del resto.                                         */
+
+.hero-visual-img-wrap { border-radius: 6px; }
+.hero-card { border-radius: 3px; }
+
+/* ── 5. Física de botones ─────────────────────────────────────────────────  */
+
+.btn { transition: transform 180ms var(--ease-entry), box-shadow 180ms var(--ease-entry), background-color 180ms ease, color 180ms ease; }
+.btn:active { transform: translateY(0) scale(0.98); }
+.btn svg { transition: transform 200ms var(--ease-entry); }
+.btn:hover svg { transform: translateX(4px); }
+
+/* Badge del hero: mismo criterio que los demás rótulos */
+.hero-badge {
+  border-radius: 2px;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  font-size: var(--fs-xs);
+}
+
+/* ── 6. Motion: reveals con escalonado, dentro del presupuesto ────────────
+   Entradas ≤300ms, stagger 0.04s/item, nada por encima de 500ms.          */
+
+.reveal {
+  transition:
+    opacity 300ms var(--ease-entry),
+    transform 300ms var(--ease-entry);
+}
+.tech-card.reveal:nth-of-type(1) { transition-delay: 0ms; }
+.tech-card.reveal:nth-of-type(2) { transition-delay: 40ms; }
+.tech-card.reveal:nth-of-type(3) { transition-delay: 80ms; }
+.tech-card.reveal:nth-of-type(4) { transition-delay: 120ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .btn, .btn svg, .tech-card,
+  .tech-card-action-bar > span:last-child {
+    transition: none !important;
+    transform: none !important;
+  }
+}
+
+/* ── 7. Grano: acabado fílmico (técnica 2D, 0.03–0.06 de intensidad) ──────  */
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
