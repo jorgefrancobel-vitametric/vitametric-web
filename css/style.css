@@ -89,8 +89,8 @@
   --sp-3xl: 6rem;
 
   /* Radii */
-  --radius-sm:   4px;
-  --radius-md:   6px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
   --radius-lg:   6px;
   --radius-xl:   8px;
   --radius-full: 8px;
@@ -638,7 +638,7 @@ h1, h2, h3, h4, h5, h6 {
 .tech-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  grid-auto-rows: 1fr;
+  /* grid-auto-rows flexible */
   gap: var(--sp-md);
 }
 .tech-card {
@@ -712,7 +712,7 @@ h1, h2, h3, h4, h5, h6 {
 .section-productos { background: var(--c-bg-mid); }
 .products-grid {
   display: grid; grid-template-columns: repeat(4, 1fr);
-  grid-auto-rows: 1fr;
+  /* grid-auto-rows flexible */
   gap: var(--sp-md); margin-bottom: var(--sp-2xl);
 }
 .product-card {
@@ -1417,7 +1417,7 @@ h1, h2, h3, h4, h5, h6 {
   --radius-md: 0px !important;
   --radius-lg: 0px !important;
   --radius-xl: 0px !important;
-  --radius-full: 0px !important;
+  --radius-full: 9999px;
 }
 
 /* Enfoque de segmentacion por Hairlines continuas */
@@ -1433,6 +1433,545 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Tarjetas y Paneles Estructurales Rectos (Segmentación Reticular) */
-.card, .tech-card, .product-card, .trust-item, .header, .footer, article, section, .hero-card, .cinematic-stage {
-  border-radius: 0px !important;
+
+
+
+
+
+
+
+/*    VITAMETRIC — Deep Design System v3 (Substantial UI Optimization)
+   
+/* ── Sistema de Botones de Alta Fidelidad Clínica ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  font-family: var(--font-display, 'Clash Display', sans-serif);
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+  padding: 0.85rem 1.85rem;
+  border-radius: 4px !important;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+  text-decoration: none;
+  line-height: 1;
+  box-sizing: border-box;
+  text-transform: uppercase;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #00C8FF 0%, #0088CC 100%);
+  color: #020C1B !important;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  font-weight: 700;
+  box-shadow: 0 4px 18px rgba(0, 200, 255, 0.28);
+}
+
+.btn-primary:hover {
+  color: #020C1B !important;
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, #00D8FF 0%, #0099EE 100%);
+  box-shadow: 0 6px 25px rgba(0, 200, 255, 0.45);
+}
+
+.btn-outline {
+  background: rgba(7, 30, 51, 0.6);
+  color: #00C8FF !important;
+  border: 1px solid rgba(0, 200, 255, 0.35);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.btn-outline:hover {
+  background: rgba(0, 200, 255, 0.12);
+  color: #FFFFFF !important;
+  border-color: #00C8FF;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0, 200, 255, 0.25);
+}
+
+.btn-glow {
+  position: relative;
+}
+
+.btn-glow::after {
+  content: '';
+  position: absolute;
+  top: -1px; left: -1px; right: -1px; bottom: -1px;
+  border-radius: 4px;
+  background: linear-gradient(135deg, rgba(0,200,255,0.4), rgba(0,255,157,0.4));
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.btn-glow:hover::after {
+  opacity: 1;
+}
+
+.btn-sm {
+  padding: 0.65rem 1.35rem;
+  font-size: 0.85rem;
+}
+
+.btn-lg {
+  padding: 1.1rem 2.25rem;
+  font-size: 1.05rem;
+}
+
+/* ── Refactorización de Subpage Header & Buttons ── */
+.subpage-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(2, 12, 27, 0.92);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(0, 200, 255, 0.2);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
+  padding: 0.85rem 0;
+}
+
+.subpage-nav-container {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 var(--sp-md);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2.5rem;
+}
+
+.subpage-logo-link {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  text-decoration: none;
+  transition: transform var(--t-fast) ease;
+}
+
+.subpage-logo-link:hover {
+  transform: scale(1.02);
+}
+
+.subpage-logo-img {
+  height: 64px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 12px rgba(0, 200, 255, 0.35));
+}
+
+.subpage-logo-tagline {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--c-muted);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border-left: 1px solid rgba(0, 200, 255, 0.3);
+  padding-left: 0.85rem;
+  line-height: 1.35;
+}
+
+.subpage-nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.subpage-nav-link {
+  font-family: var(--font-display, 'Clash Display', sans-serif);
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--c-primary);
+  text-decoration: none;
+  padding: 0.5rem 0.85rem;
+  border-radius: 4px;
+  letter-spacing: 0.04em;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.subpage-nav-link:hover {
+  color: var(--c-cyan);
+  background: var(--c-cyan-soft);
+  text-shadow: 0 0 10px rgba(0, 200, 255, 0.5);
+}
+
+.subpage-nav-link.active {
+  color: var(--c-cyan);
+  font-weight: 600;
+}
+
+.subpage-nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 0.85rem;
+  right: 0.85rem;
+  height: 2px;
+  background: var(--c-cyan);
+  box-shadow: 0 0 10px var(--c-cyan);
+  border-radius: 2px;
+}
+
+
+.subpage-cta-btn {
+  background: rgba(0, 200, 255, 0.12);
+  color: #00C8FF !important;
+  font-family: var(--font-display, 'Clash Display', sans-serif);
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.65rem 1.4rem;
+  border-radius: 6px !important;
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border: 1px solid rgba(0, 200, 255, 0.4);
+  box-shadow: 0 2px 10px rgba(0, 200, 255, 0.15);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+
+
+
+
+
+/* ── Full-Width Subpage Hero Zone ── */
+.subpage-hero-zone {
+  width: 100%;
+  background: radial-gradient(circle at 50% 0%, rgba(0, 200, 255, 0.16) 0%, rgba(4, 21, 38, 0.92) 55%, var(--c-bg) 100%);
+  border-bottom: 1px solid rgba(0, 200, 255, 0.2);
+  padding: 4rem 0 4.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.subpage-hero-zone::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: radial-gradient(rgba(0, 200, 255, 0.08) 1px, transparent 1px);
+  background-size: 32px 32px;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+/* Breadcrumbs Pills Estilizadas */
+.breadcrumb-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  background: rgba(7, 30, 51, 0.65);
+  border: 1px solid rgba(0, 200, 255, 0.2);
+  padding: 0.45rem 1.25rem;
+  border-radius: 4px;
+  margin-bottom: 2.25rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+}
+
+.breadcrumb-link {
+  color: var(--c-muted);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  transition: color var(--t-fast) ease;
+}
+
+.breadcrumb-link:hover {
+  color: var(--c-cyan);
+}
+
+.breadcrumb-sep {
+  color: var(--c-cyan);
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+.breadcrumb-current {
+  color: var(--c-cyan);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.subpage-hero-title {
+  font-family: var(--font-display, 'Clash Display', sans-serif);
+  font-size: clamp(2.6rem, 4.8vw, 4rem);
+  color: #FFFFFF;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.35rem;
+  text-shadow: 0 0 30px rgba(0, 200, 255, 0.25);
+}
+
+.subpage-hero-desc {
+  font-size: var(--fs-md);
+  color: var(--c-text);
+  max-width: 900px;
+  line-height: 1.7;
+  margin-bottom: 0;
+}
+
+/* Subpage Card Bezel & Panels */
+.subpage-panel {
+  background: var(--c-bg-card);
+  border: 1px solid rgba(0, 200, 255, 0.25);
+  border-radius: 4px !important;
+  padding: 2.25rem;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.4);
+}
+
+
+
+
+
+/* === PERCEPTIBLE SUBTLE RADIUS SYSTEM (8px/10px) === */
+.btn, .btn-primary, .btn-outline, .subpage-cta-btn, .tech-tab-btn {
+  border-radius: 8px !important;
+}
+
+.card, .tech-card, .product-card, .info-card, .subpage-panel, .breadcrumb-nav, .hero-card, .consultor-card {
+  border-radius: 10px !important;
+}
+
+.card-badge, .section-tag, .hero-badge {
+  border-radius: 6px !important;
+}
+
+
+
+/* === FLUID BORDERLESS IMMERSIVE LAYOUT V3 === */
+
+/* Erradicar el aplastamiento y corte inferior de textos */
+.tech-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2.5rem;
+  align-items: stretch;
+}
+
+.tech-card {
+  background: rgba(7, 30, 51, 0.45) !important;
+  border: 1px solid rgba(0, 200, 255, 0.18) !important;
+  border-radius: 8px !important;
+  padding: 2rem 1.75rem 2.25rem !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  overflow: visible !important;
+  backdrop-filter: blur(16px) saturate(140%) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.tech-card:hover {
+  background: rgba(10, 36, 64, 0.65) !important;
+  border-color: rgba(0, 200, 255, 0.45) !important;
+  transform: translateY(-3px) !important;
+  box-shadow: 0 8px 30px rgba(0, 200, 255, 0.2) !important;
+}
+
+.tech-card-link-block {
+  display: flex !important;
+  flex-direction: column !important;
+  flex-grow: 1 !important;
+  margin-bottom: 0.75rem;
+}
+
+.tech-card-desc {
+  font-size: 0.925rem !important;
+  color: var(--c-text) !important;
+  line-height: 1.6 !important;
+  margin-bottom: 1.25rem !important;
+}
+
+.tech-card-features {
+  margin-bottom: 1.5rem !important;
+}
+
+.tech-card-features li {
+  font-size: 0.875rem !important;
+  color: var(--c-primary) !important;
+  padding: 0.35rem 0 !important;
+}
+
+.tech-card-action-bar {
+  margin-top: auto !important;
+  padding: 0.75rem 1.15rem !important;
+  background: rgba(0, 200, 255, 0.1) !important;
+  border: 1px solid rgba(0, 200, 255, 0.3) !important;
+  border-radius: 6px !important;
+  color: #00C8FF !important;
+  font-family: var(--font-display, 'Clash Display', sans-serif) !important;
+  font-weight: 600 !important;
+  font-size: 0.85rem !important;
+  letter-spacing: 0.04em !important;
+}
+
+.tech-card-disclaimer {
+  font-size: 0.78rem !important;
+  color: var(--c-muted) !important;
+  margin-top: 1rem !important;
+  padding-top: 0.75rem !important;
+  border-top: 1px solid rgba(0, 200, 255, 0.12) !important;
+  line-height: 1.45 !important;
+  font-style: italic !important;
+}
+
+/* Disolver límites rígidos en la sección del Explorador Tecnológico */
+#clinical-selector-section {
+  background: transparent !important;
+  border-top: 1px solid rgba(0, 200, 255, 0.15) !important;
+  border-bottom: 1px solid rgba(0, 200, 255, 0.15) !important;
+  position: relative;
+}
+
+.clinical-double-bezel {
+  background: rgba(7, 30, 51, 0.4) !important;
+  border: 1px solid rgba(0, 200, 255, 0.2) !important;
+  border-radius: 10px !important;
+  backdrop-filter: blur(16px) !important;
+}
+
+
+
+
+
+/* === DELEUZIAN RHIZOMATIC CANONICAL VAULT LAYOUT ===
+   Basado en la ontología del vault (c-001558, c-001555):
+   1. Rechazo del modelo arbóreo-raíz (cajas cerradas, jerarquías raras).
+   2. Cartografía de Red Abierta / Espacio Liso (Smooth Space).
+   3. Conjunción "Y... Y... Y..." (nodos de mesetas interconectadas).
+   -------------------------------------------------------------------------- */
+
+/* Grilla Simétrica de 2x2 en Desktop y Matriz Fluida */
+.tech-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 4.5rem 4rem !important;
+  position: relative !important;
+}
+
+@media (max-width: 900px) {
+  .tech-grid {
+    grid-template-columns: 1fr !important;
+    gap: 3.5rem !important;
+  }
+}
+
+/* Erradicación total del 'calco' y del encajonamiento en cajas */
+.tech-card {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  position: relative !important;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* Línea de fuga bioluminiscente superior (meseta abierta) */
+.tech-card::before {
+  content: '' !important;
+  position: absolute !important;
+  top: -1.25rem !important; left: 0 !important; right: 0 !important; height: 1px !important;
+  background: linear-gradient(90deg, rgba(0, 200, 255, 0.4) 0%, rgba(0, 200, 255, 0.05) 80%, transparent 100%) !important;
+}
+
+.tech-card:hover {
+  transform: translateY(-3px) !important;
+}
+
+.tech-card-img {
+  width: 100% !important;
+  height: 230px !important;
+  object-fit: cover !important;
+  border-radius: 8px !important;
+  border: 1px solid rgba(0, 200, 255, 0.2) !important;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.55) !important;
+  margin-bottom: 1.5rem !important;
+  transition: all 0.35s ease !important;
+}
+
+.tech-card-link-block:hover .tech-card-img {
+  border-color: #00C8FF !important;
+  box-shadow: 0 14px 45px rgba(0, 200, 255, 0.25) !important;
+}
+
+.tech-card-title {
+  font-family: var(--font-display, 'Clash Display', sans-serif) !important;
+  font-size: 1.65rem !important;
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+  margin-bottom: 0.75rem !important;
+  letter-spacing: -0.02em !important;
+}
+
+.tech-card-desc {
+  font-size: 0.95rem !important;
+  color: var(--c-text) !important;
+  line-height: 1.7 !important;
+  margin-bottom: 1.25rem !important;
+}
+
+.tech-card-features {
+  margin-bottom: 1.75rem !important;
+  border-left: 2px solid rgba(0, 200, 255, 0.25) !important;
+  padding-left: 1.1rem !important;
+  list-style: none !important;
+}
+
+.tech-card-features li {
+  font-size: 0.875rem !important;
+  color: var(--c-primary) !important;
+  padding: 0.3rem 0 !important;
+}
+
+.tech-card-action-bar {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.75rem !important;
+  background: rgba(0, 200, 255, 0.08) !important;
+  border: 1px solid rgba(0, 200, 255, 0.35) !important;
+  border-radius: 6px !important;
+  padding: 0.7rem 1.35rem !important;
+  color: #00C8FF !important;
+  font-family: var(--font-display, 'Clash Display', sans-serif) !important;
+  font-weight: 600 !important;
+  font-size: 0.875rem !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+}
+
+/* Espacio Liso Flotante del Explorador Tecnológico */
+#clinical-selector-section {
+  background: radial-gradient(circle at 50% 50%, rgba(4, 21, 38, 0.85) 0%, var(--c-bg) 100%) !important;
+  border-top: 1px solid rgba(0, 200, 255, 0.15) !important;
+  border-bottom: 1px solid rgba(0, 200, 255, 0.15) !important;
+  padding: 6.5rem 0 !important;
+}
+
+.clinical-double-bezel {
+  background: transparent !important;
+  border: none !important;
+  border-top: 1px solid rgba(0, 200, 255, 0.2) !important;
+  border-bottom: 1px solid rgba(0, 200, 255, 0.2) !important;
+  border-radius: 0 !important;
+  padding: 3.5rem 0 !important;
+  box-shadow: none !important;
 }

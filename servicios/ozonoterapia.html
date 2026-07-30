@@ -30,37 +30,48 @@
   <link rel="stylesheet" href="../css/style.css?v=9">
 </head>
 <body>
-  <header class="header" id="header">
-    <div class="container header-inner">
-      <a href="../index.html" class="logo-link">
-        <img src="../assets/img/logo.webp" alt="Vitametric Logo" class="logo-img" width="180" height="71" fetchpriority="high">
+    <header class="subpage-navbar" id="header">
+    <div class="subpage-nav-container">
+      <a href="../index.html" class="subpage-logo-link">
+        <img src="../assets/img/logo.webp" alt="Vitametric Logo" class="subpage-logo-img" width="240" height="95" fetchpriority="high">
+        <span class="subpage-logo-tagline">Centro de Salud<br>Preventiva CDMX</span>
       </a>
-      <nav class="nav">
-        <ul class="nav-list">
-          <li><a href="../index.html" class="nav-link">Inicio</a></li>
-          <li><a href="../index.html#tecnologias" class="nav-link active">Tecnologías</a></li>
-          <li><a href="../index.html#productos" class="nav-link">Productos</a></li>
-          <li><a href="../index.html#contacto" class="nav-link">Contacto</a></li>
+      <nav>
+        <ul class="subpage-nav-menu">
+          <li><a href="../index.html" class="subpage-nav-link">Inicio</a></li>
+          <li><a href="../index.html#tecnologias" class="subpage-nav-link active">Tecnologías</a></li>
+          <li><a href="../index.html#productos" class="subpage-nav-link">Productos</a></li>
+          <li><a href="../index.html#contacto" class="subpage-nav-link">Contacto</a></li>
         </ul>
       </nav>
-<a href="https://api.whatsapp.com/send?phone=525552150674&text=Consulta%20sobre%20Ozonoterapia" target="_blank" rel="noopener" class="btn btn-primary btn-glow">Agendar Valoración</a>
+      <a href="https://api.whatsapp.com/send?phone=525552150674&text=Consulta%20sobre%20Servicios%20en%20Vitametric" target="_blank" rel="noopener" class="subpage-cta-btn">
+        <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        Agendar Consulta
+      </a>
     </div>
   </header>
 
-  <main style="padding-top: calc(var(--nav-h) + 2rem); padding-bottom: 5rem;">
+  
+  <!-- Full-Width Subpage Hero Zone (Zona Azul Bioeléctrica Extendida) -->
+  <section class="subpage-hero-zone">
     <div class="container">
-      <div style="margin-bottom: 2rem; font-size: var(--fs-sm); color: var(--c-muted);">
-        <a href="../index.html">Inicio</a> &nbsp;/&nbsp; <a href="../index.html#tecnologias">Tecnologías</a> &nbsp;/&nbsp; <span style="color: var(--c-cyan);">Ozonoterapia</span>
-      </div>
+      <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+        <a href="../index.html" class="breadcrumb-link">Inicio</a>
+        <span class="breadcrumb-sep">›</span>
+        <a href="../index.html#tecnologias" class="breadcrumb-link">Tecnologías</a>
+        <span class="breadcrumb-sep">›</span>
+        <span class="breadcrumb-current">Ozonoterapia Médica</span>
+      </nav>
 
-      <div style="background: var(--c-bg-surface); border: 1px solid var(--c-border); border-radius: var(--radius-xl); padding: 3rem; margin-bottom: 3rem; box-shadow: var(--shadow-lg);">
-        <span class="card-badge" style="background: var(--c-cyan-soft); color: var(--c-cyan); border: 1px solid var(--c-border); font-weight: 600; padding: 0.25rem 0.75rem; border-radius: var(--radius-full); font-size: 0.8rem; text-transform: uppercase;">Oxigenación Tisular</span>
-        <h1 style="font-size: var(--fs-3xl); color: var(--c-heading); margin-top: 1rem; margin-bottom: 1rem;">Ozonoterapia Médica</h1>
-        <p style="font-size: var(--fs-md); color: var(--c-text); max-width: 850px; line-height: 1.7;">
-          Aplicación médica de mezclas de oxígeno-ozono (O3) en dosis terapéuticas micro-reguladas para activar la microcirculación y la modulación del estrés oxidativo.
-        </p>
-      </div>
+      <div style="display: inline-block; background: var(--c-cyan-soft); border: 1px solid var(--c-cyan); color: var(--c-cyan); padding: 4px 14px; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; border-radius: 6px; margin-bottom: 1.25rem;">Oxigenación Tisular</div>
+      
+      <h1 class="subpage-hero-title">Ozonoterapia Médica</h1>
+      <p class="subpage-hero-desc">Aplicación médica de mezclas de oxígeno-ozono (O3) en dosis terapéuticas micro-reguladas para activar la microcirculación y la modulación del estrés oxidativo.</p>
+    </div>
+  </section>
 
+  <main style="padding-top: 3rem; padding-bottom: 5rem; background: var(--c-bg); color: var(--c-text); font-family: var(--font);">
+    <div class="container">
       <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2.5rem;">
         <article style="background: var(--c-bg-card); border: 1px solid var(--c-border); border-radius: var(--radius-lg); padding: 2.5rem;">
           <img src="../assets/img/technology/ozonoterapia.jpg" alt="Oxigenación Tisular y Ozonoterapia Médica" style="width: 100%; height: 320px; object-fit: cover; border-radius: var(--radius-md); margin-bottom: 2rem; border: 1px solid var(--c-border); box-shadow: var(--shadow-md);">
