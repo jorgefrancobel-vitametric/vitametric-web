@@ -93,7 +93,7 @@
   --radius-md:   6px;
   --radius-lg:   6px;
   --radius-xl:   8px;
-  --radius-full: 4px;
+  --radius-full: 8px;
 
   /* Shadows — glowing */
   --shadow-sm:   0 1px 3px rgba(0,0,0,0.4), 0 0 8px rgba(0,200,255,0.05);
@@ -1409,18 +1409,3 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 
-
-/* ERRADICACION GLOBAL DE BORDES REDONDEADOS TIPO IA */
-:root {
-  --radius-sm: 2px !important;
-  --radius-md: 4px !important;
-  --radius-lg: 4px !important;
-  --radius-xl: 4px !important;
-  --radius-full: 4px !important;
-}
-
-.btn, .btn-primary, .btn-secondary, .card, .card-badge, .header, 
-.tech-card, .product-card, .trust-item, .sticky-cta-bar, .hero-badge, 
-.hero-card, div, button, img, span {
-  border-radius: 4px !important;
-}

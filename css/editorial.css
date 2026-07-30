@@ -261,18 +261,3 @@ body::after {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-
-/* ERRADICACION GLOBAL DE BORDES REDONDEADOS TIPO IA */
-:root {
-  --radius-sm: 2px !important;
-  --radius-md: 4px !important;
-  --radius-lg: 4px !important;
-  --radius-xl: 4px !important;
-  --radius-full: 4px !important;
-}
-
-.btn, .btn-primary, .btn-secondary, .card, .card-badge, .header, 
-.tech-card, .product-card, .trust-item, .sticky-cta-bar, .hero-badge, 
-.hero-card, div, button, img, span {
-  border-radius: 4px !important;
-}
