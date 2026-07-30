@@ -178,48 +178,53 @@ h1, h2, h3, h4, h5, h6 {
   white-space: nowrap !important; border: 0 !important;
 }
 
-/* ── Buttons ── */
+/* ── Buttons (Canon Jorge — Rizomatic) ── */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  font-family: var(--font);
+  gap: 0.65rem;
+  font-family: var(--font-display, 'Clash Display', var(--font));
   font-weight: var(--fw-semibold);
   font-size: var(--fs-sm);
-  border: 2px solid transparent;
-  border-radius: var(--radius-md);
+  letter-spacing: 0.05em;
+  padding: 0.85rem 1.85rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
   cursor: pointer;
   transition: all var(--t-base) var(--ease-out);
   white-space: nowrap;
   text-decoration: none;
   line-height: 1;
+  text-transform: uppercase;
 }
 .btn-primary {
-  background: linear-gradient(135deg, var(--c-cyan) 0%, #0099EE 100%);
-  color: var(--c-bg);
-  border-color: transparent;
+  background: linear-gradient(135deg, #00C8FF 0%, #0088CC 100%);
+  color: #020C1B;
+  border-color: rgba(255,255,255,0.25);
   font-weight: var(--fw-bold);
-  letter-spacing: 0.01em;
+  box-shadow: 0 4px 18px rgba(0,200,255,0.28);
 }
 .btn-primary:hover {
-  color: var(--c-bg);
+  color: #020C1B;
   transform: translateY(-2px);
-  box-shadow: var(--glow-cyan);
+  box-shadow: 0 6px 25px rgba(0,200,255,0.45);
 }
 .btn-outline {
-  background: transparent;
+  background: rgba(7,30,51,0.6);
   color: var(--c-cyan);
-  border-color: var(--c-cyan);
+  border-color: rgba(0,200,255,0.35);
+  backdrop-filter: blur(10px);
 }
 .btn-outline:hover {
-  background: var(--c-cyan-soft);
-  color: var(--c-cyan);
+  background: rgba(0,200,255,0.12);
+  color: #FFFFFF;
+  border-color: var(--c-cyan);
   transform: translateY(-2px);
-  box-shadow: 0 0 16px rgba(0,200,255,0.2);
+  box-shadow: 0 4px 20px rgba(0,200,255,0.25);
 }
-.btn-sm  { padding: 0.625rem 1.25rem; }
-.btn-lg  { padding: 0.875rem 2rem; font-size: var(--fs-base); }
+.btn-sm  { padding: 0.65rem 1.35rem; font-size: 0.85rem; }
+.btn-lg  { padding: 1.1rem 2.25rem; font-size: 1.05rem; }
 .btn-block { width: 100%; }
 .btn:focus-visible { outline: 2px solid var(--c-cyan); outline-offset: 2px; }
 
@@ -1408,123 +1413,293 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 0 0 16px rgba(0, 200, 255, 0.4);
 }
 
+/* ══════════════════════════════════════════════════════════
+   RIZOMATIC DESIGN SYSTEM — Chunk 1
+   Fluid boundaries, hairline delimiters, no rigid boxes
+   ══════════════════════════════════════════════════════════ */
 
-
-
-/* ERRADICACION TOTAL DE BORDES REDONDEADOS - SEGMENTACION HAIRLINE */
-:root {
-  --radius-sm: 0px !important;
-  --radius-md: 0px !important;
-  --radius-lg: 0px !important;
-  --radius-xl: 0px !important;
-  --radius-full: 9999px;
+/* ── Hairline Separator ── */
+.rizo-hairline {
+  border: none;
+  border-top: 1px solid rgba(0, 200, 255, 0.15);
+  margin: 2.5rem 0;
 }
 
-/* Enfoque de segmentacion por Hairlines continuas */
-.tech-card, .card, .product-card, .trust-item, .header, .footer, article, section {
-  border: 1px solid rgba(0, 200, 255, 0.2) !important;
+/* ── Micro-Section: each h2 gets its own visual space ── */
+.rizo-micro-section {
+  position: relative;
+  padding: 2rem 2rem 2rem 2.5rem;
+  margin-bottom: 2rem;
+  background: rgba(0, 200, 255, 0.03);
+  border-left: 3px solid var(--c-cyan);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
 }
 
-
-/* PRESERVACION GEOMETRICA DE ELEMENTOS CIRCULARES */
-.play-btn-circle, .pulse-dot, .avatar, .circle-icon, .status-dot,
-[style*="border-radius: 50%"], [style*="border-radius:50%"], [style*="border-radius: 100%"] {
-  border-radius: 50% !important;
+.rizo-micro-section h2 {
+  font-family: var(--font-display, 'Clash Display', var(--font));
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-bold);
+  color: var(--c-cyan);
+  margin-bottom: 1rem;
+  letter-spacing: -0.01em;
 }
 
-/* Tarjetas y Paneles Estructurales Rectos (Segmentación Reticular) */
+.rizo-micro-section p,
+.rizo-micro-section ul {
+  color: var(--c-text);
+  line-height: 1.75;
+}
 
+/* ── Micro-Section with SVG icon ── */
+.rizo-micro-section--icon {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0 1.25rem;
+  align-items: start;
+}
 
-
-
-
-
-
-/*    VITAMETRIC — Deep Design System v3 (Substantial UI Optimization)
-   
-/* ── Sistema de Botones de Alta Fidelidad Clínica ── */
-.btn {
-  display: inline-flex;
+.rizo-micro-section--icon .rizo-section-icon {
+  grid-row: 1 / -1;
+  width: 40px;
+  height: 40px;
+  display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.65rem;
-  font-family: var(--font-display, 'Clash Display', sans-serif);
-  font-weight: 600;
-  font-size: 0.95rem;
-  letter-spacing: 0.05em;
-  padding: 0.85rem 1.85rem;
-  border-radius: 4px !important;
-  border: 1px solid transparent;
-  cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  white-space: nowrap;
-  text-decoration: none;
-  line-height: 1;
-  box-sizing: border-box;
+  background: rgba(0, 200, 255, 0.08);
+  border: 1px solid rgba(0, 200, 255, 0.2);
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+.rizo-micro-section--icon .rizo-section-icon svg {
+  width: 20px;
+  height: 20px;
+  stroke: var(--c-cyan);
+  fill: none;
+}
+
+/* ── Micro-Section color variants ── */
+.rizo-micro-section--green {
+  background: rgba(0, 255, 157, 0.03);
+  border-left-color: var(--c-green);
+}
+
+.rizo-micro-section--green h2 {
+  color: var(--c-green);
+}
+
+.rizo-micro-section--green .rizo-section-icon {
+  background: rgba(0, 255, 157, 0.08);
+  border-color: rgba(0, 255, 157, 0.2);
+}
+
+.rizo-micro-section--green .rizo-section-icon svg {
+  stroke: var(--c-green);
+}
+
+/* ── Sidebar Block (compact, rizomatic) ── */
+.rizo-sidebar-block {
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  background: rgba(0, 200, 255, 0.03);
+  border-top: 1px solid rgba(0, 200, 255, 0.15);
+}
+
+.rizo-sidebar-block h3 {
+  font-family: var(--font-display, 'Clash Display', var(--font));
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--c-heading);
   text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
 }
 
-.btn-primary {
-  background: linear-gradient(135deg, #00C8FF 0%, #0088CC 100%);
-  color: #020C1B !important;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  font-weight: 700;
-  box-shadow: 0 4px 18px rgba(0, 200, 255, 0.28);
+.rizo-sidebar-block h3 svg {
+  width: 16px;
+  height: 16px;
+  stroke: var(--c-cyan);
+  fill: none;
+  flex-shrink: 0;
 }
 
-.btn-primary:hover {
-  color: #020C1B !important;
-  transform: translateY(-2px);
-  background: linear-gradient(135deg, #00D8FF 0%, #0099EE 100%);
-  box-shadow: 0 6px 25px rgba(0, 200, 255, 0.45);
+.rizo-sidebar-block p,
+.rizo-sidebar-block li {
+  font-size: var(--fs-sm);
+  color: var(--c-muted);
+  line-height: 1.6;
 }
 
-.btn-outline {
-  background: rgba(7, 30, 51, 0.6);
-  color: #00C8FF !important;
-  border: 1px solid rgba(0, 200, 255, 0.35);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+.rizo-sidebar-block ul {
+  list-style: none;
 }
 
-.btn-outline:hover {
-  background: rgba(0, 200, 255, 0.12);
-  color: #FFFFFF !important;
-  border-color: #00C8FF;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 20px rgba(0, 200, 255, 0.25);
+.rizo-sidebar-block li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(0, 200, 255, 0.07);
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
 }
 
-.btn-glow {
-  position: relative;
+.rizo-sidebar-block li:last-child {
+  border-bottom: none;
 }
 
-.btn-glow::after {
-  content: '';
-  position: absolute;
-  top: -1px; left: -1px; right: -1px; bottom: -1px;
-  border-radius: 4px;
-  background: linear-gradient(135deg, rgba(0,200,255,0.4), rgba(0,255,157,0.4));
-  z-index: -1;
+.rizo-sidebar-block li strong {
+  color: var(--c-text);
+  font-weight: var(--fw-medium);
+}
+
+/* ── Benefits Hybrid: SVG check + micro-layout ── */
+.rizo-benefits {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.rizo-benefit-item {
+  padding: 1.25rem 0;
+  border-bottom: 1px solid rgba(0, 200, 255, 0.1);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0 1rem;
+  align-items: start;
+}
+
+.rizo-benefit-item:last-child {
+  border-bottom: none;
+}
+
+.rizo-benefit-check {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 255, 157, 0.1);
+  border: 1px solid rgba(0, 255, 157, 0.25);
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.rizo-benefit-check svg {
+  width: 14px;
+  height: 14px;
+  stroke: var(--c-green);
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.rizo-benefit-content strong {
+  display: block;
+  font-size: var(--fs-base);
+  font-weight: var(--fw-semibold);
+  color: var(--c-heading);
+  margin-bottom: 0.35rem;
+}
+
+.rizo-benefit-content span {
+  font-size: var(--fs-sm);
+  color: var(--c-muted);
+  line-height: 1.6;
+}
+
+/* ── Sticky CTA (WhatsApp) ── */
+.sticky-cta {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 900;
   opacity: 0;
-  transition: opacity 0.25s ease;
+  transform: translateY(20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
 }
 
-.btn-glow:hover::after {
+.sticky-cta.visible {
   opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
-.btn-sm {
-  padding: 0.65rem 1.35rem;
-  font-size: 0.85rem;
+.sticky-cta a {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.85rem 1.85rem;
+  background: linear-gradient(135deg, #00C8FF 0%, #0088CC 100%);
+  color: #020C1B;
+  font-family: var(--font-display, 'Clash Display', var(--font));
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-sm);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255,255,255,0.25);
+  box-shadow: 0 4px 24px rgba(0, 200, 255, 0.35);
+  transition: all var(--t-base) var(--ease-out);
 }
 
-.btn-lg {
-  padding: 1.1rem 2.25rem;
-  font-size: 1.05rem;
+.sticky-cta a:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0, 200, 255, 0.5);
 }
 
-/* ── Refactorización de Subpage Header & Buttons ── */
+.sticky-cta a svg {
+  width: 18px;
+  height: 18px;
+  fill: #020C1B;
+}
+
+/* ── Subpage Layout ── */
+.subpage-hero-badge {
+  display: inline-block;
+  background: var(--c-cyan-soft);
+  border: 1px solid rgba(0, 200, 255, 0.3);
+  color: var(--c-cyan);
+  padding: 0.3rem 1rem;
+  font-size: 0.8rem;
+  font-weight: var(--fw-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border-radius: var(--radius-sm);
+  margin-bottom: 1.25rem;
+}
+
+.subpage-main {
+  padding: 3rem 0 5rem;
+  background: var(--c-bg);
+}
+
+.subpage-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+.subpage-content {
+  min-width: 0;
+}
+
+.subpage-sidebar {
+  min-width: 0;
+}
+
+.subpage-inline-cta {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+/* ── Subpage Header ── */
 .subpage-navbar {
   position: sticky;
   top: 0;
@@ -1736,242 +1911,143 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 
-
-
-
-/* === PERCEPTIBLE SUBTLE RADIUS SYSTEM (8px/10px) === */
-.btn, .btn-primary, .btn-outline, .subpage-cta-btn, .tech-tab-btn {
-  border-radius: 8px !important;
-}
-
-.card, .tech-card, .product-card, .info-card, .subpage-panel, .breadcrumb-nav, .hero-card, .consultor-card {
-  border-radius: 10px !important;
-}
-
-.card-badge, .section-tag, .hero-badge {
-  border-radius: 6px !important;
-}
-
-
-
-/* === FLUID BORDERLESS IMMERSIVE LAYOUT V3 === */
-
-/* Erradicar el aplastamiento y corte inferior de textos */
+/* ── Tech Grid & Cards (Homepage) ── */
 .tech-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2.5rem;
-  align-items: stretch;
-}
-
-.tech-card {
-  background: rgba(7, 30, 51, 0.45) !important;
-  border: 1px solid rgba(0, 200, 255, 0.18) !important;
-  border-radius: 8px !important;
-  padding: 2rem 1.75rem 2.25rem !important;
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: space-between !important;
-  overflow: visible !important;
-  backdrop-filter: blur(16px) saturate(140%) !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
-}
-
-.tech-card:hover {
-  background: rgba(10, 36, 64, 0.65) !important;
-  border-color: rgba(0, 200, 255, 0.45) !important;
-  transform: translateY(-3px) !important;
-  box-shadow: 0 8px 30px rgba(0, 200, 255, 0.2) !important;
-}
-
-.tech-card-link-block {
-  display: flex !important;
-  flex-direction: column !important;
-  flex-grow: 1 !important;
-  margin-bottom: 0.75rem;
-}
-
-.tech-card-desc {
-  font-size: 0.925rem !important;
-  color: var(--c-text) !important;
-  line-height: 1.6 !important;
-  margin-bottom: 1.25rem !important;
-}
-
-.tech-card-features {
-  margin-bottom: 1.5rem !important;
-}
-
-.tech-card-features li {
-  font-size: 0.875rem !important;
-  color: var(--c-primary) !important;
-  padding: 0.35rem 0 !important;
-}
-
-.tech-card-action-bar {
-  margin-top: auto !important;
-  padding: 0.75rem 1.15rem !important;
-  background: rgba(0, 200, 255, 0.1) !important;
-  border: 1px solid rgba(0, 200, 255, 0.3) !important;
-  border-radius: 6px !important;
-  color: #00C8FF !important;
-  font-family: var(--font-display, 'Clash Display', sans-serif) !important;
-  font-weight: 600 !important;
-  font-size: 0.85rem !important;
-  letter-spacing: 0.04em !important;
-}
-
-.tech-card-disclaimer {
-  font-size: 0.78rem !important;
-  color: var(--c-muted) !important;
-  margin-top: 1rem !important;
-  padding-top: 0.75rem !important;
-  border-top: 1px solid rgba(0, 200, 255, 0.12) !important;
-  line-height: 1.45 !important;
-  font-style: italic !important;
-}
-
-/* Disolver límites rígidos en la sección del Explorador Tecnológico */
-#clinical-selector-section {
-  background: transparent !important;
-  border-top: 1px solid rgba(0, 200, 255, 0.15) !important;
-  border-bottom: 1px solid rgba(0, 200, 255, 0.15) !important;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4.5rem 4rem;
   position: relative;
-}
-
-.clinical-double-bezel {
-  background: rgba(7, 30, 51, 0.4) !important;
-  border: 1px solid rgba(0, 200, 255, 0.2) !important;
-  border-radius: 10px !important;
-  backdrop-filter: blur(16px) !important;
-}
-
-
-
-
-
-/* === DELEUZIAN RHIZOMATIC CANONICAL VAULT LAYOUT ===
-   Basado en la ontología del vault (c-001558, c-001555):
-   1. Rechazo del modelo arbóreo-raíz (cajas cerradas, jerarquías raras).
-   2. Cartografía de Red Abierta / Espacio Liso (Smooth Space).
-   3. Conjunción "Y... Y... Y..." (nodos de mesetas interconectadas).
-   -------------------------------------------------------------------------- */
-
-/* Grilla Simétrica de 2x2 en Desktop y Matriz Fluida */
-.tech-grid {
-  display: grid !important;
-  grid-template-columns: repeat(2, 1fr) !important;
-  gap: 4.5rem 4rem !important;
-  position: relative !important;
 }
 
 @media (max-width: 900px) {
   .tech-grid {
-    grid-template-columns: 1fr !important;
-    gap: 3.5rem !important;
+    grid-template-columns: 1fr;
+    gap: 3.5rem;
   }
 }
 
-/* Erradicación total del 'calco' y del encajonamiento en cajas */
 .tech-card {
-  background: transparent !important;
-  border: none !important;
-  border-radius: 0 !important;
-  padding: 0 !important;
-  box-shadow: none !important;
-  backdrop-filter: none !important;
-  position: relative !important;
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  background: transparent;
+  border: none;
+  padding: 0;
+  position: relative;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Línea de fuga bioluminiscente superior (meseta abierta) */
 .tech-card::before {
-  content: '' !important;
-  position: absolute !important;
-  top: -1.25rem !important; left: 0 !important; right: 0 !important; height: 1px !important;
-  background: linear-gradient(90deg, rgba(0, 200, 255, 0.4) 0%, rgba(0, 200, 255, 0.05) 80%, transparent 100%) !important;
+  content: '';
+  position: absolute;
+  top: -1.25rem; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, rgba(0, 200, 255, 0.4) 0%, rgba(0, 200, 255, 0.05) 80%, transparent 100%);
 }
 
 .tech-card:hover {
-  transform: translateY(-3px) !important;
+  transform: translateY(-3px);
 }
 
 .tech-card-img {
-  width: 100% !important;
-  height: 230px !important;
-  object-fit: cover !important;
-  border-radius: 8px !important;
-  border: 1px solid rgba(0, 200, 255, 0.2) !important;
-  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.55) !important;
-  margin-bottom: 1.5rem !important;
-  transition: all 0.35s ease !important;
+  width: 100%;
+  height: 230px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 200, 255, 0.2);
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.55);
+  margin-bottom: 1.5rem;
+  transition: all 0.35s ease;
+}
+
+.tech-card-link-block {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  margin-bottom: 0.75rem;
 }
 
 .tech-card-link-block:hover .tech-card-img {
-  border-color: #00C8FF !important;
-  box-shadow: 0 14px 45px rgba(0, 200, 255, 0.25) !important;
+  border-color: #00C8FF;
+  box-shadow: 0 14px 45px rgba(0, 200, 255, 0.25);
 }
 
 .tech-card-title {
-  font-family: var(--font-display, 'Clash Display', sans-serif) !important;
-  font-size: 1.65rem !important;
-  color: #FFFFFF !important;
-  font-weight: 700 !important;
-  margin-bottom: 0.75rem !important;
-  letter-spacing: -0.02em !important;
+  font-family: var(--font-display, 'Clash Display', sans-serif);
+  font-size: 1.65rem;
+  color: #FFFFFF;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.02em;
 }
 
 .tech-card-desc {
-  font-size: 0.95rem !important;
-  color: var(--c-text) !important;
-  line-height: 1.7 !important;
-  margin-bottom: 1.25rem !important;
+  font-size: 0.95rem;
+  color: var(--c-text);
+  line-height: 1.7;
+  margin-bottom: 1.25rem;
 }
 
 .tech-card-features {
-  margin-bottom: 1.75rem !important;
-  border-left: 2px solid rgba(0, 200, 255, 0.25) !important;
-  padding-left: 1.1rem !important;
-  list-style: none !important;
+  margin-bottom: 1.75rem;
+  border-left: 2px solid rgba(0, 200, 255, 0.25);
+  padding-left: 1.1rem;
+  list-style: none;
 }
 
 .tech-card-features li {
-  font-size: 0.875rem !important;
-  color: var(--c-primary) !important;
-  padding: 0.3rem 0 !important;
+  font-size: 0.875rem;
+  color: var(--c-primary);
+  padding: 0.3rem 0;
 }
 
 .tech-card-action-bar {
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 0.75rem !important;
-  background: rgba(0, 200, 255, 0.08) !important;
-  border: 1px solid rgba(0, 200, 255, 0.35) !important;
-  border-radius: 6px !important;
-  padding: 0.7rem 1.35rem !important;
-  color: #00C8FF !important;
-  font-family: var(--font-display, 'Clash Display', sans-serif) !important;
-  font-weight: 600 !important;
-  font-size: 0.875rem !important;
-  letter-spacing: 0.05em !important;
-  text-transform: uppercase !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: rgba(0, 200, 255, 0.08);
+  border: 1px solid rgba(0, 200, 255, 0.35);
+  border-radius: 6px;
+  padding: 0.7rem 1.35rem;
+  color: #00C8FF;
+  font-family: var(--font-display, 'Clash Display', sans-serif);
+  font-weight: 600;
+  font-size: 0.875rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
-/* Espacio Liso Flotante del Explorador Tecnológico */
+.tech-card-disclaimer {
+  font-size: 0.78rem;
+  color: var(--c-muted);
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(0, 200, 255, 0.12);
+  line-height: 1.45;
+  font-style: italic;
+}
+
+/* ── Clinical Selector Section ── */
 #clinical-selector-section {
-  background: radial-gradient(circle at 50% 50%, rgba(4, 21, 38, 0.85) 0%, var(--c-bg) 100%) !important;
-  border-top: 1px solid rgba(0, 200, 255, 0.15) !important;
-  border-bottom: 1px solid rgba(0, 200, 255, 0.15) !important;
-  padding: 6.5rem 0 !important;
+  background: radial-gradient(circle at 50% 50%, rgba(4, 21, 38, 0.85) 0%, var(--c-bg) 100%);
+  border-top: 1px solid rgba(0, 200, 255, 0.15);
+  border-bottom: 1px solid rgba(0, 200, 255, 0.15);
+  padding: 6.5rem 0;
+  position: relative;
 }
 
 .clinical-double-bezel {
-  background: transparent !important;
-  border: none !important;
-  border-top: 1px solid rgba(0, 200, 255, 0.2) !important;
-  border-bottom: 1px solid rgba(0, 200, 255, 0.2) !important;
-  border-radius: 0 !important;
-  padding: 3.5rem 0 !important;
-  box-shadow: none !important;
+  background: transparent;
+  border: none;
+  border-top: 1px solid rgba(0, 200, 255, 0.2);
+  border-bottom: 1px solid rgba(0, 200, 255, 0.2);
+  padding: 3.5rem 0;
 }
+
+/* ── Product Hero Image ── */
+.rizo-product-hero-img {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  display: block;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--c-border);
+}
+
+/* === END RIZOMATIC FOUNDATION === */

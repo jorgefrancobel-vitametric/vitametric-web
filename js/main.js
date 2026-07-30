@@ -467,6 +467,17 @@
     };
   }
 
+  function setupStickyCta() {
+    var stickyCta = document.querySelector('.sticky-cta');
+    if (!stickyCta) return;
+    function checkSticky() {
+      if (window.scrollY > 400) { stickyCta.classList.add('visible'); }
+      else { stickyCta.classList.remove('visible'); }
+    }
+    window.addEventListener('scroll', throttle(checkSticky, 100), { passive: true });
+    checkSticky();
+  }
+
   function init() {
     window.addEventListener('scroll', throttle(handleNavScroll, 16), { passive: true });
     setupActiveNavObserver();
@@ -479,6 +490,7 @@
     setupHeroParticles();
     setupCounters();
     setupLazyMap();
+    setupStickyCta();
     handleNavScroll();
   }
 

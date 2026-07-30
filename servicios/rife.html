@@ -27,21 +27,31 @@
   </script>
   <meta name="description" content="Terapia bioelectromagnética de frecuencias de Rife para la armonización del terreno celular en Vitametric CDMX.">
   <link rel="canonical" href="https://vitametric.com/servicios/rife.html">
-  <link rel="stylesheet" href="../css/style.css?v=9">
+  <link rel="stylesheet" href="../css/style.css?v=10">
+  <link rel="stylesheet" href="../css/rizo-nav.css?v=1">
 </head>
 <body>
-    <header class="subpage-navbar" id="header">
+
+  <header class="subpage-navbar" id="header">
     <div class="subpage-nav-container">
       <a href="../index.html" class="subpage-logo-link">
         <img src="../assets/img/logo.webp" alt="Vitametric Logo" class="subpage-logo-img" width="240" height="95" fetchpriority="high">
         <span class="subpage-logo-tagline">Centro de Salud<br>Preventiva CDMX</span>
       </a>
       <nav>
-        <ul class="subpage-nav-menu">
-          <li><a href="../index.html" class="subpage-nav-link">Inicio</a></li>
-          <li><a href="../index.html#tecnologias" class="subpage-nav-link active">Tecnologías</a></li>
-          <li><a href="../index.html#productos" class="subpage-nav-link">Productos</a></li>
-          <li><a href="../index.html#contacto" class="subpage-nav-link">Contacto</a></li>
+        <ul class="rizo-nav-pills">
+          <li><a href="../index.html" class="rizo-nav-pill">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9.5 12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-7h-6v7H4a1 1 0 0 1-1-1z"/></svg>
+            Inicio</a></li>
+          <li><a href="../index.html#tecnologias" class="rizo-nav-pill active">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="2.2"/><ellipse cx="12" cy="12" rx="10" ry="4.2"/><ellipse cx="12" cy="12" rx="10" ry="4.2" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.2" transform="rotate(120 12 12)"/></svg>
+            Tecnologías</a></li>
+          <li><a href="../index.html#productos" class="rizo-nav-pill">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="M3 8l9 5 9-5"/><path d="M12 13v8"/></svg>
+            Productos</a></li>
+          <li><a href="../index.html#contacto" class="rizo-nav-pill">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+            Contacto</a></li>
         </ul>
       </nav>
       <a href="https://api.whatsapp.com/send?phone=525552150674&text=Consulta%20sobre%20Servicios%20en%20Vitametric" target="_blank" rel="noopener" class="subpage-cta-btn">
@@ -51,9 +61,6 @@
     </div>
   </header>
 
-  
-  
-  <!-- Full-Width Subpage Hero Zone (Zona Azul Bioeléctrica Extendida) -->
   <section class="subpage-hero-zone">
     <div class="container">
       <nav class="breadcrumb-nav" aria-label="Breadcrumb">
@@ -63,167 +70,157 @@
         <span class="breadcrumb-sep">›</span>
         <span class="breadcrumb-current">Frecuencias de Rife</span>
       </nav>
-
-      <div style="display: inline-block; background: var(--c-cyan-soft); border: 1px solid var(--c-cyan); color: var(--c-cyan); padding: 4px 14px; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; border-radius: 6px; margin-bottom: 1.25rem;">Resonancia Biológica & Bio-Campo</div>
-      
+      <span class="subpage-hero-badge">Resonancia Biológica & Bio-Campo</span>
       <h1 class="subpage-hero-title">Frecuencias de Rife & Resonancia Celular</h1>
       <p class="subpage-hero-desc">Terapia bioelectromagnética complementaria basada en la transmisión de micro-frecuencias armónicas para la neutralización de campos de interferencia tisular y reactivación del terreno celular.</p>
     </div>
   </section>
 
-  <main style="padding-top: 3rem; padding-bottom: 5rem; background: var(--c-bg); color: var(--c-text); font-family: var(--font);">
+  <main class="subpage-main">
     <div class="container">
-      <div style="display: grid; grid-template-columns: repeat(12, 1fr); gap: 2rem; align-items: start;">
-        
-        <!-- Left Column: Video Stage & Main Content (Span 8) -->
-        <div style="grid-column: span 8; display: flex; flex-direction: column; gap: 2rem;">
-          
-          <!-- Cinematic Video Panel (Span 8) -->
-          <div style="background: var(--c-bg-card); border: 1px solid rgba(0, 200, 255, 0.3); padding: 1.5rem;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid rgba(0, 200, 255, 0.15); padding-bottom: 0.75rem;">
-              <span style="font-size: 0.8rem; color: #00FF9D; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em;">● DOCUMENTAL HISTÓRICO EN VIVO</span>
-              <span style="font-size: 0.8rem; color: var(--c-muted);">Subtítulos en Español · 125 min</span>
-            </div>
+      <div class="subpage-grid">
 
-            <div id="rife-video-container" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; border: 1px solid rgba(0, 200, 255, 0.2); background: #000;">
-              <div id="rife-poster-overlay" onclick="cargarVideoRife()" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; cursor: pointer; background: linear-gradient(180deg, rgba(2,12,27,0.3) 0%, rgba(2,12,27,0.85) 100%), url('../assets/img/technology/rife.jpg') center/cover no-repeat; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.25rem;">
-                <div class="play-btn-circle" style="background: rgba(2, 12, 27, 0.9); border: 2px solid var(--c-cyan); width: 75px; height: 75px; border-radius: 50% !important; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 25px rgba(0, 200, 255, 0.5);">
-                  <span style="color: var(--c-cyan); font-size: 2.2rem; margin-left: 5px;">▶</span>
+        <article class="subpage-content">
+
+          <!-- Video Documental -->
+          <div class="rizo-micro-section">
+            <div class="rizo-video-stage" style="background: var(--c-bg-card); border: 1px solid rgba(0, 200, 255, 0.3); padding: 1.5rem;">
+              <div class="rizo-video-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid rgba(0, 200, 255, 0.15); padding-bottom: 0.75rem;">
+                <span class="rizo-video-label" style="font-size: 0.8rem; color: #00FF9D; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em;">● DOCUMENTAL HISTÓRICO EN VIVO</span>
+                <span class="rizo-video-meta" style="font-size: 0.8rem; color: var(--c-muted);">Subtítulos en Español · 125 min</span>
+              </div>
+
+              <div id="rife-video-container" class="rizo-video-container" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; border: 1px solid rgba(0, 200, 255, 0.2); background: #000;">
+                <div id="rife-poster-overlay" onclick="cargarVideoRife()" class="rizo-video-poster" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; cursor: pointer; background: linear-gradient(180deg, rgba(2,12,27,0.3) 0%, rgba(2,12,27,0.85) 100%), url('../assets/img/technology/rife.jpg') center/cover no-repeat; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.25rem;">
+                  <div class="play-btn-circle" style="background: rgba(2, 12, 27, 0.9); border: 2px solid var(--c-cyan); width: 75px; height: 75px; border-radius: 50% !important; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 25px rgba(0, 200, 255, 0.5);">
+                    <span style="color: var(--c-cyan); font-size: 2.2rem; margin-left: 5px;">▶</span>
+                  </div>
+                  <span style="color: white; font-weight: 600; font-size: 0.9rem; text-shadow: 0 2px 4px rgba(0,0,0,0.8); background: rgba(7, 30, 51, 0.9); padding: 0.5rem 1.25rem; border: 1px solid var(--c-border); letter-spacing: 0.5px;">Reproducir Documental Histórico</span>
                 </div>
-                <span style="color: white; font-weight: 600; font-size: 0.9rem; text-shadow: 0 2px 4px rgba(0,0,0,0.8); background: rgba(7, 30, 51, 0.9); padding: 0.5rem 1.25rem; border: 1px solid var(--c-border); letter-spacing: 0.5px;">Reproducir Documental Histórico</span>
               </div>
             </div>
-
-            <script>
-              function cargarVideoRife() {
-                var container = document.getElementById('rife-video-container');
-                if (!container) return;
-                container.style.paddingBottom = '0';
-                container.style.height = 'auto';
-                container.style.overflow = 'visible';
-                container.innerHTML = '<video id="rife-video" controls autoplay preload="metadata" style="width: 100%; border: 1px solid var(--c-border); background: #000; display: block;">' +
-                  '<source src="https://archive.org/download/vitametric-rife-documental-es/rife_perfecto_v10.mp4" type="video/mp4">' +
-                  '<track id="pista-es" label="Español" kind="subtitles" srclang="es" src="../assets/vtt/rife-es.vtt?v=20260729" default>' +
-                  'Tu navegador no reproduce vídeo HTML5.</video>';
-                
-                var v = document.getElementById('rife-video');
-                var track = document.getElementById('pista-es');
-                if (v) {
-                  function activarSubtitulos() {
-                    if (v.textTracks && v.textTracks.length > 0) {
-                      for (var i = 0; i < v.textTracks.length; i++) {
-                        v.textTracks[i].mode = 'showing';
-                      }
-                    }
-                  }
-                  if (track) { track.addEventListener('load', activarSubtitulos); }
-                  v.addEventListener('play', activarSubtitulos);
-                  v.addEventListener('loadeddata', activarSubtitulos);
-                  activarSubtitulos();
-                }
-              }
-            </script>
           </div>
 
-          <!-- Technical & Historical Principles -->
-          <div style="background: var(--c-bg-card); border: 1px solid rgba(0, 200, 255, 0.2); padding: 2rem;">
-            <h2 style="font-family: var(--font-display, 'Clash Display', sans-serif); color: var(--c-cyan); font-size: 1.5rem; margin-bottom: 1rem;">Principios Biofísicos de la Resonancia</h2>
-            <p style="line-height: 1.7; color: var(--c-text); margin-bottom: 1.5rem;">Cada microorganismo y estructura celular posee un espectro de frecuencia de oscilación armónica característico. Mediante la aplicación controlada de ondas bioelectromagnéticas en resonancia, se neutraliza la actividad de agentes de interferencia sin alterar los tejidos sanos circundantes.</p>
+          <hr class="rizo-hairline">
 
-            <div style="background: var(--c-bg-surface); border-left: 4px solid var(--c-cyan); padding: 1.25rem;">
+          <!-- Principios Biofísicos -->
+          <div class="rizo-micro-section rizo-micro-section--icon">
+            <div class="rizo-section-icon">
+              <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+            </div>
+            <div>
+              <h2>Principios Biofísicos de la Resonancia</h2>
+              <p>Cada microorganismo y estructura celular posee un espectro de frecuencia de oscilación armónica característico. Mediante la aplicación controlada de ondas bioelectromagnéticas en resonancia, se neutraliza la actividad de agentes de interferencia sin alterar los tejidos sanos circundantes.</p>
+            </div>
+          </div>
+
+          <hr class="rizo-hairline">
+
+          <!-- Nota Legal -->
+          <div class="rizo-micro-section">
+            <div class="rizo-legal-note" style="background: var(--c-bg-surface); border-left: 4px solid var(--c-cyan); padding: 1.25rem;">
               <p style="font-size: var(--fs-sm); color: var(--c-muted); margin: 0; line-height: 1.5;">
                 <em>Nota Legal & Regulatoria:</em> En Vitametric las frecuencias de Rife son una herramienta complementaria holística de bienestar no farmacológico. El video documental compartido tiene valor estrictamente informativo e histórico.
               </p>
             </div>
           </div>
-        </div>
 
-        <!-- Right Column: Clinical Sidebar & Action Panel (Span 4) -->
-        <div style="grid-column: span 4; display: flex; flex-direction: column; gap: 1.5rem;">
-          
-          <!-- Clinical Tech Specs Panel -->
-          <div style="background: var(--c-bg-card-alt); border: 1px solid rgba(0, 200, 255, 0.25); padding: 1.75rem;">
-            <h3 style="font-family: var(--font-display, 'Clash Display', sans-serif); color: #FFF; font-size: 1.2rem; margin-bottom: 1.25rem; border-bottom: 1px solid rgba(0,200,255,0.15); padding-bottom: 0.5rem;">Ficha Técnica del Tratamiento</h3>
-            
-            <div style="display: flex; flex-direction: column; gap: 1rem; font-size: 0.9rem;">
-              <div style="display:flex; justify-style:space-between; border-bottom: 1px solid rgba(0,200,255,0.1); padding-bottom:0.5rem;">
-                <span style="color: var(--c-muted);">Modo de Emisión:</span>
-                <span style="color: #FFF; font-weight: 600; text-align:right;">Ondas Armónicas</span>
-              </div>
-
-              <div style="display:flex; justify-style:space-between; border-bottom: 1px solid rgba(0,200,255,0.1); padding-bottom:0.5rem;">
-                <span style="color: var(--c-muted);">Espectro Frecuencial:</span>
-                <span style="color: var(--c-cyan); font-weight: 600; text-align:right;">1 Hz a 10,000 Hz</span>
-              </div>
-
-              <div style="display:flex; justify-style:space-between; border-bottom: 1px solid rgba(0,200,255,0.1); padding-bottom:0.5rem;">
-                <span style="color: var(--c-muted);">Duración por Sesión:</span>
-                <span style="color: #FFF; font-weight: 600; text-align:right;">45 a 60 Minutos</span>
-              </div>
-
-              <div style="display:flex; justify-style:space-between;">
-                <span style="color: var(--c-muted);">Carácter Médico:</span>
-                <span style="color: #00FF9D; font-weight: 600; text-align:right;">No Invasivo</span>
-              </div>
-            </div>
+          <!-- CTA inline -->
+          <div class="subpage-inline-cta">
+            <a href="https://api.whatsapp.com/send?phone=525552150674&text=Quiero%20agendar%20una%20sesión%20de%20Frecuencias%20Rife%20en%20Vitametric" target="_blank" rel="noopener" class="btn btn-primary">Solicitar Valoración Rife →</a>
           </div>
 
-          <!-- Appointment Booking Card -->
-          <div style="background: var(--c-bg-surface); border: 1px solid var(--c-cyan); padding: 1.75rem;">
-            <h3 style="font-family: var(--font-display, 'Clash Display', sans-serif); color: var(--c-cyan); font-size: 1.15rem; margin-bottom: 0.75rem;">¿Deseas Agendar una Sesión?</h3>
-            <p style="font-size: 0.85rem; color: var(--c-text); line-height: 1.5; margin-bottom: 1.25rem;">Consulta con nuestros especialistas en Vitametric CDMX para integrar las frecuencias de Rife a tu plan de salud preventiva.</p>
-            <a href="https://api.whatsapp.com/send?phone=525552150674&text=Consulta%20sobre%20Frecuencias%20Rife" target="_blank" class="btn btn-primary" style="width: 100%; text-align: center; justify-content: center; font-weight: 600;">💬 Solicitar Cita por WhatsApp</a>
-          <script>
-            function cargarVideoRife() {
-              var container = document.getElementById('rife-video-container');
-              if (!container) return;
-              container.style.paddingBottom = '0';
-              container.style.height = 'auto';
-              container.style.overflow = 'visible';
-              container.innerHTML = '<video id="rife-video" controls autoplay preload="metadata" style="width: 100%; border-radius: var(--radius-lg); border: 1px solid var(--c-border); box-shadow: var(--shadow-lg); background: #000; display: block;">' +
-                '<source src="https://archive.org/download/vitametric-rife-documental-es/rife_perfecto_v10.mp4" type="video/mp4">' +
-                '<track id="pista-es" label="Español" kind="subtitles" srclang="es" src="../assets/vtt/rife-es.vtt?v=20260729" default>' +
-                'Tu navegador no reproduce vídeo HTML5.</video>';
-              
-              var v = document.getElementById('rife-video');
-              var track = document.getElementById('pista-es');
-              if (v) {
-                function activarSubtitulos() {
-                  if (v.textTracks && v.textTracks.length > 0) {
-                    for (var i = 0; i < v.textTracks.length; i++) {
-                      v.textTracks[i].mode = 'showing';
-                    }
-                  }
-                }
-                if (track) {
-                  track.addEventListener('load', activarSubtitulos);
-                }
-                v.addEventListener('leavepictureinpicture', activarSubtitulos);
-                v.addEventListener('play', activarSubtitulos);
-                v.addEventListener('loadeddata', activarSubtitulos);
-                v.addEventListener('canplay', activarSubtitulos);
-                activarSubtitulos();
-              }
-            }
-          </script>
+        </article>
 
-          <div style="background: var(--c-bg-surface); border-left: 4px solid var(--c-cyan); padding: 1.25rem; border-radius: var(--radius-sm); margin-top: 1.5rem;">
-            <p style="font-size: var(--fs-sm); color: var(--c-muted); margin: 0;">
-              <em>Nota Legal & Regulatoria:</em> En Vitametric las frecuencias de Rife son una herramienta complementaria holística de bienestar no farmacológico. El video documental compartido tiene valor estrictamente informativo e histórico, y no pretende diagnosticar, tratar ni sustituir el tratamiento médico convencional.
-            </p>
+        <aside class="subpage-sidebar">
+
+          <!-- Ficha Técnica -->
+          <div class="rizo-sidebar-block">
+            <h3>
+              <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><polyline points="14 2 14 8 20 8"/></svg>
+              Ficha Técnica
+            </h3>
+            <ul>
+              <li><strong>Modo de Emisión:</strong> Ondas Armónicas</li>
+              <li><strong>Espectro Frecuencial:</strong> 1 Hz a 10,000 Hz</li>
+              <li><strong>Duración por Sesión:</strong> 45 a 60 Minutos</li>
+              <li><strong>Carácter Médico:</strong> No Invasivo</li>
+            </ul>
           </div>
 
-        </div>
+          <!-- Resumen Clínico -->
+          <div class="rizo-sidebar-block">
+            <h3>
+              <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+              Resumen Clínico
+            </h3>
+            <ul>
+              <li><strong>Efecto Terapéutico:</strong> Armonización del terreno celular</li>
+              <li><strong>Efecto Secundario:</strong> Ninguno (libre de fármacos)</li>
+              <li><strong>Aplicador:</strong> Especialista capacitado</li>
+            </ul>
+          </div>
+
+          <!-- Agendar Sesión -->
+          <div class="rizo-sidebar-block">
+            <h3>
+              <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+              Agendar Sesión
+            </h3>
+            <p>Consulta con nuestros especialistas en Vitametric CDMX para integrar las frecuencias de Rife a tu plan de salud preventiva.</p>
+            <a href="https://api.whatsapp.com/send?phone=525552150674&text=Consulta%20sobre%20Frecuencias%20Rife" target="_blank" class="btn btn-primary" style="width: 100%; text-align: center; justify-content: center; font-weight: 600;">Solicitar Cita por WhatsApp</a>
+          </div>
+
+        </aside>
+
       </div>
     </div>
   </main>
 
-
   <footer class="footer">
-    <div class="container" style="text-align: center; color: var(--c-muted); font-size: var(--fs-sm);">
+    <div class="container">
       <p>© 2026 Vitametric. Centro de Salud Preventiva en CDMX. Todos los derechos reservados.</p>
     </div>
   </footer>
 
-
+  <!-- Sticky CTA -->
+  <div class="sticky-cta">
+    <a href="https://api.whatsapp.com/send?phone=525552150674&text=Quiero%20agendar%20una%20sesión%20de%20Frecuencias%20Rife%20en%20Vitametric" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+      Agendar Consulta
+    </a>
+  </div>
+
+  <script>
+    function cargarVideoRife() {
+      var container = document.getElementById('rife-video-container');
+      if (!container) return;
+      container.style.paddingBottom = '0';
+      container.style.height = 'auto';
+      container.style.overflow = 'visible';
+      container.innerHTML = '<video id="rife-video" controls autoplay preload="metadata" style="width: 100%; border: 1px solid var(--c-border); background: #000; display: block;">' +
+        '<source src="https://archive.org/download/vitametric-rife-documental-es/rife_perfecto_v10.mp4" type="video/mp4">' +
+        '<track id="pista-es" label="Español" kind="subtitles" srclang="es" src="../assets/vtt/rife-es.vtt?v=20260729" default>' +
+        'Tu navegador no reproduce vídeo HTML5.</video>';
+
+      var v = document.getElementById('rife-video');
+      var track = document.getElementById('pista-es');
+      if (v) {
+        function activarSubtitulos() {
+          if (v.textTracks && v.textTracks.length > 0) {
+            for (var i = 0; i < v.textTracks.length; i++) {
+              v.textTracks[i].mode = 'showing';
+            }
+          }
+        }
+        if (track) { track.addEventListener('load', activarSubtitulos); }
+        v.addEventListener('play', activarSubtitulos);
+        v.addEventListener('loadeddata', activarSubtitulos);
+        activarSubtitulos();
+      }
+    }
+  </script>
+
+  <script src="../js/main.js"></script>
+</body>
 </html>
