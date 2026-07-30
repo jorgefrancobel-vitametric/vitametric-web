@@ -1,0 +1,171 @@
+/* ══════════════════════════════════════════════════════════
+   RIZO-NAV — Navegación Rizomática de Subpáginas
+   Canon Jorge Franco: píldoras cristalinas, hairlines,
+   micro-radio 8px, kerning técnico, flujo en red (no arbóreo)
+   Namespace aislado: .rizo-nav-* (no colisiona con .rizo-*)
+   v-version: 20260729.01
+   ══════════════════════════════════════════════════════════ */
+
+/* ── Nivel 1: Píldoras institucionales (header) ── */
+.rizo-nav-pills {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex-wrap: wrap;
+}
+
+.rizo-nav-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: var(--font-display, 'Clash Display', sans-serif);
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--c-cyan);
+  padding: 0.65rem 1.4rem;          /* regla antropométrica 1:2 */
+  background: rgba(0, 200, 255, 0.06);
+  border: 1px solid rgba(0, 200, 255, 0.25);
+  border-radius: 8px;               /* micro-radio perceptible sutil */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.rizo-nav-pill svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+}
+
+.rizo-nav-pill:hover {
+  background: rgba(0, 200, 255, 0.12);
+  border-color: rgba(0, 200, 255, 0.45);
+  color: #FFFFFF;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 18px rgba(0, 200, 255, 0.22);
+}
+
+.rizo-nav-pill.active,
+.rizo-nav-pill[aria-current="page"] {
+  background: linear-gradient(135deg, #00C8FF 0%, #0088CC 100%);
+  color: #020C1B;
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 4px 18px rgba(0, 200, 255, 0.28);
+}
+
+/* ── Nivel 2: Franja de navegación cruzada (hermanas) ── */
+.rizo-sibling-strip {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);    /* franja desbordante */
+  border-top: 1px solid rgba(0, 200, 255, 0.15);
+  border-bottom: 1px solid rgba(0, 200, 255, 0.15);
+  background: rgba(0, 200, 255, 0.02);
+  padding: 1rem 0;
+}
+
+.rizo-sibling-inner {
+  max-width: var(--max-w, 1200px);
+  margin: 0 auto;
+  padding: 0 var(--sp-md, 1.5rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.rizo-sibling-label {
+  font-family: var(--font-display, 'Clash Display', sans-serif);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+  margin-right: 0.5rem;
+}
+
+.rizo-sibling-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-display, 'Clash Display', sans-serif);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--c-cyan);
+  padding: 0.45rem 1rem;            /* 1:2 compacto */
+  background: transparent;
+  border: 1px solid rgba(0, 200, 255, 0.2);
+  border-radius: 6px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.rizo-sibling-pill:hover {
+  background: rgba(0, 200, 255, 0.1);
+  border-color: rgba(0, 200, 255, 0.4);
+  color: #FFFFFF;
+  transform: translateY(-1px);
+}
+
+.rizo-sibling-pill.current {
+  background: rgba(0, 200, 255, 0.14);
+  border-color: var(--c-cyan);
+  color: #FFFFFF;
+  cursor: default;
+  pointer-events: none;             /* la página actual no es link */
+  box-shadow: 0 0 12px rgba(0, 200, 255, 0.15);
+}
+
+/* Puente al otro grupo (acento verde bioluminiscente) */
+.rizo-sibling-pill.bridge {
+  color: var(--c-green, #00FF9D);
+  border-color: rgba(0, 255, 157, 0.3);
+  border-style: dashed;
+}
+
+.rizo-sibling-pill.bridge:hover {
+  background: rgba(0, 255, 157, 0.08);
+  border-color: rgba(0, 255, 157, 0.5);
+  color: #FFFFFF;
+}
+
+.rizo-sibling-pill.bridge svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .rizo-nav-pill {
+    font-size: 0.82rem;
+    padding: 0.55rem 1.1rem;
+  }
+  .rizo-sibling-inner {
+    gap: 0.45rem;
+  }
+  .rizo-sibling-pill {
+    font-size: 0.72rem;
+    padding: 0.4rem 0.8rem;
+  }
+  .rizo-sibling-label {
+    flex-basis: 100%;
+    text-align: center;
+    margin: 0 0 0.35rem 0;
+  }
+}

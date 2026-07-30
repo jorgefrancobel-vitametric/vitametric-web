@@ -43,7 +43,7 @@
           <li><a href="../index.html" class="rizo-nav-pill">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9.5 12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-7h-6v7H4a1 1 0 0 1-1-1z"/></svg>
             Inicio</a></li>
-          <li><a href="../index.html#tecnologias" class="rizo-nav-pill active">
+          <li><a href="../index.html#tecnología" class="rizo-nav-pill active">
             <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="2.2"/><ellipse cx="12" cy="12" rx="10" ry="4.2"/><ellipse cx="12" cy="12" rx="10" ry="4.2" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.2" transform="rotate(120 12 12)"/></svg>
             Tecnologías</a></li>
           <li><a href="../index.html#productos" class="rizo-nav-pill">
@@ -66,7 +66,7 @@
       <nav class="breadcrumb-nav" aria-label="Breadcrumb">
         <a href="../index.html" class="breadcrumb-link">Inicio</a>
         <span class="breadcrumb-sep">›</span>
-        <a href="../index.html#tecnologias" class="breadcrumb-link">Tecnologías</a>
+        <a href="../index.html#tecnología" class="breadcrumb-link">Tecnologías</a>
         <span class="breadcrumb-sep">›</span>
         <span class="breadcrumb-current">Frecuencias de Rife</span>
       </nav>
@@ -75,6 +75,21 @@
       <p class="subpage-hero-desc">Terapia bioelectromagnética complementaria basada en la transmisión de micro-frecuencias armónicas para la neutralización de campos de interferencia tisular y reactivación del terreno celular.</p>
     </div>
   </section>
+
+  <nav class="rizo-sibling-strip" aria-label="Navegación entre tecnologías">
+    <div class="rizo-sibling-inner">
+      <span class="rizo-sibling-label">Tecnologías</span>
+      <a href="scenar.html" class="rizo-sibling-pill">Scenar</a>
+      <span class="rizo-sibling-pill current">Rife</span>
+      <a href="es-complex.html" class="rizo-sibling-pill">ES-Complex</a>
+      <a href="atlas-profilax.html" class="rizo-sibling-pill">Atlas Profilax</a>
+      <a href="ozonoterapia.html" class="rizo-sibling-pill">Ozonoterapia</a>
+      <a href="../index.html#productos" class="rizo-sibling-pill bridge">
+        Productos
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+      </a>
+    </div>
+  </nav>
 
   <main class="subpage-main">
     <div class="container">
@@ -198,7 +213,7 @@
       container.style.paddingBottom = '0';
       container.style.height = 'auto';
       container.style.overflow = 'visible';
-      container.innerHTML = '<video id="rife-video" controls autoplay preload="metadata" style="width: 100%; border: 1px solid var(--c-border); background: #000; display: block;">' +
+      container.innerHTML = '<video id="rife-video" controls autoplay preload="metadata" crossorigin="anonymous" style="width: 100%; border: 1px solid var(--c-border); background: #000; display: block;">' +
         '<source src="https://archive.org/download/vitametric-rife-documental-es/rife_perfecto_v10.mp4" type="video/mp4">' +
         '<track id="pista-es" label="Español" kind="subtitles" srclang="es" src="../assets/vtt/rife-es.vtt?v=20260729" default>' +
         'Tu navegador no reproduce vídeo HTML5.</video>';
