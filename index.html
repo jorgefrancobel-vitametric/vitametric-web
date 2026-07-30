@@ -157,7 +157,7 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
 .skip-link {
   position: absolute; top: -100%; left: 50%; transform: translateX(-50%); z-index: 10001;
   padding: 0.75rem 1.25rem; background: var(--c-cyan); color: var(--c-bg);
-  font-weight: var(--fw-semibold); border-radius: var(--radius-md); text-decoration: none;
+  font-weight: var(--fw-semibold); border-radius: 4px; text-decoration: none;
   transition: top var(--t-fast) ease;
 }
 .skip-link:focus { top: 0.75rem; outline: 2px solid white; outline-offset: 2px; }
@@ -171,7 +171,7 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
   font-family: var(--font); font-weight: var(--fw-semibold); font-size: var(--fs-sm);
-  border: 2px solid transparent; border-radius: var(--radius-md); cursor: pointer;
+  border: 2px solid transparent; border-radius: 4px; cursor: pointer;
   transition: all var(--t-base) var(--ease-out); white-space: nowrap; text-decoration: none; line-height: 1;
 }
 .btn-primary {
@@ -201,7 +201,7 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
 .navbar.scrolled .nav-link { color: var(--c-text); }
 .navbar.scrolled .nav-link:hover { color: var(--c-cyan); }
 .navbar.scrolled .nav-link.active { color: var(--c-cyan); }
-.nav-cta { background: linear-gradient(135deg, var(--c-cyan) 0%, #0099EE 100%); color: var(--c-bg) !important; font-weight: var(--fw-bold); padding: 0.5rem 1.25rem; border-radius: var(--radius-full); margin-left: 0.5rem; }
+.nav-cta { background: linear-gradient(135deg, var(--c-cyan) 0%, #0099EE 100%); color: var(--c-bg) !important; font-weight: var(--fw-bold); padding: 0.5rem 1.25rem; border-radius: 4px; margin-left: 0.5rem; }
 .nav-cta:hover { box-shadow: var(--glow-cyan); transform: translateY(-1px); color: var(--c-bg) !important; }
 .nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; z-index: 10; }
 .hamburger { display: block; width: 24px; height: 2px; background: rgba(200,240,255,0.9); position: relative; transition: all var(--t-base) ease; }
@@ -224,7 +224,7 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
 .hero-orb-3 { width: 140px; height: 140px; right: 15%; top: 60%; background: radial-gradient(circle at 40% 40%, rgba(0,160,255,0.2), transparent 65%); border: 1px solid rgba(0,200,255,0.1); animation: orb-drift 10s ease-in-out infinite 2s; }
 @keyframes orb-drift { 0%, 100% { transform: translateY(0) scale(1); } 33% { transform: translateY(-18px) scale(1.04); } 66% { transform: translateY(10px) scale(0.97); } }
 .hero-container { position: relative; z-index: 1; max-width: var(--max-w); margin: 0 auto; padding: var(--sp-xl) var(--sp-md); display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-2xl); align-items: center; }
-.hero-badge { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.375rem 1rem 0.375rem 0.75rem; background: rgba(0,200,255,0.08); border: 1px solid rgba(0,200,255,0.22); border-radius: var(--radius-full); color: var(--c-cyan); font-size: var(--fs-xs); font-weight: var(--fw-semibold); letter-spacing: 0.08em; text-transform: uppercase; backdrop-filter: blur(8px); margin-bottom: var(--sp-md); }
+.hero-badge { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.375rem 1rem 0.375rem 0.75rem; background: rgba(0,200,255,0.08); border: 1px solid rgba(0,200,255,0.22); border-radius: 4px; color: var(--c-cyan); font-size: var(--fs-xs); font-weight: var(--fw-semibold); letter-spacing: 0.08em; text-transform: uppercase; backdrop-filter: blur(8px); margin-bottom: var(--sp-md); }
 .badge-dot { width: 8px; height: 8px; background: var(--c-green); border-radius: 50%; animation: pulse-dot 2s ease-in-out infinite; }
 @keyframes pulse-dot { 0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(0,255,157,0.6); } 50% { opacity: 0.85; box-shadow: 0 0 0 7px rgba(0,255,157,0); } }
 .hero-title { font-size: var(--fs-4xl); font-weight: var(--fw-extrabold); color: white; line-height: var(--lh-tight); margin-bottom: var(--sp-md); letter-spacing: -0.025em; max-width: 16ch; }
@@ -243,7 +243,7 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
 .hero-image-wrapper { position: relative; width: 100%; max-width: 480px; aspect-ratio: 1; display: flex; justify-content: center; align-items: center; }
 .hero-glow { position: absolute; width: 320px; height: 320px; background: radial-gradient(circle, rgba(0,200,255,0.18) 0%, rgba(0,255,157,0.08) 50%, transparent 70%); border-radius: 50%; filter: blur(50px); animation: glow-pulse 5s ease-in-out infinite alternate; }
 @keyframes glow-pulse { 0% { transform: scale(1); opacity: 0.5; } 100% { transform: scale(1.25); opacity: 1; } }
-.hero-card { position: absolute; display: flex; align-items: center; gap: 0.75rem; padding: 0.875rem 1.25rem; background: rgba(4,30,60,0.7); border: 1px solid rgba(0,200,255,0.2); border-radius: var(--radius-lg); backdrop-filter: blur(20px); color: white; font-size: var(--fs-sm); font-weight: var(--fw-medium); animation: float 6s ease-in-out infinite; box-shadow: 0 4px 20px rgba(0,0,0,0.4), inset 0 1px 0 rgba(0,200,255,0.08); }
+.hero-card { position: absolute; display: flex; align-items: center; gap: 0.75rem; padding: 0.875rem 1.25rem; background: rgba(4,30,60,0.7); border: 1px solid rgba(0,200,255,0.2); border-radius: 4px; backdrop-filter: blur(20px); color: white; font-size: var(--fs-sm); font-weight: var(--fw-medium); animation: float 6s ease-in-out infinite; box-shadow: 0 4px 20px rgba(0,0,0,0.4), inset 0 1px 0 rgba(0,200,255,0.08); }
 .hero-card-1 { top: 15%; left: 5%; animation-delay: 0s; }
 .hero-card-2 { top: 45%; right: 0; animation-delay: -2s; }
 .hero-card-3 { bottom: 15%; left: 15%; animation-delay: -4s; }
@@ -254,15 +254,15 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
 @keyframes scroll-bounce { 0%, 100% { transform: rotate(45deg) translate(0,0); opacity: 0.4; } 50% { transform: rotate(45deg) translate(4px,4px); opacity: 1; } }
 
 .section-header { text-align: center; max-width: 680px; margin: 0 auto var(--sp-2xl); }
-.section-tag { display: inline-block; font-size: var(--fs-xs); font-weight: var(--fw-semibold); color: var(--c-cyan); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: var(--sp-sm); padding: 0.375rem 1rem; background: var(--c-cyan-soft); border: 1px solid var(--c-border); border-radius: var(--radius-full); }
+.section-tag { display: inline-block; font-size: var(--fs-xs); font-weight: var(--fw-semibold); color: var(--c-cyan); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: var(--sp-sm); padding: 0.375rem 1rem; background: var(--c-cyan-soft); border: 1px solid var(--c-border); border-radius: 4px; }
 .section-title { font-size: var(--fs-3xl); font-weight: var(--fw-bold); margin-bottom: var(--sp-sm); letter-spacing: -0.01em; color: white; max-width: 20ch; margin-left: auto; margin-right: auto; }
 .section-subtitle { font-size: var(--fs-md); color: var(--c-muted); line-height: var(--lh-normal); }
 
 .trust-bar { background: var(--c-bg-mid); border-top: 1px solid var(--c-border); border-bottom: 1px solid var(--c-border); padding: var(--sp-lg) 0; }
 .trust-items { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--sp-md); }
-.trust-item { display: flex; align-items: center; gap: var(--sp-sm); padding: var(--sp-md); background: rgba(10,36,64,0.6); border: 1px solid var(--c-border); border-radius: var(--radius-lg); backdrop-filter: blur(8px) saturate(120%); transition: all var(--t-base) var(--ease-out); }
+.trust-item { display: flex; align-items: center; gap: var(--sp-sm); padding: var(--sp-md); background: rgba(10,36,64,0.6); border: 1px solid var(--c-border); border-radius: 4px; backdrop-filter: blur(8px) saturate(120%); transition: all var(--t-base) var(--ease-out); }
 .trust-item:hover { transform: translateY(-3px); border-color: rgba(0,200,255,0.35); box-shadow: var(--shadow-md); }
-.trust-icon { width: 48px; height: 48px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: var(--c-cyan-soft); color: var(--c-cyan); border: 1px solid var(--c-border); border-radius: var(--radius-md); }
+.trust-icon { width: 48px; height: 48px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: var(--c-cyan-soft); color: var(--c-cyan); border: 1px solid var(--c-border); border-radius: 4px; }
 .trust-item strong { display: block; color: white; font-size: var(--fs-sm); font-weight: var(--fw-semibold); margin-bottom: 0.125rem; }
 .trust-item span { display: block; color: var(--c-muted); font-size: var(--fs-xs); line-height: 1.4; }
 
@@ -271,7 +271,7 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
 
 #heroCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
 .hero-container { position: relative; z-index: 2; }
-.hero-visual-img-wrap { width: 100%; max-width: 380px; border-radius: var(--radius-xl); padding: 4px; background: linear-gradient(135deg, var(--c-cyan) 0%, var(--c-green) 100%); box-shadow: 0 0 30px rgba(0, 200, 255, 0.25), 0 0 60px rgba(0, 255, 157, 0.15); animation: float 6s ease-in-out infinite; overflow: hidden; display: flex; }
+.hero-visual-img-wrap { width: 100%; max-width: 380px; border-radius: 6px; padding: 4px; background: linear-gradient(135deg, var(--c-cyan) 0%, var(--c-green) 100%); box-shadow: 0 0 30px rgba(0, 200, 255, 0.25), 0 0 60px rgba(0, 255, 157, 0.15); animation: float 6s ease-in-out infinite; overflow: hidden; display: flex; }
 .hero-visual-img { width: 100%; height: auto; border-radius: calc(var(--radius-xl) - 4px); object-fit: cover; transition: transform var(--t-slow) var(--ease-out); }
 .hero-visual-img-wrap:hover .hero-visual-img { transform: scale(1.05); }
 
@@ -963,41 +963,41 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
 <section id="clinical-selector-section" style="background: var(--c-bg-mid); padding: 5rem 0; border-top: 1px solid var(--c-border); border-bottom: 1px solid var(--c-border); font-family: var(--font);">
   <div class="container">
     <div style="text-align: center; max-width: 800px; margin: 0 auto 3rem;">
-      <span class="card-badge" style="background: var(--c-cyan-soft); color: var(--c-cyan); border: 1px solid var(--c-border); font-weight: 600; padding: 0.35rem 1rem; border-radius: var(--radius-full); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;">Orientación Clínica y Tecnológica</span>
+      <span class="card-badge" style="background: var(--c-cyan-soft); color: var(--c-cyan); border: 1px solid var(--c-border); font-weight: 600; padding: 0.35rem 1rem; border-radius: 4px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;">Orientación Clínica y Tecnológica</span>
       <h2 style="font-size: var(--fs-3xl); color: var(--c-heading); margin-top: 1rem; margin-bottom: 1rem; font-family: var(--font-display, "Clash Display", sans-serif); font-weight: var(--fw-bold);">Explorador de Tecnologías Fisiológicas</h2>
       <p style="color: var(--c-text); font-size: var(--fs-md); line-height: 1.6;">Consulta las variables biofísicas específicas que evalúa y aborda cada una de las tecnologías no invasivas de Vitametric CDMX.</p>
     </div>
 
-    <div style="background: var(--c-bg-surface); border: 1px solid var(--c-border); border-radius: var(--radius-xl); padding: 2.5rem; box-shadow: var(--shadow-lg); display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem;">
+    <div class="clinical-double-bezel" style="background: var(--c-bg-surface); border: 1px solid var(--hair-strong, rgba(0, 200, 255, 0.3)); border-radius: 4px; padding: 2.25rem; padding: 2.5rem; box-shadow: var(--shadow-lg); display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem;">
       <div>
         <h3 style="color: var(--c-cyan); font-size: var(--fs-lg); margin-bottom: 1.25rem; font-family: var(--font-display, "Clash Display", sans-serif); font-weight: var(--fw-semibold);">Selecciona la Tecnología a Consultar:</h3>
         <div style="display: flex; flex-direction: column; gap: 0.85rem;">
-          <button onclick="showClinicalTech('escomplex')" id="btn-tech-escomplex" class="tech-tab-btn active-tech-btn" style="padding: 1.125rem 1.25rem; border-radius: var(--radius-md); background: var(--c-cyan-soft); border: 1px solid var(--c-cyan); color: #FFF; font-weight: var(--fw-semibold); text-align: left; cursor: pointer; transition: all 0.2s; font-family: var(--font);">
+          <button onclick="showClinicalTech('escomplex')" id="btn-tech-escomplex" class="tech-tab-btn active-tech-btn" style="padding: 1.125rem 1.25rem; border-radius: 4px; background: var(--c-cyan-soft); border: 1px solid var(--c-cyan); color: #FFF; font-weight: var(--fw-semibold); text-align: left; cursor: pointer; transition: all 0.2s; font-family: var(--font);">
             <div style="font-size: 1.05rem; color: #FFF;">ES-Complex — Pre-Diagnóstico Electrointersticial</div>
             <div style="font-size: 0.8rem; color: var(--c-muted); font-weight: normal; margin-top: 0.25rem;">Conductividad intersticial · HRV · Balance Autónomo</div>
           </button>
           
-          <button onclick="showClinicalTech('rife')" id="btn-tech-rife" class="tech-tab-btn" style="padding: 1.125rem 1.25rem; border-radius: var(--radius-md); background: var(--c-bg-card); border: 1px solid var(--c-border-light); color: var(--c-text); font-weight: var(--fw-semibold); text-align: left; cursor: pointer; transition: all 0.2s; font-family: var(--font);">
+          <button onclick="showClinicalTech('rife')" id="btn-tech-rife" class="tech-tab-btn" style="padding: 1.125rem 1.25rem; border-radius: 4px; background: var(--c-bg-card); border: 1px solid var(--c-border-light); color: var(--c-text); font-weight: var(--fw-semibold); text-align: left; cursor: pointer; transition: all 0.2s; font-family: var(--font);">
             <div style="font-size: 1.05rem; color: var(--c-primary);">Frecuencias de Rife — Resonancia Biológica</div>
             <div style="font-size: 0.8rem; color: var(--c-muted); font-weight: normal; margin-top: 0.25rem;">Espectro electromagnético (1 Hz – 10 kHz) · Armonización celular</div>
           </button>
 
-          <button onclick="showClinicalTech('scenar')" id="btn-tech-scenar" class="tech-tab-btn" style="padding: 1.125rem 1.25rem; border-radius: var(--radius-md); background: var(--c-bg-card); border: 1px solid var(--c-border-light); color: var(--c-text); font-weight: var(--fw-semibold); text-align: left; cursor: pointer; transition: all 0.2s; font-family: var(--font);">
+          <button onclick="showClinicalTech('scenar')" id="btn-tech-scenar" class="tech-tab-btn" style="padding: 1.125rem 1.25rem; border-radius: 4px; background: var(--c-bg-card); border: 1px solid var(--c-border-light); color: var(--c-text); font-weight: var(--fw-semibold); text-align: left; cursor: pointer; transition: all 0.2s; font-family: var(--font);">
             <div style="font-size: 1.05rem; color: var(--c-primary);">Scenar — Terapia de Biorretroalimentación</div>
             <div style="font-size: 0.8rem; color: var(--c-muted); font-weight: normal; margin-top: 0.25rem;">Impulsos neuroadaptativos (15 Hz – 350 Hz) · Alivio neuromodulado</div>
           </button>
 
-          <button onclick="showClinicalTech('immunocal')" id="btn-tech-immunocal" class="tech-tab-btn" style="padding: 1.125rem 1.25rem; border-radius: var(--radius-md); background: var(--c-bg-card); border: 1px solid var(--c-border-light); color: var(--c-text); font-weight: var(--fw-semibold); text-align: left; cursor: pointer; transition: all 0.2s; font-family: var(--font);">
+          <button onclick="showClinicalTech('immunocal')" id="btn-tech-immunocal" class="tech-tab-btn" style="padding: 1.125rem 1.25rem; border-radius: 4px; background: var(--c-bg-card); border: 1px solid var(--c-border-light); color: var(--c-text); font-weight: var(--fw-semibold); text-align: left; cursor: pointer; transition: all 0.2s; font-family: var(--font);">
             <div style="font-size: 1.05rem; color: var(--c-primary);">Immunocal — Nutrición & Glutatión Celular</div>
             <div style="font-size: 0.8rem; color: var(--c-muted); font-weight: normal; margin-top: 0.25rem;">Donador de Cisteína Enlazada · Síntesis de Glutatión (GSH)</div>
           </button>
         </div>
       </div>
 
-      <div style="background: var(--c-bg-card-alt); border: 1px solid var(--c-border); border-radius: var(--radius-lg); padding: 2rem; display: flex; flex-direction: column; justify-content: space-between;">
+      <div style="background: var(--c-bg-card-alt); border: 1px solid var(--c-border); border-radius: 4px; padding: 2rem; display: flex; flex-direction: column; justify-content: space-between;">
         <div>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-            <span id="tech-tag" style="font-size: 0.75rem; background: var(--c-green-soft); color: var(--c-green); border: 1px solid var(--c-green-dark); padding: 4px 12px; border-radius: var(--radius-full); font-weight: 600; text-transform: uppercase;">Evaluación Médica No Invasiva</span>
+            <span id="tech-tag" style="font-size: 0.75rem; background: var(--c-green-soft); color: var(--c-green); border: 1px solid var(--c-green-dark); padding: 4px 12px; border-radius: 4px; font-weight: 600; text-transform: uppercase;">Evaluación Médica No Invasiva</span>
             <span id="tech-time" style="font-size: 0.8rem; color: var(--c-muted);">Duración: 30 minutos</span>
           </div>
 
