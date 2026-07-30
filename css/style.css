@@ -2127,6 +2127,11 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--c-text);
   position: relative;
   transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .product-marquee-card:hover {
@@ -2134,11 +2139,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .product-marquee-card img {
-  width: 200px;
+  max-width: 200px;
+  max-height: 200px;
+  width: auto;
   height: auto;
   display: block;
   filter: drop-shadow(0 8px 24px rgba(0, 200, 255, 0.15));
   transition: filter 0.4s ease;
+  object-fit: contain;
 }
 
 .product-marquee-card:hover img {
