@@ -272,11 +272,19 @@ body::after {
   --radius-full: 0px !important;
 }
 
-*, *::before, *::after {
-  border-radius: 0px !important;
-}
-
 /* Enfoque de segmentacion por Hairlines continuas */
 .tech-card, .card, .product-card, .trust-item, .header, .footer, article, section {
   border: 1px solid rgba(0, 200, 255, 0.2) !important;
+}
+
+
+/* PRESERVACION GEOMETRICA DE ELEMENTOS CIRCULARES */
+.play-btn-circle, .pulse-dot, .avatar, .circle-icon, .status-dot,
+[style*="border-radius: 50%"], [style*="border-radius:50%"], [style*="border-radius: 100%"] {
+  border-radius: 50% !important;
+}
+
+/* Tarjetas y Paneles Estructurales Rectos (Segmentación Reticular) */
+.card, .tech-card, .product-card, .trust-item, .header, .footer, article, section, .hero-card, .cinematic-stage {
+  border-radius: 0px !important;
 }
