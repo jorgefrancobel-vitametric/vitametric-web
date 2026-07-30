@@ -46,12 +46,11 @@
         controls
         preload="metadata"
         style="width: 100%; max-width: 1100px; border-radius: var(--radius-lg); border: 1px solid var(--c-border); box-shadow: var(--shadow-lg); background: #000; display: block; margin-bottom: 1.5rem;">
-        <!-- PRIMARIO: máster reparado local. Es el objeto de esta validación: el remoto
-             de Archive.org tiene la pista AAC muerta pasado el minuto 22. -->
-        <source src="../assets/video/rife-REPARADO.mp4" type="video/mp4">
-        <!-- Respaldo, solo si el local no estuviera disponible. OJO: enmudece tras 22 min. -->
+        <!-- PRIMARIO: máster reparado local. -->
+        <source src="../assets/video/rife-REPARADO.mp4?v=2" type="video/mp4">
+        <!-- Respaldo, solo si el local no estuviera disponible. -->
         <source src="https://archive.org/download/vitametric-rife-documental-es/rife.mp4" type="video/mp4">
-        <track id="pista-es" label="Español" kind="subtitles" srclang="es" src="../assets/vtt/rife-es.vtt" default>
+        <track id="pista-es" label="Español" kind="subtitles" srclang="es" src="../assets/vtt/rife-es.vtt?v=20260729" default>
         Tu navegador no reproduce vídeo HTML5.
       </video>
 
@@ -101,7 +100,16 @@
     var v = document.getElementById('rife-video');
     var diag = document.getElementById('diag');
 
-    function ir(s) { v.currentTime = s; v.play(); }
+    function ir(s) {
+      if (!v) return;
+      v.pause();
+      function onSeeked() {
+        v.removeEventListener('seeked', onSeeked);
+        v.play().catch(function(e){ console.log(e); });
+      }
+      v.addEventListener('seeked', onSeeked);
+      v.currentTime = s;
+    }
 
     function nota(t) { diag.textContent = t; }
 
