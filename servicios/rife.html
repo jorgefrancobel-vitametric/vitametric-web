@@ -94,10 +94,7 @@
                 container.style.overflow = 'visible';
                 container.innerHTML = '<video id="rife-video" controls autoplay preload="metadata" style="width: 100%; border: 1px solid var(--c-border); background: #000; display: block;">' +
                   '<source src="../assets/video/rife-SANADO.mp4?v=2" type="video/mp4">' +
-                  '<source src="../assets/video/rife-REPARADO.mp4?v=2" type="video/mp4">' +
-                  '<source src="https://archive.org/download/vitametric-rife-documental-es/rife_sanado.mp4" type="video/mp4">' +
-                  '<source src="https://archive.org/download/vitametric-rife-documental-es/rife_faststart.mp4" type="video/mp4">' +
-                  '<source src="https://archive.org/download/vitametric-rife-documental-es/rife.mp4" type="video/mp4">' +
+                  '<source src="https://archive.org/download/vitametric-rife-documental-es/rife_perfecto_v10.mp4" type="video/mp4">' +
                   '<track id="pista-es" label="Español" kind="subtitles" srclang="es" src="../assets/vtt/rife-es.vtt?v=20260729" default>' +
                   'Tu navegador no reproduce vídeo HTML5.</video>';
                 
@@ -163,11 +160,53 @@
             </div>
           </div>
 
+<<<<<<< HEAD
           <!-- Appointment Booking Card -->
           <div style="background: var(--c-bg-surface); border: 1px solid var(--c-cyan); padding: 1.75rem;">
             <h3 style="font-family: var(--font-display, 'Clash Display', sans-serif); color: var(--c-cyan); font-size: 1.15rem; margin-bottom: 0.75rem;">¿Deseas Agendar una Sesión?</h3>
             <p style="font-size: 0.85rem; color: var(--c-text); line-height: 1.5; margin-bottom: 1.25rem;">Consulta con nuestros especialistas en Vitametric CDMX para integrar las frecuencias de Rife a tu plan de salud preventiva.</p>
             <a href="https://api.whatsapp.com/send?phone=525552150674&text=Consulta%20sobre%20Frecuencias%20Rife" target="_blank" class="btn btn-primary" style="width: 100%; text-align: center; justify-content: center; font-weight: 600;">💬 Solicitar Cita por WhatsApp</a>
+=======
+          <script>
+            function cargarVideoRife() {
+              var container = document.getElementById('rife-video-container');
+              if (!container) return;
+              container.style.paddingBottom = '0';
+              container.style.height = 'auto';
+              container.style.overflow = 'visible';
+              container.innerHTML = '<video id="rife-video" controls autoplay preload="metadata" style="width: 100%; border-radius: var(--radius-lg); border: 1px solid var(--c-border); box-shadow: var(--shadow-lg); background: #000; display: block;">' +
+                '<source src="../assets/video/rife-SANADO.mp4?v=2" type="video/mp4">' +
+                '<source src="https://archive.org/download/vitametric-rife-documental-es/rife_perfecto_v10.mp4" type="video/mp4">' +
+                '<track id="pista-es" label="Español" kind="subtitles" srclang="es" src="../assets/vtt/rife-es.vtt?v=20260729" default>' +
+                'Tu navegador no reproduce vídeo HTML5.</video>';
+              
+              var v = document.getElementById('rife-video');
+              var track = document.getElementById('pista-es');
+              if (v) {
+                function activarSubtitulos() {
+                  if (v.textTracks && v.textTracks.length > 0) {
+                    for (var i = 0; i < v.textTracks.length; i++) {
+                      v.textTracks[i].mode = 'showing';
+                    }
+                  }
+                }
+                if (track) {
+                  track.addEventListener('load', activarSubtitulos);
+                }
+                v.addEventListener('leavepictureinpicture', activarSubtitulos);
+                v.addEventListener('play', activarSubtitulos);
+                v.addEventListener('loadeddata', activarSubtitulos);
+                v.addEventListener('canplay', activarSubtitulos);
+                activarSubtitulos();
+              }
+            }
+          </script>
+
+          <div style="background: var(--c-bg-surface); border-left: 4px solid var(--c-cyan); padding: 1.25rem; border-radius: var(--radius-sm); margin-top: 1.5rem;">
+            <p style="font-size: var(--fs-sm); color: var(--c-muted); margin: 0;">
+              <em>Nota Legal & Regulatoria:</em> En Vitametric las frecuencias de Rife son una herramienta complementaria holística de bienestar no farmacológico. El video documental compartido tiene valor estrictamente informativo e histórico, y no pretende diagnosticar, tratar ni sustituir el tratamiento médico convencional.
+            </p>
+>>>>>>> c28fa25 (fix(deploy): point player to CFR libx264 re-encoded video stream (rife_perfecto_v10.mp4))
           </div>
 
         </div>
