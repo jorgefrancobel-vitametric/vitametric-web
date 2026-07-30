@@ -33,6 +33,9 @@ jobs:
       - name: Install Lighthouse CI
         run: npm install -g @lhci/cli@0.14.0
 
+      - name: Prepare Lighthouse reports directory
+        run: mkdir -p .lighthouseci
+
       - name: Run Lighthouse CI
         run: lhci autorun
         env:
@@ -40,6 +43,15 @@ jobs:
           # LHCI_GITHUB_APP_TOKEN can be set to the LHCI GitHub App token if you want PR comments.
           LHCI_CHROME_PATH: ${{ steps.setup-chrome.outputs.chrome-path }}
           CHROME_PATH: ${{ steps.setup-chrome.outputs.chrome-path }}
+
+      - name: Inspect Lighthouse reports
+        if: always()
+        run: |
+          if [ -d .lighthouseci ]; then
+            find .lighthouseci -maxdepth 2 -type f -print | sort
+          else
+            echo 'No .lighthouseci directory was produced.'
+          fi
 
       - name: Upload Lighthouse reports artifact
         if: always()

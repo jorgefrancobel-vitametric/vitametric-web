@@ -19,9 +19,9 @@ module.exports = {
       },
     },
     upload: {
-      // Uploads to Lighthouse CI's temporary public storage.
-      // The report URL will be printed in the workflow logs.
-      target: 'temporary-public-storage',
+      // Keep reports on the runner so failed assertions remain inspectable in Actions.
+      target: 'filesystem',
+      outputDir: '.lighthouseci',
     },
   },
 };
