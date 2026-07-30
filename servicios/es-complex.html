@@ -178,9 +178,9 @@
               container.style.paddingBottom = '0';
               container.style.height = 'auto';
               container.style.overflow = 'visible';
-              container.innerHTML = '<video id="escomplex-video" controls autoplay preload="metadata" style="width: 100%; border-radius: var(--radius-lg); border: 1px solid var(--c-border); box-shadow: var(--shadow-lg); background: #000; display: block;">' +
+              container.innerHTML = '<video id="escomplex-video" controls autoplay preload="metadata" crossorigin="anonymous" style="width: 100%; border-radius: var(--radius-lg); border: 1px solid var(--c-border); box-shadow: var(--shadow-lg); background: #000; display: block;">' +
+                '<source src="https://video.vitametric.com/escomplex.mp4" type="video/mp4">' +
                 '<source src="https://archive.org/download/vitametric-escomplex-hechos-tvaz/escomplex_faststart_v2.mp4" type="video/mp4">' +
-                '<source src="https://archive.org/download/vitametric-escomplex-hechos-tvaz/sinergia_hd_final.mp4" type="video/mp4">' +
                 'Tu navegador no reproduce vídeo HTML5.</video>';
             }
           </script>
