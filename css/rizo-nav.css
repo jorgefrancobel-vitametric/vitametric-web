@@ -68,12 +68,14 @@
 
 /* ── Nivel 2: Franja de navegación cruzada (hermanas) ── */
 .rizo-sibling-strip {
-  width: 100vw;
-  margin-left: calc(50% - 50vw);    /* franja desbordante */
+  width: 100%;
+  box-sizing: border-box;
   border-top: 1px solid rgba(0, 200, 255, 0.15);
   border-bottom: 1px solid rgba(0, 200, 255, 0.15);
   background: rgba(0, 200, 255, 0.02);
   padding: 1rem 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .rizo-sibling-inner {
@@ -108,7 +110,9 @@
   text-transform: uppercase;
   text-decoration: none;
   color: var(--c-cyan);
-  padding: 0.45rem 1rem;            /* 1:2 compacto */
+  padding: 0.55rem 1rem;            /* área táctil de 44px min */
+  min-height: 44px;
+  touch-action: manipulation;
   background: transparent;
   border: 1px solid rgba(0, 200, 255, 0.2);
   border-radius: 6px;
@@ -152,20 +156,45 @@
 
 /* ── Responsive ── */
 @media (max-width: 768px) {
+  .rizo-nav-pills {
+    gap: 0.5rem;
+  }
   .rizo-nav-pill {
     font-size: 0.82rem;
-    padding: 0.55rem 1.1rem;
+    padding: 0.55rem 1rem;
+    min-height: 44px;
+    touch-action: manipulation;
   }
   .rizo-sibling-inner {
     gap: 0.45rem;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding-bottom: 0.25rem;
+    -webkit-overflow-scrolling: touch;
   }
   .rizo-sibling-pill {
-    font-size: 0.72rem;
-    padding: 0.4rem 0.8rem;
+    font-size: 0.75rem;
+    padding: 0.45rem 0.85rem;
+    min-height: 40px;
   }
   .rizo-sibling-label {
     flex-basis: 100%;
-    text-align: center;
+    text-align: left;
     margin: 0 0 0.35rem 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .rizo-nav-pills {
+    justify-content: flex-start;
+    overflow-x: auto;
+    width: 100%;
+    padding-bottom: 0.5rem;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+  }
+  .rizo-nav-pill {
+    scroll-snap-align: start;
+    flex-shrink: 0;
   }
 }
