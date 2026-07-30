@@ -1752,12 +1752,21 @@ h1, h2, h3, h4, h5, h6 {
   align-items: start;
 }
 
+@media (max-width: 900px) {
+  .subpage-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
 .subpage-content {
   min-width: 0;
+  width: 100%;
 }
 
 .subpage-sidebar {
   min-width: 0;
+  width: 100%;
 }
 
 .subpage-inline-cta {
