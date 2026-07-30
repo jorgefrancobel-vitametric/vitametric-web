@@ -345,8 +345,6 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
 
   </style>
   <!-- Capa editorial "Instrumento Clínico" — después del CSS crítico a propósito -->
-  <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
-  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=clash-display@500,600&display=swap">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"></noscript>
   <noscript><style>
@@ -417,7 +415,7 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
   <nav class="navbar" id="navbar" aria-label="Navegación principal">
     <div class="nav-container">
       <a href="#inicio" class="nav-logo" aria-label="Vitametric - Innovación Integral al Servicio de tu Salud - Ir a inicio">
-        <img src="assets/img/logo.webp" alt="Vitametric" class="nav-logo-img" id="nav-logo" decoding="async">
+        <img src="assets/img/logo.webp" alt="Vitametric" class="nav-logo-img" id="nav-logo" width="732" height="289" fetchpriority="high" decoding="async">
 
         <span class="nav-logo-tagline">Innovación Integral al Servicio de tu Salud</span>
       </a>
@@ -448,21 +446,21 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
     </div>
     <div class="hero-container">
       <div class="hero-content">
-        <div class="hero-badge reveal">
+        <div class="hero-badge">
           <span class="badge-dot"></span>
           Salud Preventiva
-        </div>            <h1 class="hero-title reveal">La verdadera salud <span class="hero-accent">comienza en cada</span> célula</h1>
-        <p class="hero-subtitle reveal">
+        </div>            <h1 class="hero-title">La verdadera salud <span class="hero-accent">comienza en cada</span> célula</h1>
+        <p class="hero-subtitle">
           Tecnología avanzada no invasiva para entender tu cuerpo, prevenir enfermedades y vivir con plenitud. En Ciudad de México.
         </p>
-        <div class="hero-actions reveal">
+        <div class="hero-actions">
           <a href="#contacto" class="btn btn-primary btn-lg">
             Agendar consulta
             <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </a>
           <a href="#tecnología" class="btn btn-outline btn-lg">Conoce la tecnología</a>
         </div>
-        <div class="hero-stats reveal">
+        <div class="hero-stats">
           <div class="stat"><span class="stat-number">4</span><span class="stat-label">Tecnologías avanzadas</span></div>
           <div class="stat-divider"></div>
           <div class="stat"><span class="stat-number">100%</span><span class="stat-label">No invasivo</span></div>
@@ -470,11 +468,11 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
           <div class="stat"><span class="stat-number">#Vivemás</span><span class="stat-label">Nuestra filosofía</span></div>
         </div>
       </div>
-      <div class="hero-visual reveal">
+      <div class="hero-visual">
         <div class="hero-image-wrapper">
           <div class="hero-glow"></div>
           <div class="hero-visual-img-wrap">
-            <img src="assets/img/hero-visual.webp" alt="Vitametric - Cuerpo de Partículas Bioluminiscentes y ADN" class="hero-visual-img" fetchpriority="high" decoding="sync">
+            <img src="assets/img/hero-visual.webp" alt="Vitametric - Cuerpo de Partículas Bioluminiscentes y ADN" class="hero-visual-img" width="1024" height="1024" fetchpriority="high" decoding="async">
           </div>
           <div class="hero-card hero-card-1">
             <svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00C8FF" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
@@ -579,7 +577,7 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
       <div class="nosotros-split reveal">
         <div class="nosotros-split-left">
           <div class="cell-img-wrap">
-            <img src="assets/img/cell-section.webp" alt="Análisis Celular Bioluminiscente" class="cell-img" loading="lazy" decoding="async" fetchpriority="low">
+            <img src="assets/img/cell-section.webp" alt="Análisis Celular Bioluminiscente" class="cell-img" width="1024" height="1024" loading="lazy" decoding="async" fetchpriority="low">
           </div>
         </div>
         <div class="nosotros-split-right">
@@ -995,22 +993,22 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
         <div style="display: flex; flex-direction: column; gap: 0.85rem;">
           <button onclick="showClinicalTech('escomplex')" id="btn-tech-escomplex" class="tech-tab-btn active-tech-btn" style="padding: 1.125rem 1.25rem; border-radius: 4px; background: var(--c-cyan-soft); border: 1px solid var(--c-cyan); color: #FFF; font-weight: var(--fw-semibold); text-align: left; cursor: pointer; transition: all 0.2s; font-family: var(--font);">
             <div style="font-size: 1.05rem; color: #FFF;">ES-Complex — Pre-Diagnóstico Electrointersticial</div>
-            <div style="font-size: 0.8rem; color: var(--c-muted); font-weight: normal; margin-top: 0.25rem;">Conductividad intersticial · HRV · Balance Autónomo</div>
+            <div style="font-size: 0.8rem; color: #78b4cf; font-weight: normal; margin-top: 0.25rem;">Conductividad intersticial · HRV · Balance Autónomo</div>
           </button>
           
           <button onclick="showClinicalTech('rife')" id="btn-tech-rife" class="tech-tab-btn" style="padding: 1.125rem 1.25rem; border-radius: 4px; background: var(--c-bg-card); border: 1px solid var(--c-border-light); color: var(--c-text); font-weight: var(--fw-semibold); text-align: left; cursor: pointer; transition: all 0.2s; font-family: var(--font);">
             <div style="font-size: 1.05rem; color: var(--c-primary);">Frecuencias de Rife — Resonancia Biológica</div>
-            <div style="font-size: 0.8rem; color: var(--c-muted); font-weight: normal; margin-top: 0.25rem;">Espectro electromagnético (1 Hz – 10 kHz) · Armonización celular</div>
+            <div style="font-size: 0.8rem; color: #78b4cf; font-weight: normal; margin-top: 0.25rem;">Espectro electromagnético (1 Hz – 10 kHz) · Armonización celular</div>
           </button>
 
           <button onclick="showClinicalTech('scenar')" id="btn-tech-scenar" class="tech-tab-btn" style="padding: 1.125rem 1.25rem; border-radius: 4px; background: var(--c-bg-card); border: 1px solid var(--c-border-light); color: var(--c-text); font-weight: var(--fw-semibold); text-align: left; cursor: pointer; transition: all 0.2s; font-family: var(--font);">
             <div style="font-size: 1.05rem; color: var(--c-primary);">Scenar — Terapia de Biorretroalimentación</div>
-            <div style="font-size: 0.8rem; color: var(--c-muted); font-weight: normal; margin-top: 0.25rem;">Impulsos neuroadaptativos (15 Hz – 350 Hz) · Alivio neuromodulado</div>
+            <div style="font-size: 0.8rem; color: #78b4cf; font-weight: normal; margin-top: 0.25rem;">Impulsos neuroadaptativos (15 Hz – 350 Hz) · Alivio neuromodulado</div>
           </button>
 
           <button onclick="showClinicalTech('immunocal')" id="btn-tech-immunocal" class="tech-tab-btn" style="padding: 1.125rem 1.25rem; border-radius: 4px; background: var(--c-bg-card); border: 1px solid var(--c-border-light); color: var(--c-text); font-weight: var(--fw-semibold); text-align: left; cursor: pointer; transition: all 0.2s; font-family: var(--font);">
             <div style="font-size: 1.05rem; color: var(--c-primary);">Immunocal — Nutrición & Glutatión Celular</div>
-            <div style="font-size: 0.8rem; color: var(--c-muted); font-weight: normal; margin-top: 0.25rem;">Donador de Cisteína Enlazada · Síntesis de Glutatión (GSH)</div>
+            <div style="font-size: 0.8rem; color: #78b4cf; font-weight: normal; margin-top: 0.25rem;">Donador de Cisteína Enlazada · Síntesis de Glutatión (GSH)</div>
           </button>
         </div>
       </div>
@@ -1122,7 +1120,7 @@ function showClinicalTech(key) {
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <img loading="lazy" src="assets/img/logo.webp" alt="Vitametric" class="footer-logo" decoding="async" fetchpriority="low">
+          <img loading="lazy" src="assets/img/logo.webp" alt="Vitametric" class="footer-logo" width="732" height="289" decoding="async" fetchpriority="low">
           <p>Centro de Salud Preventiva en Ciudad de México. Tecnología avanzada no invasiva para tu bienestar.</p>
           <span class="footer-tag">#Vivemás</span>
         </div>
