@@ -7,6 +7,12 @@ module.exports = {
       numberOfRuns: 3,
       // Chrome headless flags for the CI environment.
       settings: {
+        // CI gate profile: GitHub-hosted runners are already CPU-constrained, so avoid
+        // applying Lighthouse's additional 4x CPU slowdown on top of the runner.
+        // This keeps the strict gate deterministic; mobile realism is audited separately.
+        throttling: {
+          cpuSlowdownMultiplier: 1,
+        },
         chromeFlags: ['--no-sandbox', '--disable-setuid-sandbox'],
       },
     },
