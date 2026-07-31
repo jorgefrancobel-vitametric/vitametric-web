@@ -33,29 +33,57 @@ jobs:
       - name: Install Lighthouse CI
         run: npm install -g @lhci/cli@0.14.0
 
-      - name: Prepare Lighthouse reports directory
-        run: mkdir -p .lighthouseci
+      - name: Prepare Lighthouse report directories
+        run: mkdir -p .lighthouseci .lhci-debug
 
       - name: Run Lighthouse CI
-        run: lhci autorun
+        id: lighthouse
+        continue-on-error: true
+        shell: bash
+        run: |
+          set +e
+          lhci autorun 2>&1 | tee .lhci-debug/lhci.log
+          status=${PIPESTATUS[0]}
+          {
+            echo "exit_code=$status"
+            echo "node=$(node --version)"
+            echo "npm=$(npm --version)"
+            echo "lhci=$(lhci --version 2>&1 || true)"
+            echo "chrome_path=${CHROME_PATH:-unset}"
+            if [ -n "${CHROME_PATH:-}" ] && [ -x "$CHROME_PATH" ]; then
+              "$CHROME_PATH" --version || true
+            fi
+            echo '--- report files ---'
+            find .lighthouseci -maxdepth 2 -type f -print | sort
+          } > .lhci-debug/environment.txt
+          exit "$status"
         env:
           # Path to the Chrome binary installed in the previous step.
           # LHCI_GITHUB_APP_TOKEN can be set to the LHCI GitHub App token if you want PR comments.
           LHCI_CHROME_PATH: ${{ steps.setup-chrome.outputs.chrome-path }}
           CHROME_PATH: ${{ steps.setup-chrome.outputs.chrome-path }}
 
-      - name: Inspect Lighthouse reports
+      - name: Inspect Lighthouse reports and diagnostics
         if: always()
         run: |
-          if [ -d .lighthouseci ]; then
-            find .lighthouseci -maxdepth 2 -type f -print | sort
-          else
-            echo 'No .lighthouseci directory was produced.'
-          fi
+          echo '--- .lighthouseci ---'
+          find .lighthouseci -maxdepth 2 -type f -print | sort || true
+          echo '--- .lhci-debug ---'
+          find .lhci-debug -maxdepth 2 -type f -print | sort || true
+          if [ -f .lhci-debug/environment.txt ]; then cat .lhci-debug/environment.txt; fi
 
-      - name: Upload Lighthouse reports artifact
+      - name: Upload Lighthouse reports and diagnostics
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: lighthouse-reports
-          path: .lighthouseci
+          path: |
+            .lighthouseci
+            .lhci-debug
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Fail if Lighthouse CI failed
+        if: steps.lighthouse.outcome == 'failure'
+        shell: bash
+        run: exit 1

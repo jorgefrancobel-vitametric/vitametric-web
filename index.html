@@ -17,8 +17,6 @@
   <meta property="og:image:height" content="289">
   <meta property="og:locale" content="es_MX">
   <link rel="canonical" href="https://vitametric.com/">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://maps.google.com">
   <link rel="preconnect" href="https://challenges.cloudflare.com">
   <link rel="preload" href="assets/img/hero-visual.webp" as="image" type="image/webp" fetchpriority="high">
@@ -345,8 +343,6 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
 
   </style>
   <!-- Capa editorial "Instrumento Clínico" — después del CSS crítico a propósito -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"></noscript>
   <noscript><style>
 
 /* Clash Display Fontshare Embedded */
@@ -408,7 +404,6 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
   }
 }
 </script>
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
   <a href="#main-content" class="skip-link">Ir al contenido principal</a>
@@ -957,7 +952,7 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
               </label>
             </div>
             <input type="text" name="_gotcha" style="display:none">
-            <div class="cf-turnstile" data-sitekey="0x4AAAAAAD2DNBXtGXkUnHXM" data-action="turnstile-spin-v1"></div>
+            <div class="cf-turnstile" id="contactTurnstile" data-sitekey="0x4AAAAAAD2DNBXtGXkUnHXM" data-action="turnstile-spin-v1"></div>
             <button type="submit" class="btn btn-primary btn-lg btn-block" id="submitBtn"><span class="btn-text">Enviar mensaje</span><span class="btn-loading" style="display:none">Enviando...</span></button>
             <div class="form-success" id="formSuccess" style="display:none"><p><strong>¡Mensaje enviado!</strong> Te contactaremos pronto.</p></div>
             <div class="form-error" id="formError" style="display:none"><p><strong>Error al enviar.</strong> Intenta de nuevo o escríbenos a <a href="mailto:jorge.franco@vitametric.com">jorge.franco@vitametric.com</a></p></div>
