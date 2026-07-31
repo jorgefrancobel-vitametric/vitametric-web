@@ -982,10 +982,10 @@ h1, h2, h3, h4, h5, h6 {
   background: rgba(0,200,255,0.03);
   border-radius: 8px; border: 1px solid var(--c-border-light);
 }
-.footer-disclaimer p { font-size: var(--fs-xs); color: rgba(160,210,240,0.35); line-height: 1.5; margin-bottom: 0.5rem; }
+.footer-disclaimer p { font-size: var(--fs-xs); color: #6b8fa0; line-height: 1.5; margin-bottom: 0.5rem; }
 .footer-disclaimer p:last-child { margin-bottom: 0; }
 .footer-bottom { border-top: 1px solid var(--c-border-light); padding-top: var(--sp-md); text-align: center; }
-.footer-bottom p { font-size: var(--fs-xs); color: rgba(160,210,240,0.3); margin: 0; }
+.footer-bottom p { font-size: var(--fs-xs); color: #7399aa; margin: 0; }
 
 /* ── WHATSAPP FAB ── */
 .whatsapp-fab {
