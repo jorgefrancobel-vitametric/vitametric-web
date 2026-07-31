@@ -99,12 +99,17 @@ jobs:
             echo '--- debug files ---'
             find .lhci-debug -maxdepth 2 -type f -print | sort
           } > .lhci-debug/environment.txt
+          if [ "$status" -ne 0 ]; then
+            failure_log=$(tail -n 40 ".lhci-debug/attempt-${attempt}.log" 2>/dev/null | tr '\n' ' ' | cut -c1-3800 | sed 's/%/%25/g; s/\r/%0D/g; s/\n/%0A/g')
+            echo "::error title=Lighthouse CI failure::$failure_log"
+          fi
           exit "$status"
         env:
           # Path to the Chrome binary installed in the previous step.
           # LHCI_GITHUB_APP_TOKEN can be set to the LHCI GitHub App token if you want PR comments.
           LHCI_CHROME_PATH: ${{ steps.setup-chrome.outputs.chrome-path }}
           CHROME_PATH: ${{ steps.setup-chrome.outputs.chrome-path }}
+          DEBUG: 'lhci:*,LHCI:*,lh:*'
 
       - name: Inspect Lighthouse reports and diagnostics
         if: always()
