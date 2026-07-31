@@ -19,7 +19,11 @@ module.exports = {
           uploadThroughputKbps: 10240,
           cpuSlowdownMultiplier: 1,
         },
-        chromeFlags: ['--no-sandbox', '--disable-setuid-sandbox'],
+        chromeFlags: [
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+          '--disable-dev-shm-usage',
+        ],
       },
     },
     assert: {

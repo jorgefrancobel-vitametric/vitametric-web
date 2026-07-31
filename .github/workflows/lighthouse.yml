@@ -37,8 +37,6 @@ jobs:
         run: mkdir -p .lighthouseci .lhci-debug
 
       - name: Run Lighthouse CI
-        id: lighthouse
-        continue-on-error: true
         shell: bash
         run: |
           set +e
@@ -126,18 +124,23 @@ jobs:
           python3 - <<'PY'
           import json
           from pathlib import Path
-          p = Path('.lighthouseci/assertion-results.json')
-          if p.exists():
+          result_paths = sorted(Path('.lhci-debug').glob('attempt-*-reports/assertion-results.json'))
+          if not result_paths:
+              result_paths = [Path('.lighthouseci/assertion-results.json')]
+          failures = []
+          for p in result_paths:
+              if not p.exists():
+                  continue
               try:
-                  failures = [x for x in json.loads(p.read_text()) if x.get('passed') is False]
+                  failures.extend(x for x in json.loads(p.read_text()) if x.get('passed') is False)
               except Exception as exc:
-                  failures = [{'error': str(exc)}]
-              if failures:
-                  message = '; '.join(
-                      f"{x.get('url', '?')} {x.get('name', '?')}: {x.get('values', x.get('error', '?'))}"
-                      for x in failures
-                  )
-                  print(f'::error title=Lighthouse assertion failure::{message[:4000]}')
+                  failures.append({'error': f'{p}: {exc}'})
+          if failures:
+              message = '; '.join(
+                  f"{x.get('url', '?')} {x.get('name', '?')}: {x.get('values', x.get('error', '?'))}"
+                  for x in failures
+              )
+              print(f'::error title=Lighthouse assertion failure::{message[:4000]}')
           PY
 
       - name: Upload Lighthouse reports and diagnostics
@@ -151,8 +154,3 @@ jobs:
           include-hidden-files: true
           if-no-files-found: error
           retention-days: 7
-
-      - name: Fail if Lighthouse CI failed
-        if: steps.lighthouse.outcome == 'failure'
-        shell: bash
-        run: exit 1
