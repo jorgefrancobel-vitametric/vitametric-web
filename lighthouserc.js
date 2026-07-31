@@ -19,11 +19,9 @@ module.exports = {
           uploadThroughputKbps: 10240,
           cpuSlowdownMultiplier: 1,
         },
-        chromeFlags: [
-          '--no-sandbox',
-          '--disable-setuid-sandbox',
-          '--disable-dev-shm-usage',
-        ],
+        // LHCI 0.14 passes this value directly to Lighthouse; use a string so
+        // the Linux runner receives the sandbox flags instead of dropping them.
+        chromeFlags: '--no-sandbox --disable-setuid-sandbox --disable-dev-shm-usage',
       },
     },
     assert: {
