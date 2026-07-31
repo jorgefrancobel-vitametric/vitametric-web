@@ -3,16 +3,20 @@ module.exports = {
     collect: {
       // Serve the static files from the repo root.
       staticDistDir: './',
-      // Run Lighthouse 3 times and take the median for stable scores.
-      numberOfRuns: 3,
+      // Five runs reduce CI noise; LHCI asserts against the median.
+      numberOfRuns: 5,
       // Chrome headless flags for the CI environment.
       settings: {
-        // CI gate profile: use the runner's measured desktop performance instead of
-        // stacking Lighthouse's mobile simulation on top of a constrained VM.
+        // Deterministic desktop CI profile with explicit DevTools throttling.
         // Mobile realism is audited separately; score thresholds remain strict.
         preset: 'desktop',
-        throttlingMethod: 'provided',
+        throttlingMethod: 'devtools',
         throttling: {
+          rttMs: 40,
+          throughputKbps: 10240,
+          requestLatencyMs: 40,
+          downloadThroughputKbps: 10240,
+          uploadThroughputKbps: 10240,
           cpuSlowdownMultiplier: 1,
         },
         chromeFlags: ['--no-sandbox', '--disable-setuid-sandbox'],
