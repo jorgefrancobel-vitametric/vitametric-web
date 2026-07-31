@@ -25,10 +25,21 @@ jobs:
           node-version: '20'
 
       - name: Setup Chrome
-        uses: browser-actions/setup-chrome@v1.7.2
+        uses: browser-actions/setup-chrome@v2
         id: setup-chrome
         with:
           chrome-version: stable
+          install-dependencies: true
+
+      - name: Verify Chrome can start
+        shell: bash
+        run: |
+          set -euo pipefail
+          chrome_path='${{ steps.setup-chrome.outputs.chrome-path }}'
+          test -x "$chrome_path"
+          "$chrome_path" --version
+          "$chrome_path" --headless --no-sandbox --disable-dev-shm-usage --disable-gpu --dump-dom about:blank > /tmp/chrome-smoke.html
+          grep -qi '<html' /tmp/chrome-smoke.html
 
       - name: Install Lighthouse CI
         run: npm install -g @lhci/cli@0.14.0
