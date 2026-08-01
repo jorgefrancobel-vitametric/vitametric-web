@@ -1,0 +1,13 @@
+#!/bin/sh
+# Reescribe los ?v= de css/js con el hash de contenido y re-agrega los HTML tocados.
+# Sin esto, editar un CSS sin cambiar la URL deja el cambio invisible hasta 4h en el
+# navegador del visitante (GitHub Pages sirve max-age=14400 y no respeta _headers).
+# Activar una sola vez con:  git config core.hooksPath .githooks
+set -e
+repo="$(git rev-parse --show-toplevel)"
+python3 "$repo/scripts/bump-cache.py" >/dev/null
+cd "$repo"
+git diff --name-only -- '*.html' | while read -r f; do
+  [ -n "$f" ] && git add "$f"
+done
+exit 0

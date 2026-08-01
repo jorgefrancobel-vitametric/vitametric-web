@@ -270,6 +270,11 @@ h1, h2, h3, h4, h5, h6 {
 .nav-logo { display: flex; align-items: center; gap: 0.75rem; z-index: 10; }
 .nav-logo-img { height: 90px; max-height: 95px; width: auto; object-fit: contain; filter: drop-shadow(0 2px 8px rgba(0,200,255,0.2)); }
 .nav-menu { display: flex; align-items: center; gap: 0.25rem; }
+
+/* Animacion de los drawers moviles (nav home + nav subpagina). Se usan con display:none/block
+   en el estado cerrado para que el drawer no ensanche el documento. */
+@keyframes drawer-in  { from { transform: translateX(100%); } to { transform: translateX(0); } }
+@keyframes drawer-out { from { transform: translateX(0); } to { transform: translateX(100%); } }
 .nav-link {
   display: block;
   padding: 0.5rem 1rem;
@@ -1496,18 +1501,23 @@ h1, h2, h3, h4, h5, h6 {
   .section-title { max-width: 100%; }
   .hero { min-height: auto; padding: calc(var(--nav-h) + var(--sp-xl)) 0 var(--sp-xl); }
   .nav-toggle { display: block; }
+  /* Cerrado = display:none. Un drawer fixed estacionado con right:-100% (o con transform,
+     medido: tambien cuenta para el scroll) ensancha el documento a 2x el viewport, y
+     overflow-x:hidden NO recorta descendientes position:fixed en Safari iOS -> shrink-to-fit.
+     display:none es lo unico que lo saca del area de scroll. Se anima al abrir/cerrar. */
   .nav-menu {
-    position: fixed; top: 0; right: -100%;
+    position: fixed; top: 0; right: 0;
     width: min(300px, 85vw); height: 100vh;
+    display: none;
     flex-direction: column;
     background: var(--c-bg-card);
     border-left: 1px solid var(--c-border);
     padding: calc(var(--nav-h) + var(--sp-md)) var(--sp-md) var(--sp-md);
     box-shadow: var(--shadow-xl);
-    transition: right var(--t-slow) var(--ease-out);
     gap: 0; align-items: stretch;
   }
-  .nav-menu.open { right: 0; }
+  .nav-menu.open { display: flex; animation: drawer-in var(--t-slow) var(--ease-out); }
+  .nav-menu.closing { display: flex; animation: drawer-out var(--t-slow) var(--ease-out) forwards; }
   .nav-link { color: var(--c-text); padding: 0.75rem 1rem; font-size: var(--fs-base); border-bottom: 1px solid var(--c-border-light); }
   .nav-link:hover { background: var(--c-cyan-soft); color: var(--c-cyan); }
   .nav-cta { text-align: center; margin-left: 0; margin-top: var(--sp-sm); border-bottom: none; }
@@ -1535,19 +1545,21 @@ h1, h2, h3, h4, h5, h6 {
   .subpage-nav-container { gap: 0; padding: 0 1rem; }
   .subpage-logo-tagline { display: none; }
   .subpage-logo-img { height: 56px; }
+  /* Ver nota en .nav-menu: cerrado = display:none, si no ensancha el documento. */
   .subpage-nav-container > nav {
-    position: fixed; top: 0; right: -100%;
+    position: fixed; top: 0; right: 0;
     width: min(300px, 85vw); height: 100vh;
+    display: none;
     background: rgba(2, 12, 27, 0.97);
     backdrop-filter: blur(20px);
     border-left: 1px solid rgba(0, 200, 255, 0.2);
     padding: calc(var(--nav-h) + 1.5rem) 1.5rem 1.5rem;
     box-shadow: var(--shadow-xl);
-    transition: right 0.3s ease;
     z-index: 999;
     overflow-y: auto;
   }
-  .subpage-nav-container > nav.open { right: 0; }
+  .subpage-nav-container > nav.open { display: block; animation: drawer-in 0.3s ease; }
+  .subpage-nav-container > nav.closing { display: block; animation: drawer-out 0.3s ease forwards; }
   .rizo-nav-pills { flex-direction: column; gap: 0; }
   .rizo-nav-pill { padding: 0.85rem 0; border-bottom: 1px solid rgba(0, 200, 255, 0.1); font-size: 1.05rem; }
   .rizo-nav-pill svg { width: 20px; height: 20px; margin-right: 0.75rem; vertical-align: middle; }
@@ -1562,6 +1574,22 @@ h1, h2, h3, h4, h5, h6 {
   .subpage-nav-toggle.active .subpage-hamburger::after { bottom: 0; transform: rotate(-45deg); background: var(--c-cyan); }
   .subpage-nav-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 998; }
   .subpage-nav-overlay.open { display: block; }
+
+  /* ── AREAS TACTILES (medidas antes: toggles 40x20, breadcrumbs 22px de alto, dots 10x10) ── */
+  .subpage-nav-toggle, .nav-toggle { min-width: 44px; min-height: 44px; }
+  .breadcrumb-link, .consultor-link { display: inline-block; padding: 0.6rem 0; }
+  /* Los dots quedan 28x44: el ancho lo limita la separacion entre ellos (si se les da 44 de
+     ancho los blancos se enciman y se toca el equivocado). Cumple el minimo AA de 24x24. */
+  .testimonial-dots { gap: 1rem; align-items: center; }
+  .dot { position: relative; }
+  .dot::after {
+    content: ''; position: absolute; left: 50%; top: 50%;
+    transform: translate(-50%, -50%); width: 28px; height: 44px;
+  }
+  /* Enlaces de footer y de contacto (tel:/mailto:): median 16px de alto. */
+  .footer-nav a, .footer-servicios a, .footer-contacto a, .contacto-item a {
+    display: inline-block; padding: 0.45rem 0;
+  }
 
   /* ── SUBPAGE HERO MOBILE ── */
   .subpage-hero-zone { padding: 1.5rem 1rem 1rem; text-align: center; }
@@ -1603,6 +1631,9 @@ h1, h2, h3, h4, h5, h6 {
   /* ── SUBPAGE CTA MOBILE ── */
   .subpage-inline-cta { margin-top: 1.5rem; }
   .subpage-inline-cta .btn { padding: 0.75rem 1.25rem; font-size: 0.95rem; width: 100%; box-sizing: border-box; display: block; text-align: center; }
+  /* .btn trae white-space:nowrap (linea ~210): en movil el texto no puede partirse, el ancho
+     minimo del boton supera el del contenedor y ensancha el documento. Aqui se le permite partir. */
+  .btn { white-space: normal; max-width: 100%; }
 
   /* ── SUBPAGE VIDEO MOBILE ── */
   #video-cover-container { border-radius: var(--radius-md) !important; }
@@ -2415,6 +2446,28 @@ h1, h2, h3, h4, h5, h6 {
   border-top: 1px solid rgba(0, 200, 255, 0.2);
   border-bottom: 1px solid rgba(0, 200, 255, 0.2);
   padding: 3.5rem 0;
+}
+
+/* Antes iba inline en index.html con grid-template-columns:1fr 1fr, que ninguna media query
+   podia sobrescribir (los estilos inline ganan) -> dos columnas de ~322px en pantalla de 390. */
+.clinical-selector-grid {
+  background: var(--c-bg-surface);
+  border: 1px solid var(--hair-strong, rgba(0, 200, 255, 0.3));
+  border-radius: 4px;
+  padding: 2.5rem;
+  box-shadow: var(--shadow-lg);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+}
+/* Sin esto los items de grid usan min-width:auto y no pueden encoger por debajo de su
+   contenido: la columna se resolvia a 388px dentro de un contenedor de 342. */
+.clinical-selector-grid > * { min-width: 0; }
+@media (max-width: 900px) {
+  .clinical-selector-grid { grid-template-columns: 1fr; gap: 1.5rem; padding: 1.5rem; }
+}
+@media (max-width: 480px) {
+  .clinical-selector-grid { padding: 1.15rem; gap: 1.25rem; }
 }
 
 /* ── Product Hero Image ── */

@@ -27,31 +27,46 @@
   </script>
   <meta name="description" content="Suplementos y fitoterapia de especialidad natural desarrollados por el Dr. Miguel Ángel Uriegas en Vitametric CDMX.">
   <link rel="canonical" href="https://vitametric.com/productos/suplementos-uriegas.html">
-  <link rel="stylesheet" href="../css/style.css?v=15">
+  <link rel="stylesheet" href="../css/style.css?v=37fd29ed">
 </head>
 <body>
-  <header class="header" id="header">
-    <div class="container header-inner">
-      <a href="../index.html" class="logo-link">
-        <img src="../assets/img/logo.webp" alt="Vitametric Logo" class="logo-img" width="180" height="71" fetchpriority="high">
+  <header class="subpage-navbar" id="header">
+    <div class="subpage-nav-container">
+      <a href="../index.html" class="subpage-logo-link">
+        <img src="../assets/img/logo.webp" alt="Vitametric Logo" class="subpage-logo-img" width="240" height="95" fetchpriority="high">
+        <span class="subpage-logo-tagline">Centro de Salud<br>Preventiva CDMX</span>
       </a>
-      <nav class="nav">
-        <ul class="nav-list">
-          <li><a href="../index.html" class="nav-link">Inicio</a></li>
-          <li><a href="../index.html#tecnología" class="nav-link">Tecnologías</a></li>
-          <li><a href="../index.html#productos" class="nav-link active">Productos</a></li>
-          <li><a href="../index.html#contacto" class="nav-link">Contacto</a></li>
+      <button class="subpage-nav-toggle" aria-label="Abrir menú" aria-expanded="false">
+        <span class="subpage-hamburger"></span>
+      </button>
+      <nav>
+        <ul class="rizo-nav-pills">
+          <li><a href="../index.html" class="rizo-nav-pill">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9.5 12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-7h-6v7H4a1 1 0 0 1-1-1z"/></svg>
+            Inicio</a></li>
+          <li><a href="../index.html#tecnología" class="rizo-nav-pill">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="2.2"/><ellipse cx="12" cy="12" rx="10" ry="4.2"/><ellipse cx="12" cy="12" rx="10" ry="4.2" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.2" transform="rotate(120 12 12)"/></svg>
+            Tecnologías</a></li>
+          <li><a href="../index.html#productos" class="rizo-nav-pill active">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="M3 8l9 5 9-5"/><path d="M12 13v8"/></svg>
+            Productos</a></li>
+          <li><a href="../index.html#contacto" class="rizo-nav-pill">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+            Contacto</a></li>
         </ul>
       </nav>
-<a href="https://api.whatsapp.com/send?phone=525552150674&text=Información%20Suplementos%20Dr.%20Uriegas" target="_blank" rel="noopener" class="btn btn-primary btn-glow">Solicitar Información</a>
+      <a href="https://api.whatsapp.com/send?phone=525552150674&text=Información%20Suplementos%20Dr.%20Uriegas" target="_blank" rel="noopener" class="subpage-cta-btn">
+        <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        Solicitar Información
+      </a>
     </div>
   </header>
-  <div class="subpage-nav-overlay" id="subpageNavOverlay" onclick="document.querySelector('.subpage-nav-container > nav').classList.remove('open');document.querySelector('.subpage-nav-toggle').classList.remove('open');this.classList.remove('open');"></div>
+  <div class="subpage-nav-overlay" id="subpageNavOverlay"></div>
 
   <main style="padding-top: calc(var(--nav-h) + 2rem); padding-bottom: 5rem;">
     <div class="container">
       <div style="margin-bottom: 2rem; font-size: var(--fs-sm); color: var(--c-muted);">
-        <a href="../index.html">Inicio</a> &nbsp;/&nbsp; <a href="../index.html#productos">Productos</a> &nbsp;/&nbsp; <span style="color: var(--c-cyan);">Línea Dr. Uriegas</span>
+        <a href="../index.html" class="breadcrumb-link">Inicio</a> &nbsp;/&nbsp; <a href="../index.html#productos" class="breadcrumb-link">Productos</a> &nbsp;/&nbsp; <span style="color: var(--c-cyan);">Línea Dr. Uriegas</span>
       </div>
 
       <div style="background: var(--c-bg-surface); border: 1px solid var(--c-border); border-radius: var(--radius-xl); padding: 3rem; margin-bottom: 3rem; box-shadow: var(--shadow-lg);">
@@ -80,4 +95,6 @@
   </footer>
 
 
+  <script src="../js/subpage-nav.js?v=ee49120a"></script>
+</body>
 </html>

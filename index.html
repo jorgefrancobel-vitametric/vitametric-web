@@ -22,7 +22,7 @@
   <link rel="preload" href="assets/img/hero-visual.webp" imagesrcset="assets/img/responsive/hero-visual-768.webp 768w, assets/img/hero-visual.webp 1024w" imagesizes="380px" as="image" type="image/webp" fetchpriority="high">
   <link rel="preload" href="assets/fonts/clash-display-600.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/clash-display-700.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="css/style.css?v=15">
+  <link rel="stylesheet" href="css/style.css?v=37fd29ed">
   <style>
 
 /* Clash Display Fontshare Embedded */
@@ -315,8 +315,15 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
   .section-header { margin-bottom: 2rem; }
   .hero { min-height: 90vh; }
   .nav-toggle { display: block; }
-  .nav-menu { position: fixed; top: 0; right: -100%; width: min(300px, 85vw); height: 100vh; flex-direction: column; background: var(--c-bg-card); border-left: 1px solid var(--c-border); padding: calc(var(--nav-h) + var(--sp-md)) var(--sp-md) var(--sp-md); box-shadow: var(--shadow-xl); transition: right var(--t-slow) var(--ease-out); gap: 0; align-items: stretch; }
-  .nav-menu.open { right: 0; }
+  /* Cerrado = display:none. Un drawer fixed estacionado con right:-100% (o con transform)
+     ensancha el documento a 2x el viewport; overflow-x:hidden no recorta descendientes fixed
+     en Safari iOS -> shrink-to-fit ("se ve como escritorio en miniatura"). display:none es
+     lo unico que lo saca del area de scroll. La animacion se hace al abrir. */
+  .nav-menu { position: fixed; top: 0; right: 0; width: min(300px, 85vw); height: 100vh; display: none; flex-direction: column; background: var(--c-bg-card); border-left: 1px solid var(--c-border); padding: calc(var(--nav-h) + var(--sp-md)) var(--sp-md) var(--sp-md); box-shadow: var(--shadow-xl); gap: 0; align-items: stretch; }
+  .nav-menu.open { display: flex; animation: drawer-in var(--t-slow) var(--ease-out); }
+  .nav-menu.closing { display: flex; animation: drawer-out var(--t-slow) var(--ease-out) forwards; }
+  @keyframes drawer-in { from { transform: translateX(100%); } to { transform: translateX(0); } }
+  @keyframes drawer-out { from { transform: translateX(0); } to { transform: translateX(100%); } }
   .nav-link { color: var(--c-text); padding: 0.75rem 1rem; font-size: var(--fs-base); border-bottom: 1px solid var(--c-border-light); }
   .nav-link:hover { background: var(--c-cyan-soft); color: var(--c-cyan); }
   .nav-cta { text-align: center; margin-left: 0; margin-top: var(--sp-sm); border-bottom: none; }
@@ -983,7 +990,7 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
       <p style="color: var(--c-text); font-size: var(--fs-md); line-height: 1.6;">Consulta las variables biofísicas específicas que evalúa y aborda cada una de las tecnologías no invasivas de Vitametric CDMX.</p>
     </div>
 
-    <div class="clinical-double-bezel" style="background: var(--c-bg-surface); border: 1px solid var(--hair-strong, rgba(0, 200, 255, 0.3)); border-radius: 4px; padding: 2.25rem; padding: 2.5rem; box-shadow: var(--shadow-lg); display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem;">
+    <div class="clinical-double-bezel clinical-selector-grid">
       <div>
         <h3 style="color: var(--c-cyan); font-size: var(--fs-lg); margin-bottom: 1.25rem; font-family: var(--font-display, "Clash Display", sans-serif); font-weight: var(--fw-semibold);">Selecciona la Tecnología a Consultar:</h3>
         <div style="display: flex; flex-direction: column; gap: 0.85rem;">
@@ -1148,7 +1155,7 @@ function showClinicalTech(key) {
   <a href="https://wa.me/525585327421?text=Hola%2C%20me%20interesa%20conocer%20m%C3%A1s%20sobre%20los%20servicios%20de%20Vitametric" class="whatsapp-fab" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
     <svg aria-hidden="true" focusable="false" width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
   </a>
-  <script src="js/main.js?v=5"></script>
+  <script src="js/main.js?v=418ec43a"></script>
 
 </body>
 </html>

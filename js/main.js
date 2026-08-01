@@ -49,43 +49,45 @@
 
   function setupMobileMenu() {
     if (!navToggle || !navMenu) return;
-    navToggle.addEventListener('click', () => {
-      const isOpen = navMenu.classList.toggle('open');
-      navToggle.classList.toggle('active');
-      navToggle.setAttribute('aria-expanded', isOpen);
-      document.body.style.overflow = isOpen ? 'hidden' : '';
+    // El drawer cerrado es display:none (ver style.css): asi no ensancha el documento.
+    // Por eso el cierre se anima con la clase .closing antes de quitar .open.
+    const ANIM_MS = 300;
+    let closeTimer = null;
+
+    const isOpen = () => navMenu.classList.contains('open') && !navMenu.classList.contains('closing');
+
+    const open = () => {
+      clearTimeout(closeTimer);
+      navMenu.classList.remove('closing');
+      navMenu.classList.add('open');
+      navToggle.classList.add('active');
+      navToggle.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    };
+
+    const close = () => {
+      if (!navMenu.classList.contains('open')) return;
+      navMenu.classList.add('closing');
+      navToggle.classList.remove('active');
+      navToggle.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+      clearTimeout(closeTimer);
+      closeTimer = setTimeout(() => navMenu.classList.remove('open', 'closing'), ANIM_MS);
+    };
+
+    navToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (isOpen()) { close(); } else { open(); }
     });
-    navLinks.forEach((link) => {
-      link.addEventListener('click', () => {
-        navMenu.classList.remove('open');
-        navToggle.classList.remove('active');
-        navToggle.setAttribute('aria-expanded', 'false');
-        document.body.style.overflow = '';
-      });
-    });
+    navLinks.forEach((link) => link.addEventListener('click', close));
     document.addEventListener('click', (e) => {
-      if (!navMenu.contains(e.target) && !navToggle.contains(e.target)) {
-        navMenu.classList.remove('open');
-        navToggle.classList.remove('active');
-        navToggle.setAttribute('aria-expanded', 'false');
-        document.body.style.overflow = '';
-      }
+      if (!navMenu.contains(e.target) && !navToggle.contains(e.target)) close();
     });
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && navMenu.classList.contains('open')) {
-        navMenu.classList.remove('open');
-        navToggle.classList.remove('active');
-        navToggle.setAttribute('aria-expanded', 'false');
-        document.body.style.overflow = '';
-      }
+      if (e.key === 'Escape') close();
     });
     window.addEventListener('resize', () => {
-      if (window.innerWidth > 768 && navMenu.classList.contains('open')) {
-        navMenu.classList.remove('open');
-        navToggle.classList.remove('active');
-        navToggle.setAttribute('aria-expanded', 'false');
-        document.body.style.overflow = '';
-      }
+      if (window.innerWidth > 768) close();
     });
   }
 
