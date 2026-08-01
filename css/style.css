@@ -735,7 +735,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ── PRODUCTOS ── */
-.section-productos { background: var(--c-bg-mid); }
+.section-productos { background: var(--c-bg-mid); overflow-x: hidden; }
 .products-grid {
   display: grid; grid-template-columns: repeat(4, 1fr);
   /* grid-auto-rows flexible */
@@ -981,11 +981,9 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 2rem; padding: 1.5rem;
   background: rgba(0,200,255,0.03);
   border-radius: 8px; border: 1px solid var(--c-border-light);
-}
-.footer-disclaimer p { font-size: var(--fs-xs); color: rgba(160,210,240,0.35); line-height: 1.5; margin-bottom: 0.5rem; }
+} .footer-disclaimer p { font-size: var(--fs-xs); color: rgba(160,210,240,0.35); line-height: 1.5; margin-bottom: 0.5rem; }
 .footer-disclaimer p:last-child { margin-bottom: 0; }
-.footer-bottom { border-top: 1px solid var(--c-border-light); padding-top: var(--sp-md); text-align: center; }
-.footer-bottom p { font-size: var(--fs-xs); color: rgba(160,210,240,0.3); margin: 0; }
+.footer-bottom { border-top: 1px solid var(--c-border-light); padding-top: var(--sp-md); text-align: center; } .footer-bottom p { font-size: var(--fs-xs); color: rgba(160,210,240,0.3); margin: 0; }
 
 /* ── WHATSAPP FAB ── */
 .whatsapp-fab {
@@ -1045,9 +1043,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media (max-width: 768px) {
-  :root { --fs-4xl: 2.25rem; --fs-3xl: 1.875rem; --nav-h: 85px; }
+  :root { --fs-4xl: 2.25rem; --fs-3xl: 1.875rem; --nav-h: 64px; }
   .section { padding: 3rem 0; }
   .section-header { margin-bottom: 2rem; }
+  .section-title { max-width: 100%; }
   .hero { min-height: 90vh; }
   .nav-toggle { display: block; }
   .nav-menu {
@@ -1068,6 +1067,7 @@ h1, h2, h3, h4, h5, h6 {
   .hero { min-height: auto; padding: calc(var(--nav-h) + var(--sp-xl)) 0 var(--sp-xl); }
   .hero-stats { flex-direction: column; gap: var(--sp-sm); }
   .stat-divider { width: 40px; height: 1px; }
+  .trust-items { grid-template-columns: 1fr; }
   .nosotros-grid   { grid-template-columns: 1fr; }
   .nosotros-quote  { font-size: var(--fs-lg); }
   .tech-grid       { grid-template-columns: 1fr; }
@@ -1078,6 +1078,15 @@ h1, h2, h3, h4, h5, h6 {
   .whatsapp-fab svg { width: 24px; height: 24px; }
   .hero-scroll-indicator { display: none; }
   .nav-logo-img    { height: 72px; max-height: 75px; max-width: calc(100vw - 90px); width: auto; object-fit: contain; }
+  .hero-orb-1 { width: 200px; height: 200px; }
+  .hero-orb-2 { width: 140px; height: 140px; }
+  .hero-orb-3 { width: 100px; height: 100px; }
+  .dna-divider { background-attachment: scroll; }
+  .cta-banner { background-attachment: scroll; }
+  .subpage-nav-menu { gap: 0.75rem; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .subpage-hero-zone { padding: 2.5rem 0 3rem; }
+  .subpage-hero-title { font-size: clamp(1.8rem, 5vw, 2.5rem); }
+  .subpage-logo-tagline { display: none; }
 }
 
 @media (max-width: 480px) {
