@@ -184,6 +184,29 @@
   }
 }
 
+/* ── Mobile slide-in nav overrides ── */
+@media (max-width: 768px) {
+  .subpage-nav-container > nav .rizo-nav-pills {
+    flex-direction: column;
+    gap: 0;
+  }
+  .subpage-nav-container > nav .rizo-nav-pill {
+    font-size: 1.05rem;
+    padding: 0.85rem 0;
+    min-height: auto;
+    border-bottom: 1px solid rgba(0, 200, 255, 0.1);
+  }
+  .subpage-nav-container > nav .rizo-sibling-inner {
+    flex-wrap: nowrap;
+    overflow-x: visible;
+    gap: 0;
+  }
+  .subpage-nav-container > nav .rizo-sibling-label {
+    flex-basis: auto;
+    margin: 0;
+  }
+}
+
 @media (max-width: 480px) {
   .rizo-nav-pills {
     justify-content: flex-start;
