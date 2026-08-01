@@ -25,25 +25,148 @@ jobs:
           node-version: '20'
 
       - name: Setup Chrome
-        uses: browser-actions/setup-chrome@v1.7.2
+        uses: browser-actions/setup-chrome@v2
         id: setup-chrome
         with:
           chrome-version: stable
+          install-dependencies: true
+
+      - name: Verify Chrome can start
+        shell: bash
+        run: |
+          set -euo pipefail
+          chrome_path='${{ steps.setup-chrome.outputs.chrome-path }}'
+          test -x "$chrome_path"
+          "$chrome_path" --version
+          "$chrome_path" --headless --no-sandbox --disable-dev-shm-usage --disable-gpu --dump-dom about:blank > /tmp/chrome-smoke.html
+          grep -qi '<html' /tmp/chrome-smoke.html
 
       - name: Install Lighthouse CI
         run: npm install -g @lhci/cli@0.14.0
 
+      - name: Prepare Lighthouse report directories
+        run: mkdir -p .lighthouseci .lhci-debug
+
       - name: Run Lighthouse CI
-        run: lhci autorun
+        shell: bash
+        run: |
+          set +e
+          status=1
+          attempts=3
+          : > .lhci-debug/lhci.log
+          for attempt in $(seq 1 "$attempts"); do
+            echo "=== Lighthouse CI attempt $attempt/$attempts ===" | tee -a .lhci-debug/lhci.log
+            rm -rf .lighthouseci
+            mkdir -p .lighthouseci
+            lhci autorun --config=./lighthouserc.js 2>&1 | tee ".lhci-debug/attempt-${attempt}.log"
+            attempt_status=${PIPESTATUS[0]}
+            cat ".lhci-debug/attempt-${attempt}.log" >> .lhci-debug/lhci.log
+            cp -R .lighthouseci ".lhci-debug/attempt-${attempt}-reports"
+            assertion_failure=$(python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('.lighthouseci/assertion-results.json')
+          try:
+              data = json.loads(p.read_text()) if p.exists() else []
+              print('1' if any(item.get('passed') is False for item in data) else '0')
+          except Exception:
+              print('0')
+          PY
+            )
+            echo "attempt_${attempt}_exit=$attempt_status assertion_failure=$assertion_failure" | tee -a .lhci-debug/lhci.log
+            if [ "$assertion_failure" = "1" ]; then
+              status=1
+              break
+            fi
+            status=$attempt_status
+            if [ "$status" -eq 0 ]; then
+              break
+            fi
+            sleep 5
+          done
+          {
+            echo "exit_code=$status"
+            echo "attempts=$attempt"
+            echo "node=$(node --version)"
+            echo "npm=$(npm --version)"
+            echo "lhci=$(lhci --version 2>&1 || true)"
+            echo "chrome_path=${CHROME_PATH:-unset}"
+            if [ -n "${CHROME_PATH:-}" ] && [ -x "$CHROME_PATH" ]; then
+              "$CHROME_PATH" --version || true
+            fi
+            echo '--- report files ---'
+            find .lighthouseci -maxdepth 2 -type f -print | sort
+            echo '--- debug files ---'
+            find .lhci-debug -maxdepth 2 -type f -print | sort
+          } > .lhci-debug/environment.txt
+          if [ "$status" -ne 0 ]; then
+            failure_log=$(tail -n 40 ".lhci-debug/attempt-${attempt}.log" 2>/dev/null | tr '\n' ' ' | cut -c1-3800 | sed 's/%/%25/g; s/\r/%0D/g; s/\n/%0A/g')
+            echo "::error title=Lighthouse CI failure::$failure_log"
+          fi
+          exit "$status"
         env:
           # Path to the Chrome binary installed in the previous step.
           # LHCI_GITHUB_APP_TOKEN can be set to the LHCI GitHub App token if you want PR comments.
           LHCI_CHROME_PATH: ${{ steps.setup-chrome.outputs.chrome-path }}
           CHROME_PATH: ${{ steps.setup-chrome.outputs.chrome-path }}
+          DEBUG: 'lhci:*,LHCI:*,lh:*'
 
-      - name: Upload Lighthouse reports artifact
+      - name: Inspect Lighthouse reports and diagnostics
+        if: always()
+        run: |
+          echo '--- .lighthouseci ---'
+          find .lighthouseci -maxdepth 2 -type f -print | sort || true
+          echo '--- .lhci-debug ---'
+          find .lhci-debug -maxdepth 2 -type f -print | sort || true
+          if [ -f .lhci-debug/environment.txt ]; then cat .lhci-debug/environment.txt; fi
+
+      - name: Publish Lighthouse diagnostics
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo '## Lighthouse CI diagnostics'
+            echo '### Environment'
+            cat .lhci-debug/environment.txt 2>/dev/null || echo 'No environment diagnostics.'
+            echo '### Assertion results (all attempts)'
+            for result in .lhci-debug/attempt-*-reports/assertion-results.json; do
+              [ -f "$result" ] || continue
+              echo "--- $result ---"
+              cat "$result"
+            done
+            echo '### Log tail'
+            tail -n 120 .lhci-debug/lhci.log 2>/dev/null || echo 'No LHCI log was produced.'
+          } >> "$GITHUB_STEP_SUMMARY"
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          result_paths = sorted(Path('.lhci-debug').glob('attempt-*-reports/assertion-results.json'))
+          if not result_paths:
+              result_paths = [Path('.lighthouseci/assertion-results.json')]
+          failures = []
+          for p in result_paths:
+              if not p.exists():
+                  continue
+              try:
+                  failures.extend(x for x in json.loads(p.read_text()) if x.get('passed') is False)
+              except Exception as exc:
+                  failures.append({'error': f'{p}: {exc}'})
+          if failures:
+              message = '; '.join(
+                  f"{x.get('url', '?')} {x.get('name', '?')}: {x.get('values', x.get('error', '?'))}"
+                  for x in failures
+              )
+              print(f'::error title=Lighthouse assertion failure::{message[:4000]}')
+          PY
+
+      - name: Upload Lighthouse reports and diagnostics
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: lighthouse-reports
-          path: .lighthouseci
+          path: |
+            .lighthouseci
+            .lhci-debug
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 7

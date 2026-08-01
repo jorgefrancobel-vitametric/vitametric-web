@@ -205,7 +205,96 @@
     });
   }
 
-  function setupContactForm() {
+  function setupTurnstile() {
+    var turnstileEl = document.getElementById('contactTurnstile');
+    if (!turnstileEl) return function () { return Promise.resolve(); };
+
+    var loadPromise;
+    var renderPromise;
+    var widgetId = null;
+
+    function loadApi() {
+      if (window.turnstile) return Promise.resolve(window.turnstile);
+      if (loadPromise) return loadPromise;
+
+      loadPromise = new Promise(function (resolve, reject) {
+        var script = document.querySelector('script[data-vitametric-turnstile]') ||
+          document.querySelector('script[src*="challenges.cloudflare.com/turnstile/v0/api.js"]');
+        var attempts = 0;
+
+        function settleWhenReady() {
+          if (window.turnstile) {
+            resolve(window.turnstile);
+          } else if (attempts++ < 50) {
+            window.setTimeout(settleWhenReady, 100);
+          } else {
+            reject(new Error('Turnstile API did not initialize'));
+          }
+        }
+
+        function handleError() {
+          reject(new Error('Turnstile API failed to load'));
+        }
+
+        if (!script) {
+          script = document.createElement('script');
+          script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+          script.async = true;
+          script.defer = true;
+          script.dataset.vitametricTurnstile = 'true';
+        }
+        script.addEventListener('load', settleWhenReady, { once: true });
+        script.addEventListener('error', handleError, { once: true });
+        if (!script.parentNode) document.head.appendChild(script);
+        settleWhenReady();
+      });
+      loadPromise = loadPromise.catch(function (error) {
+        loadPromise = null;
+        throw error;
+      });
+      return loadPromise;
+    }
+
+    function render() {
+      if (widgetId !== null) return Promise.resolve(widgetId);
+      if (renderPromise) return renderPromise;
+
+      renderPromise = loadApi().then(function (api) {
+        if (widgetId === null) {
+          widgetId = api.render(turnstileEl, {
+            sitekey: turnstileEl.dataset.sitekey,
+            action: turnstileEl.dataset.action
+          });
+        }
+        return widgetId;
+      }).catch(function (error) {
+        renderPromise = null;
+        throw error;
+      });
+      return renderPromise;
+    }
+
+    var formSection = turnstileEl.closest('form') || turnstileEl;
+    if ('IntersectionObserver' in window) {
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            render().catch(function () {});
+            observer.disconnect();
+          }
+        });
+      }, { rootMargin: '300px 0px' });
+      observer.observe(formSection);
+    }
+    formSection.addEventListener('focusin', function () { render().catch(function () {}); }, { once: true });
+
+    render.reset = function () {
+      if (window.turnstile && widgetId !== null) window.turnstile.reset(widgetId);
+    };
+    return render;
+  }
+
+  function setupContactForm(ensureTurnstile) {
     if (!contactForm) return;
     var workerUrl = 'https://turnstile-siteverify-vitametric.elnoruegosh.workers.dev';
 
@@ -221,8 +310,12 @@
 
       var tokenEl = document.querySelector('[name="cf-turnstile-response"]');
       if (!tokenEl || !tokenEl.value) {
+        ensureTurnstile().then(function () {
+          var turnstileEl = document.getElementById('contactTurnstile');
+          if (turnstileEl) turnstileEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }).catch(function () {});
         formError.style.display = 'flex';
-        formError.querySelector('p').innerHTML = '<strong>Verificación pendiente.</strong><br>Por favor completa el captcha de seguridad.';
+        formError.querySelector('p').innerHTML = '<strong>Completa la verificación de seguridad.</strong><br>El captcha está listo; después vuelve a pulsar Enviar mensaje.';
         return;
       }
 
@@ -268,7 +361,7 @@
             if (btnText) btnText.style.display = 'inline';
             if (btnLoading) btnLoading.style.display = 'none';
             submitBtn.disabled = false;
-            if (typeof turnstile !== 'undefined') turnstile.reset();
+            if (ensureTurnstile.reset) ensureTurnstile.reset();
           });
         } else {
           formError.style.display = 'flex';
@@ -276,7 +369,7 @@
           if (btnText) btnText.style.display = 'inline';
           if (btnLoading) btnLoading.style.display = 'none';
           submitBtn.disabled = false;
-          if (typeof turnstile !== 'undefined') turnstile.reset();
+          if (ensureTurnstile.reset) ensureTurnstile.reset();
         }
       })
       .catch(function () {
@@ -495,7 +588,8 @@
     setupRevealObserver();
     setupTestimonialSlider();
     setupFormValidation();
-    setupContactForm();
+    var ensureTurnstile = setupTurnstile();
+    setupContactForm(ensureTurnstile);
     setupSmoothScroll();
     setupHeroParticles();
     setupCounters();
