@@ -9,12 +9,12 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-  <title>Frecuencias de Rife | Vitametric — Centro de Salud Preventiva</title>
+  <title>Frecuencias de Rife | Historia, Microscopía y Resonancia Bioelectromagnética — Vitametric</title>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "MedicalWebPage",
-    "about": { "@type": "MedicalProcedure", "name": "Frecuencias de Rife" },
+    "about": { "@type": "MedicalProcedure", "name": "Frecuencias de Rife y Resonancia Celular" },
     "publisher": {
       "@type": "MedicalClinic",
       "name": "Vitametric",
@@ -25,13 +25,346 @@
     "inLanguage": "es-MX"
   }
   </script>
-  <meta name="description" content="Terapia bioelectromagnética de frecuencias de Rife para la armonización del terreno celular en Vitametric CDMX.">
+  <meta name="description" content="Historia, principios biofísicos y microscopía óptica de Royal Raymond Rife. Resumen documental y aplicación clínica de bio-frecuencias en Vitametric CDMX.">
   <link rel="canonical" href="https://vitametric.com/servicios/rife.html">
   <link rel="stylesheet" href="../css/style.css?v=8bc1faf4">
   <link rel="stylesheet" href="../css/rizo-nav.css?v=7d47304f">
+  
+  <style>
+    /* ── PALETA & ESTILOS DE VANGUARDIA BIOLUMINISCENTE ── */
+    :root {
+      --c-cyan-bright: #00E5FF;
+      --c-green-bright: #00FFB2;
+    }
+
+    .rife-hero-zone {
+      background: radial-gradient(circle at 50% -20%, rgba(0, 200, 255, 0.22) 0%, rgba(2, 12, 27, 0.98) 75%);
+      border-bottom: 1px solid var(--c-border);
+      padding: 4rem 0 3.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .rife-hero-zone::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--c-cyan), transparent);
+    }
+
+    .rife-hero-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1.25rem;
+      margin-top: 2.5rem;
+    }
+
+    .rife-stat-pill {
+      background: rgba(7, 30, 51, 0.75);
+      border: 1px solid var(--c-border);
+      backdrop-filter: blur(8px);
+      padding: 1.2rem;
+      border-radius: var(--radius-md);
+      transition: all 0.3s ease;
+    }
+
+    .rife-stat-pill:hover {
+      border-color: var(--c-cyan);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(0, 200, 255, 0.15);
+    }
+
+    .rife-stat-val {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #FFF;
+      line-height: 1;
+      margin-bottom: 0.35rem;
+      background: linear-gradient(90deg, #FFF, var(--c-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .rife-stat-lbl {
+      font-size: 0.8rem;
+      color: var(--c-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Tabbed Interactive Navigator */
+    .rife-tabs-nav {
+      display: flex;
+      gap: 0.75rem;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+      margin-bottom: 2.5rem;
+      border-bottom: 1px solid var(--c-border);
+      scrollbar-width: none;
+    }
+
+    .rife-tabs-nav::-webkit-scrollbar { display: none; }
+
+    .rife-tab-btn {
+      background: var(--c-bg-mid);
+      border: 1px solid var(--c-border);
+      color: var(--c-muted);
+      padding: 0.85rem 1.4rem;
+      border-radius: var(--radius-md);
+      font-family: var(--font);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.25s ease;
+    }
+
+    .rife-tab-btn:hover {
+      color: #FFF;
+      border-color: var(--c-cyan);
+      background: var(--c-bg-surface);
+    }
+
+    .rife-tab-btn.active {
+      color: #020C1B;
+      background: var(--c-cyan-bright);
+      border-color: var(--c-cyan-bright);
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+    }
+
+    /* Content Cards */
+    .rife-card-panel {
+      background: var(--c-bg-surface);
+      border: 1px solid var(--c-border);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+      margin-bottom: 2.5rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+      position: relative;
+    }
+
+    .rife-card-panel h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 2.5vw, 2rem);
+      color: #FFF;
+      margin-bottom: 1.25rem;
+      line-height: 1.2;
+    }
+
+    .rife-banner-img-wrap {
+      position: relative;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      margin: 1.75rem 0;
+      border: 1px solid var(--c-border);
+      background: #000;
+    }
+
+    .rife-banner-img {
+      width: 100%;
+      height: 380px;
+      object-fit: cover;
+      object-position: center 30%;
+      filter: brightness(0.9) contrast(1.1);
+      display: block;
+      transition: transform 0.5s ease;
+    }
+
+    .rife-banner-img:hover {
+      transform: scale(1.02);
+    }
+
+    .rife-banner-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(0deg, rgba(2,12,27,0.95) 0%, transparent 100%);
+      padding: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    /* Interactive Frequency Wave Simulator */
+    .rife-sim-box {
+      background: #010812;
+      border: 1px solid var(--c-cyan);
+      border-radius: var(--radius-md);
+      padding: 1.75rem;
+      margin: 2rem 0;
+      box-shadow: 0 0 30px rgba(0, 200, 255, 0.1);
+    }
+
+    .rife-sim-canvas-wrap {
+      background: #000;
+      border: 1px solid rgba(0, 200, 255, 0.25);
+      border-radius: 4px;
+      height: 140px;
+      position: relative;
+      margin-bottom: 1.25rem;
+      overflow: hidden;
+    }
+
+    #rife-wave-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .rife-preset-btns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .rife-preset-btn {
+      background: var(--c-bg-mid);
+      border: 1px solid var(--c-border);
+      color: var(--c-text);
+      font-size: 0.8rem;
+      padding: 0.4rem 0.85rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .rife-preset-btn:hover {
+      border-color: var(--c-cyan);
+      color: #FFF;
+    }
+
+    /* Comparison Matrix */
+    .rife-matrix-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    @media (max-width: 768px) {
+      .rife-matrix-grid { grid-template-columns: 1fr; }
+      .rife-card-panel { padding: 1.5rem 1.25rem; }
+      .rife-banner-img { height: 260px; }
+    }
+
+    .rife-matrix-col {
+      background: var(--c-bg-card);
+      border: 1px solid var(--c-border);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+    }
+
+    .rife-matrix-col.highlight {
+      border-color: var(--c-cyan);
+      box-shadow: 0 0 25px rgba(0, 200, 255, 0.12);
+      background: linear-gradient(180deg, var(--c-bg-card) 0%, rgba(0, 200, 255, 0.04) 100%);
+    }
+
+    .rife-matrix-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--c-border);
+    }
+
+    .rife-matrix-list {
+      list-style: none;
+    }
+
+    .rife-matrix-list li {
+      padding: 0.6rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      font-size: 0.9rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+    }
+
+    .rife-matrix-list li:last-child { border-bottom: none; }
+
+    /* Timeline Cards */
+    .rife-timeline-track {
+      position: relative;
+      margin: 2rem 0;
+      padding-left: 2.2rem;
+      border-left: 2px solid rgba(0, 200, 255, 0.3);
+    }
+
+    .rife-timeline-node {
+      position: relative;
+      margin-bottom: 2rem;
+    }
+
+    .rife-timeline-node:last-child { margin-bottom: 0; }
+
+    .rife-node-badge {
+      position: absolute;
+      left: -2.85rem;
+      top: 0;
+      width: 22px;
+      height: 22px;
+      background: var(--c-bg);
+      border: 2px solid var(--c-cyan);
+      border-radius: 50%;
+      box-shadow: 0 0 12px var(--c-cyan);
+    }
+
+    .rife-node-content {
+      background: var(--c-bg-card);
+      border: 1px solid var(--c-border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem 1.5rem;
+    }
+
+    .rife-node-year {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--c-cyan-bright);
+      margin-bottom: 0.25rem;
+    }
+
+    /* Quotes */
+    .rife-quote-banner {
+      background: linear-gradient(90deg, rgba(0, 255, 157, 0.08) 0%, rgba(0, 200, 255, 0.03) 100%);
+      border-left: 4px solid var(--c-green-bright);
+      padding: 1.5rem 1.75rem;
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      margin: 2rem 0;
+    }
+
+    .rife-quote-banner p {
+      font-style: italic;
+      color: #FFF;
+      font-size: 1.05rem;
+      line-height: 1.6;
+      margin-bottom: 0.5rem;
+    }
+
+    .rife-quote-banner span {
+      font-size: 0.8rem;
+      color: var(--c-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+  </style>
 </head>
 <body>
 
+  <!-- Subpage Header -->
   <header class="subpage-navbar" id="header">
     <div class="subpage-nav-container">
       <a href="../index.html" class="subpage-logo-link">
@@ -57,7 +390,7 @@
             Contacto</a></li>
         </ul>
       </nav>
-      <a href="https://api.whatsapp.com/send?phone=525552150674&text=Consulta%20sobre%20Servicios%20en%20Vitametric" target="_blank" rel="noopener" class="subpage-cta-btn">
+      <a href="https://api.whatsapp.com/send?phone=525552150674&text=Consulta%20sobre%20Frecuencias%20de%20Rife%20en%20Vitametric" target="_blank" rel="noopener" class="subpage-cta-btn">
         <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
         Agendar Consulta
       </a>
@@ -65,21 +398,54 @@
   </header>
   <div class="subpage-nav-overlay" id="subpageNavOverlay"></div>
 
-  <section class="subpage-hero-zone">
+  <!-- Hero Section Bioluminiscente -->
+  <section class="rife-hero-zone">
     <div class="container">
-      <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+      <nav class="breadcrumb-nav" aria-label="Breadcrumb" style="margin-bottom: 1.5rem;">
         <a href="../index.html" class="breadcrumb-link">Inicio</a>
         <span class="breadcrumb-sep">›</span>
         <a href="../index.html#tecnología" class="breadcrumb-link">Tecnologías</a>
         <span class="breadcrumb-sep">›</span>
         <span class="breadcrumb-current">Frecuencias de Rife</span>
       </nav>
-      <span class="subpage-hero-badge">Resonancia Biológica & Bio-Campo</span>
-      <h1 class="subpage-hero-title">Frecuencias de Rife & Resonancia Celular</h1>
-      <p class="subpage-hero-desc">Terapia bioelectromagnética complementaria basada en la transmisión de micro-frecuencias armónicas para la neutralización de campos de interferencia tisular y reactivación del terreno celular.</p>
+
+      <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(0, 200, 255, 0.12); border: 1px solid var(--c-cyan); padding: 0.35rem 1rem; border-radius: 20px; font-size: 0.8rem; color: var(--c-cyan-bright); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 1rem;">
+        <span style="width: 8px; height: 8px; border-radius: 50%; background: var(--c-cyan-bright); box-shadow: 0 0 8px var(--c-cyan-bright);"></span>
+        Biofísica & Resonancia Bioelectromagnética
+      </div>
+
+      <h1 style="font-family: var(--font-display); font-size: clamp(2.2rem, 4.2vw, 3.6rem); font-weight: 800; color: #FFF; line-height: 1.1; margin-bottom: 1.25rem;">
+        El Legado Científico de <span style="background: linear-gradient(90deg, #00C8FF, #00FF9D); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Royal Raymond Rife</span>
+      </h1>
+      
+      <p style="font-size: var(--fs-md); color: var(--c-text); max-width: 860px; line-height: 1.65;">
+        De la construcción del <em>Microscopio Universal</em> capaz de observar microorganismos vivos a 60,000x, al principio de resonancia armónica molecular (M.O.R.). Una síntesis visual profunda sobre el origen de la electromedicina y su aplicación terapéutica no invasiva en Vitametric CDMX.
+      </p>
+
+      <!-- Key Metrics -->
+      <div class="rife-hero-stats">
+        <div class="rife-stat-pill">
+          <div class="rife-stat-val">60,000x</div>
+          <div class="rife-stat-lbl">Resolución Óptica In Vivo</div>
+        </div>
+        <div class="rife-stat-pill">
+          <div class="rife-stat-val">M.O.R.</div>
+          <div class="rife-stat-lbl">Tasa de Oscilación Mortal</div>
+        </div>
+        <div class="rife-stat-pill">
+          <div class="rife-stat-val">1944</div>
+          <div class="rife-stat-lbl">Publicación Smithsonian</div>
+        </div>
+        <div class="rife-stat-pill">
+          <div class="rife-stat-val">0% Dolor</div>
+          <div class="rife-stat-lbl">Terapia 100% No Invasiva</div>
+        </div>
+      </div>
+
     </div>
   </section>
 
+  <!-- Sibling Tech Strip -->
   <nav class="rizo-sibling-strip" aria-label="Navegación entre tecnologías">
     <div class="rizo-sibling-inner">
       <span class="rizo-sibling-label">Tecnologías</span>
@@ -95,99 +461,272 @@
     </div>
   </nav>
 
+  <!-- Main Body Grid -->
   <main class="subpage-main">
     <div class="container">
       <div class="subpage-grid">
 
         <article class="subpage-content">
 
-          <!-- Video Documental -->
-          <div class="rizo-micro-section">
-            <div class="rizo-video-stage" style="background: var(--c-bg-card); border: 1px solid rgba(0, 200, 255, 0.3); padding: 1.5rem;">
-              <div class="rizo-video-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid rgba(0, 200, 255, 0.15); padding-bottom: 0.75rem;">
-                <span class="rizo-video-label" style="font-size: 0.8rem; color: #00FF9D; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em;">● DOCUMENTAL HISTÓRICO EN VIVO</span>
-                <span class="rizo-video-meta" style="font-size: 0.8rem; color: var(--c-muted);">Subtítulos en Español · 125 min</span>
-              </div>
+          <!-- Interactive Tab Selector -->
+          <div class="rife-tabs-nav" role="tablist">
+            <button class="rife-tab-btn active" onclick="switchRifeTab('optica', this)">🔬 1. Microscopio Universal</button>
+            <button class="rife-tab-btn" onclick="switchRifeTab('resonancia', this)">⚡ 2. Resonancia M.O.R.</button>
+            <button class="rife-tab-btn" onclick="switchRifeTab('pleomorfismo', this)">🌱 3. Terreno Celular</button>
+            <button class="rife-tab-btn" onclick="switchRifeTab('cronologia', this)">📜 4. Historia & Archivos</button>
+            <button class="rife-tab-btn" onclick="switchRifeTab('vitametric', this)">🏥 5. Aplicación en CDMX</button>
+          </div>
 
-              <div id="rife-video-container" class="rizo-video-container" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; border: 1px solid rgba(0, 200, 255, 0.2); background: #000;">
-                <div id="rife-poster-overlay" onclick="cargarVideoRife()" class="rizo-video-poster" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; cursor: pointer; background: linear-gradient(180deg, rgba(2,12,27,0.3) 0%, rgba(2,12,27,0.85) 100%), url('../assets/img/technology/rife.jpg') center/cover no-repeat; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.25rem;">
-                  <div class="play-btn-circle" style="background: rgba(2, 12, 27, 0.9); border: 2px solid var(--c-cyan); width: 75px; height: 75px; border-radius: 50% !important; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 25px rgba(0, 200, 255, 0.5);">
-                    <span style="color: var(--c-cyan); font-size: 2.2rem; margin-left: 5px;">▶</span>
-                  </div>
-                  <span style="color: white; font-weight: 600; font-size: 0.9rem; text-shadow: 0 2px 4px rgba(0,0,0,0.8); background: rgba(7, 30, 51, 0.9); padding: 0.5rem 1.25rem; border: 1px solid var(--c-border); letter-spacing: 0.5px;">Reproducir Documental Histórico</span>
+          <!-- TAB 1: EL MICROSCOPIO UNIVERSAL -->
+          <section id="tab-optica" class="rife-tab-content">
+            <div class="rife-card-panel">
+              <div style="font-size: 0.8rem; color: var(--c-cyan-bright); font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem;">Pilar 01 · Óptica de Cristal de Cuarzo</div>
+              <h2>El Microscopio Universal: Superando el Límite de la Luz</h2>
+              <p style="color: var(--c-text); line-height: 1.7; font-size: 1.05rem;">
+                En los años 30, financiado por el mecenas industrial <strong>Henry Timken</strong> en San Diego, Royal Raymond Rife diseñó el <em>Universal Microscope #3</em>. Con más de <strong>5,682 piezas de ingeniería fina</strong> y 14 lentes de cristal de cuarzo puro, este instrumento logró aumentos ópticos de hasta <strong>60,000x</strong> sin emplear tinciones químicas que destruyeran la muestra.
+              </p>
+
+              <!-- Imagen de Alta Calidad -->
+              <div class="rife-banner-img-wrap">
+                <img src="../assets/img/technology/rife.webp" alt="Microscopio de Royal Raymond Rife en laboratorio histórico" class="rife-banner-img">
+                <div class="rife-banner-caption">
+                  <div style="color: #FFF; font-weight: 700; font-size: 0.95rem;">Microscopio Universal de Rife (Point Loma, California)</div>
+                  <span style="font-size: 0.75rem; color: var(--c-cyan); background: rgba(0,200,255,0.15); border: 1px solid var(--c-cyan); padding: 0.2rem 0.6rem; border-radius: 3px;">Archivo Histórico Smithsonian (1944)</span>
                 </div>
               </div>
+
+              <!-- Matriz Comparativa Visual -->
+              <div class="rife-matrix-grid">
+                <div class="rife-matrix-col">
+                  <div class="rife-matrix-header">
+                    <span style="font-size: 1.5rem;">🧪</span>
+                    <div>
+                      <strong style="color: #FF6B6B; font-size: 0.95rem; display: block;">Microscopía Electrónica</strong>
+                      <span style="font-size: 0.75rem; color: var(--c-muted);">Estándar Académico</span>
+                    </div>
+                  </div>
+                  <ul class="rife-matrix-list">
+                    <li><span style="color:#FF6B6B;">✖</span> Requiere cámara de alto vacío (deshidrata).</li>
+                    <li><span style="color:#FF6B6B;">✖</span> Muestras teñidas con metales pesados.</li>
+                    <li><span style="color:#FF6B6B;">✖</span> <strong>Solo observa materia biológica muerta.</strong></li>
+                  </ul>
+                </div>
+
+                <div class="rife-matrix-col highlight">
+                  <div class="rife-matrix-header">
+                    <span style="font-size: 1.5rem;">🔬</span>
+                    <div>
+                      <strong style="color: var(--c-cyan-bright); font-size: 0.95rem; display: block;">Microscopio Óptico de Rife</strong>
+                      <span style="font-size: 0.75rem; color: var(--c-green-bright);">Innovación Biofotónica</span>
+                    </div>
+                  </div>
+                  <ul class="rife-matrix-list">
+                    <li><span style="color:var(--c-green-bright);">✔</span> Prismas rotatorios de cuarzo y luz polarizada.</li>
+                    <li><span style="color:var(--c-green-bright);">✔</span> Fluorescencia por resonancia cromática natural.</li>
+                    <li><span style="color:var(--c-green-bright);">✔</span> <strong>Observación in vivo de virus y bacterias activas.</strong></li>
+                  </ul>
+                </div>
+              </div>
+
             </div>
-          </div>
+          </section>
 
-          <hr class="rizo-hairline">
-
-          <!-- Principios Biofísicos -->
-          <div class="rizo-micro-section rizo-micro-section--icon">
-            <div class="rizo-section-icon">
-              <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
-            </div>
-            <div>
-              <h2>Principios Biofísicos de la Resonancia</h2>
-              <p>Cada microorganismo y estructura celular posee un espectro de frecuencia de oscilación armónica característico. Mediante la aplicación controlada de ondas bioelectromagnéticas en resonancia, se neutraliza la actividad de agentes de interferencia sin alterar los tejidos sanos circundantes.</p>
-            </div>
-          </div>
-
-          <hr class="rizo-hairline">
-
-          <!-- Nota Legal -->
-          <div class="rizo-micro-section">
-            <div class="rizo-legal-note" style="background: var(--c-bg-surface); border-left: 4px solid var(--c-cyan); padding: 1.25rem;">
-              <p style="font-size: var(--fs-sm); color: var(--c-muted); margin: 0; line-height: 1.5;">
-                <em>Nota Legal & Regulatoria:</em> En Vitametric las frecuencias de Rife son una herramienta complementaria holística de bienestar no farmacológico. El video documental compartido tiene valor estrictamente informativo e histórico.
+          <!-- TAB 2: RESONANCIA M.O.R. -->
+          <section id="tab-resonancia" class="rife-tab-content" style="display: none;">
+            <div class="rife-card-panel">
+              <div style="font-size: 0.8rem; color: var(--c-green-bright); font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem;">Pilar 02 · Física de Ondas y Plasma</div>
+              <h2>La Tasa de Oscilación Mortal (M.O.R.)</h2>
+              <p style="color: var(--c-text); line-height: 1.7; font-size: 1.05rem;">
+                Cada estructura biológica y enlace macromolecular posee una frecuencia intrínseca de resonancia. Rife descubrió que al emitir pulsos electromagnéticos en la <strong>Tasa de Oscilación Mortal (Mortal Oscillatory Rate o M.O.R.)</strong> exacta, la energía se transfiere directamente a la diana patógena hasta desintegrar su membrana por estrés mecánico resonante.
               </p>
-            </div>
-          </div>
 
-          <!-- CTA inline -->
-          <div class="subpage-inline-cta">
-            <a href="https://api.whatsapp.com/send?phone=525552150674&text=Quiero%20agendar%20una%20sesión%20de%20Frecuencias%20Rife%20en%20Vitametric" target="_blank" rel="noopener" class="btn btn-primary">Solicitar Valoración Rife →</a>
+              <!-- Simulador de Ondas Interactivo -->
+              <div class="rife-sim-box">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                  <strong style="color: var(--c-cyan-bright); font-size: 0.9rem; text-transform: uppercase;">Simulador de Resonancia Bioelectromagnética</strong>
+                  <span id="sim-freq-display" style="font-family: var(--font-display); color: #00FF9D; font-size: 1.1rem; font-weight: 700;">728 Hz · Resonancia Activa</span>
+                </div>
+                
+                <div class="rife-sim-canvas-wrap">
+                  <canvas id="rife-wave-canvas"></canvas>
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+                  <span style="font-size: 0.8rem; color: var(--c-muted);">Selecciona un Armónico:</span>
+                  <div class="rife-preset-btns">
+                    <button class="rife-preset-btn" onclick="setWaveFreq(60, 'Frecuencia de Tierra (Schumann)')">60 Hz (Schumann)</button>
+                    <button class="rife-preset-btn" onclick="setWaveFreq(728, 'Armónico Anti-Inflamatorio')">728 Hz (Celular)</button>
+                    <button class="rife-preset-btn" onclick="setWaveFreq(2008, 'Bio-Equilibrio Mitocondrial')">2,008 Hz (Energía)</button>
+                    <button class="rife-preset-btn" onclick="setWaveFreq(5000, 'Armonización de Terreno')">5,000 Hz (Drenaje)</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="rife-quote-banner">
+                <p>"Es el mismo principio por el cual una copa de cristal fino estalla ante una nota pura de ópera cantada en su frecuencia de oscilación natural, mientras las copas circundantes de diferente grosor permanecen intactas."</p>
+                <span>— Principio de Selectividad Biofísica · Documental de Rife</span>
+              </div>
+            </div>
+          </section>
+
+          <!-- TAB 3: PLEOMORFISMO -->
+          <section id="tab-pleomorfismo" class="rife-tab-content" style="display: none;">
+            <div class="rife-card-panel">
+              <div style="font-size: 0.8rem; color: var(--c-cyan-bright); font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem;">Pilar 03 · La Escuela del Terreno Biológico</div>
+              <h2>Pleomorfismo: La Disputa Béchamp vs. Pasteur</h2>
+              <p style="color: var(--c-text); line-height: 1.7; font-size: 1.05rem;">
+                Frente a la doctrina monomórfica rígida de Louis Pasteur (que postulaba que cada enfermedad proviene exclusivamente de un germen inmutable), Rife colaboró con destacados bacteriólogos como el <strong>Dr. Arthur Kendall</strong> (Universidad Northwestern, creador del *Medio K*) y el <strong>Dr. Edward Rosenow</strong> (Bacteriólogo en Jefe de la Clínica Mayo) para demostrar la plasticidad de los microorganismos.
+              </p>
+
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin: 1.75rem 0;">
+                <div style="background: var(--c-bg-mid); border: 1px solid var(--c-border); padding: 1.25rem; border-radius: var(--radius-md);">
+                  <strong style="color: var(--c-cyan); display: block; font-size: 0.95rem; margin-bottom: 0.35rem;">Dr. Arthur I. Kendall</strong>
+                  <span style="font-size: 0.85rem; color: var(--c-muted); display: block; line-height: 1.5;">Director de Investigación Médica en Northwestern. Desarrolló el medio de cultivo proteico (Medio K) que permitió observar virus filtrables vivos.</span>
+                </div>
+                <div style="background: var(--c-bg-mid); border: 1px solid var(--c-border); padding: 1.25rem; border-radius: var(--radius-md);">
+                  <strong style="color: #00FF9D; display: block; font-size: 0.95rem; margin-bottom: 0.35rem;">Dr. Edward C. Rosenow</strong>
+                  <span style="font-size: 0.85rem; color: var(--c-muted); display: block; line-height: 1.5;">Bacteriólogo principal de la Clínica Mayo durante más de 30 años. Confirmó experimentalmente el pleomorfismo en patologías infecciosas.</span>
+                </div>
+              </div>
+
+              <div class="rife-quote-banner" style="border-left-color: var(--c-cyan);">
+                <p>"El microbio no es nada; el terreno biológico lo es todo. Cuando la célula sufre hipoxia, acidosis y sobrecarga tóxica, el terreno propicia la proliferación de agentes de interferencia."</p>
+                <span>— Claude Bernard & Antoine Béchamp</span>
+              </div>
+            </div>
+          </section>
+
+          <!-- TAB 4: CRONOLOGÍA HISTÓRICA -->
+          <section id="tab-cronologia" class="rife-tab-content" style="display: none;">
+            <div class="rife-card-panel">
+              <div style="font-size: 0.8rem; color: var(--c-cyan-bright); font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem;">Pilar 04 · Archivo Documentado</div>
+              <h2>Línea de Tiempo Histórica (1920–1944)</h2>
+              <p style="color: var(--c-text); line-height: 1.7; font-size: 1.05rem;">
+                Basado en las cintas de audio y registros orales restaurados de los protagonistas por la Fundación Kinnaman:
+              </p>
+
+              <div class="rife-timeline-track">
+                <div class="rife-timeline-node">
+                  <div class="rife-node-badge"></div>
+                  <div class="rife-node-content">
+                    <div class="rife-node-year">1920–1931 · Mecenazgo y Óptica de Precisión</div>
+                    <p style="font-size: 0.9rem; color: var(--c-text); line-height: 1.5;">Henry Timken y Amelia Bridges financian el laboratorio privado de Rife en Point Loma, San Diego. Se ensamblan los primeros prototipos de microscopios de cuarzo.</p>
+                  </div>
+                </div>
+
+                <div class="rife-timeline-node">
+                  <div class="rife-node-badge" style="border-color: #00FF9D; box-shadow: 0 0 12px #00FF9D;"></div>
+                  <div class="rife-node-content">
+                    <div class="rife-node-year" style="color: #00FF9D;">1934 · El Ensayo Clínico de La Jolla</div>
+                    <p style="font-size: 0.9rem; color: var(--c-text); line-height: 1.5;">Un comité de investigación médica bajo los auspicios de la Universidad del Sur de California (USC), liderado por el Dr. Milbank Johnson, supervisa el uso clínico del Beam Ray en el rancho de Ellen Scripps en La Jolla.</p>
+                  </div>
+                </div>
+
+                <div class="rife-timeline-node">
+                  <div class="rife-node-badge" style="border-color: #FFCC00; box-shadow: 0 0 12px #FFCC00;"></div>
+                  <div class="rife-node-content">
+                    <div class="rife-node-year" style="color: #FFCC00;">1939 · Juicio Corporativo y Quiebre</div>
+                    <p style="font-size: 0.9rem; color: var(--c-text); line-height: 1.5;">Litigios comerciales por las patentes de Beam Rays Inc., el inicio de la Segunda Guerra Mundial y el fallecimiento de mecenas clave interrumpen la difusión comercial.</p>
+                  </div>
+                </div>
+
+                <div class="rife-timeline-node">
+                  <div class="rife-node-badge"></div>
+                  <div class="rife-node-content">
+                    <div class="rife-node-year">1944 · Publicación en el Instituto Smithsonian</div>
+                    <p style="font-size: 0.9rem; color: var(--c-text); line-height: 1.5;">El Instituto Franklin y la Institución Smithsonian publican el tratado formal <em>«The New Microscopes»</em>, avalando las fotomicrografías ópticas de alta resolución de Rife.</p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </section>
+
+          <!-- TAB 5: APLICACIÓN VITAMETRIC -->
+          <section id="tab-vitametric" class="rife-tab-content" style="display: none;">
+            <div class="rife-card-panel" style="border-color: var(--c-cyan);">
+              <div style="font-size: 0.8rem; color: var(--c-green-bright); font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem;">Pilar 05 · Terapia en Ciudad de México</div>
+              <h2>Bio-Resonancia de Frecuencias en Vitametric</h2>
+              <p style="color: var(--c-text); line-height: 1.7; font-size: 1.05rem;">
+                En <strong>Vitametric</strong> integramos la emisión electromagnética armónica como un protocolo complementario para la desintoxicación, reducción de inflamación y recuperación de la vitalidad celular.
+              </p>
+
+              <div class="rife-matrix-grid">
+                <div class="rife-matrix-col highlight">
+                  <h4 style="color: var(--c-cyan-bright); font-size: 1.1rem; margin-bottom: 0.75rem;">Beneficios Clínicos</h4>
+                  <ul class="rife-matrix-list">
+                    <li><span style="color:var(--c-green-bright);">✔</span> Despolarización y relajación neuromuscular profunda.</li>
+                    <li><span style="color:var(--c-green-bright);">✔</span> Asistencia en el drenaje linfático de toxinas.</li>
+                    <li><span style="color:var(--c-green-bright);">✔</span> Estímulo de la producción mitocondrial de ATP.</li>
+                    <li><span style="color:var(--c-green-bright);">✔</span> Complementario con ES-Complex e Immunocal.</li>
+                  </ul>
+                </div>
+
+                <div class="rife-matrix-col">
+                  <h4 style="color: #FFF; font-size: 1.1rem; margin-bottom: 0.75rem;">¿Cómo es una Sesión?</h4>
+                  <ul class="rife-matrix-list">
+                    <li><strong>Duración:</strong> 45 a 60 minutos en cabina confortable.</li>
+                    <li><strong>Sensación:</strong> Relajación total, sin dolor ni choques eléctricos.</li>
+                    <li><strong>Personalización:</strong> Frecuencias seleccionadas según escaneo.</li>
+                  </ul>
+                </div>
+              </div>
+
+              <!-- CTA WhatsApp -->
+              <div style="text-align: center; margin-top: 2rem;">
+                <a href="https://api.whatsapp.com/send?phone=525552150674&text=Hola%20Vitametric%2C%20deseo%20agendar%20una%20sesi%C3%B3n%20de%20Frecuencias%20de%20Rife" target="_blank" rel="noopener" class="btn btn-primary btn-lg" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 1rem 2.2rem; font-weight: 700;">
+                  Agendar Sesión de Frecuencias en Vitametric
+                  <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </a>
+              </div>
+            </div>
+          </section>
+
+          <!-- Disclaimer Regulatorio -->
+          <div style="background: rgba(2, 12, 27, 0.6); border: 1px solid var(--c-border); padding: 1.25rem 1.5rem; border-radius: var(--radius-md); margin-top: 2rem;">
+            <p style="font-size: 0.8rem; color: var(--c-muted); margin: 0; line-height: 1.5;">
+              <em>Aviso Legal y Regulatorio:</em> En Vitametric la terapia de bio-frecuencias es una herramienta complementaria no farmacológica de bienestar celular. La información histórica del documental tiene fines estrictamente divulgativos y educativos. Consulte a su médico para el diagnóstico y tratamiento de patologías específicas. Responsable Sanitaria: Dra. María Patricia Aguilar.
+            </p>
           </div>
 
         </article>
 
+        <!-- Sidebar -->
         <aside class="subpage-sidebar">
 
-          <!-- Ficha Técnica -->
           <div class="rizo-sidebar-block">
             <h3>
               <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><polyline points="14 2 14 8 20 8"/></svg>
-              Ficha Técnica
+              Ficha de la Tecnología
             </h3>
             <ul>
-              <li><strong>Modo de Emisión:</strong> Ondas Armónicas</li>
-              <li><strong>Espectro Frecuencial:</strong> 1 Hz a 10,000 Hz</li>
-              <li><strong>Duración por Sesión:</strong> 45 a 60 Minutos</li>
-              <li><strong>Carácter Médico:</strong> No Invasivo</li>
+              <li><strong>Principio:</strong> Resonancia Electromagnética Armónica</li>
+              <li><strong>Rango:</strong> 1 Hz a 10,000 Hz</li>
+              <li><strong>Duración:</strong> 45 a 60 Minutos</li>
+              <li><strong>Invasividad:</strong> 0% (Indoloro)</li>
+              <li><strong>Sede:</strong> Vitametric CDMX (Militar Marte)</li>
             </ul>
           </div>
 
-          <!-- Resumen Clínico -->
           <div class="rizo-sidebar-block">
             <h3>
-              <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-              Resumen Clínico
+              <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+              Fuentes del Documental
             </h3>
             <ul>
-              <li><strong>Efecto Terapéutico:</strong> Armonización del terreno celular</li>
-              <li><strong>Efecto Secundario:</strong> Ninguno (libre de fármacos)</li>
-              <li><strong>Aplicador:</strong> Especialista capacitado</li>
+              <li><strong>Dirección:</strong> Shawn Montgomery</li>
+              <li><strong>Archivos:</strong> Fundación Kinnaman</li>
+              <li><strong>Tratado:</strong> Smithsonian Inst. (1944)</li>
             </ul>
           </div>
 
-          <!-- Agendar Sesión -->
-          <div class="rizo-sidebar-block">
+          <div class="rizo-sidebar-block" style="border-color: var(--c-cyan);">
             <h3>
               <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
-              Agendar Sesión
+              Agendar en Clínica
             </h3>
-            <p>Consulta con nuestros especialistas en Vitametric CDMX para integrar las frecuencias de Rife a tu plan de salud preventiva.</p>
-            <a href="https://api.whatsapp.com/send?phone=525552150674&text=Consulta%20sobre%20Frecuencias%20Rife" target="_blank" class="btn btn-primary" style="width: 100%; text-align: center; justify-content: center; font-weight: 600;">Solicitar Cita por WhatsApp</a>
+            <p style="font-size: 0.85rem; color: var(--c-muted); margin-bottom: 1rem;">Consulta con nuestros especialistas en Vitametric para integrar bio-frecuencias a tu protocolo preventivo.</p>
+            <a href="https://api.whatsapp.com/send?phone=525552150674&text=Hola%20Vitametric%2C%20solicito%20agendar%20frecuencias%20Rife" target="_blank" class="btn btn-primary" style="width: 100%; text-align: center; justify-content: center; font-weight: 700;">Agendar por WhatsApp</a>
           </div>
 
         </aside>
@@ -202,66 +741,120 @@
     </div>
   </footer>
 
-  <!-- Sticky CTA -->
+  <!-- Sticky CTA Mobile -->
   <div class="sticky-cta">
-    <a href="https://api.whatsapp.com/send?phone=525552150674&text=Quiero%20agendar%20una%20sesión%20de%20Frecuencias%20Rife%20en%20Vitametric" target="_blank" rel="noopener">
+    <a href="https://api.whatsapp.com/send?phone=525552150674&text=Quiero%20agendar%20Frecuencias%20Rife%20en%20Vitametric" target="_blank" rel="noopener">
       <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
       Agendar Consulta
     </a>
   </div>
 
   <script>
-    function cargarVideoRife() {
-      var container = document.getElementById('rife-video-container');
-      if (!container) return;
-      container.style.paddingBottom = '0';
-      container.style.height = 'auto';
-      container.style.overflow = 'visible';
-      // 2026-07-30 — Reproducción retirada mientras se gestiona la licencia con el
-      // titular de la obra (Zero Zero Two Productions, dir. Shawn Montgomery).
-      // El documental es una obra comercial: se vende en DVD en zerozerotwo.org y
-      // en Amazon Prime Video. Alojar una copia completa sin permiso es infracción.
-      // Para restituirlo cuando haya autorización, ver el bloque comentado abajo.
-      container.innerHTML =
-        '<div style="border: 1px solid var(--c-border); background: var(--c-bg-surface); padding: 2rem; text-align: left;">' +
-          '<p style="font-weight: 600; margin-bottom: 0.75rem;">Documental no disponible en este sitio</p>' +
-          '<p style="margin-bottom: 1rem;">«The Rise and Fall of a Scientific Genius: The Forgotten Story of Royal Raymond Rife» ' +
-          'es una obra de <strong>Zero Zero Two Productions</strong>, dirigida por Shawn Montgomery. ' +
-          'Respetamos los derechos de sus autores, así que no la reproducimos aquí.</p>' +
-          '<p style="margin-bottom: 1rem;">Puedes verla en sus canales oficiales:</p>' +
-          '<p><a href="https://zerozerotwo.org" target="_blank" rel="noopener noreferrer">zerozerotwo.org</a> ' +
-          '&nbsp;·&nbsp; ' +
-          '<a href="https://www.amazon.com/Rise-Fall-Scientific-Genius/dp/B00P7PHHTK" target="_blank" rel="noopener noreferrer">Amazon Prime Video</a></p>' +
-        '</div>';
-
-      /* RESTITUCIÓN — descomentar SOLO con autorización escrita del titular.
-         La pista de subtítulos en español (1.320 cues) es trabajo propio de
-         Vitametric y está lista en ../assets/vtt/rife-es.vtt
-      container.innerHTML = '<video id="rife-video" controls preload="metadata" crossorigin="anonymous" style="width: 100%; border: 1px solid var(--c-border); background: #000; display: block;">' +
-        '<source src="https://video.vitametric.com/rife-v11.mp4" type="video/mp4">' +
-        '<track id="pista-es" label="Español" kind="subtitles" srclang="es" src="../assets/vtt/rife-es.vtt?v=20260729" default>' +
-        'Tu navegador no reproduce vídeo HTML5.</video>';
-      */
-
-      var v = document.getElementById('rife-video');
-      var track = document.getElementById('pista-es');
-      if (v) {
-        function activarSubtitulos() {
-          if (v.textTracks && v.textTracks.length > 0) {
-            for (var i = 0; i < v.textTracks.length; i++) {
-              v.textTracks[i].mode = 'showing';
-            }
-          }
-        }
-        if (track) { track.addEventListener('load', activarSubtitulos); }
-        v.addEventListener('play', activarSubtitulos);
-        v.addEventListener('loadeddata', activarSubtitulos);
-        activarSubtitulos();
+    // Tab Switching Logic
+    function switchRifeTab(tabId, btn) {
+      document.querySelectorAll(".rife-tab-content").forEach(el => el.style.display = "none");
+      document.querySelectorAll(".rife-tab-btn").forEach(el => el.classList.remove("active"));
+      
+      const target = document.getElementById("tab-" + tabId);
+      if (target) {
+        target.style.display = "block";
+      }
+      if (btn) {
+        btn.classList.add("active");
+      }
+      if (tabId === "resonancia") {
+        initWaveCanvas();
       }
     }
+
+    // Canvas Waveform Animation
+    let canvas, ctx, animationFrameId;
+    let waveFreq = 728;
+    let waveStep = 0;
+
+    function initWaveCanvas() {
+      canvas = document.getElementById("rife-wave-canvas");
+      if (!canvas) return;
+      ctx = canvas.getContext("2d");
+      canvas.width = canvas.parentElement.clientWidth;
+      canvas.height = canvas.parentElement.clientHeight;
+
+      if (!animationFrameId) {
+        drawWave();
+      }
+    }
+
+    function drawWave() {
+      if (!canvas || !ctx) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const w = canvas.width;
+      const h = canvas.height;
+      const midY = h / 2;
+
+      // Draw Grid Lines
+      ctx.strokeStyle = "rgba(0, 200, 255, 0.08)";
+      ctx.lineWidth = 1;
+      for (let x = 0; x < w; x += 30) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, h);
+        ctx.stroke();
+      }
+      for (let y = 0; y < h; y += 30) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(w, y);
+        ctx.stroke();
+      }
+
+      // Draw RF Carrier Wave (Fondo)
+      ctx.strokeStyle = "rgba(0, 200, 255, 0.25)";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      for (let x = 0; x < w; x++) {
+        const y = midY + Math.sin(x * 0.08 + waveStep * 2) * 15;
+        if (x === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+
+      // Draw Harmonic Bioactive Wave (Principal Resonante)
+      ctx.strokeStyle = "#00FF9D";
+      ctx.lineWidth = 2.5;
+      ctx.shadowBlur = 12;
+      ctx.shadowColor = "#00FF9D";
+      ctx.beginPath();
+      const freqScale = Math.min(Math.max(waveFreq / 500, 0.015), 0.06);
+      for (let x = 0; x < w; x++) {
+        const carrier = Math.sin(x * 0.02 + waveStep) * 20;
+        const harmonic = Math.sin(x * freqScale + waveStep * 1.5) * 35;
+        const y = midY + (carrier * 0.3) + harmonic;
+        if (x === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+
+      waveStep += 0.04;
+      animationFrameId = requestAnimationFrame(drawWave);
+    }
+
+    function setWaveFreq(f, desc) {
+      waveFreq = f;
+      const el = document.getElementById("sim-freq-display");
+      if (el) {
+        el.textContent = f + " Hz · " + desc;
+      }
+    }
+
+    window.addEventListener("resize", function() {
+      if (canvas && canvas.parentElement) {
+        canvas.width = canvas.parentElement.clientWidth;
+        canvas.height = canvas.parentElement.clientHeight;
+      }
+    });
   </script>
 
-  <script src="../js/main.js?v=418ec43a"></script>
-  <script src="../js/subpage-nav.js?v=ee49120a"></script>
 </body>
 </html>
