@@ -31,15 +31,15 @@
   --sal: env(safe-area-inset-left, 0px);
 
   --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  --fs-xs:   clamp(0.7rem, 0.65rem + 0.25vw, 0.85rem);
-  --fs-sm:   clamp(0.8rem, 0.75rem + 0.3vw, 0.95rem);
-  --fs-base: clamp(0.925rem, 0.875rem + 0.35vw, 1.075rem);
-  --fs-md:   clamp(1.05rem, 0.98rem + 0.5vw, 1.25rem);
-  --fs-lg:   clamp(1.2rem, 1.1rem + 0.75vw, 1.5rem);
-  --fs-xl:   clamp(1.4rem, 1.25rem + 1.2vw, 1.9rem);
-  --fs-2xl:  clamp(1.75rem, 1.5rem + 1.8vw, 2.5rem);
-  --fs-3xl:  clamp(2.1rem, 1.75rem + 2.5vw, 3.2rem);
-  --fs-4xl:  clamp(2.5rem, 2rem + 3.5vw, 4.2rem);
+  --fs-xs:   clamp(0.8rem, 0.74rem + 0.25vw, 0.95rem);
+  --fs-sm:   clamp(0.925rem, 0.85rem + 0.3vw, 1.075rem);
+  --fs-base: clamp(1.05rem, 0.98rem + 0.35vw, 1.22rem);
+  --fs-md:   clamp(1.18rem, 1.1rem + 0.5vw, 1.4rem);
+  --fs-lg:   clamp(1.35rem, 1.25rem + 0.75vw, 1.7rem);
+  --fs-xl:   clamp(1.6rem, 1.45rem + 1.2vw, 2.15rem);
+  --fs-2xl:  clamp(2rem, 1.75rem + 1.8vw, 2.85rem);
+  --fs-3xl:  clamp(2.45rem, 2.05rem + 2.5vw, 3.65rem);
+  --fs-4xl:  clamp(2.95rem, 2.45rem + 3.5vw, 4.85rem);
   --fw-regular: 400;
   --fw-medium: 500;
   --fw-semibold: 600;
@@ -250,7 +250,7 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
 }
 
 @media (max-width: 768px) {
-  :root { --fs-4xl: 2.25rem; --fs-3xl: 1.875rem; --nav-h: 64px; }
+  :root { --fs-4xl: 2.65rem; --fs-3xl: 2.2rem; --nav-h: 64px; }
   .section { padding: 3rem 0; }
   .section-header { margin-bottom: 2rem; }
   .section-title { max-width: 100%; }
@@ -272,7 +272,7 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
 }
 
 @media (max-width: 480px) {
-  :root { --fs-4xl: 1.875rem; --fs-3xl: 1.5rem; }
+  :root { --fs-4xl: 2.25rem; --fs-3xl: 1.85rem; }
   .section { padding: 2.5rem 0; }
   .hero { min-height: 85vh; }
   .hero-actions { flex-direction: column; }

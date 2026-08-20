@@ -76,15 +76,15 @@
   /* Typography — Fluid Scale with clamp() */
   --font-display: 'Clash Display', 'Inter', sans-serif;
   --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  --fs-xs:   clamp(0.7rem, 0.65rem + 0.25vw, 0.85rem);
-  --fs-sm:   clamp(0.8rem, 0.75rem + 0.3vw, 0.95rem);
-  --fs-base: clamp(0.925rem, 0.875rem + 0.35vw, 1.075rem);
-  --fs-md:   clamp(1.05rem, 0.98rem + 0.5vw, 1.25rem);
-  --fs-lg:   clamp(1.2rem, 1.1rem + 0.75vw, 1.5rem);
-  --fs-xl:   clamp(1.4rem, 1.25rem + 1.2vw, 1.9rem);
-  --fs-2xl:  clamp(1.75rem, 1.5rem + 1.8vw, 2.5rem);
-  --fs-3xl:  clamp(2.1rem, 1.75rem + 2.5vw, 3.2rem);
-  --fs-4xl:  clamp(2.5rem, 2rem + 3.5vw, 4.2rem);
+  --fs-xs:   clamp(0.8rem, 0.74rem + 0.25vw, 0.95rem);
+  --fs-sm:   clamp(0.925rem, 0.85rem + 0.3vw, 1.075rem);
+  --fs-base: clamp(1.05rem, 0.98rem + 0.35vw, 1.22rem);
+  --fs-md:   clamp(1.18rem, 1.1rem + 0.5vw, 1.4rem);
+  --fs-lg:   clamp(1.35rem, 1.25rem + 0.75vw, 1.7rem);
+  --fs-xl:   clamp(1.6rem, 1.45rem + 1.2vw, 2.15rem);
+  --fs-2xl:  clamp(2rem, 1.75rem + 1.8vw, 2.85rem);
+  --fs-3xl:  clamp(2.45rem, 2.05rem + 2.5vw, 3.65rem);
+  --fs-4xl:  clamp(2.95rem, 2.45rem + 3.5vw, 4.85rem);
   --fw-regular:   400;
   --fw-medium:    500;
   --fw-semibold:  600;
@@ -1521,7 +1521,7 @@ li.theme-toggle-item { display: flex; align-items: center; }
 }
 
 .subpage-logo-tagline {
-  font-size: 0.78rem;
+  font-size: 0.88rem;
   font-weight: 500;
   color: var(--c-muted);
   letter-spacing: 0.05em;
@@ -1542,7 +1542,7 @@ li.theme-toggle-item { display: flex; align-items: center; }
 
 .subpage-nav-link {
   font-family: var(--font-display, 'Clash Display', sans-serif);
-  font-size: 1.05rem;
+  font-size: 1.15rem;
   font-weight: 500;
   color: var(--c-primary);
   text-decoration: none;
@@ -1581,7 +1581,7 @@ li.theme-toggle-item { display: flex; align-items: center; }
   background: rgba(0, 200, 255, 0.12);
   color: var(--c-cyan) !important;
   font-family: var(--font-display, 'Clash Display', sans-serif);
-  font-size: 0.9rem;
+  font-size: 0.98rem;
   font-weight: 600;
   padding: 0.65rem 1.4rem;
   border-radius: 6px !important;
@@ -1595,8 +1595,6 @@ li.theme-toggle-item { display: flex; align-items: center; }
   align-items: center;
   gap: 0.5rem;
 }
-
-
 
 
 
@@ -1652,7 +1650,7 @@ li.theme-toggle-item { display: flex; align-items: center; }
 .breadcrumb-link {
   color: var(--c-muted);
   text-decoration: none;
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   font-weight: 500;
   letter-spacing: 0.04em;
   transition: color var(--t-fast) ease;
@@ -1664,20 +1662,20 @@ li.theme-toggle-item { display: flex; align-items: center; }
 
 .breadcrumb-sep {
   color: var(--c-cyan);
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   opacity: 0.7;
 }
 
 .breadcrumb-current {
   color: var(--c-cyan);
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   font-weight: 600;
   letter-spacing: 0.04em;
 }
 
 .subpage-hero-title {
   font-family: var(--font-display, 'Clash Display', sans-serif);
-  font-size: clamp(2.6rem, 4.8vw, 4rem);
+  font-size: clamp(2.85rem, 5.2vw, 4.4rem);
   color: var(--c-heading);
   font-weight: 700;
   line-height: 1.15;
@@ -2965,15 +2963,15 @@ li.theme-toggle-item { display: flex; align-items: center; }
   border: 1px solid var(--c-border);
   color: var(--c-text);
   font-family: inherit;
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   font-weight: 500;
-  padding: 0.5rem 1.1rem;
+  padding: 0.55rem 1.25rem;
   border-radius: 999px;
   cursor: pointer;
   transition: all 0.2s var(--ease-out);
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.45rem;
 }
 
 .catalog-filter-btn:hover {
@@ -3007,7 +3005,7 @@ li.theme-toggle-item { display: flex; align-items: center; }
   background: var(--c-bg-surface);
   border: 1px solid var(--c-border);
   border-radius: var(--radius-lg);
-  padding: 1.5rem;
+  padding: 1.65rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -3032,11 +3030,11 @@ li.theme-toggle-item { display: flex; align-items: center; }
 }
 
 .catalog-card-badge {
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  padding: 0.25rem 0.6rem;
+  padding: 0.3rem 0.7rem;
   border-radius: 4px;
   background: var(--c-cyan-soft);
   color: var(--c-cyan);
@@ -3044,7 +3042,7 @@ li.theme-toggle-item { display: flex; align-items: center; }
 }
 
 .catalog-card-category {
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   color: var(--c-muted);
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -3077,10 +3075,10 @@ li.theme-toggle-item { display: flex; align-items: center; }
 
 .catalog-card-title {
   font-family: var(--font-display);
-  font-size: 1.2rem;
+  font-size: 1.35rem;
   font-weight: 700;
   color: var(--c-heading);
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.4rem;
   line-height: 1.3;
 }
 
@@ -3095,17 +3093,17 @@ li.theme-toggle-item { display: flex; align-items: center; }
 }
 
 .catalog-card-subtitle {
-  font-size: 0.82rem;
+  font-size: 0.92rem;
   color: var(--c-green);
   font-weight: 600;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.85rem;
 }
 
 .catalog-card-desc {
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   color: var(--c-text);
-  line-height: 1.55;
-  margin-bottom: 1.25rem;
+  line-height: 1.6;
+  margin-bottom: 1.35rem;
   flex-grow: 1;
 }
 
@@ -3113,20 +3111,20 @@ li.theme-toggle-item { display: flex; align-items: center; }
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  font-size: 0.76rem;
+  font-size: 0.85rem;
   color: var(--c-muted);
   background: var(--c-bg-mid);
   border: 1px solid var(--c-border);
-  padding: 0.25rem 0.6rem;
+  padding: 0.3rem 0.7rem;
   border-radius: 4px;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.35rem;
   width: fit-content;
 }
 
 .catalog-card-actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0.6rem;
+  gap: 0.65rem;
   margin-top: auto;
 }
 
@@ -3134,9 +3132,9 @@ li.theme-toggle-item { display: flex; align-items: center; }
   background: transparent;
   border: 1px solid var(--c-cyan);
   color: var(--c-cyan) !important;
-  padding: 0.55rem 0.75rem;
+  padding: 0.65rem 0.85rem;
   border-radius: var(--radius-sm);
-  font-size: 0.8rem;
+  font-size: 0.88rem;
   font-weight: 600;
   text-align: center;
   text-decoration: none;
@@ -3173,9 +3171,9 @@ li.theme-toggle-item { display: flex; align-items: center; }
   background: #00FF9D;
   border: 1px solid #00FF9D;
   color: #020C1B !important;
-  padding: 0.55rem 0.75rem;
+  padding: 0.65rem 0.85rem;
   border-radius: var(--radius-sm);
-  font-size: 0.8rem;
+  font-size: 0.88rem;
   font-weight: 700;
   text-align: center;
   text-decoration: none;
