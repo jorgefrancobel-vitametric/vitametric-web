@@ -2941,10 +2941,242 @@ li.theme-toggle-item { display: flex; align-items: center; }
   text-shadow: none !important;
 }
 
-[data-theme="light"] .subpage-cta-btn {
-  background: #006B94 !important;
-  color: #FFFFFF !important;
-  border-color: #006B94 !important;
+/* ── CATALOG HUB SECTION & FILTER BAR (ARQUITECTURA DE CATÁLOGO PROPIO) ── */
+.catalog-section {
+  padding: 3rem 0 5rem;
+  background: var(--c-bg);
+}
+
+.catalog-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--c-border);
+}
+
+.catalog-filter-btn {
+  background: var(--c-bg-surface);
+  border: 1px solid var(--c-border);
+  color: var(--c-text);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 0.5rem 1.1rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s var(--ease-out);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.catalog-filter-btn:hover {
+  border-color: var(--c-cyan);
+  color: var(--c-heading);
+  transform: translateY(-1px);
+}
+
+.catalog-filter-btn.active {
+  background: var(--c-cyan);
+  border-color: var(--c-cyan);
+  color: #020C1B;
+  font-weight: 700;
+  box-shadow: var(--shadow-sm), 0 0 15px var(--c-cyan-glow);
+}
+
+[data-theme="light"] .catalog-filter-btn.active {
+  background: #051338;
+  border-color: #051338;
+  color: #FFFFFF;
+}
+
+.catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3.5rem;
+}
+
+.catalog-card {
+  background: var(--c-bg-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.3s var(--ease-out);
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+}
+
+.catalog-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--c-cyan);
+  box-shadow: var(--shadow-lg), 0 0 25px var(--c-cyan-glow);
+}
+
+.catalog-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.catalog-card-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  background: var(--c-cyan-soft);
+  color: var(--c-cyan);
+  border: 1px solid var(--c-cyan-glow);
+}
+
+.catalog-card-category {
+  font-size: 0.72rem;
+  color: var(--c-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.catalog-card-media {
+  width: 100%;
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+  position: relative;
+  background: radial-gradient(circle at center, var(--c-cyan-soft) 0%, transparent 70%);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.catalog-card-media img {
+  max-width: 85%;
+  max-height: 85%;
+  object-fit: contain;
+  transition: transform 0.4s var(--ease-out);
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.4));
+}
+
+.catalog-card:hover .catalog-card-media img {
+  transform: scale(1.06);
+}
+
+.catalog-card-title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--c-heading);
+  margin-bottom: 0.35rem;
+  line-height: 1.3;
+}
+
+.catalog-card-title a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.catalog-card-title a:hover {
+  color: var(--c-cyan);
+}
+
+.catalog-card-subtitle {
+  font-size: 0.82rem;
+  color: var(--c-green);
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.catalog-card-desc {
+  font-size: 0.85rem;
+  color: var(--c-text);
+  line-height: 1.55;
+  margin-bottom: 1.25rem;
+  flex-grow: 1;
+}
+
+.catalog-card-spec {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.76rem;
+  color: var(--c-muted);
+  background: var(--c-bg-mid);
+  border: 1px solid var(--c-border);
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  margin-bottom: 1.25rem;
+  width: fit-content;
+}
+
+.catalog-card-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+  margin-top: auto;
+}
+
+.btn-card-detail {
+  background: transparent;
+  border: 1px solid var(--c-cyan);
+  color: var(--c-cyan);
+  padding: 0.55rem 0.75rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  transition: all 0.2s;
+}
+
+.btn-card-detail:hover {
+  background: var(--c-cyan-soft);
+  color: var(--c-heading);
+}
+
+.btn-card-wa {
+  background: var(--c-green);
+  border: 1px solid var(--c-green);
+  color: #020C1B;
+  padding: 0.55rem 0.75rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  transition: all 0.2s;
+}
+
+.btn-card-wa:hover {
+  background: var(--c-green-dark);
+  border-color: var(--c-green-dark);
+  color: #FFFFFF;
+}
+
+@media (max-width: 768px) {
+  .catalog-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
 }
 
 /* === END RIZOMATIC FOUNDATION === */
+
