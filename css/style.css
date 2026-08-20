@@ -645,11 +645,11 @@ li.theme-toggle-item { display: flex; align-items: center; }
   background-clip: text;
 }
 .hero-subtitle {
-  font-size: 1.15rem;
+  font-size: clamp(1.25rem, 1.15rem + 0.6vw, 1.55rem);
   color: var(--c-text);
-  line-height: 1.6;
+  line-height: 1.65;
   margin-bottom: var(--sp-lg);
-  max-width: 540px;
+  max-width: 620px;
 }
 .hero-actions {
   display: flex;
@@ -773,20 +773,20 @@ li.theme-toggle-item { display: flex; align-items: center; }
   background: var(--c-bg-mid);
   border-top: 1px solid var(--c-border);
   border-bottom: 1px solid var(--c-border);
-  padding: var(--sp-lg) 0;
+  padding: 2.5rem 0;
 }
 .trust-items {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: var(--sp-md);
+  gap: 2rem;
 }
 /* Zona con hairline superior; el hover ilumina la línea, no levanta la tarjeta. */
 .trust-item {
   position: relative;
   display: flex;
   align-items: center;
-  gap: var(--sp-sm);
-  padding: var(--sp-md) var(--sp-sm) 0;
+  gap: 1.1rem;
+  padding: 1.25rem 0.5rem 0;
   background: none;
   border: none;
   border-radius: 0;
@@ -802,8 +802,8 @@ li.theme-toggle-item { display: flex; align-items: center; }
   background: linear-gradient(90deg, rgba(0,200,255,0.8) 0%, rgba(0,200,255,0.15) 85%, transparent 100%);
 }
 .trust-icon {
-  width: 48px;
-  height: 48px;
+  width: 56px;
+  height: 56px;
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -813,8 +813,12 @@ li.theme-toggle-item { display: flex; align-items: center; }
   border: 1px solid var(--c-border);
   border-radius: var(--radius-md);
 }
-.trust-item strong { display: block; color: var(--c-heading); font-size: var(--fs-sm); font-weight: var(--fw-semibold); margin-bottom: 0.125rem; }
-.trust-item span  { display: block; color: var(--c-muted); font-size: var(--fs-xs); line-height: 1.4; }
+.trust-icon svg {
+  width: 30px;
+  height: 30px;
+}
+.trust-item strong { display: block; color: var(--c-heading); font-size: 1.18rem; font-weight: 700; margin-bottom: 0.3rem; line-height: 1.3; }
+.trust-item span  { display: block; color: var(--c-muted); font-size: 0.98rem; line-height: 1.45; }
 @media (max-width: 1024px) {
   .trust-items { grid-template-columns: repeat(2, 1fr); }
 }
