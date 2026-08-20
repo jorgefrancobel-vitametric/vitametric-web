@@ -3129,7 +3129,7 @@ li.theme-toggle-item { display: flex; align-items: center; }
 .btn-card-detail {
   background: transparent;
   border: 1px solid var(--c-cyan);
-  color: var(--c-cyan);
+  color: var(--c-cyan) !important;
   padding: 0.55rem 0.75rem;
   border-radius: var(--radius-sm);
   font-size: 0.8rem;
@@ -3143,15 +3143,32 @@ li.theme-toggle-item { display: flex; align-items: center; }
   transition: all 0.2s;
 }
 
-.btn-card-detail:hover {
+.btn-card-detail:hover,
+.btn-card-detail:focus,
+.btn-card-detail:active {
   background: var(--c-cyan-soft);
-  color: var(--c-heading);
+  border-color: var(--c-cyan);
+  color: var(--c-heading) !important;
+}
+
+[data-theme="light"] .btn-card-detail {
+  border-color: #3658F1;
+  color: #051338 !important;
+  background: rgba(54, 88, 241, 0.08);
+}
+
+[data-theme="light"] .btn-card-detail:hover,
+[data-theme="light"] .btn-card-detail:focus,
+[data-theme="light"] .btn-card-detail:active {
+  background: #3658F1;
+  border-color: #3658F1;
+  color: #FFFFFF !important;
 }
 
 .btn-card-wa {
-  background: var(--c-green);
-  border: 1px solid var(--c-green);
-  color: #020C1B;
+  background: #00FF9D;
+  border: 1px solid #00FF9D;
+  color: #020C1B !important;
   padding: 0.55rem 0.75rem;
   border-radius: var(--radius-sm);
   font-size: 0.8rem;
@@ -3163,12 +3180,31 @@ li.theme-toggle-item { display: flex; align-items: center; }
   justify-content: center;
   gap: 0.35rem;
   transition: all 0.2s;
+  user-select: none;
 }
 
-.btn-card-wa:hover {
-  background: var(--c-green-dark);
-  border-color: var(--c-green-dark);
-  color: #FFFFFF;
+.btn-card-wa:hover,
+.btn-card-wa:focus,
+.btn-card-wa:active {
+  background: #00CC7A;
+  border-color: #00CC7A;
+  color: #020C1B !important;
+  box-shadow: 0 0 12px rgba(0, 255, 157, 0.4);
+}
+
+[data-theme="light"] .btn-card-wa {
+  background: #045C3D;
+  border-color: #045C3D;
+  color: #FFFFFF !important;
+}
+
+[data-theme="light"] .btn-card-wa:hover,
+[data-theme="light"] .btn-card-wa:focus,
+[data-theme="light"] .btn-card-wa:active {
+  background: #068A5B;
+  border-color: #068A5B;
+  color: #FFFFFF !important;
+  box-shadow: 0 0 12px rgba(6, 138, 91, 0.35);
 }
 
 @media (max-width: 768px) {
