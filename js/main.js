@@ -20,11 +20,24 @@
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   var validateAllFields;
+  var checkStickyFn = null;
+  var isScrollTicking = false;
 
   function handleNavScroll() {
     if (!navbar) return;
     if (window.scrollY > 50) { navbar.classList.add('scrolled'); }
     else { navbar.classList.remove('scrolled'); }
+  }
+
+  function onWindowScroll() {
+    if (!isScrollTicking) {
+      window.requestAnimationFrame(function () {
+        handleNavScroll();
+        if (typeof checkStickyFn === 'function') checkStickyFn();
+        isScrollTicking = false;
+      });
+      isScrollTicking = true;
+    }
   }
 
   function setupActiveNavObserver() {
@@ -450,11 +463,8 @@
         const c = themeColors[this.hue];
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + (0.55 * this.pulse) + ')';
-        ctx.shadowColor = 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',0.7)';
-        ctx.shadowBlur = 6 * this.pulse;
+        ctx.fillStyle = 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + (0.75 * this.pulse) + ')';
         ctx.fill();
-        ctx.shadowBlur = 0;
       }
     }
 
@@ -462,12 +472,9 @@
       particles.push(new Particle());
     }
 
-    var rafId;
+    var rafId = null;
     var isVisible = true;
 
-    // Conexiones como curvas suaves (rizoma: raíces que se arquean al
-    // encontrarse), no líneas rectas — el arco se dobla hacia el punto medio
-    // desplazado perpendicularmente, proporcional a la distancia.
     function drawConnection(p1, p2, alpha) {
       const mx = (p1.x + p2.x) / 2;
       const my = (p1.y + p2.y) / 2;
@@ -486,7 +493,10 @@
     }
 
     function animate(t) {
-      if (!isVisible) return;
+      if (!isVisible) {
+        rafId = null;
+        return;
+      }
       ctx.clearRect(0, 0, width, height);
 
       particles.forEach(function (p) { p.update(t || 0); p.draw(); });
@@ -509,16 +519,21 @@
       rafId = requestAnimationFrame(animate);
     }
 
-    var canvasObserver = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        isVisible = entry.isIntersecting;
-        if (isVisible && !rafId) {
-          rafId = requestAnimationFrame(animate);
-        }
-      });
-    }, { threshold: 0 });
+    if ('IntersectionObserver' in window) {
+      var canvasObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          isVisible = entry.isIntersecting;
+          if (isVisible && !rafId) {
+            rafId = requestAnimationFrame(animate);
+          } else if (!isVisible && rafId) {
+            cancelAnimationFrame(rafId);
+            rafId = null;
+          }
+        });
+      }, { threshold: 0 });
 
-    canvasObserver.observe(canvas);
+      canvasObserver.observe(canvas);
+    }
     rafId = requestAnimationFrame(animate);
   }
 
@@ -614,16 +629,15 @@
   function setupStickyCta() {
     var stickyCta = document.querySelector('.sticky-cta');
     if (!stickyCta) return;
-    function checkSticky() {
+    checkStickyFn = function () {
       if (window.scrollY > 400) { stickyCta.classList.add('visible'); }
       else { stickyCta.classList.remove('visible'); }
-    }
-    window.addEventListener('scroll', throttle(checkSticky, 100), { passive: true });
-    checkSticky();
+    };
+    checkStickyFn();
   }
 
   function init() {
-    window.addEventListener('scroll', throttle(handleNavScroll, 16), { passive: true });
+    window.addEventListener('scroll', onWindowScroll, { passive: true });
     setupActiveNavObserver();
     setupMobileMenu();
     setupRevealObserver();
