@@ -759,12 +759,15 @@ li.theme-toggle-item { display: flex; align-items: center; }
   border-radius: 0;
 }
 .section-title {
-  font-size: var(--fs-3xl); font-weight: var(--fw-bold);
-  margin-bottom: var(--sp-sm); letter-spacing: -0.01em;
+  font-size: var(--fs-3xl);
+  font-weight: var(--fw-bold);
+  margin-bottom: var(--sp-sm);
+  letter-spacing: -0.01em;
   color: var(--c-heading);
-  max-width: 20ch;
+  max-width: 32ch;
   margin-left: auto;
   margin-right: auto;
+  text-wrap: balance;
 }
 .section-subtitle { font-size: var(--fs-md); color: var(--c-muted); line-height: var(--lh-normal); }
 
