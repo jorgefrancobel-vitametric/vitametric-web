@@ -11,6 +11,15 @@
     gtag('config', 'AW-18397567827');
   </script>
   <meta charset="UTF-8">
+  <script>
+  (function () {
+    try {
+      var t = localStorage.getItem('vt-theme');
+      if (!t) t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+      if (t === 'light') document.documentElement.setAttribute('data-theme', 'light');
+    } catch (e) {}
+  })();
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#020C1B">
@@ -35,8 +44,8 @@
   }
   </script>
   <meta name="description" content="Suplementos y fitoterapia de especialidad natural desarrollados por el Dr. Miguel Ángel Uriegas en Vitametric CDMX.">
-  <link rel="canonical" href="https://vitametric.com/productos/suplementos-uriegas.html">
-  <link rel="stylesheet" href="../css/style.css?v=8bc1faf4">
+  <link rel="canonical" href="https://vitametric.com/productos/suplementos-uriegas.  <link rel="stylesheet" href="../css/style.css?v=f1504c6a">
+  <link rel="stylesheet" href="../css/rizo-nav.css?v=5517d949">
 </head>
 <body>
   <header class="subpage-navbar" id="header">
@@ -68,45 +77,168 @@
         <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
         Solicitar Información
       </a>
+      <button type="button" class="theme-toggle" aria-label="Cambiar a modo claro" aria-pressed="false"><svg class="theme-toggle-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg><svg class="theme-toggle-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
     </div>
   </header>
   <div class="subpage-nav-overlay" id="subpageNavOverlay"></div>
 
-  <main style="padding-top: calc(var(--nav-h) + 2rem); padding-bottom: 5rem;">
+  <!-- Full-Width Subpage Hero Zone -->
+  <section class="subpage-hero-zone">
     <div class="container">
-      <div style="margin-bottom: 2rem; font-size: var(--fs-sm); color: var(--c-muted);">
-        <a href="../index.html" class="breadcrumb-link">Inicio</a> &nbsp;/&nbsp; <a href="../index.html#productos" class="breadcrumb-link">Productos</a> &nbsp;/&nbsp; <span style="color: var(--c-cyan);">Línea Dr. Uriegas</span>
-      </div>
+      <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+        <a href="../index.html" class="breadcrumb-link">Inicio</a>
+        <span class="breadcrumb-sep">›</span>
+        <a href="../index.html#productos" class="breadcrumb-link">Productos</a>
+        <span class="breadcrumb-sep">›</span>
+        <span class="breadcrumb-current">Línea Dr. Uriegas</span>
+      </nav>
+      <span class="subpage-hero-badge">Fitoterapia & Soporte Biológico Integrativo</span>
+      <h1 class="subpage-hero-title">Línea de Suplementos Dr. Miguel Ángel Uriegas</h1>
+      <p class="subpage-hero-desc">Extractos botánicos estandarizados y formulaciones herbolarias de alta biodisponibilidad desarrolladas como soporte fisiológico, hepático y digestivo en los protocolos de bienestar celular de Vitametric CDMX.</p>
+    </div>
+  </section>
 
-      <div style="background: var(--c-bg-surface); border: 1px solid var(--c-border); border-radius: var(--radius-xl); padding: 3rem; margin-bottom: 3rem; box-shadow: var(--shadow-lg);">
-        <span class="card-badge" style="background: var(--c-cyan-soft); color: var(--c-cyan); border: 1px solid var(--c-border); font-weight: 600; padding: 0.25rem 0.75rem; border-radius: var(--radius-full); font-size: 0.8rem; text-transform: uppercase;">Fitoterapia de Especialidad</span>
-        <h1 style="font-size: var(--fs-3xl); color: var(--c-heading); margin-top: 1rem; margin-bottom: 1rem;">Línea de Suplementos Dr. Miguel Ángel Uriegas</h1>
-        <p style="font-size: var(--fs-md); color: var(--c-text); max-width: 850px; line-height: 1.7;">
-          Formulaciones botánicas y remedios herbolarios de especialidad natural utilizados en el consultorio de Vitametric como soporte orgánico individualizado.
-        </p>
-      </div>
+  <nav class="rizo-sibling-strip" aria-label="Navegación entre productos">
+    <div class="rizo-sibling-inner">
+      <span class="rizo-sibling-label">Productos</span>
+      <a href="immunocal.html" class="rizo-sibling-pill">Immunocal</a>
+      <a href="immunocal-platinum.html" class="rizo-sibling-pill">Platinum</a>
+      <a href="immunocal-sport.html" class="rizo-sibling-pill">Sport</a>
+      <a href="immunocal-optimizer.html" class="rizo-sibling-pill">Optimizer</a>
+      <a href="xtriva.html" class="rizo-sibling-pill">Xtriva</a>
+      <a href="oro-coloidal.html" class="rizo-sibling-pill">Oro Coloidal</a>
+      <a href="plata-coloidal.html" class="rizo-sibling-pill">Plata Coloidal</a>
+      <a href="cobre-coloidal.html" class="rizo-sibling-pill">Cobre Coloidal</a>
+      <span class="rizo-sibling-pill current">Dr. Uriegas</span>
+      <a href="../index.html#tecnología" class="rizo-sibling-pill bridge">
+        Tecnologías
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+      </a>
+    </div>
+  </nav>
 
+  <main class="subpage-main">
+    <div class="container">
       <div class="subpage-grid">
-        <article class="subpage-article">
-          <h2>Prescripción Personalizada</h2>
-          <p style="margin-bottom: 1.5rem;">
-            Desarrollados por el <strong>Dr. Miguel Ángel Uriegas</strong>, estos extractos estandarizados apoyan la función biliar, la digestión y el equilibrio hidroelectrolítico de forma totalmente natural.
-          </p>
+
+        <article class="subpage-content">
+
+          <!-- Sección 1: Filosofía y Extractos -->
+          <div class="rizo-micro-section rizo-micro-section--icon">
+            <div class="rizo-section-icon">
+              <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/><path d="M12 6v6l4 2"/></svg>
+            </div>
+            <div>
+              <h2>Sinergia Botánica y Soporte Tisular</h2>
+              <p>Desarrollada por el <strong>Dr. Miguel Ángel Uriegas</strong> a partir de décadas de práctica clínica en medicina integrativa, esta gama de extractos botánicos puros se formula para restablecer el terreno biológico. Su acción sinérgica favorece la eliminación de metabolitos tóxicos acumulados en el líquido extracelular y respalda la función de los órganos emuntorios principales (hígado, vesícula biliar y riñones).</p>
+            </div>
+          </div>
+
+          <hr class="rizo-hairline">
+
+          <!-- Sección 2: Beneficios Clínicos -->
+          <div class="rizo-micro-section rizo-micro-section--green">
+            <h2>Campos de Apoyo Fisiológico</h2>
+            <ul class="rizo-benefits">
+              <li class="rizo-benefit-item">
+                <span class="rizo-benefit-check">
+                  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+                <span class="rizo-benefit-content">
+                  <strong>Drenaje Hepato-Biliar y Descongestión Digestiva</strong>
+                  <span>Favorece la fluidez de las sales biliares, la digestión de lípidos complejos y el vaciamiento vesicular adecuado.</span>
+                </span>
+              </li>
+              <li class="rizo-benefit-item">
+                <span class="rizo-benefit-check">
+                  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+                <span class="rizo-benefit-content">
+                  <strong>Modulación del Terreno y Microbioma</strong>
+                  <span>Extractos estandarizados que promueven un pH intestinal óptimo y reducen la sobrecarga fermentativa e inflamatoria.</span>
+                </span>
+              </li>
+              <li class="rizo-benefit-item">
+                <span class="rizo-benefit-check">
+                  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+                <span class="rizo-benefit-content">
+                  <strong>Equilibrio Hidroelectrolítico Celular</strong>
+                  <span>Aporte biodisponible de cofactores minerales vegetales que apoyan el transporte de membrana y la función renal.</span>
+                </span>
+              </li>
+              <li class="rizo-benefit-item">
+                <span class="rizo-benefit-check">
+                  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+                <span class="rizo-benefit-content">
+                  <strong>Sinergia con Terapias Físicas Vitametric</strong>
+                  <span>Complemento ideal tras sesiones de ES-Complex, Scenar o Frecuencias de Rife para acelerar la evacuación de toxinas liberadas.</span>
+                </span>
+              </li>
+            </ul>
+          </div>
+
+          <hr class="rizo-hairline">
+
+          <!-- CTA inline -->
+          <div class="subpage-inline-cta">
+            <a href="https://api.whatsapp.com/send?phone=525552150674&text=Hola,%20quisiera%20información%20sobre%20los%20Suplementos%20del%20Dr.%20Uriegas" target="_blank" rel="noopener" class="btn btn-primary">Consultar Protocolos Dr. Uriegas →</a>
+          </div>
+
         </article>
+
+        <aside class="subpage-sidebar">
+
+          <!-- Bloque Sidebar: Prescripción -->
+          <div class="rizo-sidebar-block">
+            <h3>
+              <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><polyline points="14 2 14 8 20 8"/></svg>
+              Prescripción Clínica
+            </h3>
+            <p>Formulaciones botánicas de especialidad prescritas de manera individualizada en el consultorio tras la valoración del estado oxidativo y metabólico.</p>
+          </div>
+
+          <!-- Bloque Sidebar: Resumen -->
+          <div class="rizo-sidebar-block">
+            <h3>
+              <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+              Resumen Terapéutico
+            </h3>
+            <ul>
+              <li><strong>Origen:</strong> Extractos botánicos puros</li>
+              <li><strong>Función:</strong> Soporte emuntorio y detox</li>
+              <li><strong>Formato:</strong> Gotas y cápsulas herbales</li>
+              <li><strong>Disponibilidad:</strong> Exclusivo en clínica</li>
+            </ul>
+          </div>
+
+        </aside>
+
       </div>
     </div>
   </main>
 
-    <!-- Footer -->
+  <!-- Footer -->
   <footer class="footer">
-    <div class="container subpage-footer-content" style="text-align: center; font-size: 0.85rem; color: var(--c-muted); line-height: 1.6; padding: 2rem 1rem;">
+    <div class="container subpage-footer-content" style="text-align: center; font-size: 0.85rem; color: rgba(160, 210, 240, 0.75); line-height: 1.6; padding: 2rem 1rem;">
       <p style="margin-bottom: 0.5rem;">© 2026 Vitametric. Centro de Salud Preventiva en CDMX. Todos los derechos reservados.</p>
-      <p style="font-size: 0.78rem; opacity: 0.85; max-width: 800px; margin: 0 auto 0.5rem;">Consulte a su médico. Los servicios y tecnologías no invasivas ofrecidos forman parte de un protocolo integral de evaluación pre-clínica, bienestar y nutrición celular. Responsable Sanitaria: Dra. María Patricia Aguilar Loeza (Cédula Profesional UNAM 1971564 / Aviso de Funcionamiento COFEPRIS 2509032002A00043). Dirección: Calle Playa Tecolutla 452, Col. Militar Marte, Iztacalco, 08830 Ciudad de México, CDMX.</p>
-      <p style="font-size: 0.78rem; opacity: 0.85;">Distribuidor Independiente Autorizado de <strong>Immunotec®</strong> (Lic. Jorge Franco Beltrán) y <strong>BioMexi®</strong>.</p>
+      <p style="font-size: 0.78rem; opacity: 0.85; max-width: 800px; margin: 0 auto 0.5rem;">Consulte a su médico. Los servicios y tecnologías no invasivas ofrecidos forman parte de un protocolo integral de evaluación pre-clínica, bienestar y nutrición celular. Dirección: Calle Playa Tecolutla 452, Col. Militar Marte, Iztacalco, 08830 Ciudad de México, CDMX.</p>
+      <p style="font-size: 0.78rem; opacity: 0.85;">Distribuidor Independiente Autorizado de <strong>Immunotec®</strong> (Lic. Jorge Franco Beltrán).</p>
     </div>
   </footer>
 
-
+  <!-- Sticky CTA -->
+  <div class="sticky-cta">
+    <a href="https://api.whatsapp.com/send?phone=525552150674&text=Hola,%20quisiera%20información%20sobre%20los%20Suplementos%20del%20Dr.%20Uriegas" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+      Consultar Disponibilidad
+    </a>
+  </div>
+
+  <script src="../js/main.js?v=07c8153a"></script>
   <script src="../js/subpage-nav.js?v=ee49120a"></script>
+  <script src="../js/theme.js?v=a1bb1b25"></script>
+
 </body>
 </html>

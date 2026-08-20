@@ -11,6 +11,15 @@
     gtag('config', 'AW-18397567827');
   </script>
   <meta charset="UTF-8">
+  <script>
+  (function () {
+    try {
+      var t = localStorage.getItem('vt-theme');
+      if (!t) t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+      if (t === 'light') document.documentElement.setAttribute('data-theme', 'light');
+    } catch (e) {}
+  })();
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#020C1B">
@@ -36,8 +45,8 @@
   </script>
   <meta name="description" content="Historia, principios biofísicos y microscopía óptica de Royal Raymond Rife. Resumen documental y aplicación clínica de bio-frecuencias en Vitametric CDMX.">
   <link rel="canonical" href="https://vitametric.com/servicios/rife.html">
-  <link rel="stylesheet" href="../css/style.css?v=8bc1faf4">
-  <link rel="stylesheet" href="../css/rizo-nav.css?v=7d47304f">
+  <link rel="stylesheet" href="../css/style.css?v=f1504c6a">
+  <link rel="stylesheet" href="../css/rizo-nav.css?v=5517d949">
   
   <style>
     /* ── PALETA & ESTILOS DE VANGUARDIA BIOLUMINISCENTE ── */
@@ -90,10 +99,10 @@
       font-family: var(--font-display);
       font-size: 1.8rem;
       font-weight: 800;
-      color: #FFF;
+      color: var(--c-heading);
       line-height: 1;
       margin-bottom: 0.35rem;
-      background: linear-gradient(90deg, #FFF, var(--c-cyan));
+      background: linear-gradient(90deg, var(--c-heading), var(--c-cyan));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -136,7 +145,7 @@
     }
 
     .rife-tab-btn:hover {
-      color: #FFF;
+      color: var(--c-heading);
       border-color: var(--c-cyan);
       background: var(--c-bg-surface);
     }
@@ -162,7 +171,7 @@
     .rife-card-panel h2 {
       font-family: var(--font-display);
       font-size: clamp(1.5rem, 2.5vw, 2rem);
-      color: #FFF;
+      color: var(--c-heading);
       margin-bottom: 1.25rem;
       line-height: 1.2;
     }
@@ -195,13 +204,32 @@
       bottom: 0;
       left: 0;
       right: 0;
-      background: linear-gradient(0deg, rgba(2,12,27,0.95) 0%, transparent 100%);
+      background: linear-gradient(0deg, rgba(2,12,27,0.95) 0%, rgba(2,12,27,0.6) 60%, transparent 100%);
       padding: 1.5rem;
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
       flex-wrap: wrap;
       gap: 0.5rem;
+      z-index: 2;
+    }
+
+    .rife-caption-title {
+      color: #FFFFFF !important;
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+    }
+
+    .rife-caption-badge {
+      font-size: 0.75rem;
+      color: #5DDEFF !important;
+      background: rgba(0, 200, 255, 0.2) !important;
+      border: 1px solid rgba(0, 200, 255, 0.4) !important;
+      padding: 0.25rem 0.65rem;
+      border-radius: 4px;
+      font-weight: 600;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.5);
     }
 
     /* Interactive Frequency Wave Simulator */
@@ -250,7 +278,7 @@
 
     .rife-preset-btn:hover {
       border-color: var(--c-cyan);
-      color: #FFF;
+      color: var(--c-heading);
     }
 
     /* Comparison Matrix */
@@ -357,7 +385,7 @@
 
     .rife-quote-banner p {
       font-style: italic;
-      color: #FFF;
+      color: var(--c-heading);
       font-size: 1.05rem;
       line-height: 1.6;
       margin-bottom: 0.5rem;
@@ -368,6 +396,129 @@
       color: var(--c-muted);
       text-transform: uppercase;
       letter-spacing: 0.05em;
+    }
+  
+    /* ── LIGHT THEME ADAPTATIONS FOR RIFE SUBPAGE ── */
+    [data-theme="light"] {
+      --c-cyan-bright: #006B94;
+      --c-green-bright: #0C8259;
+    }
+
+    [data-theme="light"] .rife-hero-zone {
+      background: radial-gradient(circle at 50% -20%, rgba(0, 107, 148, 0.10) 0%, var(--c-bg-mid) 60%, var(--c-bg) 100%) !important;
+      border-bottom: 1px solid var(--c-border) !important;
+    }
+
+    [data-theme="light"] .rife-hero-zone h1 {
+      color: var(--c-heading) !important;
+    }
+
+    [data-theme="light"] .rife-hero-zone h1 span {
+      background: linear-gradient(90deg, #006B94, #0C8259) !important;
+      -webkit-background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+    }
+
+    [data-theme="light"] .rife-stat-pill {
+      background: var(--c-bg-surface) !important;
+      border: 1px solid var(--c-border) !important;
+      box-shadow: var(--shadow-sm) !important;
+    }
+
+    [data-theme="light"] .rife-stat-val {
+      background: none !important;
+      -webkit-background-clip: initial !important;
+      -webkit-text-fill-color: initial !important;
+      color: #006B94 !important;
+    }
+
+    [data-theme="light"] .rife-stat-lbl {
+      color: var(--c-text) !important;
+      font-weight: 600 !important;
+    }
+
+    [data-theme="light"] .rife-tab-btn {
+      background: var(--c-bg-surface) !important;
+      border: 1px solid var(--c-border) !important;
+      color: var(--c-text) !important;
+    }
+
+    [data-theme="light"] .rife-tab-btn.active {
+      color: #FFFFFF !important;
+      background: var(--c-cyan) !important;
+      border-color: var(--c-cyan) !important;
+      box-shadow: var(--shadow-sm) !important;
+    }
+
+    [data-theme="light"] .rife-card-panel {
+      background: var(--c-bg-surface) !important;
+      border: 1px solid var(--c-border) !important;
+      box-shadow: var(--shadow-sm) !important;
+    }
+
+    [data-theme="light"] .rife-sim-box {
+      background: var(--c-bg-surface) !important;
+      border: 1px solid var(--c-border) !important;
+      box-shadow: var(--shadow-sm) !important;
+    }
+
+    [data-theme="light"] .rife-matrix-col {
+      background: var(--c-bg-surface) !important;
+      border: 1px solid var(--c-border) !important;
+      box-shadow: var(--shadow-sm) !important;
+    }
+
+    [data-theme="light"] .rife-matrix-col.highlight {
+      background: linear-gradient(180deg, var(--c-bg-surface) 0%, rgba(0, 107, 148, 0.05) 100%) !important;
+      border-color: var(--c-cyan) !important;
+    }
+
+    [data-theme="light"] .rife-matrix-list li {
+      border-bottom: 1px solid var(--c-border-light) !important;
+      color: var(--c-text) !important;
+    }
+
+    [data-theme="light"] .rife-timeline-track {
+      border-left-color: var(--c-cyan) !important;
+    }
+
+    [data-theme="light"] .rife-node-badge {
+      background: var(--c-bg-surface) !important;
+      border-color: var(--c-cyan) !important;
+      box-shadow: 0 0 8px rgba(0, 107, 148, 0.2) !important;
+    }
+
+    [data-theme="light"] .rife-node-content {
+      background: var(--c-bg-surface) !important;
+      border: 1px solid var(--c-border) !important;
+      box-shadow: var(--shadow-sm) !important;
+    }
+
+    [data-theme="light"] .rife-node-year {
+      color: var(--c-cyan) !important;
+    }
+
+    [data-theme="light"] .rife-quote-banner {
+      background: var(--c-green-soft) !important;
+      border-left: 4px solid var(--c-green) !important;
+    }
+
+    [data-theme="light"] .rife-quote-banner p {
+      color: var(--c-heading) !important;
+    }
+
+    [data-theme="light"] .rife-quote-banner span {
+      color: var(--c-muted) !important;
+    }
+
+    [data-theme="light"] .rife-disclaimer-box {
+      background: var(--c-bg-surface) !important;
+      border: 1px solid var(--c-border) !important;
+      box-shadow: var(--shadow-sm) !important;
+    }
+
+    [data-theme="light"] .rife-disclaimer-box p {
+      color: var(--c-text) !important;
     }
   </style>
 </head>
@@ -403,6 +554,7 @@
         <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
         Agendar Consulta
       </a>
+      <button type="button" class="theme-toggle" aria-label="Cambiar a modo claro" aria-pressed="false"><svg class="theme-toggle-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg><svg class="theme-toggle-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
     </div>
   </header>
   <div class="subpage-nav-overlay" id="subpageNavOverlay"></div>
@@ -423,7 +575,7 @@
         Biofísica & Resonancia Bioelectromagnética
       </div>
 
-      <h1 style="font-family: var(--font-display); font-size: clamp(2.2rem, 4.2vw, 3.6rem); font-weight: 800; color: #FFF; line-height: 1.1; margin-bottom: 1.25rem;">
+      <h1 style="font-family: var(--font-display); font-size: clamp(2.2rem, 4.2vw, 3.6rem); font-weight: 800; color: var(--c-heading); line-height: 1.1; margin-bottom: 1.25rem;">
         El Legado Científico de <span style="background: linear-gradient(90deg, #00C8FF, #00FF9D); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Royal Raymond Rife</span>
       </h1>
       
@@ -499,8 +651,8 @@
               <div class="rife-banner-img-wrap">
                 <img src="../assets/img/technology/rife.webp" alt="Microscopio de Royal Raymond Rife en laboratorio histórico" class="rife-banner-img">
                 <div class="rife-banner-caption">
-                  <div style="color: #FFF; font-weight: 700; font-size: 0.95rem;">Microscopio Universal de Rife (Point Loma, California)</div>
-                  <span style="font-size: 0.75rem; color: var(--c-cyan); background: rgba(0,200,255,0.15); border: 1px solid var(--c-cyan); padding: 0.2rem 0.6rem; border-radius: 3px;">Archivo Histórico Smithsonian (1944)</span>
+                  <div class="rife-caption-title">Microscopio Universal de Rife (Point Loma, California)</div>
+                  <span class="rife-caption-badge">Archivo Histórico Smithsonian (1944)</span>
                 </div>
               </div>
 
@@ -510,14 +662,14 @@
                   <div class="rife-matrix-header">
                     <span style="font-size: 1.5rem;">🧪</span>
                     <div>
-                      <strong style="color: #FF6B6B; font-size: 0.95rem; display: block;">Microscopía Electrónica</strong>
+                      <strong style="color: #DC2626; font-size: 0.95rem; display: block;">Microscopía Electrónica</strong>
                       <span style="font-size: 0.75rem; color: var(--c-muted);">Estándar Académico</span>
                     </div>
                   </div>
                   <ul class="rife-matrix-list">
-                    <li><span style="color:#FF6B6B;">✖</span> Requiere cámara de alto vacío (deshidrata).</li>
-                    <li><span style="color:#FF6B6B;">✖</span> Muestras teñidas con metales pesados.</li>
-                    <li><span style="color:#FF6B6B;">✖</span> <strong>Solo observa materia biológica muerta.</strong></li>
+                    <li><span style="color:#DC2626;">✖</span> Requiere cámara de alto vacío (deshidrata).</li>
+                    <li><span style="color:#DC2626;">✖</span> Muestras teñidas con metales pesados.</li>
+                    <li><span style="color:#DC2626;">✖</span> <strong>Solo observa materia biológica muerta.</strong></li>
                   </ul>
                 </div>
 
@@ -552,8 +704,8 @@
               <!-- Simulador de Ondas Interactivo -->
               <div class="rife-sim-box">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                  <strong style="color: var(--c-cyan-bright); font-size: 0.9rem; text-transform: uppercase;">Simulador de Resonancia Bioelectromagnética</strong>
-                  <span id="sim-freq-display" style="font-family: var(--font-display); color: #00FF9D; font-size: 1.1rem; font-weight: 700;">728 Hz · Resonancia Activa</span>
+                  <strong style="color: var(--c-cyan); font-size: 0.9rem; text-transform: uppercase;">Simulador de Resonancia Bioelectromagnética</strong>
+                  <span id="sim-freq-display" style="font-family: var(--font-display); color: var(--c-green); font-size: 1.1rem; font-weight: 700;">728 Hz · Resonancia Activa</span>
                 </div>
                 
                 <div class="rife-sim-canvas-wrap">
@@ -581,7 +733,7 @@
           <!-- TAB 3: PLEOMORFISMO -->
           <section id="tab-pleomorfismo" class="rife-tab-content" style="display: none;">
             <div class="rife-card-panel">
-              <div style="font-size: 0.8rem; color: var(--c-cyan-bright); font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem;">Pilar 03 · La Escuela del Terreno Biológico</div>
+              <div style="font-size: 0.8rem; color: var(--c-cyan); font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem;">Pilar 03 · La Escuela del Terreno Biológico</div>
               <h2>Pleomorfismo: La Disputa Béchamp vs. Pasteur</h2>
               <p style="color: var(--c-text); line-height: 1.7; font-size: 1.05rem;">
                 Frente a la doctrina monomórfica rígida de Louis Pasteur (que postulaba que cada enfermedad proviene exclusivamente de un germen inmutable), Rife colaboró con destacados bacteriólogos como el <strong>Dr. Arthur Kendall</strong> (Universidad Northwestern, creador del *Medio K*) y el <strong>Dr. Edward Rosenow</strong> (Bacteriólogo en Jefe de la Clínica Mayo) para demostrar la plasticidad de los microorganismos.
@@ -593,7 +745,7 @@
                   <span style="font-size: 0.85rem; color: var(--c-muted); display: block; line-height: 1.5;">Director de Investigación Médica en Northwestern. Desarrolló el medio de cultivo proteico (Medio K) que permitió observar virus filtrables vivos.</span>
                 </div>
                 <div style="background: var(--c-bg-mid); border: 1px solid var(--c-border); padding: 1.25rem; border-radius: var(--radius-md);">
-                  <strong style="color: #00FF9D; display: block; font-size: 0.95rem; margin-bottom: 0.35rem;">Dr. Edward C. Rosenow</strong>
+                  <strong style="color: var(--c-green); display: block; font-size: 0.95rem; margin-bottom: 0.35rem;">Dr. Edward C. Rosenow</strong>
                   <span style="font-size: 0.85rem; color: var(--c-muted); display: block; line-height: 1.5;">Bacteriólogo principal de la Clínica Mayo durante más de 30 años. Confirmó experimentalmente el pleomorfismo en patologías infecciosas.</span>
                 </div>
               </div>
@@ -608,7 +760,7 @@
           <!-- TAB 4: CRONOLOGÍA HISTÓRICA -->
           <section id="tab-cronologia" class="rife-tab-content" style="display: none;">
             <div class="rife-card-panel">
-              <div style="font-size: 0.8rem; color: var(--c-cyan-bright); font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem;">Pilar 04 · Archivo Documentado</div>
+              <div style="font-size: 0.8rem; color: var(--c-cyan); font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem;">Pilar 04 · Archivo Documentado</div>
               <h2>Línea de Tiempo Histórica (1920–1944)</h2>
               <p style="color: var(--c-text); line-height: 1.7; font-size: 1.05rem;">
                 Basado en las cintas de audio y registros orales restaurados de los protagonistas por la Fundación Kinnaman:
@@ -624,17 +776,17 @@
                 </div>
 
                 <div class="rife-timeline-node">
-                  <div class="rife-node-badge" style="border-color: #00FF9D; box-shadow: 0 0 12px #00FF9D;"></div>
+                  <div class="rife-node-badge" style="border-color: var(--c-green); box-shadow: 0 0 12px var(--c-green-glow);"></div>
                   <div class="rife-node-content">
-                    <div class="rife-node-year" style="color: #00FF9D;">1934 · El Ensayo Clínico de La Jolla</div>
+                    <div class="rife-node-year" style="color: var(--c-green);">1934 · El Ensayo Clínico de La Jolla</div>
                     <p style="font-size: 0.9rem; color: var(--c-text); line-height: 1.5;">Un comité de investigación médica bajo los auspicios de la Universidad del Sur de California (USC), liderado por el Dr. Milbank Johnson, supervisa el uso clínico del Beam Ray en el rancho de Ellen Scripps en La Jolla.</p>
                   </div>
                 </div>
 
                 <div class="rife-timeline-node">
-                  <div class="rife-node-badge" style="border-color: #FFCC00; box-shadow: 0 0 12px #FFCC00;"></div>
+                  <div class="rife-node-badge" style="border-color: #D97706; box-shadow: 0 0 12px rgba(217, 119, 6, 0.2);"></div>
                   <div class="rife-node-content">
-                    <div class="rife-node-year" style="color: #FFCC00;">1939 · Juicio Corporativo y Quiebre</div>
+                    <div class="rife-node-year" style="color: #D97706;">1939 · Juicio Corporativo y Quiebre</div>
                     <p style="font-size: 0.9rem; color: var(--c-text); line-height: 1.5;">Litigios comerciales por las patentes de Beam Rays Inc., el inicio de la Segunda Guerra Mundial y el fallecimiento de mecenas clave interrumpen la difusión comercial.</p>
                   </div>
                 </div>
@@ -672,7 +824,7 @@
                 </div>
 
                 <div class="rife-matrix-col">
-                  <h4 style="color: #FFF; font-size: 1.1rem; margin-bottom: 0.75rem;">¿Cómo es una Sesión?</h4>
+                  <h4 style="color: var(--c-heading); font-size: 1.1rem; margin-bottom: 0.75rem;">¿Cómo es una Sesión?</h4>
                   <ul class="rife-matrix-list">
                     <li><strong>Duración:</strong> 45 a 60 minutos en cabina confortable.</li>
                     <li><strong>Sensación:</strong> Relajación total, sin dolor ni choques eléctricos.</li>
@@ -692,10 +844,9 @@
           </section>
 
           <!-- Disclaimer Regulatorio -->
-          <div style="background: rgba(2, 12, 27, 0.6); border: 1px solid var(--c-border); padding: 1.25rem 1.5rem; border-radius: var(--radius-md); margin-top: 2rem;">
+          <div class="rife-disclaimer-box" style="background: var(--c-bg-surface); border: 1px solid var(--c-border); padding: 1.25rem 1.5rem; border-radius: var(--radius-md); margin-top: 2rem;">
             <p style="font-size: 0.8rem; color: var(--c-muted); margin: 0; line-height: 1.5;">
-              <em>Aviso Legal y Regulatorio:</em> En Vitametric la terapia de bio-frecuencias es una herramienta complementaria no farmacológica de bienestar celular. La información histórica del documental tiene fines estrictamente divulgativos y educativos. Consulte a su médico para el diagnóstico y tratamiento de patologías específicas. Responsable Sanitaria: Dra. María Patricia Aguilar.
-            </p>
+              <em>Aviso Legal y Regulatorio:</em> En Vitametric la terapia de bio-frecuencias es una herramienta complementaria no farmacológica de bienestar celular. La información histórica del documental tiene fines estrictamente divulgativos y educativos. Consulte a su médico para el diagnóstico y tratamiento de patologías específicas.</p>
           </div>
 
         </article>
@@ -746,10 +897,10 @@
 
     <!-- Footer -->
   <footer class="footer">
-    <div class="container subpage-footer-content" style="text-align: center; font-size: 0.85rem; color: var(--c-muted); line-height: 1.6; padding: 2rem 1rem;">
+    <div class="container subpage-footer-content" style="text-align: center; font-size: 0.85rem; color: rgba(160, 210, 240, 0.75); line-height: 1.6; padding: 2rem 1rem;">
       <p style="margin-bottom: 0.5rem;">© 2026 Vitametric. Centro de Salud Preventiva en CDMX. Todos los derechos reservados.</p>
-      <p style="font-size: 0.78rem; opacity: 0.85; max-width: 800px; margin: 0 auto 0.5rem;">Consulte a su médico. Los servicios y tecnologías no invasivas ofrecidos forman parte de un protocolo integral de evaluación pre-clínica, bienestar y nutrición celular. Responsable Sanitaria: Dra. María Patricia Aguilar Loeza (Cédula Profesional UNAM 1971564 / Aviso de Funcionamiento COFEPRIS 2509032002A00043). Dirección: Calle Playa Tecolutla 452, Col. Militar Marte, Iztacalco, 08830 Ciudad de México, CDMX.</p>
-      <p style="font-size: 0.78rem; opacity: 0.85;">Distribuidor Independiente Autorizado de <strong>Immunotec®</strong> (Lic. Jorge Franco Beltrán) y <strong>BioMexi®</strong>.</p>
+      <p style="font-size: 0.78rem; opacity: 0.85; max-width: 800px; margin: 0 auto 0.5rem;">Consulte a su médico. Los servicios y tecnologías no invasivas ofrecidos forman parte de un protocolo integral de evaluación pre-clínica, bienestar y nutrición celular. Dirección: Calle Playa Tecolutla 452, Col. Militar Marte, Iztacalco, 08830 Ciudad de México, CDMX.</p>
+      <p style="font-size: 0.78rem; opacity: 0.85;">Distribuidor Independiente Autorizado de <strong>Immunotec®</strong> (Lic. Jorge Franco Beltrán).</p>
     </div>
   </footer>
 
@@ -867,6 +1018,9 @@
       }
     });
   </script>
+
+<script src="../js/theme.js?v=a1bb1b25"></script>
+
 
 </body>
 </html>

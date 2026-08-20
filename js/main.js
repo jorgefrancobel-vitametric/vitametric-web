@@ -402,8 +402,29 @@
 
     const particles = [];
     const particleCount = 40; // Reduced for calmer, more clinical feel
-    const connectionDistance = 90;
+    const connectionDistance = 110;
     const speedFactor = 0.25;
+
+    // Colores leídos de las CSS custom properties: se re-evalúan en cada toggle
+    // de tema en vez de quedar fijos al valor de cuando cargó la página.
+    var themeColors = { cyan: [0, 200, 255], green: [0, 255, 157] };
+    function readThemeColors() {
+      const cs = getComputedStyle(document.documentElement);
+      const parse = (hex) => {
+        hex = hex.trim();
+        if (hex[0] === '#') {
+          const n = parseInt(hex.slice(1), 16);
+          return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+        }
+        return null;
+      };
+      themeColors.cyan = parse(cs.getPropertyValue('--c-cyan')) || themeColors.cyan;
+      themeColors.green = parse(cs.getPropertyValue('--c-green')) || themeColors.green;
+    }
+    readThemeColors();
+    document.querySelectorAll('.theme-toggle').forEach(function (btn) {
+      btn.addEventListener('click', function () { setTimeout(readThemeColors, 0); });
+    });
 
     class Particle {
       constructor() {
@@ -411,23 +432,29 @@
         this.y = Math.random() * height;
         this.vx = (Math.random() - 0.5) * speedFactor;
         this.vy = (Math.random() - 0.5) * speedFactor;
-        this.radius = Math.random() * 1.5 + 1;
-        this.color = Math.random() > 0.5 ? 'rgba(0, 200, 255, 0.35)' : 'rgba(0, 255, 157, 0.35)';
+        this.radius = Math.random() * 1.7 + 1;
+        this.hue = Math.random() > 0.5 ? 'cyan' : 'green';
+        this.pulseOffset = Math.random() * Math.PI * 2;
       }
 
-      update() {
+      update(t) {
         this.x += this.vx;
         this.y += this.vy;
 
         if (this.x < 0 || this.x > width) this.vx = -this.vx;
         if (this.y < 0 || this.y > height) this.vy = -this.vy;
+        this.pulse = 0.55 + Math.sin(t / 900 + this.pulseOffset) * 0.35;
       }
 
       draw() {
+        const c = themeColors[this.hue];
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = this.color;
+        ctx.fillStyle = 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + (0.55 * this.pulse) + ')';
+        ctx.shadowColor = 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',0.7)';
+        ctx.shadowBlur = 6 * this.pulse;
         ctx.fill();
+        ctx.shadowBlur = 0;
       }
     }
 
@@ -438,14 +465,31 @@
     var rafId;
     var isVisible = true;
 
-    function animate() {
+    // Conexiones como curvas suaves (rizoma: raíces que se arquean al
+    // encontrarse), no líneas rectas — el arco se dobla hacia el punto medio
+    // desplazado perpendicularmente, proporcional a la distancia.
+    function drawConnection(p1, p2, alpha) {
+      const mx = (p1.x + p2.x) / 2;
+      const my = (p1.y + p2.y) / 2;
+      const dx = p2.x - p1.x, dy = p2.y - p1.y;
+      const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+      const bow = Math.min(18, dist * 0.18);
+      const cx = mx - (dy / dist) * bow;
+      const cy = my + (dx / dist) * bow;
+      const c1 = themeColors[p1.hue];
+      ctx.beginPath();
+      ctx.moveTo(p1.x, p1.y);
+      ctx.quadraticCurveTo(cx, cy, p2.x, p2.y);
+      ctx.strokeStyle = 'rgba(' + c1[0] + ',' + c1[1] + ',' + c1[2] + ',' + alpha + ')';
+      ctx.lineWidth = 0.7;
+      ctx.stroke();
+    }
+
+    function animate(t) {
       if (!isVisible) return;
       ctx.clearRect(0, 0, width, height);
 
-      particles.forEach(function (p) {
-        p.update();
-        p.draw();
-      });
+      particles.forEach(function (p) { p.update(t || 0); p.draw(); });
 
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
@@ -456,13 +500,8 @@
           const dist = Math.sqrt(dx * dx + dy * dy);
 
           if (dist < connectionDistance) {
-            const alpha = (1 - dist / connectionDistance) * 0.08;
-            ctx.beginPath();
-            ctx.moveTo(p1.x, p1.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.strokeStyle = 'rgba(0, 200, 255, ' + alpha + ')';
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
+            const alpha = (1 - dist / connectionDistance) * 0.16;
+            drawConnection(p1, p2, alpha);
           }
         }
       }
