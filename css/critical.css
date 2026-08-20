@@ -76,7 +76,7 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; scroll-padding-top: var(--nav-h); }
+html { font-size: 17px; scroll-behavior: smooth; scroll-padding-top: var(--nav-h); }
 body {
   font-family: var(--font);
   font-size: var(--fs-base);
