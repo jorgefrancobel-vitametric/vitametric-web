@@ -178,7 +178,6 @@
 /* ── Reset & Responsive Guard ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html {
-  font-size: 17px;
   scroll-padding-top: var(--nav-h);
   overflow-x: hidden;
   width: 100%;
@@ -216,11 +215,19 @@ h1, h2, h3, h4, h5, h6 {
 }
 ::selection { background: var(--c-cyan); color: #020C1B; }
 
-/* ── Layout ── */
-.container { max-width: var(--max-w); margin: 0 auto; padding: 0 var(--sp-md); }
-.section { padding: var(--sp-3xl) 0; }
+/* ── Layout & Container ── */
+.container {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 var(--sp-md);
+  width: 100%;
+}
+.section {
+  padding: var(--sp-3xl) 0;
+  position: relative;
+}
 
-/* ── Skip Link ── */
+/* ── Accessibility ── */
 .skip-link {
   position: absolute;
   top: -100%;
@@ -231,87 +238,87 @@ h1, h2, h3, h4, h5, h6 {
   background: var(--c-cyan);
   color: #020C1B;
   font-weight: var(--fw-semibold);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
   text-decoration: none;
   transition: top var(--t-fast) ease;
 }
-.skip-link:focus { top: 0.75rem; outline: 2px solid white; outline-offset: 2px; }
-
-/* ── Visually hidden helper ── */
+.skip-link:focus {
+  top: var(--sp-sm);
+  outline: 2px solid white;
+  outline-offset: 2px;
+}
 .visually-hidden {
   position: absolute !important;
-  width: 1px !important; height: 1px !important;
-  padding: 0 !important; margin: -1px !important;
-  overflow: hidden !important; clip: rect(0, 0, 0, 0) !important;
-  white-space: nowrap !important; border: 0 !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
 }
 
-/* ── Buttons (Canon Jorge — Rizomatic) ── */
+/* ── Buttons ── */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.65rem;
-  font-family: var(--font-display, 'Clash Display', var(--font));
+  gap: 0.5rem;
+  font-family: var(--font);
   font-weight: var(--fw-semibold);
   font-size: var(--fs-sm);
-  letter-spacing: 0.05em;
-  padding: 0.85rem 1.85rem;
-  border: 1px solid transparent;
+  border: 2px solid transparent;
   border-radius: var(--radius-sm);
   cursor: pointer;
   transition: all var(--t-base) var(--ease-out);
   white-space: nowrap;
   text-decoration: none;
   line-height: 1;
-  text-transform: uppercase;
+}
+.btn:focus-visible {
+  outline: 2px solid var(--c-cyan);
+  outline-offset: 2px;
 }
 .btn-primary {
-  background: linear-gradient(135deg, #00C8FF 0%, #0088CC 100%);
+  background: linear-gradient(135deg, var(--c-cyan) 0%, #0099EE 100%);
   color: #020C1B;
-  border-color: rgba(255,255,255,0.25);
+  border-color: transparent;
   font-weight: var(--fw-bold);
-  box-shadow: 0 4px 18px rgba(0,200,255,0.28);
+  letter-spacing: 0.01em;
 }
 .btn-primary:hover {
   color: #020C1B;
   transform: translateY(-2px);
-  box-shadow: 0 6px 25px rgba(0,200,255,0.45);
-}
-[data-theme="light"] .btn-primary,
-[data-theme="light"] .nav-cta {
-  background: linear-gradient(135deg, #76AAFF 0%, #3658F1 100%) !important;
-  color: #FFFFFF !important;
-  border-color: rgba(255,255,255,0.4) !important;
-  box-shadow: 0 4px 18px rgba(54,88,241,0.35) !important;
-}
-[data-theme="light"] .btn-primary:hover,
-[data-theme="light"] .nav-cta:hover {
-  box-shadow: 0 6px 25px rgba(54,88,241,0.5) !important;
-  color: #FFFFFF !important;
+  box-shadow: var(--glow-cyan);
 }
 .btn-outline {
-  background: rgba(7,30,51,0.6);
+  background: transparent;
   color: var(--c-cyan);
-  border-color: rgba(0,200,255,0.35);
-  backdrop-filter: blur(10px);
+  border-color: var(--c-cyan);
 }
 .btn-outline:hover {
-  background: rgba(0,200,255,0.12);
-  color: var(--c-heading);
-  border-color: var(--c-cyan);
+  background: var(--c-cyan-soft);
+  color: var(--c-cyan);
   transform: translateY(-2px);
-  box-shadow: 0 4px 20px rgba(0,200,255,0.25);
+  box-shadow: 0 0 16px rgba(0,200,255,0.2);
 }
-.btn-sm  { padding: 0.65rem 1.35rem; font-size: 0.85rem; }
-.btn-lg  { padding: 1.1rem 2.25rem; font-size: 1.05rem; }
+.btn-sm {
+  padding: 0.625rem 1.25rem;
+  font-size: var(--fs-xs);
+}
+.btn-lg {
+  padding: 0.875rem 2rem;
+  font-size: var(--fs-base);
+}
 .btn-block { width: 100%; }
-.btn:focus-visible { outline: 2px solid var(--c-cyan); outline-offset: 2px; }
 
-/* ── NAVBAR ── */
+/* ── Header & Navigation ── */
 .navbar {
   position: fixed;
-  top: 0; left: 0; right: 0;
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: 1000;
   height: var(--nav-h);
   display: flex;
@@ -325,16 +332,17 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 0 2px 20px rgba(0,0,0,0.5);
 }
 .nav-container {
-  max-width: var(--max-w);
+  max-width: 1360px;
   margin: 0 auto;
-  padding: 0 var(--sp-md);
+  padding: 0 1.5rem;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 1rem;
 }
-.nav-logo { display: flex; align-items: center; gap: 0.75rem; z-index: 10; }
-.nav-logo-img { height: 108px; max-height: 112px; width: auto; object-fit: contain; filter: drop-shadow(0 2px 8px rgba(0,200,255,0.2)); }
+.nav-logo { display: flex; align-items: center; gap: 0.85rem; z-index: 10; flex-shrink: 0; }
+.nav-logo-img { height: 96px; max-height: 100px; width: auto; object-fit: contain; filter: drop-shadow(0 2px 8px rgba(0,200,255,0.2)); }
 /* El logo es trazo blanco/azul muy pálido sobre transparente: invisible en fondo claro.
    invert+hue-rotate lo vuelve azul marino oscuro conservando el tono, sin necesitar
    un segundo archivo de logo. */
@@ -342,7 +350,7 @@ h1, h2, h3, h4, h5, h6 {
 [data-theme="light"] .subpage-logo-img {
   filter: brightness(0) saturate(100%) invert(32%) sepia(85%) saturate(3000%) hue-rotate(220deg) brightness(1.08) contrast(1.02);
 }
-.nav-menu { display: flex; align-items: center; gap: 0.25rem; }
+.nav-menu { display: flex; align-items: center; gap: 0.25rem; flex-shrink: 0; list-style: none; margin: 0; padding: 0; }
 
 /* Animacion de los drawers moviles (nav home + nav subpagina). Se usan con display:none/block
    en el estado cerrado para que el drawer no ensanche el documento. */
@@ -350,12 +358,13 @@ h1, h2, h3, h4, h5, h6 {
 @keyframes drawer-out { from { transform: translateX(0); } to { transform: translateX(100%); } }
 .nav-link {
   display: block;
-  padding: 0.5rem 1rem;
-  font-size: var(--fs-sm);
+  padding: 0.45rem 0.75rem;
+  font-size: 0.92rem;
   font-weight: var(--fw-medium);
   color: var(--c-text);
   border-radius: var(--radius-sm);
   transition: all var(--t-fast) ease;
+  white-space: nowrap;
 }
 .nav-link:hover { color: var(--c-cyan); background: var(--c-cyan-soft); }
 .nav-link.active { color: var(--c-cyan); }
@@ -366,9 +375,10 @@ h1, h2, h3, h4, h5, h6 {
   background: linear-gradient(135deg, var(--c-cyan) 0%, #0099EE 100%);
   color: #020C1B !important;
   font-weight: var(--fw-bold);
-  padding: 0.5rem 1.25rem;
+  padding: 0.45rem 1.15rem;
   border-radius: var(--radius-full);
-  margin-left: 0.5rem;
+  margin-left: 0.4rem;
+  white-space: nowrap;
 }
 .nav-cta:hover { box-shadow: var(--glow-cyan); transform: translateY(-1px); color: #020C1B !important; }
 .nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; z-index: 10; }
@@ -460,19 +470,25 @@ li.theme-toggle-item { display: flex; align-items: center; }
 
 /* Nav logo tagline */
 .nav-logo-tagline {
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   font-weight: 500;
   color: var(--c-muted);
   letter-spacing: 0.04em;
-  line-height: 1.3;
-  max-width: 140px;
+  line-height: 1.25;
+  max-width: 145px;
   border-left: 2px solid rgba(0,200,255,0.3);
   padding-left: 0.75rem;
   transition: color var(--t-base), border-color var(--t-base);
+  flex-shrink: 0;
 }
 .navbar.scrolled .nav-logo-tagline {
   color: var(--c-muted);
   border-left-color: var(--c-border);
+}
+@media (max-width: 1180px) {
+  .nav-logo-tagline {
+    display: none;
+  }
 }
 
 
@@ -1509,21 +1525,22 @@ li.theme-toggle-item { display: flex; align-items: center; }
 }
 
 .subpage-nav-container {
-  max-width: var(--max-w);
+  max-width: 1360px;
   margin: 0 auto;
-  padding: 0 var(--sp-md);
+  padding: 0 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 2.5rem;
+  gap: 1.25rem;
 }
 
 .subpage-logo-link {
   display: flex;
   align-items: center;
-  gap: 1.1rem;
+  gap: 1rem;
   text-decoration: none;
   transition: transform var(--t-fast) ease;
+  flex-shrink: 0;
 }
 
 .subpage-logo-link:hover {
@@ -1531,44 +1548,48 @@ li.theme-toggle-item { display: flex; align-items: center; }
 }
 
 .subpage-logo-img {
-  height: 84px;
-  max-height: 88px;
+  height: 80px;
+  max-height: 84px;
   width: auto;
   object-fit: contain;
   filter: drop-shadow(0 2px 12px rgba(0, 200, 255, 0.35));
 }
 
 .subpage-logo-tagline {
-  font-size: 0.88rem;
+  font-size: 0.76rem;
   font-weight: 500;
   color: var(--c-muted);
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   border-left: 1px solid rgba(0, 200, 255, 0.3);
-  padding-left: 0.85rem;
-  line-height: 1.35;
+  padding-left: 0.75rem;
+  line-height: 1.25;
+  max-width: 170px;
+  flex-shrink: 0;
 }
 
 .subpage-nav-menu {
   display: flex;
   align-items: center;
-  gap: 2rem;
+  gap: 0.75rem;
   list-style: none;
   margin: 0;
   padding: 0;
+  flex-shrink: 0;
 }
 
 .subpage-nav-link {
   font-family: var(--font-display, 'Clash Display', sans-serif);
-  font-size: 1.15rem;
+  font-size: 0.95rem;
   font-weight: 500;
   color: var(--c-primary);
   text-decoration: none;
-  padding: 0.5rem 0.85rem;
+  padding: 0.45rem 0.75rem;
   border-radius: 4px;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
   transition: all 0.25s ease;
   position: relative;
+  white-space: nowrap;
 }
 
 .subpage-nav-link:hover {
@@ -1599,19 +1620,21 @@ li.theme-toggle-item { display: flex; align-items: center; }
   background: rgba(0, 200, 255, 0.12);
   color: var(--c-cyan) !important;
   font-family: var(--font-display, 'Clash Display', sans-serif);
-  font-size: 0.98rem;
+  font-size: 0.88rem;
   font-weight: 600;
-  padding: 0.65rem 1.4rem;
+  padding: 0.5rem 1.15rem;
   border-radius: 6px !important;
   text-decoration: none;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   border: 1px solid rgba(0, 200, 255, 0.4);
   box-shadow: 0 2px 10px rgba(0, 200, 255, 0.15);
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.45rem;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 
