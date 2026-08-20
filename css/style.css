@@ -595,15 +595,26 @@ li.theme-toggle-item { display: flex; align-items: center; }
   .hero-subtitle { font-size: 0.95rem !important; line-height: 1.5 !important; max-width: 100% !important; }
 }
 
+.hero-container {
+  position: relative;
+  z-index: 2;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: var(--sp-xl) var(--sp-md);
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: var(--sp-2xl);
+  align-items: center;
+}
+
 .hero-title {
-  font-size: var(--fs-4xl);
+  font-size: clamp(2.35rem, 1.8rem + 2.2vw, 3.65rem);
   font-weight: var(--fw-extrabold);
   color: var(--c-heading);
-  line-height: var(--lh-tight);
+  line-height: 1.14;
   margin-bottom: var(--sp-md);
   letter-spacing: -0.025em;
-  max-width: 100%;
-  text-wrap: balance;
+  max-width: 640px;
 }
 .hero-accent {
   background: linear-gradient(135deg, var(--c-cyan) 0%, var(--c-green) 100%);
@@ -618,11 +629,11 @@ li.theme-toggle-item { display: flex; align-items: center; }
   background-clip: text;
 }
 .hero-subtitle {
-  font-size: var(--fs-md);
+  font-size: 1.15rem;
   color: var(--c-text);
-  line-height: var(--lh-normal);
+  line-height: 1.6;
   margin-bottom: var(--sp-lg);
-  max-width: 520px;
+  max-width: 540px;
 }
 .hero-actions {
   display: flex;
@@ -652,16 +663,22 @@ li.theme-toggle-item { display: flex; align-items: center; }
 .hero-visual { position: relative; display: flex; justify-content: center; align-items: center; }
 .hero-image-wrapper {
   position: relative;
-  width: 100%; max-width: 480px; aspect-ratio: 1;
-  display: flex; justify-content: center; align-items: center;
+  width: 100%;
+  max-width: 580px;
+  aspect-ratio: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .hero-glow {
   position: absolute;
-  width: 320px; height: 320px;
-  background: radial-gradient(circle, rgba(0,200,255,0.18) 0%, rgba(0,255,157,0.08) 50%, transparent 70%);
+  width: 520px;
+  height: 520px;
+  background: radial-gradient(circle, rgba(0,200,255,0.28) 0%, rgba(0,255,157,0.12) 50%, transparent 72%);
   border-radius: 50%;
-  filter: blur(50px);
+  filter: blur(65px);
   animation: glow-pulse 5s ease-in-out infinite alternate;
+  pointer-events: none;
 }
 @keyframes glow-pulse {
   0%   { transform: scale(1); opacity: 0.5; }
@@ -1916,28 +1933,30 @@ li.theme-toggle-item { display: flex; align-items: center; }
    enmarcada por un borde de gradiente con doble glow. */
 .hero-visual-img-wrap {
   width: 100%;
-  max-width: 380px;
+  max-width: 560px;
   animation: float 6s ease-in-out infinite;
   display: flex;
+  justify-content: center;
+  align-items: center;
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
 }
 .hero-visual-img {
   width: 100%;
   height: auto;
-  object-fit: cover;
-  transition: transform var(--t-slow) var(--ease-out), opacity 0.35s ease;
-  opacity: 0.92;
-  -webkit-mask-image:
-    linear-gradient(to bottom, #000 55%, rgba(0,0,0,0.35) 85%, transparent 100%),
-    linear-gradient(to right, rgba(0,0,0,0.35) 0%, #000 15%, #000 85%, rgba(0,0,0,0.35) 100%);
-  -webkit-mask-composite: source-in;
-  mask-image:
-    linear-gradient(to bottom, #000 55%, rgba(0,0,0,0.35) 85%, transparent 100%),
-    linear-gradient(to right, rgba(0,0,0,0.35) 0%, #000 15%, #000 85%, rgba(0,0,0,0.35) 100%);
-  mask-composite: intersect;
+  object-fit: contain;
+  transition: transform var(--t-slow) var(--ease-out), opacity 0.35s ease, filter 0.35s ease;
+  opacity: 0.98;
+  filter: drop-shadow(0 0 35px rgba(0, 200, 255, 0.45)) drop-shadow(0 0 70px rgba(0, 255, 157, 0.25));
+  -webkit-mask-image: radial-gradient(ellipse 75% 75% at 50% 50%, #000 50%, rgba(0,0,0,0.6) 78%, transparent 100%);
+  mask-image: radial-gradient(ellipse 75% 75% at 50% 50%, #000 50%, rgba(0,0,0,0.6) 78%, transparent 100%);
 }
-.hero-visual-img-wrap:hover .hero-visual-img { opacity: 1; }
 .hero-visual-img-wrap:hover .hero-visual-img {
-  transform: scale(1.05);
+  opacity: 1;
+  transform: scale(1.04);
+  filter: drop-shadow(0 0 45px rgba(0, 200, 255, 0.6)) drop-shadow(0 0 85px rgba(0, 255, 157, 0.35));
 }
 
 /* DNA Divider */
