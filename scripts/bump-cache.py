@@ -29,7 +29,7 @@ import re
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-ASSET_RE = re.compile(r'(?P<attr>href|src)="(?P<path>[^"?#]+\.(?:css|js))(?:\?v=[^"#]*)?"')
+ASSET_RE = re.compile(r'(?P<attr>href|src)="(?P<path>[^"?#]+\.(?:css|js|webp|png|jpg|jpeg|svg))(?:\?v=[^"#]*)?"')
 
 _hashes: dict[pathlib.Path, str] = {}
 
