@@ -333,7 +333,7 @@ h1, h2, h3, h4, h5, h6 {
   justify-content: space-between;
 }
 .nav-logo { display: flex; align-items: center; gap: 0.75rem; z-index: 10; }
-.nav-logo-img { height: 90px; max-height: 95px; width: auto; object-fit: contain; filter: drop-shadow(0 2px 8px rgba(0,200,255,0.2)); }
+.nav-logo-img { height: 108px; max-height: 112px; width: auto; object-fit: contain; filter: drop-shadow(0 2px 8px rgba(0,200,255,0.2)); }
 /* El logo es trazo blanco/azul muy pálido sobre transparente: invisible en fondo claro.
    invert+hue-rotate lo vuelve azul marino oscuro conservando el tono, sin necesitar
    un segundo archivo de logo. */
@@ -1513,7 +1513,8 @@ li.theme-toggle-item { display: flex; align-items: center; }
 }
 
 .subpage-logo-img {
-  height: 64px;
+  height: 84px;
+  max-height: 88px;
   width: auto;
   object-fit: contain;
   filter: drop-shadow(0 2px 12px rgba(0, 200, 255, 0.35));
@@ -1757,7 +1758,7 @@ li.theme-toggle-item { display: flex; align-items: center; }
   .whatsapp-fab    { width: 52px; height: 52px; bottom: var(--sp-sm); right: var(--sp-sm); }
   .whatsapp-fab svg { width: 24px; height: 24px; }
   .hero-scroll-indicator { display: none; }
-  .nav-logo-img    { height: 72px; max-height: 75px; max-width: calc(100vw - 90px); width: auto; object-fit: contain; }
+  .nav-logo-img    { height: 86px; max-height: 90px; max-width: calc(100vw - 90px); width: auto; object-fit: contain; }
   .hero-orb-1 { width: 200px; height: 200px; }
   .hero-orb-2 { width: 140px; height: 140px; }
   .hero-orb-3 { width: 100px; height: 100px; }
@@ -1768,7 +1769,7 @@ li.theme-toggle-item { display: flex; align-items: center; }
   .subpage-navbar { padding: 0.6rem 0; }
   .subpage-nav-container { padding: 0 1rem; }
   .subpage-logo-tagline { display: none; }
-  .subpage-logo-img { height: 56px; }
+  .subpage-logo-img { height: 70px; max-height: 74px; }
   .subpage-nav-container .theme-toggle {
     display: inline-flex !important;
     width: 44px;
@@ -1896,7 +1897,7 @@ li.theme-toggle-item { display: flex; align-items: center; }
 }
 
 @media (max-width: 1024px) and (min-width: 769px) {
-  .nav-logo-img { height: 82px; max-height: 85px; }
+  .nav-logo-img { height: 96px; max-height: 100px; }
 }
 
 /* ── NEW BIOLUMINISCENT REDESIGN CLASSES ── */
