@@ -243,13 +243,14 @@
     }
 
     .rife-sim-canvas-wrap {
-      background: #000;
-      border: 1px solid rgba(0, 200, 255, 0.25);
-      border-radius: 4px;
-      height: 140px;
+      background: #010814;
+      border: 1px solid rgba(0, 200, 255, 0.35);
+      border-radius: 6px;
+      height: 175px;
       position: relative;
       margin-bottom: 1.25rem;
       overflow: hidden;
+      box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 200, 255, 0.15);
     }
 
     #rife-wave-canvas {
@@ -262,7 +263,6 @@
       display: flex;
       flex-wrap: wrap;
       gap: 0.5rem;
-      margin-top: 1rem;
     }
 
     .rife-preset-btn {
@@ -270,15 +270,46 @@
       border: 1px solid var(--c-border);
       color: var(--c-text);
       font-size: 0.8rem;
-      padding: 0.4rem 0.85rem;
+      padding: 0.45rem 0.9rem;
       border-radius: 4px;
       cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-weight: 500;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .rife-preset-btn::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--c-border);
       transition: all 0.2s;
     }
+
+    .rife-preset-btn[data-freq="60"]::before { background: #00E5FF; }
+    .rife-preset-btn[data-freq="728"]::before { background: #00FF9D; }
+    .rife-preset-btn[data-freq="2008"]::before { background: #FFC700; }
+    .rife-preset-btn[data-freq="5000"]::before { background: #E040FB; }
 
     .rife-preset-btn:hover {
       border-color: var(--c-cyan);
       color: var(--c-heading);
+      transform: translateY(-1px);
+    }
+
+    .rife-preset-btn.active {
+      background: rgba(0, 200, 255, 0.18);
+      border-color: var(--c-cyan);
+      color: var(--c-heading);
+      font-weight: 700;
+      box-shadow: 0 0 14px rgba(0, 200, 255, 0.25);
+    }
+
+    .rife-preset-btn.active::before {
+      box-shadow: 0 0 8px currentColor;
     }
 
     /* Comparison Matrix */
@@ -703,22 +734,27 @@
 
               <!-- Simulador de Ondas Interactivo -->
               <div class="rife-sim-box">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                  <strong style="color: var(--c-cyan); font-size: 0.9rem; text-transform: uppercase;">Simulador de Resonancia Bioelectromagnética</strong>
-                  <span id="sim-freq-display" style="font-family: var(--font-display); color: var(--c-green); font-size: 1.1rem; font-weight: 700;">728 Hz · Resonancia Activa</span>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
+                  <strong style="color: var(--c-cyan); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em;">Oscilógrafo Bio-Resonante · Tubo Phanotron</strong>
+                  <span id="sim-freq-display" style="font-family: var(--font-display); color: #00FF9D; font-size: 1.05rem; font-weight: 700; text-shadow: 0 0 10px rgba(0,255,157,0.4);">728 Hz · Armónico Anti-Inflamatorio</span>
                 </div>
                 
                 <div class="rife-sim-canvas-wrap">
                   <canvas id="rife-wave-canvas"></canvas>
                 </div>
 
-                <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
-                  <span style="font-size: 0.8rem; color: var(--c-muted);">Selecciona un Armónico:</span>
-                  <div class="rife-preset-btns">
-                    <button class="rife-preset-btn" onclick="setWaveFreq(60, 'Frecuencia de Tierra (Schumann)')">60 Hz (Schumann)</button>
-                    <button class="rife-preset-btn" onclick="setWaveFreq(728, 'Armónico Anti-Inflamatorio')">728 Hz (Celular)</button>
-                    <button class="rife-preset-btn" onclick="setWaveFreq(2008, 'Bio-Equilibrio Mitocondrial')">2,008 Hz (Energía)</button>
-                    <button class="rife-preset-btn" onclick="setWaveFreq(5000, 'Armonización de Terreno')">5,000 Hz (Drenaje)</button>
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
+                  <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+                    <span style="font-size: 0.8rem; color: var(--c-muted); font-weight: 600;">Selecciona un Armónico:</span>
+                    <div class="rife-preset-btns">
+                      <button type="button" class="rife-preset-btn" data-freq="60" onclick="setWaveFreq(60, this)">60 Hz (Schumann)</button>
+                      <button type="button" class="rife-preset-btn active" data-freq="728" onclick="setWaveFreq(728, this)">728 Hz (Celular M.O.R.)</button>
+                      <button type="button" class="rife-preset-btn" data-freq="2008" onclick="setWaveFreq(2008, this)">2,008 Hz (Mitocondria)</button>
+                      <button type="button" class="rife-preset-btn" data-freq="5000" onclick="setWaveFreq(5000, this)">5,000 Hz (Plasma Drenaje)</button>
+                    </div>
+                  </div>
+                  <div id="sim-freq-mode" style="font-family: monospace; font-size: 0.75rem; color: var(--c-cyan); background: rgba(0, 200, 255, 0.08); border: 1px solid rgba(0, 200, 255, 0.25); padding: 0.3rem 0.6rem; border-radius: 4px;">
+                    SCAN: 728 Hz · PULSO BIOLÓGICO
                   </div>
                 </div>
               </div>
@@ -930,17 +966,102 @@
       }
     }
 
-    // Canvas Waveform Animation
+    // Canvas Waveform Animation Engine (Ultra-Expressive Multi-Harmonic)
     let canvas, ctx, animationFrameId;
-    let waveFreq = 728;
+    
+    // Preset Configuration Matrix
+    const RIFE_HARMONICS = {
+      60: {
+        title: "60 Hz · Resonancia Telúrica Schumann",
+        mode: "SCAN: 60 Hz · ONDA ALFA/THETA & CAMPO TERRESTRE",
+        baseFreq: 0.012,
+        amplitude: 50,
+        speed: 0.02,
+        color: "#00E5FF",
+        glowColor: "rgba(0, 229, 255, 0.8)",
+        harmonics: [{ m: 1, a: 1.0 }, { m: 2, a: 0.15 }],
+        envelopeFreq: 0,
+        waveType: "schumann",
+        carrierAmp: 6,
+        carrierFreq: 0.04
+      },
+      728: {
+        title: "728 Hz · Tasa M.O.R. Anti-Inflamatoria",
+        mode: "SCAN: 728 Hz · DESPOLARIZACIÓN CELULAR M.O.R.",
+        baseFreq: 0.048,
+        amplitude: 38,
+        speed: 0.045,
+        color: "#00FF9D",
+        glowColor: "rgba(0, 255, 157, 0.85)",
+        harmonics: [{ m: 1, a: 0.85 }, { m: 3, a: 0.28 }, { m: 5, a: 0.1 }],
+        envelopeFreq: 0,
+        waveType: "mor-cell",
+        carrierAmp: 10,
+        carrierFreq: 0.12
+      },
+      2008: {
+        title: "2,008 Hz · Bio-Equilibrio Mitocondrial",
+        mode: "SCAN: 2,008 Hz · IMPULSO ATP & CADENA DE ELECTRONES",
+        baseFreq: 0.115,
+        amplitude: 32,
+        speed: 0.09,
+        color: "#FFC700",
+        glowColor: "rgba(255, 199, 0, 0.85)",
+        harmonics: [{ m: 1, a: 0.75 }, { m: 2, a: 0.35 }, { m: 4, a: 0.2 }, { m: 8, a: 0.1 }],
+        envelopeFreq: 0,
+        waveType: "mitochondrial",
+        carrierAmp: 14,
+        carrierFreq: 0.22
+      },
+      5000: {
+        title: "5,000 Hz · Armonización de Terreno & Drenaje",
+        mode: "SCAN: 5,000 Hz · HETERODINO DE PLASMA RF & NODOS",
+        baseFreq: 0.28,
+        amplitude: 44,
+        speed: 0.14,
+        color: "#E040FB",
+        glowColor: "rgba(224, 64, 251, 0.9)",
+        harmonics: [{ m: 1, a: 1.0 }, { m: 3, a: 0.3 }],
+        envelopeFreq: 0.016,
+        waveType: "plasma-envelope",
+        carrierAmp: 22,
+        carrierFreq: 0.45
+      }
+    };
+
+    let activeFreq = 728;
     let waveStep = 0;
+
+    // Interpolated Animation State for Smooth Metamorphosis
+    let animState = {
+      baseFreq: 0.048,
+      amplitude: 38,
+      speed: 0.045,
+      carrierAmp: 10,
+      carrierFreq: 0.12,
+      envelopeFreq: 0,
+      color: "#00FF9D",
+      glowColor: "rgba(0, 255, 157, 0.85)",
+      r: 0, g: 255, b: 157
+    };
+
+    // Color conversion helper
+    function hexToRgb(hex) {
+      const bigint = parseInt(hex.replace("#", ""), 16);
+      return {
+        r: (bigint >> 16) & 255,
+        g: (bigint >> 8) & 255,
+        b: bigint & 255
+      };
+    }
 
     function initWaveCanvas() {
       canvas = document.getElementById("rife-wave-canvas");
       if (!canvas) return;
       ctx = canvas.getContext("2d");
-      canvas.width = canvas.parentElement.clientWidth;
-      canvas.height = canvas.parentElement.clientHeight;
+      const wrap = canvas.parentElement;
+      canvas.width = wrap.clientWidth;
+      canvas.height = wrap.clientHeight;
 
       if (!animationFrameId) {
         drawWave();
@@ -955,10 +1076,29 @@
       const h = canvas.height;
       const midY = h / 2;
 
-      // Draw Grid Lines
-      ctx.strokeStyle = "rgba(0, 200, 255, 0.08)";
+      // Lerp transition towards active preset parameters
+      const target = RIFE_HARMONICS[activeFreq] || RIFE_HARMONICS[728];
+      const targetRgb = hexToRgb(target.color);
+      const lerpFactor = 0.08;
+
+      animState.baseFreq += (target.baseFreq - animState.baseFreq) * lerpFactor;
+      animState.amplitude += (target.amplitude - animState.amplitude) * lerpFactor;
+      animState.speed += (target.speed - animState.speed) * lerpFactor;
+      animState.carrierAmp += (target.carrierAmp - animState.carrierAmp) * lerpFactor;
+      animState.carrierFreq += (target.carrierFreq - animState.carrierFreq) * lerpFactor;
+      animState.envelopeFreq += (target.envelopeFreq - animState.envelopeFreq) * lerpFactor;
+      animState.r += (targetRgb.r - animState.r) * lerpFactor;
+      animState.g += (targetRgb.g - animState.g) * lerpFactor;
+      animState.b += (targetRgb.b - animState.b) * lerpFactor;
+
+      const curColor = `rgb(${Math.round(animState.r)}, ${Math.round(animState.g)}, ${Math.round(animState.b)})`;
+      const curGlow = `rgba(${Math.round(animState.r)}, ${Math.round(animState.g)}, ${Math.round(animState.b)}, 0.8)`;
+      const curDim = `rgba(${Math.round(animState.r)}, ${Math.round(animState.g)}, ${Math.round(animState.b)}, 0.15)`;
+
+      // 1. Draw Phosphor Oscilloscope Grid
+      ctx.strokeStyle = "rgba(0, 200, 255, 0.06)";
       ctx.lineWidth = 1;
-      for (let x = 0; x < w; x += 30) {
+      for (let x = 0; x < w; x += 35) {
         ctx.beginPath();
         ctx.moveTo(x, 0);
         ctx.lineTo(x, h);
@@ -971,43 +1111,130 @@
         ctx.stroke();
       }
 
-      // Draw RF Carrier Wave (Fondo)
-      ctx.strokeStyle = "rgba(0, 200, 255, 0.25)";
+      // Center Reference Axes (Dotted Crosshairs)
+      ctx.strokeStyle = "rgba(0, 220, 255, 0.22)";
+      ctx.setLineDash([3, 3]);
+      ctx.beginPath();
+      ctx.moveTo(0, midY);
+      ctx.lineTo(w, midY);
+      ctx.moveTo(w / 2, 0);
+      ctx.lineTo(w / 2, h);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // 2. Draw Phanotron RF Background Carrier (Discharge Plasma Wave)
+      ctx.strokeStyle = "rgba(0, 180, 255, 0.18)";
       ctx.lineWidth = 1;
       ctx.beginPath();
-      for (let x = 0; x < w; x++) {
-        const y = midY + Math.sin(x * 0.08 + waveStep * 2) * 15;
-        if (x === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
+      for (let x = 0; x < w; x += 2) {
+        const rf = Math.sin(x * animState.carrierFreq + waveStep * 2.5) * animState.carrierAmp;
+        const cy = midY + rf;
+        if (x === 0) ctx.moveTo(x, cy);
+        else ctx.lineTo(x, cy);
       }
       ctx.stroke();
 
-      // Draw Harmonic Bioactive Wave (Principal Resonante)
-      ctx.strokeStyle = "#00FF9D";
-      ctx.lineWidth = 2.5;
-      ctx.shadowBlur = 12;
-      ctx.shadowColor = "#00FF9D";
+      // 3. Draw Main Bio-Resonant Waveform with Frequency-Specific Synthesis
+      ctx.save();
+      ctx.strokeStyle = curColor;
+      ctx.lineWidth = target.waveType === "plasma-envelope" ? 1.8 : 2.6;
+      ctx.shadowColor = curGlow;
+      ctx.shadowBlur = target.waveType === "plasma-envelope" ? 16 : 12;
       ctx.beginPath();
-      const freqScale = Math.min(Math.max(waveFreq / 500, 0.015), 0.06);
+
       for (let x = 0; x < w; x++) {
-        const carrier = Math.sin(x * 0.02 + waveStep) * 20;
-        const harmonic = Math.sin(x * freqScale + waveStep * 1.5) * 35;
-        const y = midY + (carrier * 0.3) + harmonic;
+        let yOffset = 0;
+
+        if (target.waveType === "schumann") {
+          // 60 Hz: Wide, deep harmonic wave with sub-harmonic breathing
+          const main = Math.sin(x * animState.baseFreq + waveStep * 0.7) * animState.amplitude;
+          const sub = Math.sin(x * animState.baseFreq * 2 + waveStep * 1.4) * (animState.amplitude * 0.12);
+          const breath = Math.sin(waveStep * 0.4) * 4;
+          yOffset = main + sub + breath;
+        } else if (target.waveType === "mor-cell") {
+          // 728 Hz: Cellular MOR with odd harmonics creating metabolic tension
+          const h1 = Math.sin(x * animState.baseFreq + waveStep) * animState.amplitude;
+          const h3 = Math.sin(x * animState.baseFreq * 3 + waveStep * 1.8) * (animState.amplitude * 0.28);
+          const h5 = Math.sin(x * animState.baseFreq * 5 + waveStep * 2.5) * (animState.amplitude * 0.1);
+          yOffset = h1 + h3 + h5;
+        } else if (target.waveType === "mitochondrial") {
+          // 2008 Hz: Sharp pulse spikes representing rapid ATP electron pumping
+          const phase = x * animState.baseFreq + waveStep * 1.6;
+          const sine = Math.sin(phase);
+          const spike = Math.sign(sine) * Math.pow(Math.abs(sine), 0.7) * animState.amplitude;
+          const micro = Math.sin(phase * 4 + waveStep * 3) * (animState.amplitude * 0.18);
+          yOffset = spike + micro;
+        } else if (target.waveType === "plasma-envelope") {
+          // 5000 Hz: Ultra-dense plasma packet modulated by a travelling spatial envelope (standing nodes)
+          const envelope = Math.abs(Math.sin(x * animState.envelopeFreq + waveStep * 0.5));
+          const plasma = Math.sin(x * animState.baseFreq + waveStep * 2.2);
+          yOffset = plasma * (animState.amplitude * envelope + 5);
+        } else {
+          yOffset = Math.sin(x * animState.baseFreq + waveStep) * animState.amplitude;
+        }
+
+        const y = midY + yOffset;
         if (x === 0) ctx.moveTo(x, y);
         else ctx.lineTo(x, y);
       }
       ctx.stroke();
-      ctx.shadowBlur = 0;
 
-      waveStep += 0.04;
+      // Ghosting Trace for Plasma Mode
+      if (target.waveType === "plasma-envelope") {
+        ctx.strokeStyle = "rgba(100, 220, 255, 0.4)";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        for (let x = 0; x < w; x += 2) {
+          const envelope = Math.abs(Math.sin(x * animState.envelopeFreq + waveStep * 0.5 + Math.PI / 4));
+          const plasma = Math.sin(x * animState.baseFreq * 0.98 + waveStep * 2.0);
+          const y = midY + plasma * (animState.amplitude * 0.7 * envelope);
+          if (x === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+      }
+
+      ctx.restore();
+
+      // 4. Oscilloscope HUD Measurements Overlay (Watermark & Status)
+      ctx.font = "10px monospace";
+      ctx.fillStyle = "rgba(0, 229, 255, 0.55)";
+      ctx.fillText(`Vpp: ${(animState.amplitude * 0.42).toFixed(1)}V`, 14, 20);
+      ctx.fillText(`SWEEP: ${(animState.speed * 100).toFixed(0)} ms/div`, 14, 34);
+
+      ctx.textAlign = "right";
+      ctx.fillStyle = curDim;
+      ctx.fillText(`HARMONIC: ${activeFreq} Hz`, w - 14, 20);
+      ctx.fillStyle = "rgba(0, 255, 157, 0.45)";
+      ctx.fillText("PHANOTRON TUBE: ONLINE", w - 14, 34);
+      ctx.textAlign = "left";
+
+      waveStep += animState.speed;
       animationFrameId = requestAnimationFrame(drawWave);
     }
 
-    function setWaveFreq(f, desc) {
-      waveFreq = f;
-      const el = document.getElementById("sim-freq-display");
-      if (el) {
-        el.textContent = f + " Hz · " + desc;
+    function setWaveFreq(f, btn) {
+      activeFreq = f;
+      const preset = RIFE_HARMONICS[f];
+      
+      // Update displays
+      const disp = document.getElementById("sim-freq-display");
+      if (disp && preset) {
+        disp.textContent = preset.title;
+        disp.style.color = preset.color;
+        disp.style.textShadow = `0 0 10px ${preset.glowColor}`;
+      }
+
+      const modeEl = document.getElementById("sim-freq-mode");
+      if (modeEl && preset) {
+        modeEl.textContent = preset.mode;
+        modeEl.style.borderColor = preset.color;
+      }
+
+      // Update button active states
+      document.querySelectorAll(".rife-preset-btn").forEach(b => b.classList.remove("active"));
+      if (btn) {
+        btn.classList.add("active");
       }
     }
 
@@ -1015,6 +1242,13 @@
       if (canvas && canvas.parentElement) {
         canvas.width = canvas.parentElement.clientWidth;
         canvas.height = canvas.parentElement.clientHeight;
+      }
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+      const resTab = document.getElementById("tab-resonancia");
+      if (resTab && window.getComputedStyle(resTab).display !== "none") {
+        initWaveCanvas();
       }
     });
   </script>
