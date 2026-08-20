@@ -339,7 +339,7 @@ h1, h2, h3, h4, h5, h6 {
    un segundo archivo de logo. */
 [data-theme="light"] .nav-logo-img,
 [data-theme="light"] .subpage-logo-img {
-  filter: invert(1) hue-rotate(180deg) brightness(0.85);
+  filter: brightness(0) saturate(100%) invert(32%) sepia(85%) saturate(3000%) hue-rotate(220deg) brightness(1.08) contrast(1.02);
 }
 .nav-menu { display: flex; align-items: center; gap: 0.25rem; }
 
