@@ -1944,23 +1944,24 @@ li.theme-toggle-item { display: flex; align-items: center; }
 /* DNA Divider */
 .dna-divider {
   position: relative;
-  height: 160px;
+  min-height: 230px;
   display: flex;
   align-items: center;
   justify-content: center;
   background-image: url('../assets/img/dna-bg.webp');
   background-size: cover;
-  background-position: center;
-  background-attachment: scroll;
+  background-position: center center;
+  background-attachment: fixed;
   overflow: hidden;
   border-top: 1px solid var(--c-border);
   border-bottom: 1px solid var(--c-border);
+  padding: 4.5rem var(--sp-md);
 }
 .dna-divider::before {
   content: '';
   position: absolute; inset: 0;
-  background: rgba(2, 12, 27, 0.78);
-  backdrop-filter: blur(2px);
+  background: radial-gradient(circle at center, rgba(2, 12, 27, 0.55) 0%, rgba(2, 12, 27, 0.82) 100%);
+  backdrop-filter: blur(1px);
   z-index: 1;
 }
 .dna-divider-content {
@@ -1968,19 +1969,19 @@ li.theme-toggle-item { display: flex; align-items: center; }
   z-index: 2;
   text-align: center;
   padding: 0 var(--sp-md);
+  max-width: 950px;
 }
 .dna-divider-content h2 {
-  font-size: var(--fs-xl);
+  font-size: clamp(1.45rem, 3.2vw, 2.25rem);
   font-weight: var(--fw-semibold);
   font-style: italic;
   letter-spacing: 0.02em;
-  /* Fijo, no var(--c-cyan/--c-green): esta banda es siempre oscura, y esos
-     tokens se oscurecen en modo claro (quedarían oscuro-sobre-oscuro). */
-  background: linear-gradient(90deg, #FFFFFF 20%, #00C8FF 50%, #00FF9D 80%);
+  line-height: 1.35;
+  background: linear-gradient(90deg, #FFFFFF 15%, #00C8FF 50%, #00FF9D 85%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  text-shadow: 0 2px 10px rgba(0, 200, 255, 0.15);
+  text-shadow: 0 4px 20px rgba(0, 200, 255, 0.35);
 }
 
 /* Nosotros Split Section */
@@ -2133,10 +2134,12 @@ li.theme-toggle-item { display: flex; align-items: center; }
 }
 @media (max-width: 768px) {
   .dna-divider {
-    height: 120px;
+    min-height: 160px;
+    height: auto;
+    padding: 3rem 1.25rem;
   }
   .dna-divider-content h2 {
-    font-size: var(--fs-md);
+    font-size: 1.25rem;
   }
   .cta-banner h2 {
     font-size: var(--fs-2xl);
