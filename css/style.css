@@ -2622,13 +2622,13 @@ li.theme-toggle-item { display: flex; align-items: center; }
 /* ── Sticky CTA (WhatsApp) ── */
 .sticky-cta {
   position: fixed;
-  bottom: 2rem;
-  right: 2rem;
-  z-index: 900;
-  opacity: 0;
-  transform: translateY(20px);
+  bottom: 1.75rem;
+  right: 1.75rem;
+  z-index: 9999;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
   transition: opacity 0.3s ease, transform 0.3s ease;
-  pointer-events: none;
 }
 
 .sticky-cta.visible {
