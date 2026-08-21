@@ -6,7 +6,7 @@
  * 2. Matriz de Micro-Chips Desacoplados (0 a N síntomas independientes por dimensión)
  * 3. Branching Dinámico Puro (tamizajes STOP-BANG e Inflamación sin mutación de estado en backtrack)
  * 4. Ponderación Multidimensional Ortogonal y Modulación por Pico Crítico
- * 5. Persistencia Local con TTL (localStorage) y Blindaje Normativo Preventivo (LGS / NOM-051 / ISO 13485)
+ * 5. Blindaje Normativo Preventivo (LGS / NOM-051 / ISO 13485)
  */
 
 (function(root, factory) {
@@ -79,7 +79,7 @@
       moderateGlobal: 20,
       moderateMaxAxis: 35
     },
-    storageKey: 'vitametric_test_state_v2',
+    storageKey: 'vitametric_test_state_v3',
     storageTtlMs: 24 * 60 * 60 * 1000 // 24 horas
   };
 
@@ -440,8 +440,6 @@
           weights: combinedWeights
         };
       }
-
-      this.saveToStorage();
     }
 
     canGoNext() {
@@ -455,7 +453,6 @@
       const total = this.getQuestionsCount();
       if (this.currentStep < total - 1) {
         this.currentStep++;
-        this.saveToStorage();
         return true;
       }
       return false;
@@ -464,7 +461,6 @@
     prev() {
       if (this.currentStep > 0) {
         this.currentStep--;
-        this.saveToStorage();
         return true;
       }
       return false;
@@ -476,17 +472,12 @@
     }
 
     /**
-     * Progreso real basado en dimensiones activas respondidas (empieza en 0% antes de responder)
+     * Progreso determinista según la pantalla actual (empieza en 0% en la Dimensión 1)
      */
     getProgressPercentage() {
-      const active = this.getActiveQuestions();
-      const total = active.length;
+      const total = this.getQuestionsCount();
       if (total === 0) return 0;
-      const answered = active.filter(d => {
-        const a = this.answers[d.id];
-        return a !== undefined && (a.isOptimal || (a.selectedItemIds && a.selectedItemIds.length > 0));
-      }).length;
-      return Math.round((answered / total) * 100);
+      return Math.round((this.currentStep / total) * 100);
     }
 
     /**
@@ -632,52 +623,6 @@
       ];
 
       return `https://wa.me/${phone}?text=${encodeURIComponent(lines.join('\n'))}`;
-    }
-
-    /**
-     * Persistencia Resiliente en localStorage
-     */
-    saveToStorage() {
-      try {
-        if (typeof window !== 'undefined' && window.localStorage) {
-          const payload = {
-            currentStep: this.currentStep,
-            answers: this.answers,
-            timestamp: Date.now()
-          };
-          window.localStorage.setItem(SCORING_CONFIG.storageKey, JSON.stringify(payload));
-        }
-      } catch (e) {
-        // Ignorar excepciones en entornos privados/restringidos
-      }
-    }
-
-    loadFromStorage() {
-      try {
-        if (typeof window !== 'undefined' && window.localStorage) {
-          const raw = window.localStorage.getItem(SCORING_CONFIG.storageKey);
-          if (!raw) return false;
-          const data = JSON.parse(raw);
-          if (Date.now() - data.timestamp < SCORING_CONFIG.storageTtlMs) {
-            this.currentStep = data.currentStep || 0;
-            this.answers = data.answers || {};
-            return true;
-          } else {
-            this.clearStorage();
-          }
-        }
-      } catch (e) {
-        // Ignorar corrupción de storage
-      }
-      return false;
-    }
-
-    clearStorage() {
-      try {
-        if (typeof window !== 'undefined' && window.localStorage) {
-          window.localStorage.removeItem(SCORING_CONFIG.storageKey);
-        }
-      } catch (e) {}
     }
   }
 

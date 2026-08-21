@@ -1,8 +1,7 @@
 /**
  * Vitametric — Interfaz de Usuario y Telemetría del Test Celular
  * Controlador visual del wizard con matriz de micro-chips ortogonales,
- * navegación manual explícita por el usuario, accesibilidad ARIA,
- * persistencia resiliente y telemetría bioeléctrica.
+ * navegación manual obligatoria, progreso determinista e inicio limpio.
  */
 
 (function() {
@@ -16,11 +15,18 @@
       return;
     }
 
+    // Inicializar motor siempre fresco y limpio al cargar la página
     const engine = window.VitametricTestEngine.createInstance();
     const axes = window.VitametricTestEngine.AXES;
 
-    // Intentar restaurar sesión previa si existe
-    engine.loadFromStorage();
+    // Limpiar residuos de storage previos
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        window.localStorage.removeItem('vitametric_test_state');
+        window.localStorage.removeItem('vitametric_test_state_v2');
+        window.localStorage.removeItem('vitametric_test_state_v3');
+      }
+    } catch (e) {}
 
     // Elementos DOM del Wizard
     const wizardBox = document.getElementById('test-wizard-container');
@@ -94,7 +100,7 @@
         qSubtitle.textContent = dim.subtitle || '';
       }
 
-      // Estado guardado para esta dimensión (si el usuario ya había seleccionado algo antes)
+      // Estado guardado para esta dimensión (si el usuario ya había seleccionado algo antes en este intento)
       const existingAnswer = engine.answers[dim.id];
       let selectedIds = existingAnswer ? [...(existingAnswer.selectedItemIds || [])] : [];
       let isOptimalSelected = existingAnswer ? !!existingAnswer.isOptimal : false;
@@ -196,7 +202,6 @@
               engine.answerDimension(dim.id, selectedIds, false);
             } else {
               delete engine.answers[dim.id];
-              engine.saveToStorage();
             }
             renderCurrentQuestion();
           };
@@ -266,7 +271,6 @@
             if (isOptimalSelected) {
               isOptimalSelected = false;
               delete engine.answers[dim.id];
-              engine.saveToStorage();
             } else {
               isOptimalSelected = true;
               selectedIds = [];
@@ -435,7 +439,6 @@
     // Reiniciar Test
     window.resetTest = function() {
       engine.reset();
-      engine.clearStorage();
       if (resultsBox) resultsBox.style.display = 'none';
       if (wizardBox) wizardBox.style.display = 'block';
       renderCurrentQuestion();
