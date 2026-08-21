@@ -51,13 +51,9 @@
       nextBtn = document.createElement('button');
       nextBtn.id = 'test-btn-next';
       nextBtn.type = 'button';
-      nextBtn.className = 'btn btn-primary';
-      nextBtn.style.cssText = 'padding: 0.6rem 1.5rem; font-size: 0.92rem; margin-left: auto; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-weight: 700; border-radius: 6px; transition: all 0.2s ease;';
+      nextBtn.className = 'btn btn-primary test-btn-continue';
       nextBtn.innerHTML = 'Continuar <span>→</span>';
       if (navContainer) {
-        navContainer.style.display = 'flex';
-        navContainer.style.justifyContent = 'space-between';
-        navContainer.style.alignItems = 'center';
         navContainer.appendChild(nextBtn);
       }
     }
@@ -373,9 +369,11 @@
       }
 
       // Scroll suave hacia los resultados
-      const testSection = document.getElementById('test-celular');
-      if (testSection) {
-        testSection.scrollIntoView({ behavior: 'smooth' });
+      const testCard = document.getElementById('test-card-wrapper') || document.getElementById('test-celular');
+      if (testCard) {
+        testCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     }
 

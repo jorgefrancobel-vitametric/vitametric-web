@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18397567827"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'AW-18397567827');
+  </script>
+  <meta charset="UTF-8">
+  <script>
+  (function () {
+    try {
+      var t = localStorage.getItem('vt-theme');
+      if (!t) t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+      if (t === 'light') document.documentElement.setAttribute('data-theme', 'light');
+    } catch (e) {}
+  })();
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test de Resiliencia Celular & Carga Fisiológica | Vitametric CDMX</title>
+  <meta name="description" content="Autoevaluación digital de salud celular y estrés fisiológico en 5 dimensiones biológicas. Detecta sobrecargas funcionales antes de que se manifiesten como disfunciones.">
+  <meta name="keywords" content="test celular, salud preventiva, estres fisiologico, ES-Complex, tono autonomico, ritmo circadiano, liquido intersticial, CDMX, Vitametric">
+  <meta name="author" content="Vitametric">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="Test de Resiliencia Celular & Carga Fisiológica | Vitametric">
+  <meta property="og:description" content="Evaluación de 5 dimensiones biológicas para detectar desequilibrios en fluido intersticial y tono autonómico. Gratuito y en 2 minutos.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://vitametric.com/test-celular.html">
+  <meta property="og:image" content="https://vitametric.com/assets/img/logo.webp">
+  <meta property="og:locale" content="es_MX">
+  <link rel="canonical" href="https://vitametric.com/test-celular.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preload" href="assets/fonts/clash-display-600.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/clash-display-700.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/style.css?v=4fc5b727">
+  
+  <style>
+    /* Estilos específicos para la experiencia dedicada del Test Celular */
+    .test-page-hero {
+      padding: calc(var(--nav-h) + 1.5rem) 0 2rem;
+      text-align: center;
+      background: radial-gradient(circle at 50% 10%, rgba(0, 200, 255, 0.09) 0%, transparent 60%);
+    }
+    .test-page-container {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+    .test-standalone-card {
+      background: var(--c-bg-card);
+      border: 1px solid var(--c-border);
+      border-radius: var(--radius-lg);
+      padding: 2rem 2.25rem;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 3rem;
+    }
+    .test-nav-header {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      padding: 0.75rem 1.5rem;
+      background: var(--c-bg-card);
+      border-bottom: 1px solid var(--c-border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(16px);
+      gap: 1rem;
+    }
+    .test-back-btn {
+      justify-self: start;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      color: var(--c-cyan);
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-decoration: none;
+      padding: 0.45rem 0.85rem;
+      border-radius: var(--radius-sm);
+      background: var(--c-cyan-soft);
+      transition: all 0.2s ease;
+      min-height: 40px;
+    }
+    .test-back-btn:hover {
+      background: rgba(0, 200, 255, 0.16);
+      transform: translateX(-2px);
+    }
+    .test-logo-link {
+      justify-self: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+    }
+    .test-logo-img {
+      height: 72px;
+      max-height: 78px;
+      width: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 8px rgba(0,200,255,0.2));
+      transition: transform 0.2s ease;
+    }
+    .test-logo-img:hover {
+      transform: scale(1.02);
+    }
+    [data-theme="light"] .test-logo-img {
+      filter: brightness(0) saturate(100%) invert(32%) sepia(85%) saturate(3000%) hue-rotate(220deg) brightness(1.08) contrast(1.02);
+    }
+    .test-nav-actions {
+      justify-self: end;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+    .test-trust-strip {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .test-trust-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--c-muted);
+      background: var(--c-bg-mid);
+      padding: 0.35rem 0.75rem;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--c-border-light);
+    }
+    .test-compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .test-actions-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 1.75rem;
+      border-top: 1px solid var(--c-border);
+      padding-top: 1.25rem;
+      flex-wrap: wrap;
+    }
+    .test-btn-continue {
+      padding: 0.75rem 1.75rem;
+      font-size: 0.95rem;
+      margin-left: auto;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-weight: 700;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+      min-height: 48px;
+    }
+    .test-btn-back {
+      padding: 0.6rem 1.2rem;
+      font-size: 0.88rem;
+      cursor: pointer;
+      min-height: 44px;
+    }
+    .btn-wa-results {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.3rem;
+      padding: 1rem 1.25rem;
+      font-size: 1.02rem;
+      text-align: center;
+      white-space: normal;
+      line-height: 1.35;
+      border-radius: 8px;
+      box-sizing: border-box;
+      max-width: 100%;
+    }
+    .btn-wa-results .btn-wa-title {
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.05rem;
+    }
+    .btn-wa-results .btn-wa-sub {
+      font-size: 0.82rem;
+      font-weight: 500;
+      opacity: 0.92;
+    }
+
+    @media (max-width: 640px) {
+      .test-nav-header {
+        padding: 0.6rem 0.85rem;
+      }
+      .test-logo-img {
+        height: 52px;
+        max-height: 56px;
+      }
+      .test-back-btn span {
+        display: none;
+      }
+      .test-back-btn {
+        padding: 0.45rem;
+        min-width: 38px;
+        min-height: 38px;
+        justify-content: center;
+      }
+      .test-page-hero {
+        padding: 4.5rem 0 1.25rem;
+      }
+      .test-standalone-card {
+        padding: 1.35rem 1rem;
+        border-radius: var(--radius-md);
+        margin-bottom: 2rem;
+      }
+      .test-compare-grid {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+      }
+      .test-actions-nav {
+        flex-direction: column-reverse;
+        gap: 0.75rem;
+      }
+      .test-actions-nav .test-btn-continue,
+      .test-actions-nav .test-btn-back {
+        width: 100%;
+        margin-left: 0;
+        text-align: center;
+        justify-content: center;
+      }
+      .test-trust-strip {
+        gap: 0.5rem;
+      }
+      .test-trust-chip {
+        font-size: 0.76rem;
+        padding: 0.25rem 0.55rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header Superior Minimalista y Rápido -->
+  <header class="test-nav-header">
+    <a href="index.html" class="test-back-btn" aria-label="Volver a la página principal de Vitametric">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      <span>Volver al Inicio</span>
+    </a>
+
+    <a href="index.html" class="test-logo-link" aria-label="Vitametric - Volver al Inicio">
+      <img src="assets/img/logo.webp?v=fc967146" alt="Vitametric Logo" class="test-logo-img">
+    </a>
+
+    <div class="test-nav-actions">
+      <button type="button" class="theme-toggle" aria-label="Cambiar a modo claro" aria-pressed="false" style="padding: 0.4rem; border-radius: 6px; background: var(--c-cyan-soft); border: 1px solid var(--c-border); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px;">
+        <svg class="theme-toggle-sun" viewBox="0 0 24 24" aria-hidden="true" width="18" height="18"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        <svg class="theme-toggle-moon" viewBox="0 0 24 24" aria-hidden="true" width="18" height="18"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="test-page-hero">
+      <div class="test-page-container">
+        <span class="section-tag" style="margin-bottom: 0.5rem; display: inline-block;">Evaluación Médico-Preventiva Digital</span>
+        <h1 style="font-size: clamp(1.6rem, 1.35rem + 1.2vw, 2.3rem); color: var(--c-heading); margin-bottom: 0.6rem; font-weight: 700; line-height: 1.2;">
+          Test de Resiliencia Celular & Carga Fisiológica
+        </h1>
+        <p style="font-size: clamp(0.88rem, 0.82rem + 0.3vw, 1.02rem); color: var(--c-muted); max-width: 620px; margin: 0 auto; line-height: 1.5;">
+          Autoevaluación de 5 dimensiones biológicas para detectar sobrecargas funcionales en fluido intersticial y balance neurovegetativo antes de que se manifiesten clínicamente.
+        </p>
+
+        <div class="test-trust-strip">
+          <span class="test-trust-chip">⏱️ 2 minutos</span>
+          <span class="test-trust-chip">🔬 100% No Invasivo</span>
+          <span class="test-trust-chip">📊 Telemetría Inmediata</span>
+          <span class="test-trust-chip">🔒 Confidencial</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="test-page-container">
+      <div class="test-standalone-card" id="test-card-wrapper">
+        
+        <!-- CONTENEDOR DEL WIZARD DEL TEST -->
+        <div id="test-wizard-container">
+          <!-- Header de Dimensión y Progreso -->
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.6rem;">
+            <div id="test-axis-badge" style="display: inline-flex; align-items: center; padding: 0.35rem 0.85rem; border-radius: 20px; font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; border: 1.5px solid var(--c-cyan); color: var(--c-cyan); background: rgba(0,200,255,0.08);">
+              🔬 Eje Clínico
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.85rem;">
+              <span id="test-step-label" style="font-size: 0.82rem; color: var(--c-muted); font-weight: 600;">Dimensión 1 de 5</span>
+              <span id="test-progress-pct" style="font-size: 0.82rem; color: var(--c-cyan); font-weight: 700;">0% completado</span>
+            </div>
+          </div>
+
+          <!-- Barra de Progreso Dinámica -->
+          <div style="width: 100%; height: 6px; background: var(--c-bg-mid); border-radius: 3px; overflow: hidden; margin-bottom: 1.75rem;">
+            <div id="test-progress-bar" style="width: 0%; height: 100%; background: linear-gradient(90deg, var(--c-cyan), var(--c-green)); transition: width 0.3s ease;"></div>
+          </div>
+
+          <!-- Pregunta Dinámica y Subtítulo Fisiológico -->
+          <div id="test-question-box" style="min-height: 180px; margin-bottom: 1.25rem;">
+            <h2 id="test-q-title" style="font-size: clamp(1.12rem, 1.02rem + 0.6vw, 1.45rem); color: var(--c-heading); margin-bottom: 0.5rem; font-weight: 700; line-height: 1.35;">
+              Cargando evaluación...
+            </h2>
+            <p id="test-q-subtitle" style="font-size: 0.88rem; color: var(--c-muted); margin-bottom: 1.25rem; line-height: 1.5;"></p>
+            <div id="test-options-list" style="display: flex; flex-direction: column; gap: 0.75rem;">
+              <!-- Opciones inyectadas dinámicamente -->
+            </div>
+          </div>
+
+          <!-- Botones de Navegación -->
+          <div class="test-actions-nav">
+            <button id="test-btn-prev" type="button" class="btn btn-outline test-btn-back" style="display: none;">
+              ← Anterior
+            </button>
+            <button id="test-btn-next" type="button" class="btn btn-primary test-btn-continue" disabled>
+              Continuar <span>→</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- PANTALLA DE RESULTADOS DE TRIAJE (Oculta por defecto) -->
+        <div id="test-results-container" style="display: none; text-align: center;">
+          <div id="result-badge" style="display: inline-block; padding: 0.45rem 1.25rem; border-radius: 4px; font-size: 0.88rem; font-weight: 800; text-transform: uppercase; margin-bottom: 1rem; letter-spacing: 0.05em;">
+            Carga Celular: Moderada
+          </div>
+          
+          <h2 id="result-title" style="font-size: clamp(1.35rem, 1.2rem + 0.8vw, 1.85rem); color: var(--c-heading); margin-bottom: 0.75rem; font-weight: 700; line-height: 1.25;">
+            Variaciones Funcionales y Estrés Fisiológico Detectados
+          </h2>
+          
+          <p id="result-desc" style="color: var(--c-text); font-size: 0.95rem; line-height: 1.6; max-width: 660px; margin: 0 auto 1.5rem;">
+            Tu perfil indica variaciones en la recuperación autonómica, pH del líquido intersticial y balance circadiano. Identificar estas señales a nivel celular permite prevenir el desarrollo de desequilibrios metabólicos crónicos.
+          </p>
+
+          <!-- Hallazgo Fisiológico Dominante -->
+          <div id="result-insight-box" style="background: rgba(0, 200, 255, 0.05); border: 1px solid var(--c-cyan); border-radius: 6px; padding: 1.25rem 1.5rem; margin-bottom: 1.5rem; text-align: left;">
+            <!-- Inyectado por JS -->
+          </div>
+
+          <!-- Contenedor de Telemetría Multidimensional por Ejes -->
+          <div id="result-telemetry-container">
+            <!-- Barras generadas por test-celular-ui.js -->
+          </div>
+
+          <!-- Tarjeta de Comparación de Valor Clínico -->
+          <div style="background: var(--c-bg-mid); border: 1px solid var(--c-border); border-radius: 6px; padding: 1.35rem; margin-bottom: 1.75rem; text-align: left;">
+            <div style="font-size: 0.85rem; color: var(--c-cyan); font-weight: 700; text-transform: uppercase; margin-bottom: 0.85rem; letter-spacing: 0.05em;">
+              Comparativa de Diagnóstico Funcional & Predictivo:
+            </div>
+            
+            <div class="test-compare-grid">
+              <div style="padding: 1.1rem; background: rgba(220, 38, 38, 0.06); border: 1px solid rgba(220, 38, 38, 0.25); border-radius: 6px;">
+                <div style="font-size: 0.8rem; color: #DC2626; font-weight: 700;">Checkup Convencional de Laboratorio</div>
+                <div style="font-size: 1.25rem; font-weight: 800; color: var(--c-heading); margin: 0.3rem 0;">+$30,000 MXN</div>
+                <div style="font-size: 0.78rem; color: var(--c-muted); line-height: 1.45;">Múltiples punciones sanguíneas, ayuno estricto, invasivo y días de espera. Solo detecta alteraciones tardías en sangre.</div>
+              </div>
+
+              <div style="padding: 1.1rem; background: rgba(0, 200, 255, 0.08); border: 1.5px solid var(--c-cyan); border-radius: 6px;">
+                <div style="font-size: 0.8rem; color: var(--c-cyan); font-weight: 700;">Evaluación Multisistémica ES-Complex</div>
+                <div style="font-size: 1.25rem; font-weight: 800; color: var(--c-green); margin: 0.3rem 0;">$3,900 MXN</div>
+                <div style="font-size: 0.78rem; color: var(--c-text); line-height: 1.45;">5 minutos, sin agujas, sin dolor, sin ayuno. Mapeo 3D de líquido intersticial, VFC y reporte predictivo inmediato.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Botones de Conversión WhatsApp -->
+          <div style="display: flex; flex-direction: column; gap: 0.85rem; max-width: 520px; margin: 0 auto;">
+            <a id="btn-enviar-wa-test" href="#" target="_blank" class="btn btn-primary btn-glow btn-wa-results">
+              <span class="btn-wa-title">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                Enviar mis resultados y agendar consulta
+              </span>
+              <span class="btn-wa-sub">Valoración con escaneo celular ES-Complex en clínica</span>
+            </a>
+            <button onclick="resetTest()" type="button" style="background: none; border: none; color: var(--c-muted); font-size: 0.85rem; cursor: pointer; text-decoration: underline; padding: 0.5rem;">
+              Volver a realizar la autoevaluación
+            </button>
+          </div>
+
+          <div style="margin-top: 1.5rem; font-size: 0.76rem; color: var(--c-muted); line-height: 1.5; max-width: 580px; margin-left: auto; margin-right: auto;">
+            *Aviso legal: Esta autoevaluación es una herramienta de orientación preventiva y no constituye un diagnóstico médico. Los valores se confirman objetivamente en la consulta presencial con el sistema ES-Complex.
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Mini Footer -->
+  <footer style="border-top: 1px solid var(--c-border); padding: 1.5rem 0; text-align: center; font-size: 0.82rem; color: var(--c-muted); background: var(--c-bg);">
+    <div class="container">
+      <p style="margin-bottom: 0.4rem;">© 2026 Vitametric. Centro de Salud Preventiva en Ciudad de México.</p>
+      <p><a href="index.html" style="color: var(--c-cyan); text-decoration: none;">Inicio</a> · <a href="index.html#tecnología" style="color: var(--c-muted); text-decoration: none;">Tecnologías</a> · <a href="index.html#productos" style="color: var(--c-muted); text-decoration: none;">Productos</a> · <a href="index.html#contacto" style="color: var(--c-muted); text-decoration: none;">Contacto</a></p>
+    </div>
+  </footer>
+
+  <script src="js/theme.js?v=e84643f0"></script>
+  <script src="js/test-celular-engine.js?v=9a59191e"></script>
+  <script src="js/test-celular-ui.js?v=3987a35e"></script>
+
+</body>
+</html>
