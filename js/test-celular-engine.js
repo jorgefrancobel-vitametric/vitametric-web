@@ -589,7 +589,7 @@
         sortedAxes,
         dominantAxis1,
         dominantAxis2,
-        totalDimensionsAnswered: Object.keys(this.answers).length
+        totalDimensionsAnswered: activeDimensions.filter(d => this.answers[d.id] !== undefined).length
       };
 
       return this.calculatedResult;
