@@ -489,7 +489,8 @@
         axisResilience[k] = 100 - normalized;
       });
 
-      // Score Global de Carga Celular Ponderado
+      // Score Global de Carga Celular con Modulación por Pico Crítico
+      // Combina la carga sistémica difusa (70%) con el eje de máxima sobrecarga focalizada (30%)
       const weights = {
         autonomo: 0.25,
         sueno: 0.20,
@@ -498,26 +499,34 @@
         ocupacional: 0.10
       };
 
-      let globalChargeScore = 0;
+      let weightedAverage = 0;
+      let maxAxisScore = 0;
       Object.keys(weights).forEach(k => {
-        globalChargeScore += (axisScores[k] || 0) * weights[k];
+        const val = axisScores[k] || 0;
+        weightedAverage += val * weights[k];
+        if (val > maxAxisScore) {
+          maxAxisScore = val;
+        }
       });
-      globalChargeScore = Math.round(globalChargeScore);
 
-      // Determinación de nivel clínico
+      // Modulación por pico crítico: evita la dilución de crisis uniaxiales graves
+      let globalChargeScore = Math.round((weightedAverage * 0.7) + (maxAxisScore * 0.3));
+      globalChargeScore = Math.min(100, Math.max(0, globalChargeScore));
+
+      // Determinación de nivel clínico con override por eje crítico
       let riskLevel = 'bajo';
       let riskBadge = 'Carga Celular Baja 🟢';
       let riskColor = '#10B981';
       let riskTitle = 'Equilibrio Bioeléctrico en Rango Compensatorio';
       let riskSummary = 'Tu organismo mantiene una adecuada capacidad de adaptación homeostática. Los mecanismos de regulación celular y variabilidad autonómica se encuentran en niveles funcionales estables.';
 
-      if (globalChargeScore > 65) {
+      if (globalChargeScore > 55 || maxAxisScore >= 75) {
         riskLevel = 'alto';
         riskBadge = 'Sobrecarga Multisistémica Activa 🔴';
         riskColor = '#EF4444';
         riskTitle = 'Señales Críticas de Estrés Celular y Fatiga Funcional';
-        riskSummary = 'Detectamos una acumulación simultánea de tensión neuroautonómica, alteración del terreno intersticial y fatiga circadiana. Estos desequilibrios funcionales sostenidos elevan el riesgo de disfunciones cardiometabólicas si no se corrigen a tiempo.';
-      } else if (globalChargeScore > 35) {
+        riskSummary = 'Detectamos una acumulación simultánea de tensión neuroautonómica, alteración del terreno intersticial o fatiga circadiana severa. Estos desequilibrios funcionales sostenidos elevan el riesgo de disfunciones cardiometabólicas si no se corrigen a tiempo.';
+      } else if (globalChargeScore >= 25 || maxAxisScore >= 50) {
         riskLevel = 'moderado';
         riskBadge = 'Carga Celular Moderada 🟡';
         riskColor = '#F59E0B';
@@ -535,10 +544,10 @@
 
       // Generar síntesis fisiológica personalizada
       let physiologicalInsight = '';
-      if (dominantAxis1.score >= 40) {
+      if (dominantAxis1.score >= 35) {
         physiologicalInsight = `Tu principal foco de atención es el eje de **${dominantAxis1.meta.name}** (${dominantAxis1.score}/100), secundado por **${dominantAxis2.meta.name}** (${dominantAxis2.score}/100). Este patrón suele reflejar un gasto energético compensatorio elevado en fluido intersticial que la medicina convencional no suele cuantificar hasta que los valores sanguíneos se alteran.`;
       } else {
-        physiologicalInsight = 'Tus marcadores se encuentran en rangos estables. Una evaluación preventiva anual permite anticipar fluctuaciones sutiles en resistencia celular y tono vagal.';
+        physiologicalInsight = 'Tus marcadores se encuentran en rangos estables. Una evaluación preventiva periódica con ES-Complex permite anticipar fluctuaciones sutiles en resistencia celular y tono vagal.';
       }
 
       this.calculatedResult = {
@@ -564,7 +573,7 @@
     /**
      * Construye el enlace y mensaje estructurado para WhatsApp
      */
-    generateWhatsAppUrl(userName = '', phone = '525545229562') {
+    generateWhatsAppUrl(userName = '', phone = '525585327421') {
       if (!this.calculatedResult) {
         this.calculateResults();
       }
