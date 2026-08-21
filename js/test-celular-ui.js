@@ -1,6 +1,7 @@
 /**
  * Vitametric — Interfaz de Usuario y Telemetría del Test Celular
- * Controlador visual del wizard, renderizado dinámico y visualizador SVG de homeostasis.
+ * Controlador visual del wizard con matriz de micro-chips ortogonales,
+ * accesibilidad ARIA, persistencia resiliente y telemetría bioeléctrica.
  */
 
 (function() {
@@ -17,10 +18,15 @@
     const engine = window.VitametricTestEngine.createInstance();
     const axes = window.VitametricTestEngine.AXES;
 
+    // Intentar restaurar sesión previa si existe
+    engine.loadFromStorage();
+
     // Elementos DOM del Wizard
     const wizardBox = document.getElementById('test-wizard-container');
     const resultsBox = document.getElementById('test-results-container');
     if (!wizardBox || !resultsBox) return;
+
+    wizardBox.setAttribute('aria-live', 'polite');
 
     const stepCategory = document.getElementById('test-axis-badge');
     const stepLabel = document.getElementById('test-step-label');
@@ -31,25 +37,43 @@
     const optionsList = document.getElementById('test-options-list');
     const prevBtn = document.getElementById('test-btn-prev');
 
+    // Botón Siguiente / Continuar dinámico
+    let nextBtn = document.getElementById('test-btn-next');
+    if (!nextBtn) {
+      const navContainer = prevBtn ? prevBtn.parentElement : wizardBox;
+      nextBtn = document.createElement('button');
+      nextBtn.id = 'test-btn-next';
+      nextBtn.type = 'button';
+      nextBtn.className = 'btn btn-primary';
+      nextBtn.style.cssText = 'padding: 0.55rem 1.4rem; font-size: 0.9rem; margin-left: auto; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;';
+      nextBtn.innerHTML = 'Continuar <span>→</span>';
+      if (navContainer) {
+        navContainer.style.display = 'flex';
+        navContainer.style.justifyContent = 'space-between';
+        navContainer.style.alignItems = 'center';
+        navContainer.appendChild(nextBtn);
+      }
+    }
+
     function renderCurrentQuestion() {
-      const q = engine.getCurrentQuestion();
-      if (!q) return;
+      const dim = engine.getCurrentQuestion();
+      if (!dim) return;
 
       const currentIdx = engine.currentStep;
-      const totalQ = engine.getQuestionsCount();
+      const totalDims = engine.getQuestionsCount();
       const progress = engine.getProgressPercentage();
-      const currentAxis = axes[q.axis] || { name: q.category, color: 'var(--c-cyan)', icon: '🔬' };
+      const currentAxis = axes[dim.axis] || { name: dim.category, color: 'var(--c-cyan)', icon: '🔬' };
 
-      // Actualizar Header y Progreso
+      // Actualizar Header y Barra de Progreso
       if (stepCategory) {
-        stepCategory.innerHTML = `<span style="margin-right: 6px;">${currentAxis.icon}</span> ${q.category || currentAxis.name}`;
+        stepCategory.innerHTML = `<span style="margin-right: 6px;" aria-hidden="true">${currentAxis.icon}</span> ${dim.category || currentAxis.name}`;
         stepCategory.style.borderColor = currentAxis.color;
         stepCategory.style.color = currentAxis.color;
         stepCategory.style.background = `${currentAxis.color}15`;
       }
 
       if (stepLabel) {
-        stepLabel.textContent = `Dimensión ${currentIdx + 1} de ${totalQ}`;
+        stepLabel.textContent = `Dimensión ${currentIdx + 1} de ${totalDims}`;
       }
 
       if (progressPct) {
@@ -60,44 +84,63 @@
         progressBar.style.width = `${progress}%`;
       }
 
-      // Pregunta y Subtítulo
+      // Título y Subtítulo Fisiológico
       if (qTitle) {
-        qTitle.textContent = q.title;
+        qTitle.textContent = dim.title;
       }
 
       if (qSubtitle) {
-        qSubtitle.textContent = q.subtitle || '';
+        qSubtitle.textContent = dim.subtitle || '';
       }
 
-      // Render de Opciones con Accesibilidad ARIA
+      // Estado temporal de selección en esta pantalla
+      const existingAnswer = engine.answers[dim.id];
+      let selectedIds = existingAnswer ? [...(existingAnswer.selectedItemIds || [])] : [];
+      let isOptimalSelected = existingAnswer ? !!existingAnswer.isOptimal : false;
+
+      function updateNextButtonState() {
+        if (!nextBtn) return;
+        const hasSelection = isOptimalSelected || selectedIds.length > 0;
+        nextBtn.disabled = !hasSelection;
+        nextBtn.style.opacity = hasSelection ? '1' : '0.45';
+        nextBtn.style.cursor = hasSelection ? 'pointer' : 'not-allowed';
+      }
+
+      // Renderizar Matriz de Micro-Chips
       if (optionsList) {
         optionsList.innerHTML = '';
-        optionsList.setAttribute('role', 'radiogroup');
-        optionsList.setAttribute('aria-labelledby', 'test-q-title');
+        optionsList.setAttribute('role', 'group');
+        optionsList.setAttribute('aria-label', dim.title);
 
-        const currentAnswer = engine.answers[q.id];
-        const selectedIndex = currentAnswer ? currentAnswer.optionIndex : null;
+        const chipsGrid = document.createElement('div');
+        chipsGrid.style.cssText = `
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem;
+          margin-bottom: 1rem;
+        `;
 
-        q.options.forEach((opt, idx) => {
-          const btn = document.createElement('button');
-          btn.type = 'button';
-          btn.className = 'test-option-btn';
-          btn.setAttribute('role', 'radio');
-          btn.setAttribute('aria-checked', selectedIndex === idx ? 'true' : 'false');
-          
-          const isSelected = selectedIndex === idx;
+        // 1. Renderizar Micro-Chips de Síntomas
+        dim.items.forEach(it => {
+          const isSelected = selectedIds.includes(it.id);
 
-          btn.style.cssText = `
+          const chip = document.createElement('button');
+          chip.type = 'button';
+          chip.className = 'test-chip-btn';
+          chip.setAttribute('role', 'checkbox');
+          chip.setAttribute('aria-checked', isSelected ? 'true' : 'false');
+
+          chip.style.cssText = `
             display: flex;
             align-items: flex-start;
-            gap: 1rem;
-            padding: 1.1rem 1.3rem;
+            gap: 0.85rem;
+            padding: 0.9rem 1.15rem;
             background: ${isSelected ? 'rgba(0, 200, 255, 0.12)' : 'var(--c-bg-mid)'};
             border: 1.5px solid ${isSelected ? 'var(--c-cyan)' : 'var(--c-border)'};
             border-radius: 8px;
             color: var(--c-heading);
             text-align: left;
-            font-size: 0.98rem;
+            font-size: 0.95rem;
             line-height: 1.45;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -106,24 +149,26 @@
             box-sizing: border-box;
           `;
 
-          const radioCircle = document.createElement('span');
-          radioCircle.setAttribute('aria-hidden', 'true');
-          radioCircle.style.cssText = `
+          const boxSpan = document.createElement('span');
+          boxSpan.setAttribute('aria-hidden', 'true');
+          boxSpan.style.cssText = `
             flex-shrink: 0;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            border: 2px solid ${isSelected ? 'var(--c-cyan)' : 'var(--c-muted)'};
+            width: 18px;
+            height: 18px;
+            border-radius: 4px;
+            border: 1.5px solid ${isSelected ? 'var(--c-cyan)' : 'var(--c-muted)'};
             background: ${isSelected ? 'var(--c-cyan)' : 'transparent'};
             display: flex;
             align-items: center;
             justify-content: center;
             margin-top: 2px;
+            font-size: 11px;
+            color: #0A0F1D;
+            font-weight: 900;
             transition: all 0.2s ease;
           `;
-
           if (isSelected) {
-            radioCircle.innerHTML = `<span style="width: 6px; height: 6px; border-radius: 50%; background: #0A0F1D;"></span>`;
+            boxSpan.textContent = '✓';
           }
 
           const textSpan = document.createElement('span');
@@ -132,27 +177,87 @@
             font-weight: ${isSelected ? '600' : '400'};
             color: ${isSelected ? 'var(--c-heading)' : 'var(--c-text)'};
           `;
-          textSpan.textContent = opt.text;
+          textSpan.textContent = it.text;
 
-          btn.appendChild(radioCircle);
-          btn.appendChild(textSpan);
+          chip.appendChild(boxSpan);
+          chip.appendChild(textSpan);
 
-          btn.onmouseover = () => {
-            if (!isSelected) {
-              btn.style.borderColor = 'var(--c-cyan)';
-              btn.style.background = 'rgba(0, 200, 255, 0.06)';
+          chip.onclick = () => {
+            isOptimalSelected = false;
+            if (selectedIds.includes(it.id)) {
+              selectedIds = selectedIds.filter(id => id !== it.id);
+            } else {
+              selectedIds.push(it.id);
             }
+            engine.answerDimension(dim.id, selectedIds, isOptimalSelected);
+            renderCurrentQuestion();
           };
 
-          btn.onmouseout = () => {
-            if (!isSelected) {
-              btn.style.borderColor = 'var(--c-border)';
-              btn.style.background = 'var(--c-bg-mid)';
-            }
-          };
+          chipsGrid.appendChild(chip);
+        });
 
-          btn.onclick = () => {
-            engine.answerQuestion(q.id, idx);
+        // 2. Renderizar Opción "Estado Óptimo / Sin Síntomas"
+        if (dim.optimalOption) {
+          const optChip = document.createElement('button');
+          optChip.type = 'button';
+          optChip.className = 'test-chip-optimal-btn';
+          optChip.setAttribute('role', 'checkbox');
+          optChip.setAttribute('aria-checked', isOptimalSelected ? 'true' : 'false');
+
+          optChip.style.cssText = `
+            display: flex;
+            align-items: flex-start;
+            gap: 0.85rem;
+            padding: 0.9rem 1.15rem;
+            background: ${isOptimalSelected ? 'rgba(16, 185, 129, 0.12)' : 'rgba(255, 255, 255, 0.02)'};
+            border: 1.5px solid ${isOptimalSelected ? '#10B981' : 'var(--c-border)'};
+            border-radius: 8px;
+            color: ${isOptimalSelected ? 'var(--c-heading)' : 'var(--c-muted)'};
+            text-align: left;
+            font-size: 0.92rem;
+            line-height: 1.45;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: var(--font);
+            width: 100%;
+            box-sizing: border-box;
+            margin-top: 0.5rem;
+          `;
+
+          const radioCircle = document.createElement('span');
+          radioCircle.setAttribute('aria-hidden', 'true');
+          radioCircle.style.cssText = `
+            flex-shrink: 0;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 1.5px solid ${isOptimalSelected ? '#10B981' : 'var(--c-muted)'};
+            background: ${isOptimalSelected ? '#10B981' : 'transparent'};
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 2px;
+            transition: all 0.2s ease;
+          `;
+          if (isOptimalSelected) {
+            radioCircle.innerHTML = '<span style="width: 6px; height: 6px; border-radius: 50%; background: #0A0F1D;"></span>';
+          }
+
+          const optTextSpan = document.createElement('span');
+          optTextSpan.style.cssText = `
+            flex-grow: 1;
+            font-weight: ${isOptimalSelected ? '600' : '400'};
+            color: ${isOptimalSelected ? '#10B981' : 'var(--c-muted)'};
+          `;
+          optTextSpan.textContent = `🟢 ${dim.optimalOption.text}`;
+
+          optChip.appendChild(radioCircle);
+          optChip.appendChild(optTextSpan);
+
+          optChip.onclick = () => {
+            isOptimalSelected = true;
+            selectedIds = [];
+            engine.answerDimension(dim.id, selectedIds, isOptimalSelected);
             if (engine.isFinished()) {
               renderResults(engine.calculateResults());
             } else {
@@ -161,11 +266,28 @@
             }
           };
 
-          optionsList.appendChild(btn);
-        });
+          chipsGrid.appendChild(optChip);
+        }
+
+        optionsList.appendChild(chipsGrid);
       }
 
-      // Control de botón "Anterior"
+      updateNextButtonState();
+
+      // Botón "Continuar"
+      if (nextBtn) {
+        nextBtn.onclick = () => {
+          if (!engine.canGoNext()) return;
+          if (engine.isFinished()) {
+            renderResults(engine.calculateResults());
+          } else {
+            engine.next();
+            renderCurrentQuestion();
+          }
+        };
+      }
+
+      // Botón "Anterior"
       if (prevBtn) {
         prevBtn.style.display = currentIdx > 0 ? 'inline-flex' : 'none';
         prevBtn.onclick = () => {
@@ -177,7 +299,7 @@
     }
 
     /**
-     * Renderiza el componente de resultados con el Radar/Barras de Homeostasis
+     * Renderiza el informe y telemetría de resultados
      */
     function renderResults(results) {
       if (!wizardBox || !resultsBox) return;
@@ -185,12 +307,11 @@
       wizardBox.style.display = 'none';
       resultsBox.style.display = 'block';
 
-      // Badge y Títulos
       const badge = document.getElementById('result-badge');
       const title = document.getElementById('result-title');
       const desc = document.getElementById('result-desc');
       const insightBox = document.getElementById('result-insight-box');
-      const radarContainer = document.getElementById('result-telemetry-container');
+      const telemetryContainer = document.getElementById('result-telemetry-container');
 
       if (badge) {
         badge.textContent = `Veredicto: ${results.riskBadge}`;
@@ -219,11 +340,11 @@
       }
 
       // Renderizar Barras Multidimensionales de Telemetría Bioeléctrica
-      if (radarContainer) {
-        radarContainer.innerHTML = generateTelemetryHtml(results);
+      if (telemetryContainer) {
+        telemetryContainer.innerHTML = generateTelemetryHtml(results);
       }
 
-      // Actualizar enlace WhatsApp estructurado
+      // Actualizar enlace WhatsApp con telemetría preformateada
       const waBtn = document.getElementById('btn-enviar-wa-test');
       if (waBtn) {
         waBtn.href = engine.generateWhatsAppUrl('Paciente');
@@ -274,7 +395,7 @@
           <div style="margin-bottom: 1rem;">
             <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.88rem; margin-bottom: 0.35rem;">
               <span style="color: var(--c-heading); font-weight: 600; display: flex; align-items: center; gap: 6px;">
-                <span>${ax.icon}</span> ${ax.name}
+                <span aria-hidden="true">${ax.icon}</span> ${ax.name}
               </span>
               <span style="color: ${barColor}; font-weight: 700; font-size: 0.85rem;">
                 ${score}% (${statusLabel})
@@ -305,12 +426,13 @@
     // Reiniciar Test
     window.resetTest = function() {
       engine.reset();
+      engine.clearStorage();
       if (resultsBox) resultsBox.style.display = 'none';
       if (wizardBox) wizardBox.style.display = 'block';
       renderCurrentQuestion();
     };
 
-    // Inicialización de la primera pregunta
+    // Inicialización del wizard
     renderCurrentQuestion();
   }
 })();

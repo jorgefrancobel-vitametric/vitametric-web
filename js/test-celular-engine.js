@@ -1,14 +1,12 @@
 /**
  * Vitametric — Motor Clínico de Autoevaluación Celular y Triaje Multidimensional
  * 
- * Basado en los 5 pilares de inferencia de skills/medical/:
- * 1. Balance Autónomo & VFC (hrv-alexithymia-expert, neurokit2 -> Nivel L1b/L2 ES-Complex)
- * 2. Arquitectura del Sueño & Ritmo Circadiano (sleep-analyzer, PSQI, STOP-BANG -> Nivel L2)
- * 3. Perfil Cardiometabólico & Vascular (fitness-analyzer, health-trend-analyzer -> Nivel L1/L4)
- * 4. Terreno Celular, ipH & Nutrición (nutrition-analyzer, HEI-2015 -> Nivel L1/L2b)
- * 5. Carga Ergonómica & Ocupacional (occupational-health-analyzer, Sedentary/VDT Score)
- * 
- * Gobernanza: Vitametric 2026. Cumple con NOM-051, NOM-035/036 y disclaimers ISO 13485.
+ * Arquitectura v2026.08 (Orthogonal Micro-Chips Engine):
+ * 1. 5 Dimensiones Fisiológicas Basales (Autónomo, Sueño, Cardiometabólico, Terreno, Ocupacional)
+ * 2. Matriz de Micro-Chips Desacoplados (0 a N síntomas independientes por dimensión)
+ * 3. Branching Dinámico Puro (tamizajes STOP-BANG e Inflamación sin mutación de estado en backtrack)
+ * 4. Ponderación Multidimensional Ortogonal y Modulación por Pico Crítico
+ * 5. Persistencia Local con TTL (localStorage) y Blindaje Normativo Preventivo (LGS / NOM-051 / ISO 13485)
  */
 
 (function(root, factory) {
@@ -22,7 +20,7 @@
 }(typeof self !== 'undefined' ? self : this, function() {
   'use strict';
 
-  // Configuración de Ejes Clínicos
+  // Configuración Declarativa de Ejes Fisiológicos
   const AXES = {
     autonomo: {
       id: 'autonomo',
@@ -30,7 +28,7 @@
       shortName: 'Estrés Autónomo',
       icon: '⚡',
       color: '#00C8FF',
-      description: 'Evalúa el equilibrio simpático/parasimpático, reactividad neurovegetativa y variabilidad del ritmo cardíaco.'
+      description: 'Evalúa el balance simpático/parasimpático, reactividad neurovegetativa y tono de recuperación vagal.'
     },
     sueno: {
       id: 'sueno',
@@ -38,7 +36,7 @@
       shortName: 'Calidad de Sueño',
       icon: '🌙',
       color: '#818CF8',
-      description: 'Evalúa latencia de inicio, microdespertares, riesgo de apnea y capacidad de regeneración celular nocturna.'
+      description: 'Evalúa latencia, microdespertares, riesgo de hipoxemia/apnea y capacidad regenerativa celular nocturna.'
     },
     cardiometabolico: {
       id: 'cardiometabolico',
@@ -46,7 +44,7 @@
       shortName: 'Cardiometabólico',
       icon: '❤️',
       color: '#EF4444',
-      description: 'Analiza factores de riesgo vascular, fluctuaciones glucémicas diurnas y resistencia metabólica.'
+      description: 'Analiza la estabilidad glucémica postprandial, energía vespertina y antecedentes vasculares preclínicos.'
     },
     terreno: {
       id: 'terreno',
@@ -54,7 +52,7 @@
       shortName: 'Terreno & Nutrición',
       icon: '🧬',
       color: '#10B981',
-      description: 'Estima la carga de acidez en líquido intersticial, permeabilidad digestiva y balance micronutricional.'
+      description: 'Estima la carga de acidez en líquido intersticial (ipH), permeabilidad de barrera y dinámica hídrica.'
     },
     ocupacional: {
       id: 'ocupacional',
@@ -62,292 +60,301 @@
       shortName: 'Sobrecarga Laboral',
       icon: '💼',
       color: '#F59E0B',
-      description: 'Cuantifica el impacto del sedentarismo prolongado, tensión visual por pantallas y fatiga postural.'
+      description: 'Cuantifica el impacto del sedentarismo prolongado, tensión por pantallas (VDT) y fatiga postural.'
     }
   };
 
-  // Banco de Preguntas Clínicas Estructuradas
-  const BASE_QUESTIONS = [
+  // Parámetros y Ponderaciones del Scoring Global (Desacoplados para A/B Testing)
+  const SCORING_CONFIG = {
+    weights: {
+      autonomo: 0.25,
+      sueno: 0.20,
+      cardiometabolico: 0.25,
+      terreno: 0.20,
+      ocupacional: 0.10
+    },
+    thresholds: {
+      highGlobal: 50,
+      highMaxAxis: 65,
+      moderateGlobal: 20,
+      moderateMaxAxis: 35
+    },
+    storageKey: 'vitametric_test_state_v2',
+    storageTtlMs: 24 * 60 * 60 * 1000 // 24 horas
+  };
+
+  // Dimensiones Basales Estructuradas (Micro-Chips Ortogonales)
+  const BASE_DIMENSIONS = [
     {
-      id: 'q1_energia_matutina',
+      id: 'dim_autonomo',
+      axis: 'autonomo',
+      category: 'Balance Autónomo & Tono Simpático',
+      title: '¿Cuáles de las siguientes manifestaciones de sobretensión o reactividad experimentas habitualmente?',
+      subtitle: 'Permite estimar la reactividad neurovegetativa y la sobrecarga simpática sostenida.',
+      items: [
+        {
+          id: 'item_aut_tension_cervical',
+          text: 'Tensión muscular o contracturas frecuentes en cuello, hombros o trapecios.',
+          weights: { autonomo: 14, ocupacional: 8 }
+        },
+        {
+          id: 'item_aut_bruxismo',
+          text: 'Apretamiento dental nocturno o sobretensión involuntaria en mandíbula (bruxismo).',
+          weights: { autonomo: 18, sueno: 10 }
+        },
+        {
+          id: 'item_aut_taquicardia',
+          text: 'Palpitaciones, taquicardias ocasionales o sensación de pecho acelerado ante estrés.',
+          weights: { autonomo: 28, cardiometabolico: 18 }
+        },
+        {
+          id: 'item_aut_mente_acelerada',
+          text: 'Dificultad para desconectar la mente al acostarse o sensación de urgencia interior continua.',
+          weights: { autonomo: 20, sueno: 12 }
+        },
+        {
+          id: 'item_aut_manos_frias',
+          text: 'Manos o pies fríos frecuentemente, o sudoración palmar en momentos de exigencia psicofísica.',
+          weights: { autonomo: 14, terreno: 8 }
+        }
+      ],
+      optimalOption: {
+        id: 'opt_aut_optimo',
+        text: 'Sin sobretensión ni manifestaciones de estrés significativas (estado de relajación y balance estable).'
+      }
+    },
+    {
+      id: 'dim_sueno',
       axis: 'sueno',
-      category: 'Ritmo Circadiano y Recuperación',
-      title: '¿Cómo experimentas tu nivel de energía y lucidez durante los primeros 30 minutos al despertar?',
-      subtitle: 'La inercia de sueño prolongada y la fatiga matutina reflejan baja actividad vagal nocturna y desajuste de cortisol.',
-      options: [
+      category: 'Arquitectura del Sueño & Recuperación Nocturna',
+      title: '¿Qué factores interfieren con tu descanso o tu nivel de vitalidad matutina?',
+      subtitle: 'Evalúa la eficiencia de la regeneración vagal nocturna y la sincronización circadiana.',
+      items: [
         {
-          text: 'Despierto con energía renovada, sin necesidad inmediata de estimulantes.',
-          score: 0,
-          weights: { sueno: 0, autonomo: 0 }
+          id: 'item_sue_inercia_matutina',
+          text: 'Fatiga o inercia de sueño prolongada (>30 min al despertar); necesidad indispensable de café para arrancar.',
+          weights: { sueno: 18, autonomo: 8 }
         },
         {
-          text: 'Tardo entre 20 y 40 minutos en arrancar; requiero café para activarme.',
-          score: 1,
-          weights: { sueno: 10, autonomo: 5 }
+          id: 'item_sue_microdespertares',
+          text: 'Microdespertares frecuentes durante la noche o sensación de sueño superficial y ligero.',
+          weights: { sueno: 24, autonomo: 12 }
         },
         {
-          text: 'Fatiga frecuente al despertar; sensación de sueño ligero o no reparador.',
-          score: 2,
-          weights: { sueno: 22, autonomo: 15, terreno: 5 }
+          id: 'item_sue_latencia_alta',
+          text: 'Dificultad marcada para conciliar el sueño (tardo más de 40 a 60 minutos en dormirme).',
+          weights: { sueno: 18, autonomo: 14 }
         },
         {
-          text: 'Agotamiento persistente; siento el cuerpo pesado y sin descanso desde hace meses.',
-          score: 3,
-          weights: { sueno: 35, autonomo: 25, terreno: 15 }
+          id: 'item_sue_pesadez_corporal',
+          text: 'Sensación de cuerpo no reparado, pesadez física o falta de descanso acumulada desde hace semanas.',
+          weights: { sueno: 26, terreno: 12, autonomo: 10 }
         }
-      ]
+      ],
+      optimalOption: {
+        id: 'opt_sue_optimo',
+        text: 'Sueño profundo y continuo; despierto con energía renovada y mente despejada de forma natural.'
+      }
     },
     {
-      id: 'q2_niebla_mental',
+      id: 'dim_cardiometabolico',
       axis: 'cardiometabolico',
-      category: 'Homeostasis Glucémica y Neuroquímica',
-      title: '¿Presentas caídas drásticas de concentración, somnolencia postprandial o niebla mental por la tarde?',
-      subtitle: 'Los bajones de energía entre 2:00 y 5:00 PM correlacionan con picos de glucosa/insulina e inflamación celular.',
-      options: [
+      category: 'Homeostasis Glucémica & Resiliencia Vascular',
+      title: '¿Presentas alguna de las siguientes señales de fluctuación metabólica o antecedentes familiares?',
+      subtitle: 'Analiza la estabilidad energética postprandial y la carga de susceptibilidad metabólica preclínica.',
+      items: [
         {
-          text: 'Claridad mental constante y nivel de atención sostenido a lo largo del día.',
-          score: 0,
-          weights: { cardiometabolico: 0, autonomo: 0 }
+          id: 'item_card_somnolencia_post',
+          text: 'Somnolencia pronunciada o caídas drásticas de energía tras comidas (entre 2:00 y 5:00 PM).',
+          weights: { cardiometabolico: 22, terreno: 12 }
         },
         {
-          text: 'Ligera pesadez ocasional únicamente tras comidas muy copiosas.',
-          score: 1,
-          weights: { cardiometabolico: 8, terreno: 5 }
+          id: 'item_card_niebla_mental',
+          text: 'Niebla mental, dispersión cognitiva o dificultad de concentración en horas de la tarde.',
+          weights: { cardiometabolico: 18, autonomo: 10 }
         },
         {
-          text: 'Somnolencia vespertina habitual y necesidad frecuente de azúcar o cafeína para concentrarme.',
-          score: 2,
-          weights: { cardiometabolico: 22, terreno: 15, autonomo: 10 }
+          id: 'item_card_antojos_dulces',
+          text: 'Apetito recurrente o necesidad intensa de carbohidratos refinados, pan o azúcar por la tarde.',
+          weights: { cardiometabolico: 18, terreno: 14 }
         },
         {
-          text: 'Niebla mental severa diaria, dispersión cognitiva y agotamiento psicofísico vespertino.',
-          score: 3,
-          weights: { cardiometabolico: 35, terreno: 25, autonomo: 20 }
+          id: 'item_card_herencia_familiar',
+          text: 'Antecedentes familiares directos (padres o hermanos) con diabetes, hipertensión o dislipidemia.',
+          weights: { cardiometabolico: 22 }
+        },
+        {
+          id: 'item_card_diagnostico_propio',
+          text: 'Diagnóstico médico previo personal de resistencia a la insulina, hígado graso, dislipidemia o hipertensión.',
+          weights: { cardiometabolico: 40, terreno: 18 }
         }
-      ]
+      ],
+      optimalOption: {
+        id: 'opt_card_optimo',
+        text: 'Claridad mental constante, niveles estables de glucosa/energía a lo largo del día y sin antecedentes directos.'
+      }
     },
     {
-      id: 'q3_salud_digestiva',
+      id: 'dim_terreno',
       axis: 'terreno',
-      category: 'Terreno Intersticial y Microbiota',
-      title: '¿Con qué frecuencia experimentas distensión abdominal, acidez, digestión pesada o tránsito irregular?',
-      subtitle: 'La alteración de la barrera digestiva modifica la conductividad bioeléctrica y el ipH intersticial hacia terreno ácido.',
-      options: [
+      category: 'Terreno Intersticial, ipH & Dinámica Digestiva',
+      title: '¿Cuáles de estas alteraciones digestivas o de fluidos corporales experimentas habitualmente?',
+      subtitle: 'Estima posibles variaciones en líquido intersticial, barrera digestiva y equilibrio ácido-base tisular.',
+      items: [
         {
-          text: 'Digestión ligera y regular; sin inflamación ni molestias gástricas frecuentes.',
-          score: 0,
-          weights: { terreno: 0 }
+          id: 'item_ter_distension',
+          text: 'Distensión o hinchazón abdominal visible y pesadez gástrica al final de la jornada.',
+          weights: { terreno: 20, autonomo: 6 }
         },
         {
-          text: 'Inflamación leve o gases de forma esporádica con ciertos alimentos específicos.',
-          score: 1,
-          weights: { terreno: 10 }
+          id: 'item_ter_acidez_reflujo',
+          text: 'Sensación de acidez, reflujo gástrico o ardor estomacal frecuente.',
+          weights: { terreno: 20, autonomo: 10 }
         },
         {
-          text: 'Hinchazón abdominal frecuente al final del día, reflujo o digestión lenta habitual.',
-          score: 2,
-          weights: { terreno: 25, autonomo: 10 }
+          id: 'item_ter_transito_irregular',
+          text: 'Tránsito digestivo irregular (estreñimiento recurrente o alternancia con deposiciones sueltas).',
+          weights: { terreno: 18, cardiometabolico: 8 }
         },
         {
-          text: 'Molestias digestivas continuas diarias (dolor, inflamación severa, alternancia estreñimiento/diarrea).',
-          score: 3,
-          weights: { terreno: 35, autonomo: 20, cardiometabolico: 10 }
+          id: 'item_ter_pesadez_piernas',
+          text: 'Pesadez o hinchazón visible en piernas/tobillos (marcas de calcetines) tras estar sentado o de pie.',
+          weights: { terreno: 22, cardiometabolico: 14, ocupacional: 10 }
+        },
+        {
+          id: 'item_ter_retencion_parpados',
+          text: 'Hinchazón en párpados/manos al despertar o tendencia a extremidades frías constantes.',
+          weights: { terreno: 16, cardiometabolico: 10 }
         }
-      ]
+      ],
+      optimalOption: {
+        id: 'opt_ter_optimo',
+        text: 'Digestión ligera y regular, libre de acidez o distensión, con adecuada dinámica circulatoria intersticial.'
+      }
     },
     {
-      id: 'q4_retencion_microcirculacion',
-      axis: 'terreno',
-      category: 'Dinámica de Fluidos y Microcirculación',
-      title: '¿Observas pesadez en piernas, hinchazón en párpados/manos al despertar o extremidades frías?',
-      subtitle: 'La retención hídrica refleja desplazamiento entre agua intracelular (ICW) y extracelular (ECW) en el tejido intersticial.',
-      options: [
-        {
-          text: 'Sin hinchazón, retención ni molestias circulatorias periféricas.',
-          score: 0,
-          weights: { terreno: 0, cardiometabolico: 0 }
-        },
-        {
-          text: 'Pesadez leve en pies o piernas tras permanecer muchas horas de pie o sentado.',
-          score: 1,
-          weights: { terreno: 8, ocupacional: 8 }
-        },
-        {
-          text: 'Hinchazón visible frecuente en tobillos/manos, marcas marcadas de calcetines o manos frías constantes.',
-          score: 2,
-          weights: { terreno: 22, cardiometabolico: 18, ocupacional: 15 }
-        },
-        {
-          text: 'Edema recurrente, pesadez dolorosa en extremidades y rigidez articular matutina.',
-          score: 3,
-          weights: { terreno: 35, cardiometabolico: 30, ocupacional: 20 }
-        }
-      ]
-    },
-    {
-      id: 'q5_sedentarismo_pantallas',
+      id: 'dim_ocupacional',
       axis: 'ocupacional',
-      category: 'Carga Ergonómica y Exposición VDT',
-      title: '¿Cuántas horas promedio pasas al día en posición sentada frente a pantallas o dispositivos?',
-      subtitle: 'Evalúa el Sedentary Risk Score y la fatiga visual VDT, factores directos de rigidez fascial y estrés oxidativo.',
-      options: [
+      category: 'Carga Ergonómica, Postural & Exposición a Pantallas',
+      title: '¿Cuáles son las condiciones predominantes en tu dinámica laboral y postura diaria?',
+      subtitle: 'Evalúa el impacto del sedentarismo prolongado y la tensión visual en la fascia y tono muscular.',
+      items: [
         {
-          text: 'Menos de 4 horas al día, con actividad física constante y pausas activas regulares.',
-          score: 0,
-          weights: { ocupacional: 0 }
+          id: 'item_ocu_sedentarismo_6h',
+          text: 'Permanecer sentado más de 6 a 8 horas al día de forma continua con movilidad reducida.',
+          weights: { ocupacional: 26, cardiometabolico: 10 }
         },
         {
-          text: 'Entre 4 y 6 horas diarias, realizando interrupciones o caminatas cortas.',
-          score: 1,
-          weights: { ocupacional: 12 }
+          id: 'item_ocu_pantallas_continuas',
+          text: 'Exposición intensa a pantallas y dispositivos con presencia de fatiga visual o cefalea tensional.',
+          weights: { ocupacional: 20, autonomo: 12 }
         },
         {
-          text: 'Entre 6 y 8 horas diarias continuas, con pocas pausas y presencia de fatiga visual u ocular.',
-          score: 2,
+          id: 'item_ocu_molestia_lumbar',
+          text: 'Molestia o rigidez recurrente en zona cervical, dorsal o lumbar al terminar la jornada laboral.',
           weights: { ocupacional: 26, autonomo: 10 }
         },
         {
-          text: 'Más de 8 a 10 horas continuas al día, con mínima movilidad y dolor cervical o lumbar frecuente.',
-          score: 3,
-          weights: { ocupacional: 40, autonomo: 20, terreno: 10 }
+          id: 'item_ocu_pausas_escasas',
+          text: 'Jornadas de trabajo con mínimas pausas activas y dificultad para realizar ejercicio compensatorio regular.',
+          weights: { ocupacional: 18, cardiometabolico: 8 }
         }
-      ]
-    },
-    {
-      id: 'q6_tension_estres',
-      axis: 'autonomo',
-      category: 'Tono Simpático y Sobrecarga Muscular',
-      title: '¿Sueles acumular tensión en cuello, hombros, mandíbula (bruxismo) o sensación de urgencia interna?',
-      subtitle: 'La contracción isométrica sostenida indica hiperactivación simpática (tono simpático elevado) sin descarga parasimpática.',
-      options: [
-        {
-          text: 'Me siento relajado la mayor parte del tiempo; cuerpo distendido y sin sobretensión.',
-          score: 0,
-          weights: { autonomo: 0 }
-        },
-        {
-          text: 'Tensión muscular leve en cuello o trapecios solo al finalizar jornadas laborales de alta exigencia.',
-          score: 1,
-          weights: { autonomo: 10, ocupacional: 5 }
-        },
-        {
-          text: 'Contracturas frecuentes, apretamiento dental nocturno o dificultad para relajar la mente al acostarme.',
-          score: 2,
-          weights: { autonomo: 26, sueno: 15, ocupacional: 15 }
-        },
-        {
-          text: 'Tensión muscular crónica dolorosa, taquicardia o palpitaciones por estrés y sensación de alerta continua.',
-          score: 3,
-          weights: { autonomo: 40, sueno: 25, cardiometabolico: 20 }
-        }
-      ]
-    },
-    {
-      id: 'q7_antecedentes_metabolicos',
-      axis: 'cardiometabolico',
-      category: 'Carga Familiar y Factores de Riesgo',
-      title: '¿Tienes antecedentes familiares o personales de resistencia a la insulina, diabetes, hipertensión o hígado graso?',
-      subtitle: 'Estratifica la susceptibilidad biológica preclínica (modelo ADA / Framingham ASCVD).',
-      options: [
-        {
-          text: 'Sin antecedentes conocidos en familiares de primer o segundo grado.',
-          score: 0,
-          weights: { cardiometabolico: 0 }
-        },
-        {
-          text: 'Un familiar de segundo grado (abuelos, tíos) con diagnóstico metabólico o hipertensión.',
-          score: 1,
-          weights: { cardiometabolico: 10 }
-        },
-        {
-          text: 'Uno de mis padres o hermanos tiene diagnóstico de diabetes, hipertensión o dislipidemia.',
-          score: 2,
-          weights: { cardiometabolico: 25, terreno: 10 }
-        },
-        {
-          text: 'Ambos padres o múltiples familiares directos con enfermedades crónicas, o diagnóstico previo personal.',
-          score: 3,
-          weights: { cardiometabolico: 40, terreno: 20 }
-        }
-      ]
+      ],
+      optimalOption: {
+        id: 'opt_ocu_optimo',
+        text: 'Dinámica laboral activa, movilidad frecuente, pausas ergonómicas regulares y sin fatiga postural.'
+      }
     }
   ];
 
-  // Preguntas Condicionales de Ramificación (Branching Triggers)
-  const CONDITIONAL_QUESTIONS = {
+  // Dimensiones Condicionales de Branching Dinámico Puro
+  const CONDITIONAL_DIMENSIONS = {
     branch_apnea_sueno: {
-      id: 'q_cond_apnea_sueno',
+      id: 'dim_cond_apnea_sueno',
       axis: 'sueno',
-      category: 'Tamizaje STOP-BANG (Apnea y Microdespertares)',
-      title: '¿Te han informado que roncas de forma audible, o despiertas con la boca seca, sofocación o dolor de cabeza?',
-      subtitle: 'Detecta microdespertares por hipoxemia intermitente que impiden la entrada a fases de sueño profundo y REM.',
+      category: 'Tamizaje Complementario STOP-BANG (Apnea & Oxigenación Nocturna)',
+      title: '¿Presentas alguna de estas manifestaciones asociadas a la ventilación o descanso profundo?',
+      subtitle: 'Ayuda a identificar posibles caídas transitorias de oxigenación o microdespertares nocturnos.',
       condition: (answers) => {
-        const q1 = answers['q1_energia_matutina'];
-        const q6 = answers['q6_tension_estres'];
-        return (q1 && q1.score >= 2) || (q6 && q6.score >= 2);
+        const sueAns = answers['dim_sueno'];
+        const autAns = answers['dim_autonomo'];
+        const hasSueFatigue = sueAns && sueAns.selectedItemIds && (
+          sueAns.selectedItemIds.includes('item_sue_inercia_matutina') ||
+          sueAns.selectedItemIds.includes('item_sue_pesadez_corporal') ||
+          sueAns.selectedItemIds.includes('item_sue_microdespertares')
+        );
+        const hasAutSevere = autAns && autAns.selectedItemIds && (
+          autAns.selectedItemIds.includes('item_aut_bruxismo') ||
+          autAns.selectedItemIds.includes('item_aut_taquicardia')
+        );
+        const totalSueItems = (sueAns && sueAns.selectedItemIds) ? sueAns.selectedItemIds.length : 0;
+        return (totalSueItems >= 2) || (hasSueFatigue && hasAutSevere);
       },
-      options: [
+      items: [
         {
-          text: 'No, no ronco ni despierto con sensación de asfixia o boca reseca.',
-          score: 0,
-          weights: { sueno: 0 }
+          id: 'item_apnea_ronquido',
+          text: 'Ronquido audible frecuente reportado por terceras personas al dormir.',
+          weights: { sueno: 22, cardiometabolico: 12 }
         },
         {
-          text: 'Ronquido leve y ocasional, principalmente al dormir bocarriba o con congestión nasal.',
-          score: 1,
-          weights: { sueno: 10 }
+          id: 'item_apnea_boca_seca',
+          text: 'Despertares periódicos con garganta o boca intensamente seca, o necesidad de beber agua en la madrugada.',
+          weights: { sueno: 16 }
         },
         {
-          text: 'Ronquido frecuente o despertares periódicos con necesidad de beber agua o sequedad de garganta.',
-          score: 2,
-          weights: { sueno: 25, cardiometabolico: 15 }
-        },
-        {
-          text: 'Ronquido intenso reportado, pausas de respiración observadas o despertares bruscos con sobresalto.',
-          score: 3,
-          weights: { sueno: 40, cardiometabolico: 30, autonomo: 20 }
+          id: 'item_apnea_pausas_ahogo',
+          text: 'Pausas en la respiración observadas por otros o despertares bruscos con sobresalto / sensación de asfixia.',
+          weights: { sueno: 38, cardiometabolico: 28, autonomo: 18 }
         }
-      ]
+      ],
+      optimalOption: {
+        id: 'opt_apnea_optimo',
+        text: 'Sin ronquidos significativos, despertares por asfixia ni sospecha de interrupciones respiratorias.'
+      }
     },
     branch_inflamacion_metabolica: {
-      id: 'q_cond_inflamacion_metabolica',
+      id: 'dim_cond_inflamacion_metabolica',
       axis: 'terreno',
-      category: 'Microinflamación y Perfil Lipídico/Intersticial',
-      title: '¿Presentas grasa abdominal predominante, fatiga muscular rápida tras esfuerzo mínimo o antojos intensos de harinas/dulces?',
-      subtitle: 'Correlaciona con disbiosis, glicación tisular y acidez del fluido intersticial (ipH < 7.35).',
+      category: 'Microinflamación Tisular & Resistencia Periférica',
+      title: '¿Reconoces signos de resistencia periférica o microinflamación en tu composición corporal?',
+      subtitle: 'Permite profundizar en el estado de glicación tisular y acidez del fluido intersticial.',
       condition: (answers) => {
-        const q2 = answers['q2_niebla_mental'];
-        const q3 = answers['q3_salud_digestiva'];
-        const q7 = answers['q7_antecedentes_metabolicos'];
-        return (q2 && q2.score >= 2) || (q3 && q3.score >= 2) || (q7 && q7.score >= 2);
+        const cardAns = answers['dim_cardiometabolico'];
+        const terAns = answers['dim_terreno'];
+        const totalCardItems = (cardAns && cardAns.selectedItemIds) ? cardAns.selectedItemIds.length : 0;
+        const totalTerItems = (terAns && terAns.selectedItemIds) ? terAns.selectedItemIds.length : 0;
+        const hasCardSevere = cardAns && cardAns.selectedItemIds && (
+          cardAns.selectedItemIds.includes('item_card_diagnostico_propio') ||
+          cardAns.selectedItemIds.includes('item_card_somnolencia_post')
+        );
+        return (totalCardItems >= 2 && totalTerItems >= 1) || (hasCardSevere && totalTerItems >= 2) || (totalCardItems >= 3);
       },
-      options: [
+      items: [
         {
-          text: 'Composición corporal equilibrada; sin acumulación central ni antojos incontrolables.',
-          score: 0,
-          weights: { terreno: 0, cardiometabolico: 0 }
+          id: 'item_inf_grasa_visceral',
+          text: 'Acumulación predominante de grasa abdominal y dificultad marcada para reducir perímetro de cintura.',
+          weights: { terreno: 26, cardiometabolico: 24 }
         },
         {
-          text: 'Ligera grasa abdominal reciente; antojos ocasionales en momentos de mayor estrés.',
-          score: 1,
-          weights: { terreno: 10, cardiometabolico: 8 }
+          id: 'item_inf_fatiga_muscular',
+          text: 'Fatiga o debilidad muscular rápida ante esfuerzos físicos cotidianos que antes resultaban sencillos.',
+          weights: { terreno: 20, cardiometabolico: 16, autonomo: 10 }
         },
         {
-          text: 'Grasa concentrada en cintura/abdomen y apetito recurrente por carbohidratos refinados por la tarde.',
-          score: 2,
-          weights: { terreno: 25, cardiometabolico: 22 }
-        },
-        {
-          text: 'Aumento significativo de perímetro abdominal, fatiga muscular inmediata y dificultad marcada para bajar de peso.',
-          score: 3,
-          weights: { terreno: 40, cardiometabolico: 35, autonomo: 15 }
+          id: 'item_inf_rigidez_articular',
+          text: 'Rigidez matutina en articulaciones de manos, pies o rodillas que mejora tras iniciar movimiento.',
+          weights: { terreno: 26, ocupacional: 12 }
         }
-      ]
+      ],
+      optimalOption: {
+        id: 'opt_inf_optimo',
+        text: 'Composición corporal equilibrada, adecuada recuperación muscular y sin rigidez articular persistente.'
+      }
     }
   };
 
   /**
-   * Clase controladora del motor de evaluación
+   * Controlador Principal del Motor Clínico de Evaluación
    */
   class TestEngine {
     constructor() {
@@ -357,62 +364,98 @@
     reset() {
       this.currentStep = 0;
       this.answers = {};
-      this.activeQuestions = [...BASE_QUESTIONS];
       this.calculatedResult = null;
+      this.startedAt = Date.now();
     }
 
     /**
-     * Evalúa si deben inyectarse preguntas condicionales según las respuestas previas
+     * Función pura determinista: calcula la lista ordenada de dimensiones activas
+     * según el estado actual de answers (resuelve el bug de backtrack)
      */
-    evaluateBranching() {
-      const activeIds = this.activeQuestions.map(q => q.id);
+    getActiveQuestions() {
+      const questions = [...BASE_DIMENSIONS];
 
-      Object.keys(CONDITIONAL_QUESTIONS).forEach(branchKey => {
-        const condQ = CONDITIONAL_QUESTIONS[branchKey];
-        if (!activeIds.includes(condQ.id) && condQ.condition(this.answers)) {
-          this.activeQuestions.push(condQ);
+      Object.keys(CONDITIONAL_DIMENSIONS).forEach(key => {
+        const condDim = CONDITIONAL_DIMENSIONS[key];
+        if (condDim.condition(this.answers)) {
+          questions.push(condDim);
         }
       });
-    }
 
-    /**
-     * Registra una respuesta y recalcula el árbol dinámico
-     */
-    answerQuestion(questionId, optionIndex) {
-      const question = this.activeQuestions.find(q => q.id === questionId);
-      if (!question || !question.options[optionIndex]) {
-        throw new Error(`Opción inválida para la pregunta: ${questionId}`);
-      }
-
-      this.answers[questionId] = {
-        questionId: question.id,
-        questionTitle: question.title,
-        axis: question.axis,
-        optionIndex: optionIndex,
-        optionText: question.options[optionIndex].text,
-        score: question.options[optionIndex].score,
-        weights: question.options[optionIndex].weights || {}
-      };
-
-      this.evaluateBranching();
+      return questions;
     }
 
     getQuestionsCount() {
-      return this.activeQuestions.length;
+      return this.getActiveQuestions().length;
     }
 
     getCurrentQuestion() {
-      return this.activeQuestions[this.currentStep] || null;
+      const active = this.getActiveQuestions();
+      if (this.currentStep >= active.length) {
+        this.currentStep = Math.max(0, active.length - 1);
+      }
+      return active[this.currentStep] || null;
+    }
+
+    /**
+     * Registra o actualiza la respuesta para una dimensión.
+     * @param {string} dimensionId - ID de la dimensión (ej. 'dim_autonomo')
+     * @param {Array<string>} selectedItemIds - Array de IDs de micro-chips seleccionados
+     * @param {boolean} isOptimal - True si el usuario marcó "Estado óptimo"
+     */
+    answerDimension(dimensionId, selectedItemIds = [], isOptimal = false) {
+      const allDimensions = [...BASE_DIMENSIONS, ...Object.values(CONDITIONAL_DIMENSIONS)];
+      const dim = allDimensions.find(d => d.id === dimensionId);
+      if (!dim) {
+        throw new Error(`Dimensión no encontrada: ${dimensionId}`);
+      }
+
+      if (isOptimal) {
+        this.answers[dimensionId] = {
+          dimensionId: dim.id,
+          axis: dim.axis,
+          category: dim.category,
+          isOptimal: true,
+          selectedItemIds: [],
+          selectedItems: [],
+          weights: {}
+        };
+      } else {
+        const validItems = dim.items.filter(it => selectedItemIds.includes(it.id));
+        const combinedWeights = {};
+
+        validItems.forEach(it => {
+          Object.keys(it.weights || {}).forEach(k => {
+            combinedWeights[k] = (combinedWeights[k] || 0) + it.weights[k];
+          });
+        });
+
+        this.answers[dimensionId] = {
+          dimensionId: dim.id,
+          axis: dim.axis,
+          category: dim.category,
+          isOptimal: false,
+          selectedItemIds: validItems.map(it => it.id),
+          selectedItems: validItems.map(it => ({ id: it.id, text: it.text })),
+          weights: combinedWeights
+        };
+      }
+
+      this.saveToStorage();
     }
 
     canGoNext() {
-      const currentQ = this.getCurrentQuestion();
-      return currentQ && this.answers[currentQ.id] !== undefined;
+      const currentDim = this.getCurrentQuestion();
+      if (!currentDim) return false;
+      const ans = this.answers[currentDim.id];
+      return ans !== undefined && (ans.isOptimal || ans.selectedItemIds.length > 0);
     }
 
     next() {
-      if (this.currentStep < this.activeQuestions.length - 1) {
+      const total = this.getQuestionsCount();
+      if (this.currentStep < total - 1) {
         this.currentStep++;
+        this.saveToStorage();
         return true;
       }
       return false;
@@ -421,65 +464,52 @@
     prev() {
       if (this.currentStep > 0) {
         this.currentStep--;
+        this.saveToStorage();
         return true;
       }
       return false;
     }
 
     isFinished() {
-      return this.currentStep >= this.activeQuestions.length - 1 && this.canGoNext();
+      const total = this.getQuestionsCount();
+      return this.currentStep >= total - 1 && this.canGoNext();
     }
 
     getProgressPercentage() {
-      if (this.activeQuestions.length === 0) return 0;
-      return Math.round(((this.currentStep + 1) / this.activeQuestions.length) * 100);
+      const total = this.getQuestionsCount();
+      if (total === 0) return 0;
+      return Math.round(((this.currentStep + 1) / total) * 100);
     }
 
     /**
-     * Calcula los resultados multidimensionales
+     * Calcula los resultados multidimensionales y el triaje clínico
      */
     calculateResults() {
-      const axisRaw = {
-        autonomo: 0,
-        sueno: 0,
-        cardiometabolico: 0,
-        terreno: 0,
-        ocupacional: 0
-      };
+      const activeDimensions = this.getActiveQuestions();
+      const axisRaw = { autonomo: 0, sueno: 0, cardiometabolico: 0, terreno: 0, ocupacional: 0 };
+      const axisMax = { autonomo: 0, sueno: 0, cardiometabolico: 0, terreno: 0, ocupacional: 0 };
 
-      const axisMax = {
-        autonomo: 0,
-        sueno: 0,
-        cardiometabolico: 0,
-        terreno: 0,
-        ocupacional: 0
-      };
+      // Calcular puntos obtenidos y máximos teóricos posibles por eje
+      activeDimensions.forEach(dim => {
+        const ans = this.answers[dim.id];
+        const selectedWeights = (ans && !ans.isOptimal) ? (ans.weights || {}) : {};
 
-      // Cálculo de aportes brutos y máximos teóricos por eje
-      this.activeQuestions.forEach(q => {
-        const ans = this.answers[q.id];
-        const selectedWeights = ans ? ans.weights : {};
-
-        // Encontrar los máximos posibles de esta pregunta por eje
-        let maxWeightsForQ = {};
-        q.options.forEach(opt => {
-          Object.keys(opt.weights || {}).forEach(k => {
-            maxWeightsForQ[k] = Math.max(maxWeightsForQ[k] || 0, opt.weights[k]);
+        // Sumar los máximos de todos los chips de esta dimensión
+        dim.items.forEach(it => {
+          Object.keys(it.weights || {}).forEach(k => {
+            axisMax[k] = (axisMax[k] || 0) + it.weights[k];
           });
         });
 
-        Object.keys(maxWeightsForQ).forEach(k => {
-          axisMax[k] = (axisMax[k] || 0) + maxWeightsForQ[k];
-        });
-
+        // Sumar los pesos de los chips seleccionados por el usuario
         Object.keys(selectedWeights).forEach(k => {
           axisRaw[k] = (axisRaw[k] || 0) + selectedWeights[k];
         });
       });
 
-      // Normalización a escala 0-100 (donde 0 = óptimo, 100 = sobrecarga severa)
+      // Normalización a escala 0-100 por eje (0 = óptimo, 100 = sobrecarga severa)
       const axisScores = {};
-      const axisResilience = {}; // Escala positiva de resiliencia (100 = excelente)
+      const axisResilience = {};
 
       Object.keys(AXES).forEach(k => {
         const raw = axisRaw[k] || 0;
@@ -489,52 +519,47 @@
         axisResilience[k] = 100 - normalized;
       });
 
-      // Score Global de Carga Celular con Modulación por Pico Crítico
-      // Combina la carga sistémica difusa (70%) con el eje de máxima sobrecarga focalizada (30%)
-      const weights = {
-        autonomo: 0.25,
-        sueno: 0.20,
-        cardiometabolico: 0.25,
-        terreno: 0.20,
-        ocupacional: 0.10
-      };
-
+      // Score Global con Modulación por Pico Crítico (70% carga difusa + 30% pico unipolar)
+      const w = SCORING_CONFIG.weights;
       let weightedAverage = 0;
       let maxAxisScore = 0;
-      Object.keys(weights).forEach(k => {
+      let maxAxisKey = 'autonomo';
+
+      Object.keys(w).forEach(k => {
         const val = axisScores[k] || 0;
-        weightedAverage += val * weights[k];
+        weightedAverage += val * w[k];
         if (val > maxAxisScore) {
           maxAxisScore = val;
+          maxAxisKey = k;
         }
       });
 
-      // Modulación por pico crítico: evita la dilución de crisis uniaxiales graves
       let globalChargeScore = Math.round((weightedAverage * 0.7) + (maxAxisScore * 0.3));
       globalChargeScore = Math.min(100, Math.max(0, globalChargeScore));
 
-      // Determinación de nivel clínico con override por eje crítico
+      // Estratificación de Riesgo con Override Uniaxial
+      const t = SCORING_CONFIG.thresholds;
       let riskLevel = 'bajo';
       let riskBadge = 'Carga Celular Baja 🟢';
       let riskColor = '#10B981';
       let riskTitle = 'Equilibrio Bioeléctrico en Rango Compensatorio';
-      let riskSummary = 'Tu organismo mantiene una adecuada capacidad de adaptación homeostática. Los mecanismos de regulación celular y variabilidad autonómica se encuentran en niveles funcionales estables.';
+      let riskSummary = 'Tu organismo mantiene una adecuada capacidad de adaptación homeostática. Los mecanismos de regulación celular, tono vagal y biofísica intersticial se encuentran en rangos funcionales estables.';
 
-      if (globalChargeScore > 55 || maxAxisScore >= 75) {
+      if (globalChargeScore > t.highGlobal || maxAxisScore >= t.highMaxAxis) {
         riskLevel = 'alto';
         riskBadge = 'Sobrecarga Multisistémica Activa 🔴';
         riskColor = '#EF4444';
-        riskTitle = 'Señales Críticas de Estrés Celular y Fatiga Funcional';
-        riskSummary = 'Detectamos una acumulación simultánea de tensión neuroautonómica, alteración del terreno intersticial o fatiga circadiana severa. Estos desequilibrios funcionales sostenidos elevan el riesgo de disfunciones cardiometabólicas si no se corrigen a tiempo.';
-      } else if (globalChargeScore >= 25 || maxAxisScore >= 50) {
+        riskTitle = 'Señales de Estrés Celular y Fatiga Funcional Sostenida';
+        riskSummary = 'Detectamos una acumulación simultánea de tensión neuroautonómica, alteración del terreno intersticial o fatiga circadiana. Estos desequilibrios funcionales sostenidos pueden elevar el riesgo de disfunciones si no se abordan a tiempo.';
+      } else if (globalChargeScore >= t.moderateGlobal || maxAxisScore >= t.moderateMaxAxis) {
         riskLevel = 'moderado';
         riskBadge = 'Carga Celular Moderada 🟡';
         riskColor = '#F59E0B';
         riskTitle = 'Desequilibrios Funcionales Silenciosos Detectados';
-        riskSummary = 'Tu perfil evidencia signos tempranos de acidez tisular, tensión simpática sostenida o fatiga de recuperación. Aunque tu cuerpo aún compensa, estas variaciones en fluido intersticial representan una ventana preventiva ideal antes de que se consoliden síntomas clínicos.';
+        riskSummary = 'Tu perfil evidencia signos tempranos de acidez tisular, tensión simpática sostenida o fatiga de recuperación. Aunque tu organismo aún compensa, estas variaciones en fluido intersticial representan una ventana preventiva ideal.';
       }
 
-      // Identificar los 2 ejes con mayor sobrecarga
+      // Ordenar ejes por nivel de sobrecarga
       const sortedAxes = Object.keys(axisScores)
         .map(k => ({ id: k, score: axisScores[k], meta: AXES[k] }))
         .sort((a, b) => b.score - a.score);
@@ -542,12 +567,12 @@
       const dominantAxis1 = sortedAxes[0];
       const dominantAxis2 = sortedAxes[1];
 
-      // Generar síntesis fisiológica personalizada
+      // Síntesis Fisiológica Personalizada
       let physiologicalInsight = '';
       if (dominantAxis1.score >= 35) {
-        physiologicalInsight = `Tu principal foco de atención es el eje de **${dominantAxis1.meta.name}** (${dominantAxis1.score}/100), secundado por **${dominantAxis2.meta.name}** (${dominantAxis2.score}/100). Este patrón suele reflejar un gasto energético compensatorio elevado en fluido intersticial que la medicina convencional no suele cuantificar hasta que los valores sanguíneos se alteran.`;
+        physiologicalInsight = `Tu principal foco de atención es el eje de **${dominantAxis1.meta.name}** (${dominantAxis1.score}/100), secundado por **${dominantAxis2.meta.name}** (${dominantAxis2.score}/100). Este patrón suele asociarse a un gasto compensatorio elevado en fluido intersticial que la medicina convencional no suele cuantificar antes de que los análisis sanguíneos se alteren.`;
       } else {
-        physiologicalInsight = 'Tus marcadores se encuentran en rangos estables. Una evaluación preventiva periódica con ES-Complex permite anticipar fluctuaciones sutiles en resistencia celular y tono vagal.';
+        physiologicalInsight = 'Tus marcadores se encuentran en rangos de estabilidad. Una evaluación periódica con ES-Complex permite anticipar fluctuaciones sutiles en resistencia celular y tono vagal.';
       }
 
       this.calculatedResult = {
@@ -564,14 +589,14 @@
         sortedAxes,
         dominantAxis1,
         dominantAxis2,
-        totalQuestionsAnswered: Object.keys(this.answers).length
+        totalDimensionsAnswered: Object.keys(this.answers).length
       };
 
       return this.calculatedResult;
     }
 
     /**
-     * Construye el enlace y mensaje estructurado para WhatsApp
+     * Construye el enlace con payload enriquecido para WhatsApp
      */
     generateWhatsAppUrl(userName = '', phone = '525585327421') {
       if (!this.calculatedResult) {
@@ -598,15 +623,61 @@
         `🎯 *Motivo:* Deseo agendar mi *Evaluación Multisistémica ES-Complex ($3,900 MXN)* para mapear objetivamente mi líquido intersticial y balance bioeléctrico en clínica.`
       ];
 
-      const message = lines.join('\n');
-      return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+      return `https://wa.me/${phone}?text=${encodeURIComponent(lines.join('\n'))}`;
+    }
+
+    /**
+     * Persistencia Resiliente en localStorage
+     */
+    saveToStorage() {
+      try {
+        if (typeof window !== 'undefined' && window.localStorage) {
+          const payload = {
+            currentStep: this.currentStep,
+            answers: this.answers,
+            timestamp: Date.now()
+          };
+          window.localStorage.setItem(SCORING_CONFIG.storageKey, JSON.stringify(payload));
+        }
+      } catch (e) {
+        // Ignorar excepciones en entornos privados/restringidos
+      }
+    }
+
+    loadFromStorage() {
+      try {
+        if (typeof window !== 'undefined' && window.localStorage) {
+          const raw = window.localStorage.getItem(SCORING_CONFIG.storageKey);
+          if (!raw) return false;
+          const data = JSON.parse(raw);
+          if (Date.now() - data.timestamp < SCORING_CONFIG.storageTtlMs) {
+            this.currentStep = data.currentStep || 0;
+            this.answers = data.answers || {};
+            return true;
+          } else {
+            this.clearStorage();
+          }
+        }
+      } catch (e) {
+        // Ignorar corrupción de storage
+      }
+      return false;
+    }
+
+    clearStorage() {
+      try {
+        if (typeof window !== 'undefined' && window.localStorage) {
+          window.localStorage.removeItem(SCORING_CONFIG.storageKey);
+        }
+      } catch (e) {}
     }
   }
 
   return {
     AXES,
-    BASE_QUESTIONS,
-    CONDITIONAL_QUESTIONS,
+    SCORING_CONFIG,
+    BASE_DIMENSIONS,
+    CONDITIONAL_DIMENSIONS,
     TestEngine,
     createInstance: () => new TestEngine()
   };
