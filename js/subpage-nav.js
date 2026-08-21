@@ -58,4 +58,18 @@
   window.addEventListener('resize', function () {
     if (window.innerWidth > 768) close();
   });
+
+  // Sticky CTA Observer para todas las subpáginas
+  var stickyCta = document.querySelector('.sticky-cta');
+  if (stickyCta) {
+    var checkSticky = function () {
+      if (window.scrollY > 300) {
+        stickyCta.classList.add('visible');
+      } else {
+        stickyCta.classList.remove('visible');
+      }
+    };
+    window.addEventListener('scroll', checkSticky, { passive: true });
+    checkSticky();
+  }
 })();
