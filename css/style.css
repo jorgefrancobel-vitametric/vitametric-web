@@ -135,25 +135,25 @@
    quedan oscuras a propósito en ambos temas: son las zonas de autoridad/técnica,
    no cambian con el toggle. Todo lo demás lee estos tokens. */
 :root[data-theme="light"] {
-  --c-bg:           #C4D6FA;
-  --c-bg-mid:       #B5CCF7;
-  --c-bg-surface:   #DCE7FD;
-  --c-bg-card:      #D2E0FC;
-  --c-bg-card-alt:  #C3D5F9;
+  --c-bg:           #FFFFFF;
+  --c-bg-mid:       #F4F8FC;
+  --c-bg-surface:   #FFFFFF;
+  --c-bg-card:      #FFFFFF;
+  --c-bg-card-alt:  #EFF5FB;
 
-  --c-primary:      #051338;
-  --c-heading:      #051338;
-  --c-text:         rgba(5,19,56,0.88);
-  --c-muted:        rgba(5,19,56,0.65);
+  --c-primary:      #071E3D;
+  --c-heading:      #071E3D;
+  --c-text:         rgba(7,30,61,0.85);
+  --c-muted:        rgba(7,30,61,0.60);
 
-  --c-cyan:         #3658F1;
-  --c-cyan-dark:    #1F3DC9;
-  --c-cyan-glow:    rgba(54,88,241,0.35);
-  --c-cyan-soft:    rgba(54,88,241,0.12);
-  --c-green:        #068A5B;
-  --c-green-dark:   #045C3D;
-  --c-green-glow:   rgba(6,138,91,0.25);
-  --c-green-soft:   rgba(6,138,91,0.12);
+  --c-cyan:         #0077B6;
+  --c-cyan-dark:    #005B8C;
+  --c-cyan-glow:    rgba(0,119,182,0.25);
+  --c-cyan-soft:    rgba(0,119,182,0.08);
+  --c-green:        #00875A;
+  --c-green-dark:   #006644;
+  --c-green-glow:   rgba(0,135,90,0.20);
+  --c-green-soft:   rgba(0,135,90,0.08);
 
   --c-secondary:       var(--c-cyan);
   --c-secondary-dark:  var(--c-cyan-dark);
@@ -161,18 +161,18 @@
   --c-accent:          var(--c-green);
   --c-accent-dark:     var(--c-green-dark);
 
-  --c-border:       rgba(54,88,241,0.22);
-  --c-border-light: rgba(54,88,241,0.12);
+  --c-border:       rgba(0,119,182,0.18);
+  --c-border-light: rgba(0,119,182,0.08);
 
-  --c-card-rgb:     210,224,252;
-  --c-navbar-rgb:   196,214,250;
+  --c-card-rgb:     255,255,255;
+  --c-navbar-rgb:   255,255,255;
 
-  --shadow-sm:  0 1px 3px rgba(5,19,56,0.08), 0 0 8px rgba(54,88,241,0.08);
-  --shadow-md:  0 4px 16px rgba(5,19,56,0.10), 0 0 20px rgba(54,88,241,0.10);
-  --shadow-lg:  0 10px 30px rgba(5,19,56,0.12), 0 0 40px rgba(54,88,241,0.12);
-  --shadow-xl:  0 20px 50px rgba(5,19,56,0.14), 0 0 60px rgba(54,88,241,0.14);
-  --glow-cyan:  0 0 20px rgba(118,170,255,0.45), 0 0 40px rgba(54,88,241,0.25);
-  --glow-green: 0 0 20px rgba(6,138,91,0.30), 0 0 40px rgba(6,138,91,0.15);
+  --shadow-sm:  0 1px 3px rgba(7,30,61,0.06), 0 0 8px rgba(0,119,182,0.05);
+  --shadow-md:  0 4px 16px rgba(7,30,61,0.08), 0 0 20px rgba(0,119,182,0.06);
+  --shadow-lg:  0 10px 30px rgba(7,30,61,0.10), 0 0 40px rgba(0,119,182,0.08);
+  --shadow-xl:  0 20px 50px rgba(7,30,61,0.12), 0 0 60px rgba(0,119,182,0.10);
+  --glow-cyan:  0 0 20px rgba(0,119,182,0.30), 0 0 40px rgba(0,119,182,0.15);
+  --glow-green: 0 0 20px rgba(0,135,90,0.25), 0 0 40px rgba(0,135,90,0.10);
 }
 
 /* ── Reset & Responsive Guard ── */
@@ -520,9 +520,9 @@ li.theme-toggle-item { display: flex; align-items: center; }
 }
 [data-theme="light"] .hero-gradient {
   background:
-    radial-gradient(ellipse 80% 60% at 65% 40%, rgba(118,170,255,0.35) 0%, transparent 70%),
-    radial-gradient(ellipse 55% 45% at 15% 85%, rgba(54,88,241,0.25) 0%, transparent 65%),
-    linear-gradient(160deg, #C4D6FA 0%, #DCE7FD 45%, #B5CCF7 100%);
+    radial-gradient(ellipse 80% 60% at 65% 35%, rgba(0, 119, 182, 0.08) 0%, transparent 70%),
+    radial-gradient(ellipse 55% 45% at 15% 85%, rgba(0, 135, 90, 0.05) 0%, transparent 65%),
+    linear-gradient(160deg, #FFFFFF 0%, #F4F8FC 45%, #E8F2FA 100%);
 }
 
 /* El motivo rizomático real es el canvas animado (#heroCanvas, ver js/main.js
@@ -558,9 +558,9 @@ li.theme-toggle-item { display: flex; align-items: center; }
   border: 1px solid rgba(0,200,255,0.08);
   animation: blob-drift 15s ease-in-out infinite 2s;
 }
-[data-theme="light"] .hero-orb-1 { background: radial-gradient(circle at 35% 35%, rgba(118,170,255,0.30), rgba(54,88,241,0.15) 55%, transparent 75%); border-color: rgba(54,88,241,0.25); }
-[data-theme="light"] .hero-orb-2 { background: radial-gradient(circle at 40% 40%, rgba(6,138,91,0.20), rgba(6,138,91,0.06) 55%, transparent 75%); border-color: rgba(6,138,91,0.20); }
-[data-theme="light"] .hero-orb-3 { background: radial-gradient(circle at 40% 40%, rgba(54,88,241,0.25), transparent 70%); border-color: rgba(54,88,241,0.20); }
+[data-theme="light"] .hero-orb-1 { background: radial-gradient(circle at 35% 35%, rgba(0,119,182,0.12), rgba(0,119,182,0.03) 55%, transparent 75%); border-color: rgba(0,119,182,0.14); }
+[data-theme="light"] .hero-orb-2 { background: radial-gradient(circle at 40% 40%, rgba(0,135,90,0.10), rgba(0,135,90,0.02) 55%, transparent 75%); border-color: rgba(0,135,90,0.12); }
+[data-theme="light"] .hero-orb-3 { background: radial-gradient(circle at 40% 40%, rgba(0,119,182,0.12), transparent 70%); border-color: rgba(0,119,182,0.12); }
 @keyframes blob-drift {
   0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
   33%       { transform: translateY(-16px) rotate(4deg) scale(1.03); }
@@ -1259,22 +1259,7 @@ li.theme-toggle-item { display: flex; align-items: center; }
   .nav-logo-tagline { display: none; }
   .nav-logo-img    { height: 48px; max-height: 48px; width: auto; object-fit: contain; }
 
-  /* Hero background image fallback on tablet */
-  .hero {
-    background-image: url('../assets/img/hero-bg.webp');
-    background-size: cover;
-    background-position: center;
-    position: relative;
-  }
-  .hero::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: linear-gradient(160deg, rgba(2,12,27,0.92) 0%, rgba(4,24,48,0.87) 100%);
-    z-index: 0;
-  }
-  .hero-container { position: relative; z-index: 1; }
-  [data-theme="light"] .hero { background-image: none; }
-  [data-theme="light"] .hero::before { background: linear-gradient(160deg, rgba(231,241,250,0.95) 0%, rgba(218,234,245,0.9) 100%); }
+  .hero-container { position: relative; z-index: 2; }
 }
 
 
