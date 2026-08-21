@@ -448,7 +448,7 @@
       const currentDim = this.getCurrentQuestion();
       if (!currentDim) return false;
       const ans = this.answers[currentDim.id];
-      return ans !== undefined && (ans.isOptimal || ans.selectedItemIds.length > 0);
+      return ans !== undefined && (ans.isOptimal || (ans.selectedItemIds && ans.selectedItemIds.length > 0));
     }
 
     next() {
@@ -475,10 +475,18 @@
       return this.currentStep >= total - 1 && this.canGoNext();
     }
 
+    /**
+     * Progreso real basado en dimensiones activas respondidas (empieza en 0% antes de responder)
+     */
     getProgressPercentage() {
-      const total = this.getQuestionsCount();
+      const active = this.getActiveQuestions();
+      const total = active.length;
       if (total === 0) return 0;
-      return Math.round(((this.currentStep + 1) / total) * 100);
+      const answered = active.filter(d => {
+        const a = this.answers[d.id];
+        return a !== undefined && (a.isOptimal || (a.selectedItemIds && a.selectedItemIds.length > 0));
+      }).length;
+      return Math.round((answered / total) * 100);
     }
 
     /**

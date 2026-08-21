@@ -1,7 +1,8 @@
 /**
  * Vitametric — Interfaz de Usuario y Telemetría del Test Celular
  * Controlador visual del wizard con matriz de micro-chips ortogonales,
- * accesibilidad ARIA, persistencia resiliente y telemetría bioeléctrica.
+ * navegación manual explícita por el usuario, accesibilidad ARIA,
+ * persistencia resiliente y telemetría bioeléctrica.
  */
 
 (function() {
@@ -37,7 +38,7 @@
     const optionsList = document.getElementById('test-options-list');
     const prevBtn = document.getElementById('test-btn-prev');
 
-    // Botón Siguiente / Continuar dinámico
+    // Botón Siguiente / Continuar manual explícito
     let nextBtn = document.getElementById('test-btn-next');
     if (!nextBtn) {
       const navContainer = prevBtn ? prevBtn.parentElement : wizardBox;
@@ -45,7 +46,7 @@
       nextBtn.id = 'test-btn-next';
       nextBtn.type = 'button';
       nextBtn.className = 'btn btn-primary';
-      nextBtn.style.cssText = 'padding: 0.55rem 1.4rem; font-size: 0.9rem; margin-left: auto; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;';
+      nextBtn.style.cssText = 'padding: 0.6rem 1.5rem; font-size: 0.92rem; margin-left: auto; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-weight: 700; border-radius: 6px; transition: all 0.2s ease;';
       nextBtn.innerHTML = 'Continuar <span>→</span>';
       if (navContainer) {
         navContainer.style.display = 'flex';
@@ -93,7 +94,7 @@
         qSubtitle.textContent = dim.subtitle || '';
       }
 
-      // Estado temporal de selección en esta pantalla
+      // Estado guardado para esta dimensión (si el usuario ya había seleccionado algo antes)
       const existingAnswer = engine.answers[dim.id];
       let selectedIds = existingAnswer ? [...(existingAnswer.selectedItemIds || [])] : [];
       let isOptimalSelected = existingAnswer ? !!existingAnswer.isOptimal : false;
@@ -102,8 +103,9 @@
         if (!nextBtn) return;
         const hasSelection = isOptimalSelected || selectedIds.length > 0;
         nextBtn.disabled = !hasSelection;
-        nextBtn.style.opacity = hasSelection ? '1' : '0.45';
+        nextBtn.style.opacity = hasSelection ? '1' : '0.4';
         nextBtn.style.cursor = hasSelection ? 'pointer' : 'not-allowed';
+        nextBtn.innerHTML = (currentIdx === totalDims - 1) ? 'Ver resultados <span>→</span>' : 'Continuar <span>→</span>';
       }
 
       // Renderizar Matriz de Micro-Chips
@@ -189,7 +191,13 @@
             } else {
               selectedIds.push(it.id);
             }
-            engine.answerDimension(dim.id, selectedIds, isOptimalSelected);
+
+            if (selectedIds.length > 0) {
+              engine.answerDimension(dim.id, selectedIds, false);
+            } else {
+              delete engine.answers[dim.id];
+              engine.saveToStorage();
+            }
             renderCurrentQuestion();
           };
 
@@ -255,15 +263,16 @@
           optChip.appendChild(optTextSpan);
 
           optChip.onclick = () => {
-            isOptimalSelected = true;
-            selectedIds = [];
-            engine.answerDimension(dim.id, selectedIds, isOptimalSelected);
-            if (engine.isFinished()) {
-              renderResults(engine.calculateResults());
+            if (isOptimalSelected) {
+              isOptimalSelected = false;
+              delete engine.answers[dim.id];
+              engine.saveToStorage();
             } else {
-              engine.next();
-              renderCurrentQuestion();
+              isOptimalSelected = true;
+              selectedIds = [];
+              engine.answerDimension(dim.id, [], true);
             }
+            renderCurrentQuestion();
           };
 
           chipsGrid.appendChild(optChip);
@@ -274,7 +283,7 @@
 
       updateNextButtonState();
 
-      // Botón "Continuar"
+      // Botón "Continuar / Ver resultados" manual explícito
       if (nextBtn) {
         nextBtn.onclick = () => {
           if (!engine.canGoNext()) return;
