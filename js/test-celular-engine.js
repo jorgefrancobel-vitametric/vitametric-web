@@ -95,27 +95,27 @@
         {
           id: 'item_aut_tension_cervical',
           text: 'Tensión muscular o contracturas frecuentes en cuello, hombros o trapecios.',
-          weights: { autonomo: 14, ocupacional: 8 }
+          weights: { autonomo: 14 }
         },
         {
           id: 'item_aut_bruxismo',
           text: 'Apretamiento dental nocturno o sobretensión involuntaria en mandíbula (bruxismo).',
-          weights: { autonomo: 18, sueno: 10 }
+          weights: { autonomo: 18 }
         },
         {
           id: 'item_aut_taquicardia',
           text: 'Palpitaciones, taquicardias ocasionales o sensación de pecho acelerado ante estrés.',
-          weights: { autonomo: 28, cardiometabolico: 18 }
+          weights: { autonomo: 28 }
         },
         {
           id: 'item_aut_mente_acelerada',
           text: 'Dificultad para desconectar la mente al acostarse o sensación de urgencia interior continua.',
-          weights: { autonomo: 20, sueno: 12 }
+          weights: { autonomo: 20 }
         },
         {
           id: 'item_aut_manos_frias',
           text: 'Manos o pies fríos frecuentemente, o sudoración palmar en momentos de exigencia psicofísica.',
-          weights: { autonomo: 14, terreno: 8 }
+          weights: { autonomo: 14 }
         }
       ],
       optimalOption: {
@@ -133,22 +133,22 @@
         {
           id: 'item_sue_inercia_matutina',
           text: 'Fatiga o inercia de sueño prolongada (>30 min al despertar); necesidad indispensable de café para arrancar.',
-          weights: { sueno: 18, autonomo: 8 }
+          weights: { sueno: 18 }
         },
         {
           id: 'item_sue_microdespertares',
           text: 'Microdespertares frecuentes durante la noche o sensación de sueño superficial y ligero.',
-          weights: { sueno: 24, autonomo: 12 }
+          weights: { sueno: 24 }
         },
         {
           id: 'item_sue_latencia_alta',
           text: 'Dificultad marcada para conciliar el sueño (tardo más de 40 a 60 minutos en dormirme).',
-          weights: { sueno: 18, autonomo: 14 }
+          weights: { sueno: 18 }
         },
         {
           id: 'item_sue_pesadez_corporal',
           text: 'Sensación de cuerpo no reparado, pesadez física o falta de descanso acumulada desde hace semanas.',
-          weights: { sueno: 26, terreno: 12, autonomo: 10 }
+          weights: { sueno: 26 }
         }
       ],
       optimalOption: {
@@ -166,17 +166,17 @@
         {
           id: 'item_card_somnolencia_post',
           text: 'Somnolencia pronunciada o caídas drásticas de energía tras comidas (entre 2:00 y 5:00 PM).',
-          weights: { cardiometabolico: 22, terreno: 12 }
+          weights: { cardiometabolico: 22 }
         },
         {
           id: 'item_card_niebla_mental',
           text: 'Niebla mental, dispersión cognitiva o dificultad de concentración en horas de la tarde.',
-          weights: { cardiometabolico: 18, autonomo: 10 }
+          weights: { cardiometabolico: 18 }
         },
         {
           id: 'item_card_antojos_dulces',
           text: 'Apetito recurrente o necesidad intensa de carbohidratos refinados, pan o azúcar por la tarde.',
-          weights: { cardiometabolico: 18, terreno: 14 }
+          weights: { cardiometabolico: 18 }
         },
         {
           id: 'item_card_herencia_familiar',
@@ -186,7 +186,7 @@
         {
           id: 'item_card_diagnostico_propio',
           text: 'Diagnóstico médico previo personal de resistencia a la insulina, hígado graso, dislipidemia o hipertensión.',
-          weights: { cardiometabolico: 40, terreno: 18 }
+          weights: { cardiometabolico: 40 }
         }
       ],
       optimalOption: {
@@ -204,27 +204,27 @@
         {
           id: 'item_ter_distension',
           text: 'Distensión o hinchazón abdominal visible y pesadez gástrica al final de la jornada.',
-          weights: { terreno: 20, autonomo: 6 }
+          weights: { terreno: 20 }
         },
         {
           id: 'item_ter_acidez_reflujo',
           text: 'Sensación de acidez, reflujo gástrico o ardor estomacal frecuente.',
-          weights: { terreno: 20, autonomo: 10 }
+          weights: { terreno: 20 }
         },
         {
           id: 'item_ter_transito_irregular',
           text: 'Tránsito digestivo irregular (estreñimiento recurrente o alternancia con deposiciones sueltas).',
-          weights: { terreno: 18, cardiometabolico: 8 }
+          weights: { terreno: 18 }
         },
         {
           id: 'item_ter_pesadez_piernas',
           text: 'Pesadez o hinchazón visible en piernas/tobillos (marcas de calcetines) tras estar sentado o de pie.',
-          weights: { terreno: 22, cardiometabolico: 14, ocupacional: 10 }
+          weights: { terreno: 22 }
         },
         {
           id: 'item_ter_retencion_parpados',
           text: 'Hinchazón en párpados/manos al despertar o tendencia a extremidades frías constantes.',
-          weights: { terreno: 16, cardiometabolico: 10 }
+          weights: { terreno: 16 }
         }
       ],
       optimalOption: {
@@ -242,22 +242,22 @@
         {
           id: 'item_ocu_sedentarismo_6h',
           text: 'Permanecer sentado más de 6 a 8 horas al día de forma continua con movilidad reducida.',
-          weights: { ocupacional: 26, cardiometabolico: 10 }
+          weights: { ocupacional: 26 }
         },
         {
           id: 'item_ocu_pantallas_continuas',
           text: 'Exposición intensa a pantallas y dispositivos con presencia de fatiga visual o cefalea tensional.',
-          weights: { ocupacional: 20, autonomo: 12 }
+          weights: { ocupacional: 20 }
         },
         {
           id: 'item_ocu_molestia_lumbar',
           text: 'Molestia o rigidez recurrente en zona cervical, dorsal o lumbar al terminar la jornada laboral.',
-          weights: { ocupacional: 26, autonomo: 10 }
+          weights: { ocupacional: 26 }
         },
         {
           id: 'item_ocu_pausas_escasas',
           text: 'Jornadas de trabajo con mínimas pausas activas y dificultad para realizar ejercicio compensatorio regular.',
-          weights: { ocupacional: 18, cardiometabolico: 8 }
+          weights: { ocupacional: 18 }
         }
       ],
       optimalOption: {
@@ -333,12 +333,12 @@
         {
           id: 'item_inf_grasa_visceral',
           text: 'Acumulación predominante de grasa abdominal y dificultad marcada para reducir perímetro de cintura.',
-          weights: { terreno: 26, cardiometabolico: 24 }
+          weights: { terreno: 26 }
         },
         {
           id: 'item_inf_fatiga_muscular',
           text: 'Fatiga o debilidad muscular rápida ante esfuerzos físicos cotidianos que antes resultaban sencillos.',
-          weights: { terreno: 20, cardiometabolico: 16, autonomo: 10 }
+          weights: { terreno: 20 }
         },
         {
           id: 'item_inf_rigidez_articular',
