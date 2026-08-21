@@ -825,7 +825,7 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
     </div>
   </section>
 
-  <!-- SECCIÓN: TEST INTERACTIVO DE SALUD CELULAR (LEAD MAGNET) -->
+  <!-- SECCIÓN: TEST INTERACTIVO DE SALUD CELULAR (LEAD MAGNET MULTIDIMENSIONAL) -->
   <section class="section section-test-celular reveal" id="test-celular" style="background: radial-gradient(circle at 50% 20%, rgba(0, 200, 255, 0.07) 0%, var(--c-bg) 75%); border-top: 1px solid var(--c-border); border-bottom: 1px solid var(--c-border);">
     <style>
       .test-compare-grid {
@@ -844,229 +844,112 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
     </style>
     <div class="container">
       <div class="section-header">
-        <span class="section-tag">Autoevaluación Gratuita</span>
-        <h2 class="section-title">Test de Carga Celular y Estrés Oxidativo</h2>
-        <p class="section-subtitle">Descubre en 1 minuto los desequilibrios silenciosos de tu organismo antes de que se manifiesten como síntomas clínicos irreversibles.</p>
+        <span class="section-tag">Autoevaluación Multidimensional</span>
+        <h2 class="section-title">Test de Resiliencia Celular & Estrés Fisiológico</h2>
+        <p class="section-subtitle">Evaluación de 5 dimensiones biológicas para detectar desequilibrios en fluido intersticial y tono autonómico antes de que se manifiesten como disfunciones irreversibles.</p>
       </div>
 
-      <div class="test-card-box" style="max-width: 780px; margin: 0 auto; background: var(--c-bg-card); border: 1px solid var(--c-border); border-radius: 8px; padding: 2.5rem; box-shadow: 0 10px 40px rgba(0,0,0,0.4);">
+      <div class="test-card-box" style="max-width: 820px; margin: 0 auto; background: var(--c-bg-card); border: 1px solid var(--c-border); border-radius: 8px; padding: 2.5rem; box-shadow: 0 10px 40px rgba(0,0,0,0.4);">
         
-        <!-- Contenedor del Test -->
+        <!-- Contenedor del Wizard del Test -->
         <div id="test-wizard-container">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-            <span id="test-step-label" style="font-size: 0.85rem; color: var(--c-cyan); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Pregunta 1 de 5</span>
-            <span id="test-progress-pct" style="font-size: 0.85rem; color: var(--c-muted);">20% completado</span>
-          </div>
-
-          <!-- Barra de Progreso -->
-          <div style="width: 100%; height: 6px; background: var(--c-bg-mid); border-radius: 3px; overflow: hidden; margin-bottom: 2rem;">
-            <div id="test-progress-bar" style="width: 20%; height: 100%; background: linear-gradient(90deg, var(--c-cyan), var(--c-green)); transition: width 0.3s ease;"></div>
-          </div>
-
-          <!-- Pregunta Dinámica -->
-          <div id="test-question-box" style="min-height: 180px;">
-            <h3 id="test-q-title" style="font-size: var(--fs-xl); color: var(--c-heading); margin-bottom: 1.25rem; font-weight: var(--fw-bold);">¿Cómo describes tu nivel de energía al despertar por las mañanas?</h3>
-            <div id="test-options-list" style="display: flex; flex-direction: column; gap: 0.75rem;">
-              <!-- Opciones inyectadas por JS -->
+          <!-- Header de Dimensión y Progreso -->
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem;">
+            <div id="test-axis-badge" style="display: inline-flex; align-items: center; padding: 0.35rem 0.85rem; border-radius: 20px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; border: 1.5px solid var(--c-cyan); color: var(--c-cyan); background: rgba(0,200,255,0.08);">
+              🔬 Eje Clínico
             </div>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+              <span id="test-step-label" style="font-size: 0.85rem; color: var(--c-muted); font-weight: 600;">Dimensión 1 de 7</span>
+              <span id="test-progress-pct" style="font-size: 0.85rem; color: var(--c-cyan); font-weight: 700;">14% completado</span>
+            </div>
+          </div>
+
+          <!-- Barra de Progreso Dinámica -->
+          <div style="width: 100%; height: 6px; background: var(--c-bg-mid); border-radius: 3px; overflow: hidden; margin-bottom: 2rem;">
+            <div id="test-progress-bar" style="width: 14%; height: 100%; background: linear-gradient(90deg, var(--c-cyan), var(--c-green)); transition: width 0.3s ease;"></div>
+          </div>
+
+          <!-- Pregunta Dinámica y Subtítulo Fisiológico -->
+          <div id="test-question-box" style="min-height: 200px; margin-bottom: 1.5rem;">
+            <h3 id="test-q-title" style="font-size: var(--fs-xl); color: var(--c-heading); margin-bottom: 0.6rem; font-weight: var(--fw-bold); line-height: 1.35;">Cargando evaluación...</h3>
+            <p id="test-q-subtitle" style="font-size: 0.9rem; color: var(--c-muted); margin-bottom: 1.5rem; line-height: 1.5;"></p>
+            <div id="test-options-list" style="display: flex; flex-direction: column; gap: 0.85rem;">
+              <!-- Opciones inyectadas dinámicamente -->
+            </div>
+          </div>
+
+          <!-- Botones de Navegación -->
+          <div style="display: flex; justify-content: flex-start; margin-top: 1rem; border-top: 1px solid var(--c-border); padding-top: 1rem;">
+            <button id="test-btn-prev" type="button" class="btn btn-outline" style="display: none; padding: 0.5rem 1.2rem; font-size: 0.85rem; cursor: pointer;">
+              ← Pregunta anterior
+            </button>
           </div>
         </div>
 
-        <!-- Pantalla de Resultados (Oculta por defecto) -->
+        <!-- Pantalla de Resultados de Triaje (Oculta por defecto) -->
         <div id="test-results-container" style="display: none; text-align: center;">
-          <div id="result-badge" style="display: inline-block; padding: 0.4rem 1.2rem; border-radius: 4px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; margin-bottom: 1rem;">
-            Índice de Carga: Moderado
+          <div id="result-badge" style="display: inline-block; padding: 0.45rem 1.3rem; border-radius: 4px; font-size: 0.9rem; font-weight: 800; text-transform: uppercase; margin-bottom: 1rem; letter-spacing: 0.05em;">
+            Carga Celular: Moderada
           </div>
           
-          <h3 id="result-title" style="font-size: var(--fs-2xl); color: var(--c-heading); margin-bottom: 1rem; font-weight: var(--fw-bold);">Señales de Estrés Oxidativo Detectadas</h3>
+          <h3 id="result-title" style="font-size: var(--fs-2xl); color: var(--c-heading); margin-bottom: 0.85rem; font-weight: var(--fw-bold);">Variaciones Funcionales y Estrés Fisiológico Detectados</h3>
           
-          <p id="result-desc" style="color: var(--c-text); font-size: var(--fs-base); line-height: 1.6; max-width: 620px; margin: 0 auto 2rem;">
-            Tu perfil indica variaciones funcionales en la recuperación de energía y niveles de inflamación celular. Identificar la causa raíz en líquido intersticial y balance bioeléctrico permite prevenir el desarrollo de desequilibrios crónicos.
+          <p id="result-desc" style="color: var(--c-text); font-size: var(--fs-base); line-height: 1.6; max-width: 680px; margin: 0 auto 1.5rem;">
+            Tu perfil indica variaciones en la recuperación autonómica, pH del líquido intersticial y balance circadiano. Identificar estas señales a nivel celular permite prevenir el desarrollo de desequilibrios metabólicos crónicos.
           </p>
 
-          <!-- Tarjeta de Comparación de Valor -->
+          <!-- Hallazgo Fisiológico Dominante -->
+          <div id="result-insight-box" style="background: rgba(0, 200, 255, 0.05); border: 1px solid var(--c-cyan); border-radius: 6px; padding: 1.25rem 1.5rem; margin-bottom: 1.5rem; text-align: left;">
+            <!-- Inyectado por JS -->
+          </div>
+
+          <!-- Contenedor de Telemetría Multidimensional por Ejes -->
+          <div id="result-telemetry-container">
+            <!-- Barras generadas por test-celular-ui.js -->
+          </div>
+
+          <!-- Tarjeta de Comparación de Valor Clínico -->
           <div style="background: var(--c-bg-mid); border: 1px solid var(--c-border); border-radius: 6px; padding: 1.5rem; margin-bottom: 2rem; text-align: left;">
-            <div style="font-size: 0.85rem; color: var(--c-cyan); font-weight: 600; text-transform: uppercase; margin-bottom: 0.75rem;">Comparativa de Diagnóstico Predictivo:</div>
+            <div style="font-size: 0.85rem; color: var(--c-cyan); font-weight: 700; text-transform: uppercase; margin-bottom: 0.85rem; letter-spacing: 0.05em;">
+              Comparativa de Diagnóstico Funcional & Predictivo:
+            </div>
             
             <div class="test-compare-grid">
-              <div style="padding: 1rem; background: rgba(220, 38, 38, 0.06); border: 1px solid rgba(220, 38, 38, 0.25); border-radius: 4px;">
-                <div style="font-size: 0.8rem; color: #DC2626; font-weight: 600;">Checkup Convencional en Laboratorio</div>
-                <div style="font-size: 1.3rem; font-weight: 800; color: var(--c-heading); margin: 0.25rem 0;">+$30,000 MXN</div>
-                <div style="font-size: 0.75rem; color: var(--c-muted);">Múltiples tomas de sangre, ayuno prolongado, invasivo y días de espera.</div>
+              <div style="padding: 1.2rem; background: rgba(220, 38, 38, 0.06); border: 1px solid rgba(220, 38, 38, 0.25); border-radius: 6px;">
+                <div style="font-size: 0.82rem; color: #DC2626; font-weight: 700;">Checkup Convencional de Laboratorio</div>
+                <div style="font-size: 1.35rem; font-weight: 800; color: var(--c-heading); margin: 0.35rem 0;">+$30,000 MXN</div>
+                <div style="font-size: 0.78rem; color: var(--c-muted); line-height: 1.45;">Múltiples punciones sanguíneas, ayuno estricto, invasivo y días de espera. Solo detecta alteraciones tardías en sangre.</div>
               </div>
 
-              <div style="padding: 1rem; background: rgba(0, 200, 255, 0.08); border: 1px solid var(--c-cyan); border-radius: 4px;">
-                <div style="font-size: 0.8rem; color: var(--c-cyan); font-weight: 600;">Evaluación Multisistémica ES Complex</div>
-                <div style="font-size: 1.3rem; font-weight: 800; color: var(--c-green); margin: 0.25rem 0;">$3,900 MXN</div>
-                <div style="font-size: 0.75rem; color: var(--c-text);">5 min, sin agujas, sin dolor, sin ayuno. Mapa 3D e interpretación inmediata.</div>
+              <div style="padding: 1.2rem; background: rgba(0, 200, 255, 0.08); border: 1.5px solid var(--c-cyan); border-radius: 6px;">
+                <div style="font-size: 0.82rem; color: var(--c-cyan); font-weight: 700;">Evaluación Multisistémica ES-Complex</div>
+                <div style="font-size: 1.35rem; font-weight: 800; color: var(--c-green); margin: 0.35rem 0;">$3,900 MXN</div>
+                <div style="font-size: 0.78rem; color: var(--c-text); line-height: 1.45;">5 minutos, sin agujas, sin dolor, sin ayuno. Mapeo 3D de líquido intersticial, VFC y reporte predictivo inmediato.</div>
               </div>
             </div>
           </div>
 
-          <div style="display: flex; flex-direction: column; gap: 0.75rem; max-width: 450px; margin: 0 auto;">
-            <a id="btn-enviar-wa-test" href="#" target="_blank" class="btn btn-primary btn-lg btn-glow" style="width: 100%; justify-content: center;">
-              Enviar mis respuestas y agendar valoración
+          <!-- Botones de Conversión WhatsApp -->
+          <div style="display: flex; flex-direction: column; gap: 0.85rem; max-width: 480px; margin: 0 auto;">
+            <a id="btn-enviar-wa-test" href="#" target="_blank" class="btn btn-primary btn-lg btn-glow" style="width: 100%; justify-content: center; font-size: 1.05rem; padding: 1rem 1.5rem;">
+              Enviar mis resultados y agendar escaneo ES-Complex
             </a>
-            <button onclick="resetTest()" style="background: none; border: none; color: var(--c-muted); font-size: 0.8rem; cursor: pointer; text-decoration: underline;">
-              Volver a realizar el test
+            <button onclick="resetTest()" type="button" style="background: none; border: none; color: var(--c-muted); font-size: 0.85rem; cursor: pointer; text-decoration: underline; padding: 0.4rem;">
+              Volver a realizar la autoevaluación
             </button>
           </div>
 
-          <div style="margin-top: 1.5rem; font-size: 0.75rem; color: var(--c-muted);">
-            *Consulte a su médico. </div>
+          <div style="margin-top: 1.75rem; font-size: 0.78rem; color: var(--c-muted); line-height: 1.5; max-width: 600px; margin-left: auto; margin-right: auto;">
+            *Aviso legal: Esta autoevaluación es una herramienta de orientación preventiva y no constituye un diagnóstico médico. Los valores se confirman objetivamente en la consulta presencial con el sistema ES-Complex.
+          </div>
         </div>
 
       </div>
     </div>
   </section>
 
-  <script>
-  (function() {
-    const questions = [
-      {
-        title: "¿Cómo describes tu nivel de energía al despertar por las mañanas?",
-        options: [
-          { text: "Me despierto con energía y listo para el día", score: 0 },
-          { text: "Tardo en arrancar pero mejoro con cafeína", score: 1 },
-          { text: "Fatiga frecuente, siento que no descansé", score: 2 },
-          { text: "Agotamiento crónico persistente desde hace meses", score: 3 }
-        ]
-      },
-      {
-        title: "¿Experimentas niebla mental, falta de concentración o fatiga vespertina?",
-        options: [
-          { text: "Casi nunca, mi claridad mental es constante", score: 0 },
-          { text: "Ocasionalmente después de comer pesado", score: 1 },
-          { text: "Frecuente caída de energía entre 2:00 y 5:00 PM", score: 2 },
-          { text: "Constante dificultad para concentrarme y pesadez", score: 3 }
-        ]
-      },
-      {
-        title: "¿Cómo es tu digestión e inflamación abdominal?",
-        options: [
-          { text: "Ligera y regular, sin molestias habituales", score: 0 },
-          { text: "Inflamación leve con ciertos alimentos específicos", score: 1 },
-          { text: "Distensión frecuente, reflujo o pesadez habitual", score: 2 },
-          { text: "Problemas digestivos diarios y dolor recurrente", score: 3 }
-        ]
-      },
-      {
-        title: "¿Presentas tensión muscular en cuello/espalda o dolores articulares?",
-        options: [
-          { text: "Sin dolor ni rigidez física", score: 0 },
-          { text: "Tensión leve tras jornadas largas de trabajo", score: 1 },
-          { text: "Contracturas frecuentes y rigidez matutina", score: 2 },
-          { text: "Dolor constante que limita mis actividades cotidianas", score: 3 }
-        ]
-      },
-      {
-        title: "¿Tienes antecedentes familiares de diabetes, hipertensión o problemas cardiovasculares?",
-        options: [
-          { text: "Sin antecedentes familiares conocidos", score: 0 },
-          { text: "Un familiar lejano con diagnóstico metabólico", score: 1 },
-          { text: "Padres o abuelos con diabetes o hipertensión", score: 2 },
-          { text: "Múltiples familiares directos con enfermedades crónicas", score: 3 }
-        ]
-      }
-    ];
-
-    let currentStep = 0;
-    let totalScore = 0;
-    let userAnswers = [];
-
-    function renderQuestion() {
-      const q = questions[currentStep];
-      document.getElementById('test-step-label').textContent = `Pregunta ${currentStep + 1} de ${questions.length}`;
-      document.getElementById('test-progress-pct').textContent = `${Math.round(((currentStep + 1) / questions.length) * 100)}% completado`;
-      document.getElementById('test-progress-bar').style.width = `${((currentStep + 1) / questions.length) * 100}%`;
-      document.getElementById('test-q-title').textContent = q.title;
-
-      const list = document.getElementById('test-options-list');
-      list.innerHTML = '';
-
-      q.options.forEach((opt) => {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.style.cssText = 'padding: 0.9rem 1.2rem; background: var(--c-bg-mid); border: 1px solid var(--c-border); border-radius: 4px; color: var(--c-heading); text-align: left; font-size: 0.95rem; cursor: pointer; transition: all 0.2s; font-family: var(--font);';
-        btn.innerHTML = `<span>${opt.text}</span>`;
-        btn.onmouseover = () => { btn.style.borderColor = 'var(--c-cyan)'; btn.style.background = 'var(--c-cyan-soft)'; };
-        btn.onmouseout = () => { btn.style.borderColor = 'var(--c-border)'; btn.style.background = 'var(--c-bg-mid)'; };
-        btn.onclick = () => selectOption(opt.score, opt.text);
-        list.appendChild(btn);
-      });
-    }
-
-    function selectOption(score, text) {
-      totalScore += score;
-      userAnswers.push({ q: questions[currentStep].title, a: text });
-      currentStep++;
-
-      if (currentStep < questions.length) {
-        renderQuestion();
-      } else {
-        showResults();
-      }
-    }
-
-    function showResults() {
-      document.getElementById('test-wizard-container').style.display = 'none';
-      const resContainer = document.getElementById('test-results-container');
-      resContainer.style.display = 'block';
-
-      const badge = document.getElementById('result-badge');
-      const title = document.getElementById('result-title');
-      const desc = document.getElementById('result-desc');
-
-      let nivel = "";
-      if (totalScore <= 3) {
-        nivel = "Bajo / Preventivo";
-        badge.style.background = "var(--c-green-soft)";
-        badge.style.color = "var(--c-green)";
-        badge.style.border = "1px solid var(--c-green)";
-        title.textContent = "Balance General Óptimo — Fase Preventiva";
-        desc.textContent = "Tus células muestran un buen nivel de autorregulación. Una evaluación periódica con ES Complex te ayudará a mantener tu homeostasis y optimizar tu longevidad biológica.";
-      } else if (totalScore <= 7) {
-        nivel = "Moderado / Alerta Temprana";
-        badge.style.background = "rgba(217, 119, 6, 0.12)";
-        badge.style.color = "#D97706";
-        badge.style.border = "1px solid #D97706";
-        title.textContent = "Variaciones Funcionales y Estrés Celular Inicial";
-        desc.textContent = "Presentas señales tempranas de fatiga mitocondrial y sobrecarga digestiva o neuromuscular. El ES Complex permite identificar el desequilibrio exacto antes de que genere daño tisular.";
-      } else {
-        nivel = "Elevado / Atención Prioritaria";
-        badge.style.background = "rgba(220, 38, 38, 0.12)";
-        badge.style.color = "#DC2626";
-        badge.style.border = "1px solid #DC2626";
-        title.textContent = "Carga Celular y Estrés Oxidativo Severo";
-        desc.textContent = "Tus respuestas reflejan una sobrecarga importante en tu sistema biológico. Es altamente recomendable realizar una evaluación bioeléctrica 3D completa para diseñar un protocolo de restauración celular.";
-      }
-
-      badge.textContent = `Índice de Carga Celular: ${nivel}`;
-
-      // Formatear mensaje para WhatsApp
-      const waMsg = encodeURIComponent(
-        `Hola Vitametric, completé el Test de Carga Celular en su sitio web.\n\n` +
-        `📊 *Resultado:* ${nivel} (Puntaje: ${totalScore}/15)\n` +
-        `Deseo agendar mi Evaluación Pre-Clínica Multisistémica ES Complex en la clínica.`
-      );
-      document.getElementById('btn-enviar-wa-test').href = `https://api.whatsapp.com/send?phone=525552150674&text=${waMsg}`;
-    }
-
-    window.resetTest = function() {
-      currentStep = 0;
-      totalScore = 0;
-      userAnswers = [];
-      document.getElementById('test-results-container').style.display = 'none';
-      document.getElementById('test-wizard-container').style.display = 'block';
-      renderQuestion();
-    };
-
-    // Inicializar pregunta 1
-    if (document.getElementById('test-options-list')) {
-      renderQuestion();
-    }
-  })();
-  </script>
+  <script src="js/test-celular-engine.js?v=697eb19c"></script>
+  <script src="js/test-celular-ui.js?v=86afba67"></script>
 
   <section class="section section-productos" id="productos">
     <div class="container">
