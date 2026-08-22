@@ -82,9 +82,11 @@ WebGPU y HTTPS, sin datos personales:
 - `exposure: shadow`: la salida candidata nunca se mostró; la UI conservó la
   plantilla determinista.
 - La primera versión del prompt produjo negativas genéricas y omitió claims en
-  algunos contratos; esos candidatos quedaron bloqueados por los gates. La
-  iteración actual usa slots protegidos y edición lingüística mínima, pero debe
-  medirse de nuevo antes de considerar `live`.
+  algunos contratos; esos candidatos quedaron bloqueados por los gates.
+- La segunda iteración, probada en producción con el mismo perfil persistente,
+  completó 11 turnos sintéticos: **10 `model_shadow_pass` y 1 fallback**. La
+  conversación llegó a 10 preguntas y resultado sin romper el flujo. Aun así,
+  debe repetirse en móviles y con casos adversariales antes de considerar `live`.
 
 Esta medición corresponde a un equipo de escritorio de prueba y **no representa
 el rendimiento de un teléfono**.

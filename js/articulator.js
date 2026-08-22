@@ -191,6 +191,7 @@
    */
   function verifyOutput(candidate, locked, mandatory, check, authorizedNumbers = []) {
     const violations = [];
+    if (!String(candidate || '').trim()) violations.push('respuesta vacía');
     const guard = check(candidate);
     if (!guard.ok) violations.push(...guard.violations);
     const normalized = String(candidate || '').toLowerCase();

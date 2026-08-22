@@ -71,16 +71,30 @@
 
   function restoreSlots(text, slots, turn) {
     let restored = String(text || '').trim();
+    // Un modelo vacío no se convierte en una respuesta válida por anexar slots.
+    // Debe caer al fallback determinista antes de reconstruir contenido confiable.
+    if (!restored) return '';
     // Algunos modelos pequeños envuelven la respuesta en comillas aunque se les
     // pida texto plano; quitamos solo un par exterior, nunca contenido interno.
     if ((restored.startsWith('"') && restored.endsWith('"'))
       || (restored.startsWith('`') && restored.endsWith('`'))) {
       restored = restored.slice(1, -1).trim();
     }
+    // Los valores protegidos viajan como [[SLOT_N]] y se reinyectan literalmente
+    // desde los claims (fuente de verdad), no desde la salida del modelo. Un slot
+    // omitido puede rescatarse si existe texto editorial; un slot duplicado indica
+    // una salida no confiable y fuerza el fallback para no repetir cifras o claims.
     for (const slot of slots) {
-      const occurrences = restored.split(slot.marker).length - 1;
-      if (occurrences !== 1) return '';
-      restored = restored.split(slot.marker).join(slot.value);
+      const parts = restored.split(slot.marker);
+      const occurrences = parts.length - 1;
+      if (occurrences === 0) {
+        // El modelo soltó el marcador: anexamos el valor de confianza.
+        restored = restored + ' ' + slot.value;
+      } else if (occurrences === 1) {
+        restored = parts.join(slot.value);
+      } else {
+        return '';
+      }
     }
     // No permitimos que el paciente vea instrucciones o marcadores incompletos.
     if (!restored || /\[\[SLOT_\d+\]\]/.test(restored)) return '';
@@ -150,4 +164,10 @@
     defaultModel: DEFAULT_MODEL,
     moduleUrl: MODULE_URL
   });
+
+  // Exportación para tests unitarios (Node): la reinyección de slots es pura y
+  // debe poder verificarse sin navegador.
+  if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { protectSource, promptFor, restoreSlots };
+  }
 }());

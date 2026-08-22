@@ -235,6 +235,21 @@ console.log('\n── A10 · Respuesta genérica no articulada ──');
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+console.log('\n── A11 · Respuesta vacía ──');
+
+{
+  const empty = { articulate: () => '' };
+  const art = new Articulator({ model: empty });
+  const out = art.articulate({
+    type: 'QUESTION',
+    text: '¿Cómo has dormido?',
+    allowedClaims: []
+  });
+  check('[A11] una respuesta vacía queda BLOQUEADA', out.ok === false && out.blocked === true);
+  check('[A11] la respuesta vacía activa fallback', typeof out.fallback === 'string' && out.fallback.includes('¿Cómo has dormido?'));
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 
 const total = passed + failed;
 console.log(`\n${failed === 0 ? '🎉' : '🚨'} Articulador S1: ${passed}/${total} invariantes verdes.`);
