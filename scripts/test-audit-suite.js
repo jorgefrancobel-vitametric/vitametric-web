@@ -86,7 +86,10 @@ function runCohortTests() {
   const r3 = t3.calculateResults();
 
   assert(r3.riskLevel === 'alto', 'Nivel de riesgo alto por factores metabólicos e intersticiales 🔴');
-  assert(r3.axisScores.cardiometabolico >= 65, `Eje Cardiometabólico sobrecargado (${r3.axisScores.cardiometabolico}/100)`);
+  // Escala absoluta (post-fix de monotonicidad): el denominador de cardio incluye
+  // los ítems del tamizaje de apnea (12+28) que esta cohorte no administra, así que
+  // 4/5 ítems base = 98/160 ≈ 61. El techo de la cohorte sin rama es 61, no 65.
+  assert(r3.axisScores.cardiometabolico >= 60, `Eje Cardiometabólico sobrecargado (${r3.axisScores.cardiometabolico}/100)`);
   assert(r3.axisScores.terreno >= 65, `Eje Terreno/ipH sobrecargado (${r3.axisScores.terreno}/100)`);
 
   // -------------------------------------------------------------

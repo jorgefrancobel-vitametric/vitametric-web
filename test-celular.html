@@ -27,7 +27,7 @@
   <meta name="author" content="Vitametric">
   <meta name="robots" content="index, follow">
   <meta property="og:title" content="Test de Resiliencia Celular & Carga Fisiológica | Vitametric">
-  <meta property="og:description" content="Evaluación de 5 dimensiones biológicas para detectar desequilibrios en fluido intersticial y tono autonómico. Gratuito y en 2 minutos.">
+  <meta property="og:description" content="Autoevaluación de 5 dimensiones para identificar sobrecarga funcional: estrés, sueño, metabolismo, digestión y carga laboral. Gratuito y en 2 minutos.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://vitametric.com/test-celular.html">
   <meta property="og:image" content="https://vitametric.com/assets/img/logo.webp">
@@ -286,7 +286,7 @@
           Test de Resiliencia Celular & Carga Fisiológica
         </h1>
         <p style="font-size: clamp(0.88rem, 0.82rem + 0.3vw, 1.02rem); color: var(--c-muted); max-width: 620px; margin: 0 auto; line-height: 1.5;">
-          Autoevaluación de 5 dimensiones biológicas para detectar sobrecargas funcionales en fluido intersticial y balance neurovegetativo antes de que se manifiesten clínicamente.
+          Autoevaluación de 5 dimensiones para identificar sobrecargas funcionales —estrés sostenido, descanso, metabolismo, digestión y carga laboral— antes de que se manifiesten clínicamente.
         </p>
 
         <div class="test-trust-strip">
@@ -352,7 +352,7 @@
           </h2>
           
           <p id="result-desc" style="color: var(--c-text); font-size: 0.95rem; line-height: 1.6; max-width: 660px; margin: 0 auto 1.5rem;">
-            Tu perfil indica variaciones en la recuperación autonómica, pH del líquido intersticial y balance circadiano. Identificar estas señales a nivel celular permite prevenir el desarrollo de desequilibrios metabólicos crónicos.
+            Tu perfil indica variaciones en la recuperación, la digestión y el balance circadiano. Identificar estas señales a tiempo permite actuar antes de que se consoliden como alteraciones crónicas.
           </p>
 
           <!-- Hallazgo Fisiológico Dominante -->
@@ -418,7 +418,10 @@
   </footer>
 
   <script src="js/theme.js?v=e84643f0"></script>
-  <script src="js/test-celular-engine.js?v=9a59191e"></script>
+  <!-- rasch.js DEBE cargar antes que test-celular-engine.js: el motor lo inyecta como
+       dependencia opcional y sin él HAS_RASCH=false y el rasgo latente θ queda null. -->
+  <script src="js/rasch.js?v=a9650750"></script>
+  <script src="js/test-celular-engine.js?v=352cda2c"></script>
   <script src="js/test-celular-ui.js?v=3987a35e"></script>
 
 </body>
