@@ -52,6 +52,16 @@
     'stop-bang', 'psqi', 'epworth', 'diagnóstico de', 'padeces', 'tienes apnea'
   ];
 
+  // Un rechazo genérico del modelo no es una articulación válida del turno:
+  // tampoco debe pasar por accidente cuando no hay números o fronteras que
+  // comparar. Se degrada a la plantilla determinista.
+  const UNHELPFUL_RESPONSES = [
+    'lo siento, pero no puedo cumplir con esa solicitud',
+    'no puedo ayudar con esa solicitud',
+    'no puedo cumplir con esa solicitud',
+    'como modelo de lenguaje'
+  ];
+
   const EVIDENCE = Object.freeze({
     SELF_REPORT: 'SELF_REPORT',
     MODEL_ESTIMATE: 'MODEL_ESTIMATE',
@@ -183,6 +193,12 @@
     const violations = [];
     const guard = check(candidate);
     if (!guard.ok) violations.push(...guard.violations);
+    const normalized = String(candidate || '').toLowerCase();
+    UNHELPFUL_RESPONSES.forEach((phrase) => {
+      if (normalized.includes(phrase)) {
+        violations.push(`respuesta no articulada: "${phrase}"`);
+      }
+    });
     locked.forEach((lv) => {
       if (!candidate.includes(lv)) violations.push(`valor bloqueado no conservado: "${lv}"`);
     });
@@ -354,6 +370,7 @@
     templateArticulate,
     EVIDENCE,
     CERTAINTY,
-    FORBIDDEN
+    FORBIDDEN,
+    UNHELPFUL_RESPONSES
   };
 }));

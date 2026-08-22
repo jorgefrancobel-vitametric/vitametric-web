@@ -215,6 +215,26 @@ console.log('\n── A9 · Rechazo de valores extra no autorizados ──');
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+console.log('\n── A10 · Respuesta genérica no articulada ──');
+
+{
+  const refusal = {
+    articulate() {
+      return 'Lo siento, pero no puedo cumplir con esa solicitud.';
+    }
+  };
+  const art = new Articulator({ model: refusal });
+  const out = art.articulate({
+    type: 'QUESTION',
+    text: '¿Cómo has dormido?',
+    allowedClaims: []
+  });
+  check('[A10] una negativa genérica del SLM queda BLOQUEADA', out.ok === false && out.blocked === true);
+  check('[A10] la negativa nunca llega al paciente', !out.text || !out.text.includes('no puedo cumplir'));
+  check('[A10] se conserva el fallback determinista', typeof out.fallback === 'string' && out.fallback.includes('¿Cómo has dormido?'));
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 
 const total = passed + failed;
 console.log(`\n${failed === 0 ? '🎉' : '🚨'} Articulador S1: ${passed}/${total} invariantes verdes.`);

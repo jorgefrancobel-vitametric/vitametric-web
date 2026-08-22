@@ -13,11 +13,12 @@ Rasch, branching, interpretación, claims y límites siguen siendo deterministas
 - `js/slm-webllm-loader.js`: loader experimental de WebLLM `0.2.84`, con Web Worker.
 - `test-celular-chat.html`: carga el runtime, pero el modo predeterminado es `off`.
 - `test/slm-benchmark-cases.json`: corpus sintético sin PII.
-- `test/test-slm-runtime.mjs`: 19/19 invariantes.
-- `test/test-slm-benchmark.mjs`: 12/12 invariantes.
+- `test/test-slm-runtime.mjs`: invariantes del runtime y degradación.
+- `test/test-slm-benchmark.mjs`: invariantes del contrato.
 
-**No está desplegado todavía.** La producción sigue usando la UI anterior y no
-descarga ningún modelo.
+**Estado de despliegue:** el scaffold está publicado desde el commit `0e4f299`,
+pero producción conserva `mode: off`; ningún paciente descarga el modelo sin
+configurar explícitamente el feature flag en su propio navegador.
 
 ### Modos
 
@@ -32,7 +33,7 @@ localStorage.setItem('vitametric_slm_config_v1', JSON.stringify({
 ```
 
 - `off`: ruta determinista, valor predeterminado.
-- `auto`: intenta el SLM solo si hay WebGPU y loader disponible.
+- `auto`: intenta el SLM solo si hay WebGPU, contexto seguro y loader disponible.
 - `on`: intenta cargarlo aunque el entorno no tenga WebGPU; el loader puede fallar
 y el runtime cae a plantillas.
 - `exposure: shadow`: evalúa la respuesta del modelo, pero el paciente siempre ve
@@ -61,6 +62,24 @@ Un candidato que omite la frontera clínica, cambia valores, añade números,
 introduce vocabulario prohibido o falla al cargar nunca se entrega tal cual al
 paciente. Se usa el fallback determinista.
 
+### Medición real de la beta
+
+La primera carga se ejecutó en un Chrome 150 aislado con perfil persistente,
+WebGPU y HTTPS, sin datos personales:
+
+- `Llama-3.2-1B-Instruct-q4f32_1-MLC`: `0% → 100%` en aproximadamente **5m35s**.
+- Caché WebLLM al finalizar: **615,367,936 bytes** y **22/22 shards**.
+- Inferencia de framing: aproximadamente **1.3s**; inferencia de resultado:
+  aproximadamente **2.5s**.
+- `exposure: shadow`: la salida candidata nunca se mostró; la UI conservó la
+  plantilla determinista.
+- El modelo produjo negativas genéricas en algunos contratos y omitió claims en
+  un resultado; esos candidatos quedaron bloqueados por los gates. Por ello
+  `live` sigue cerrado incluso después de completar la descarga.
+
+Esta medición corresponde a un equipo de escritorio de prueba y **no representa
+el rendimiento de un teléfono**.
+
 ### Costos
 
 En modo local no hay costo de tokens por paciente. Sí existen costos de
@@ -70,28 +89,30 @@ primera carga puede ser significativa.
 
 ### Pendientes explícitos antes de producción
 
-1. **Validar el artefacto del modelo:** el catálogo WebLLM `0.2.84` sí contiene
-   `Llama-3.2-1B-Instruct-q4f32_1-MLC` (163 registros inspeccionados), pero aún
-   falta medir su descarga real, memoria y latencia. Cambiarlo solo mediante
-   `modelId` versionado.
+1. **Validar el artefacto del modelo en dispositivos objetivo:** el catálogo
+   WebLLM `0.2.84` contiene `Llama-3.2-1B-Instruct-q4f32_1-MLC` y la descarga real
+   ya completó en un Chrome de escritorio. Falta repetir la medición en móviles;
+   cambiarlo solo mediante `modelId` versionado.
 2. **Dejar de depender de `esm.run`:** empaquetar y auto-hospedar WebLLM, sus
 artefactos y el worker; añadir hashes/SRI y una CSP compatible.
 3. **Matriz móvil:** probar Chrome Android, Safari iPhone, equipos con poca RAM,
-WebGPU ausente y pérdida de contexto del worker.
-4. **Medir rendimiento:** primera carga, primer token, latencia por turno, memoria,
-batería, calentamiento y abandono.
+   WebGPU ausente y pérdida de contexto del worker.
+4. **Medir rendimiento móvil:** primera carga, primer token, latencia por turno,
+   memoria, batería, calentamiento y abandono.
 5. **Ampliar el benchmark:** añadir respuestas coloquiales, errores ortográficos,
-multilingüismo, intentos de prompt injection y claims clínicos fronterizos.
-6. **Cerrar la cobertura semántica:** el gate actual protege números, ejes,
-fronteras y vocabulario; antes de `live` hay que añadir una verificación más
-estricta de que el modelo no agregue afirmaciones nuevas aunque sean palabras
-permitidas.
+   multilingüismo, intentos de prompt injection, negativas genéricas y claims
+   clínicos fronterizos.
+6. **Cerrar la cobertura semántica:** el gate protege números, ejes, fronteras,
+   vocabulario y ahora rechaza negativas genéricas; antes de `live` hay que añadir
+   una verificación más estricta de que el modelo no agregue afirmaciones nuevas
+   aunque sean palabras permitidas, y evaluar la calidad de las reformulaciones.
+
 7. **Definir consentimiento y UX:** explicar la descarga, el procesamiento local,
 el almacenamiento de caché y la opción de continuar sin SLM.
 8. **Telemetría de producto:** la actual es local y no contiene PII; cualquier
 telemetría remota requerirá diseño de privacidad, consentimiento y minimización.
-9. **Cache-busting/deploy:** ejecutar `python3 scripts/bump-cache.py`, revisar los
-hashes de todos los scripts y hacer smoke test de producción antes de publicar.
+9. **Cache-busting/deploy:** ya se verificó el despliegue del scaffold; repetir el
+   procedimiento tras cada cambio y hacer smoke test de producción.
 10. **No activar `exposure: live`** hasta que los puntos anteriores tengan evidencia.
 
 ### Referencias técnicas
