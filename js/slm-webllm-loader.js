@@ -55,16 +55,28 @@
     const kind = turn.type === 'QUESTION'
       ? 'Es una pregunta: conserva su intención y los signos de pregunta.'
       : 'Es un mensaje informativo: conserva su sentido y hazlo cálido y breve.';
-    return {
-      prompt: [
+    const instructions = protectedSource.slots.length > 0
+      ? [
         'Edita el TEXTO BASE en español claro y natural.',
         kind,
         'Devuelve solo el texto final dirigido a la persona.',
         'No te disculpes, no expliques tu tarea, no hables de ser un modelo.',
         'No inventes datos, diagnósticos, mediciones ni recomendaciones.',
-        'Copia cada marcador [[SLOT_N]] exactamente una vez y no lo traduzcas.',
-        `TEXTO BASE: ${protectedSource.text}`
-      ].join('\n'),
+        'Copia cada marcador [[SLOT_N]] exactamente una vez y no lo traduzcas.'
+      ]
+      : turn.type === 'QUESTION'
+        ? [
+          'Reescribe esta pregunta en español claro, natural y cálido.',
+          'Devuelve únicamente la pregunta final, sin explicaciones ni disculpas.',
+          'Conserva la intención, el sentido y los signos de pregunta.'
+        ]
+        : [
+          'Reescribe este mensaje en español claro, natural y cálido.',
+          'Devuelve únicamente el mensaje final, sin explicaciones ni disculpas.',
+          'No inventes datos ni recomendaciones.'
+        ];
+    return {
+      prompt: [...instructions, `TEXTO BASE: ${protectedSource.text}`].join('\\n'),
       slots: protectedSource.slots
     };
   }
@@ -150,6 +162,39 @@
           max_tokens: MAX_TOKENS
         });
         return restoreSlots(response?.choices?.[0]?.message?.content || '', editorial.slots, turn);
+      },
+
+      // Listener on-device: tarea NO fáctica. Solo ack empático + intención.
+      // Nunca afirma datos; el runtime sanitiza la salida de todos modos.
+      async listen({ text }) {
+        const clean = String(text || '').slice(0, 1000).trim();
+        if (!clean) return { ack: null, intent: null };
+        const response = await engine.chat.completions.create({
+          messages: [
+            {
+              role: 'system',
+              content: 'Eres un acompañante empático de un cuestionario de salud. '
+                + 'Responde SOLO con JSON válido, sin texto extra: '
+                + '{"ack":"frase corta y cálida en español, máximo 20 palabras, sin datos ni diagnósticos",'
+                + '"intent":"duda|agendar|sintoma_nuevo|agudo|otro"}. '
+                + 'No inventes datos médicos ni mediciones.'
+            },
+            { role: 'user', content: clean }
+          ],
+          temperature: 0.2,
+          max_tokens: 120,
+          response_format: { type: 'json_object' }
+        });
+        let parsed = null;
+        try {
+          parsed = JSON.parse(response?.choices?.[0]?.message?.content || '{}');
+        } catch (err) {
+          parsed = null;
+        }
+        return {
+          ack: typeof parsed?.ack === 'string' ? parsed.ack : null,
+          intent: typeof parsed?.intent === 'string' ? parsed.intent : null
+        };
       }
     };
   }

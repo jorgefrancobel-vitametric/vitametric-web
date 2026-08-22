@@ -51,7 +51,7 @@ check('[L1] una pregunta sin signos cae a fallback editorial',
 check('[L1] prompt editorial usa texto base',
   promptFor({ turn: { type: 'QUESTION', text: '¿Cómo te sientes?' }, claims: [], locked: [] }).prompt.includes('¿Cómo te sientes?'));
 check('[L1] prompt editorial diferencia preguntas',
-  promptFor({ turn: { type: 'QUESTION', text: '¿Cómo te sientes?' }, claims: [], locked: [] }).prompt.includes('conserva su intención'));
+  promptFor({ turn: { type: 'QUESTION', text: '¿Cómo te sientes?' }, claims: [], locked: [] }).prompt.includes('Conserva la intención'));
 check('[L1] loader limita la generación editorial', source.includes('MAX_TOKENS = 120'));
 check('[L1] loader usa temperatura baja', source.includes('temperature: 0.05'));
 check('[L1] loader no descarga al registrarse', source.includes('async function load'));
