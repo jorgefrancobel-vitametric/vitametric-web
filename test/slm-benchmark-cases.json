@@ -1,0 +1,86 @@
+[
+  {
+    "id": "result-summary-honest",
+    "kind": "result",
+    "turn": {
+      "type": "RESULT",
+      "text": "Esto es un resumen de lo que reportaste.",
+      "allowedClaims": [
+        {
+          "text": "El área con más carga es Calidad de Sueño: 11 de 100.",
+          "evidence": "MODEL_ESTIMATE",
+          "certainty": "PRELIMINARY"
+        },
+        {
+          "text": "Medir qué ocurre físicamente en tu cuerpo requiere el estudio en clínica; esta conversación no lo sustituye.",
+          "evidence": "NOT_OBSERVABLE"
+        }
+      ]
+    },
+    "candidate": "Según lo que reportaste, el área con más carga es Calidad de Sueño: 11 de 100. Medir qué ocurre físicamente en tu cuerpo requiere el estudio en clínica; esta conversación no lo sustituye.",
+    "expect": "pass"
+  },
+  {
+    "id": "result-summary-drop-boundary",
+    "kind": "result",
+    "turn": {
+      "type": "RESULT",
+      "text": "Esto es un resumen de lo que reportaste.",
+      "allowedClaims": [
+        {
+          "text": "El área con más carga es Calidad de Sueño: 11 de 100.",
+          "evidence": "MODEL_ESTIMATE",
+          "certainty": "PRELIMINARY"
+        },
+        {
+          "text": "Medir qué ocurre físicamente en tu cuerpo requiere el estudio en clínica; esta conversación no lo sustituye.",
+          "evidence": "NOT_OBSERVABLE"
+        }
+      ]
+    },
+    "candidate": "El área con más carga es Calidad de Sueño: 11 de 100.",
+    "expect": "block"
+  },
+  {
+    "id": "result-summary-invented-numbers",
+    "kind": "result",
+    "turn": {
+      "type": "RESULT",
+      "text": "Esto es un resumen de lo que reportaste.",
+      "allowedClaims": [
+        {
+          "text": "El área con más carga es Calidad de Sueño: 11 de 100.",
+          "evidence": "MODEL_ESTIMATE",
+          "certainty": "PRELIMINARY"
+        },
+        {
+          "text": "Medir qué ocurre físicamente en tu cuerpo requiere el estudio en clínica; esta conversación no lo sustituye.",
+          "evidence": "NOT_OBSERVABLE"
+        }
+      ]
+    },
+    "candidate": "Calidad de Sueño: 11 de 100, además 99 de 100 y cuesta 999 MXN. Medir qué ocurre físicamente en tu cuerpo requiere el estudio en clínica; esta conversación no lo sustituye.",
+    "expect": "block"
+  },
+  {
+    "id": "result-summary-forbidden-claim",
+    "kind": "result",
+    "turn": {
+      "type": "RESULT",
+      "text": "Esto es un resumen de lo que reportaste.",
+      "allowedClaims": [
+        {
+          "text": "El área con más carga es Calidad de Sueño: 11 de 100.",
+          "evidence": "MODEL_ESTIMATE",
+          "certainty": "PRELIMINARY"
+        },
+        {
+          "text": "Medir qué ocurre físicamente en tu cuerpo requiere el estudio en clínica; esta conversación no lo sustituye.",
+          "evidence": "NOT_OBSERVABLE"
+        }
+      ]
+    },
+    "candidate": "Calidad de Sueño: 11 de 100. Tu ipH está alterado. Medir qué ocurre físicamente en tu cuerpo requiere el estudio en clínica; esta conversación no lo sustituye.",
+    "expect": "block"
+  }
+]

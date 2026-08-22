@@ -18,9 +18,11 @@
 
   const Triage = window.VitametricTriageChat;
   const Engine = window.VitametricTestEngine;
+  const ArticulatorModule = window.VitametricArticulator;
+  const SLM = window.VitametricSLM;
 
-  if (!Triage || !Engine) {
-    console.error('[triage-ui] faltan dependencias: triage-chat.js y test-celular-engine.js deben cargarse antes.');
+  if (!Triage || !Engine || !ArticulatorModule || !SLM) {
+    console.error('[triage-ui] faltan dependencias: motor, articulador y runtime SLM deben cargarse antes.');
     return;
   }
 
@@ -42,7 +44,18 @@
 
   function mount(host) {
     const session = Triage.createSession();
+    const articulator = new ArticulatorModule.Articulator();
+    const config = window.VitametricSLMConfig || SLM.readConfig();
+    const runtime = new SLM.Runtime({
+      articulator,
+      config,
+      loader: typeof window.VitametricSLMLoader === 'function'
+        ? window.VitametricSLMLoader
+        : null
+    });
 
+    const slmStatus = el('div', 'triage-slm-status');
+    slmStatus.setAttribute('aria-live', 'polite');
     const stream = el('div', 'triage-stream');
     const controls = el('div', 'triage-controls');
     const progress = el('div', 'triage-progress');
@@ -50,6 +63,7 @@
     progress.appendChild(bar);
 
     host.innerHTML = '';
+    host.appendChild(slmStatus);
     host.appendChild(progress);
     host.appendChild(stream);
     host.appendChild(controls);
@@ -179,7 +193,25 @@
       return `https://wa.me/525585327421?text=${encodeURIComponent(lineas.join('\n'))}`;
     }
 
-    function step() {
+    function updateRuntimeStatus(snapshot) {
+      const active = config.mode !== SLM.MODES.OFF;
+      slmStatus.style.display = active ? 'block' : 'none';
+      if (!active) return;
+      slmStatus.dataset.state = snapshot.status;
+      if (snapshot.status === SLM.STATUS.LOADING) {
+        slmStatus.textContent = 'Asistente local: preparando el modelo…';
+      } else if (snapshot.status === SLM.STATUS.READY) {
+        slmStatus.textContent = snapshot.exposure === SLM.EXPOSURE.SHADOW
+          ? 'Asistente local: evaluación en segundo plano; respuesta verificada.'
+          : 'Asistente local: activo con salida verificada.';
+      } else if (snapshot.status === SLM.STATUS.ERROR) {
+        slmStatus.textContent = 'Asistente local no disponible; continuamos con respuestas verificadas.';
+      } else {
+        slmStatus.textContent = 'Asistente local no disponible; continuamos con respuestas verificadas.';
+      }
+    }
+
+    async function step() {
       const turn = session.next();
 
       if (turn.blocked) {
@@ -190,9 +222,16 @@
       }
 
       updateProgress(session.state().estimates);
+      const articulated = await runtime.articulate(turn);
+      // En modo determinista se conserva exactamente la presentación existente.
+      // Cuando un SLM esté listo, su prosa solo entra después del doble gate del
+      // articulador; un fallback nunca expone el candidato bloqueado.
+      const displayText = articulated.usedModel
+        ? articulated.text
+        : turn.text;
 
       if (turn.type === TURN.FRAMING) {
-        say(turn.text);
+        say(displayText);
         renderClaims(turn.allowedClaims);
         renderOptions(turn.options, () => step());
         return;
@@ -200,33 +239,39 @@
 
       if (turn.type === TURN.QUESTION) {
         asked++;
-        say(turn.text);
+        say(displayText);
         renderOptions(turn.options, (value) => {
           session.answer(turn.itemId, value);
-          step();
+          void step();
         });
         return;
       }
 
       if (turn.type === TURN.REFLECTION) {
-        say(turn.text);
+        say(displayText);
         renderClaims(turn.allowedClaims);
         renderOptions(turn.options, (accepted) => {
           session.respondToReflection(turn.axis, accepted);
-          step();
+          void step();
         });
         return;
       }
 
       if (turn.type === TURN.RESULT) {
-        say(turn.text);
+        say(displayText);
         bar.style.width = '100%';
         renderResult(turn);
       }
     }
 
-    step();
-    return { session, questionsAsked: () => asked };
+    // La carga del modelo, si existe, es opcional y no bloquea el primer turno.
+    // Con la configuración por defecto el runtime queda en plantillas verificadas.
+    if (runtime.enabled()) {
+      updateRuntimeStatus({ status: SLM.STATUS.LOADING, exposure: config.exposure });
+    }
+    void runtime.prepare().then(updateRuntimeStatus);
+    void step();
+    return { session, runtime, questionsAsked: () => asked };
   }
 
   document.addEventListener('DOMContentLoaded', () => {

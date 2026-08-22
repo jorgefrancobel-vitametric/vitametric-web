@@ -135,6 +135,17 @@
       overflow: hidden;
     }
 
+    .triage-slm-status {
+      display: none;
+      padding: 0.45rem 1.1rem;
+      border-bottom: 1px solid var(--c-border-light);
+      color: var(--c-muted);
+      font-size: 0.72rem;
+      line-height: 1.4;
+    }
+    .triage-slm-status[data-state="ready"] { color: #10B981; }
+    .triage-slm-status[data-state="error"] { color: #F59E0B; }
+
     .triage-progress {
       height: 4px;
       background: var(--c-border-light);
@@ -335,6 +346,12 @@
        en silencio (misma clase de fallo que rasch.js sin script tag). -->
   <script src="js/interpretation.js?v=c9fc4a5a"></script>
   <script src="js/triage-chat.js?v=8b39764b"></script>
-  <script src="js/triage-chat-ui.js?v=f4dcda76"></script>
+  <!-- El SLM es opcional: por defecto permanece apagado y el chat usa plantillas
+       verificadas. Un loader futuro puede inyectarse antes de la UI sin cambiar
+       el contrato del motor. -->
+  <script src="js/articulator.js?v=4ace8513"></script>
+  <script src="js/slm-runtime.js?v=24838cfc"></script>
+  <script type="module" src="js/slm-webllm-loader.js?v=51f114c7"></script>
+  <script src="js/triage-chat-ui.js?v=d953aac7"></script>
 </body>
 </html>
