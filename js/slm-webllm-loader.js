@@ -2,7 +2,7 @@
 // Sustrato: Adaptador de Integración
 // Función: Loader experimental de WebLLM para el articulador Vitametric. Descarga
 //          diferida, worker aislado y modelo configurable; no se activa por defecto.
-// v-version: 20260822.01
+// v-version: 20260822.02
 
 /**
  * Este archivo no descarga WebLLM al abrir la página. Solo registra un loader que
@@ -18,24 +18,77 @@
   const WEBLLM_VERSION = '0.2.84';
   const MODULE_URL = `https://esm.run/@mlc-ai/web-llm@${WEBLLM_VERSION}`;
   const DEFAULT_MODEL = 'Llama-3.2-1B-Instruct-q4f32_1-MLC';
-  const MAX_TOKENS = 180;
+  const MAX_TOKENS = 120;
   let enginePromise = null;
   let workerUrl = null;
 
+  function sourceText({ turn, claims }) {
+    const claimText = claims
+      .filter((claim) => claim && claim.text)
+      .map((claim) => claim.text)
+      .join(' ');
+    return [turn.text || '', claimText].filter(Boolean).join(' ');
+  }
+
+  function protectSource(source, protectedValues) {
+    const slots = [];
+    let text = source;
+    [...new Set(protectedValues.filter(Boolean))]
+      .sort((a, b) => b.length - a.length)
+      .forEach((value) => {
+        const marker = `[[SLOT_${slots.length}]]`;
+        if (!text.includes(value)) return;
+        text = text.split(value).join(marker);
+        slots.push({ marker, value });
+      });
+    return { text, slots };
+  }
+
   function promptFor({ turn, claims, locked }) {
-    const boundaries = claims
+    const mandatory = claims
       .filter((claim) => claim && claim.evidence === 'NOT_OBSERVABLE')
       .map((claim) => claim.text);
-    return [
-      'Eres un articulador de lenguaje en español para una autoevaluación no diagnóstica.',
-      'Reformula con calidez y brevedad, sin añadir datos, diagnósticos, mediciones ni recomendaciones.',
-      'Conserva literalmente todos los valores bloqueados y las fronteras de seguridad.',
-      'Devuelve únicamente el texto final dirigido a la persona.',
-      `Valores bloqueados: ${JSON.stringify(locked)}`,
-      `Claims autorizados: ${JSON.stringify(claims.map((claim) => claim.text))}`,
-      `Fronteras obligatorias: ${JSON.stringify(boundaries)}`,
-      `Turno base: ${JSON.stringify(turn.text || '')}`
-    ].join('\n');
+    const protectedSource = protectSource(sourceText({ turn, claims }), [
+      ...mandatory,
+      ...locked
+    ]);
+    const kind = turn.type === 'QUESTION'
+      ? 'Es una pregunta: conserva su intención y los signos de pregunta.'
+      : 'Es un mensaje informativo: conserva su sentido y hazlo cálido y breve.';
+    return {
+      prompt: [
+        'Edita el TEXTO BASE en español claro y natural.',
+        kind,
+        'Devuelve solo el texto final dirigido a la persona.',
+        'No te disculpes, no expliques tu tarea, no hables de ser un modelo.',
+        'No inventes datos, diagnósticos, mediciones ni recomendaciones.',
+        'Copia cada marcador [[SLOT_N]] exactamente una vez y no lo traduzcas.',
+        `TEXTO BASE: ${protectedSource.text}`
+      ].join('\n'),
+      slots: protectedSource.slots
+    };
+  }
+
+  function restoreSlots(text, slots, turn) {
+    let restored = String(text || '').trim();
+    // Algunos modelos pequeños envuelven la respuesta en comillas aunque se les
+    // pida texto plano; quitamos solo un par exterior, nunca contenido interno.
+    if ((restored.startsWith('"') && restored.endsWith('"'))
+      || (restored.startsWith('`') && restored.endsWith('`'))) {
+      restored = restored.slice(1, -1).trim();
+    }
+    for (const slot of slots) {
+      const occurrences = restored.split(slot.marker).length - 1;
+      if (occurrences !== 1) return '';
+      restored = restored.split(slot.marker).join(slot.value);
+    }
+    // No permitimos que el paciente vea instrucciones o marcadores incompletos.
+    if (!restored || /\[\[SLOT_\d+\]\]/.test(restored)) return '';
+    // Una pregunta no puede degradarse a una afirmación irrelevante.
+    if (turn?.type === 'QUESTION' && /[¿?]/.test(turn.text || '') && !/[¿?]/.test(restored)) {
+      return '';
+    }
+    return restored;
   }
 
   function createWorker() {
@@ -70,23 +123,26 @@
     const engine = await enginePromise;
     return {
       async articulate({ turn, claims, locked }) {
+        const editorial = promptFor({ turn, claims, locked });
         const response = await engine.chat.completions.create({
           messages: [
             {
               role: 'system',
-              content: 'No inventes. Respeta exactamente el contrato y responde en español.'
+              content: 'Eres un editor de mensajes en español. Sigue las instrucciones literalmente.'
             },
-            { role: 'user', content: promptFor({ turn, claims, locked }) }
+            { role: 'user', content: editorial.prompt }
           ],
-          temperature: 0.15,
+          temperature: 0.05,
           max_tokens: MAX_TOKENS
         });
-        return response?.choices?.[0]?.message?.content || '';
+        return restoreSlots(response?.choices?.[0]?.message?.content || '', editorial.slots, turn);
       }
     };
   }
 
   // El Runtime lo consume solo cuando mode=auto/on y tiene un loader disponible.
+  // La tarea del modelo queda reducida a edición lingüística: cifras, ejes y
+  // fronteras viajan como slots y se reinyectan literalmente en este adaptador.
   // En una página sin WebLLM o con CSP restrictiva, el resto del chat no se rompe.
   window.VitametricSLMLoader = load;
   window.VitametricSLMWebLLM = Object.freeze({

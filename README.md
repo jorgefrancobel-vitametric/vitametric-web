@@ -16,9 +16,9 @@ Rasch, branching, interpretación, claims y límites siguen siendo deterministas
 - `test/test-slm-runtime.mjs`: invariantes del runtime y degradación.
 - `test/test-slm-benchmark.mjs`: invariantes del contrato.
 
-**Estado de despliegue:** el scaffold está publicado desde el commit `0e4f299`,
-pero producción conserva `mode: off`; ningún paciente descarga el modelo sin
-configurar explícitamente el feature flag en su propio navegador.
+**Estado de despliegue:** el scaffold está publicado en producción, pero conserva
+`mode: off`; ningún paciente descarga el modelo sin configurar explícitamente el
+feature flag en su propio navegador.
 
 ### Modos
 
@@ -52,11 +52,19 @@ localStorage.removeItem('vitametric_slm_config_v1');
 ```text
 turn determinista
   → claims autorizados + valores bloqueados
-  → WebLLM (opcional)
+  → slots protegidos [[SLOT_N]]
+  → WebLLM edita solo el lenguaje libre
+  → reinyectar slots literalmente
   → articulator.js
   → vocabulario, números, ejes y fronteras verificadas
   → shadow: plantilla / live: prosa validada
 ```
+
+La segunda iteración reduce la tarea del modelo: ya no tiene que recordar ni
+reconstruir cifras, ejes o fronteras clínicas. El loader los reemplaza por slots,
+exige que cada slot aparezca exactamente una vez y reinyecta el texto original
+antes del doble gate. Si el modelo omite, duplica o deja un slot, la salida queda
+vacía y el runtime usa la plantilla.
 
 Un candidato que omite la frontera clínica, cambia valores, añade números,
 introduce vocabulario prohibido o falla al cargar nunca se entrega tal cual al
@@ -73,9 +81,10 @@ WebGPU y HTTPS, sin datos personales:
   aproximadamente **2.5s**.
 - `exposure: shadow`: la salida candidata nunca se mostró; la UI conservó la
   plantilla determinista.
-- El modelo produjo negativas genéricas en algunos contratos y omitió claims en
-  un resultado; esos candidatos quedaron bloqueados por los gates. Por ello
-  `live` sigue cerrado incluso después de completar la descarga.
+- La primera versión del prompt produjo negativas genéricas y omitió claims en
+  algunos contratos; esos candidatos quedaron bloqueados por los gates. La
+  iteración actual usa slots protegidos y edición lingüística mínima, pero debe
+  medirse de nuevo antes de considerar `live`.
 
 Esta medición corresponde a un equipo de escritorio de prueba y **no representa
 el rendimiento de un teléfono**.
@@ -103,9 +112,9 @@ artefactos y el worker; añadir hashes/SRI y una CSP compatible.
    multilingüismo, intentos de prompt injection, negativas genéricas y claims
    clínicos fronterizos.
 6. **Cerrar la cobertura semántica:** el gate protege números, ejes, fronteras,
-   vocabulario y ahora rechaza negativas genéricas; antes de `live` hay que añadir
-   una verificación más estricta de que el modelo no agregue afirmaciones nuevas
-   aunque sean palabras permitidas, y evaluar la calidad de las reformulaciones.
+   vocabulario, slots y ahora rechaza negativas genéricas; antes de `live` hay que
+   medir la tasa de slots válidos, verificar que no se agreguen afirmaciones nuevas
+   aunque sean palabras permitidas y evaluar la calidad de las reformulaciones.
 
 7. **Definir consentimiento y UX:** explicar la descarga, el procesamiento local,
 el almacenamiento de caché y la opción de continuar sin SLM.
