@@ -3,7 +3,7 @@
 // Función: Invariantes del articulador SLM con doble gate (js/articulator.js) — el lenguaje
 //          no puede afirmar lo que la máquina no decidió, ni alterar/omitir lo que no
 //          puede parafrasear.
-// v-version: 20260822.01
+// v-version: 20260822.02
 
 /**
  * S1 · Articulador con doble gate — falsadores.
@@ -247,6 +247,60 @@ console.log('\n── A11 · Respuesta vacía ──');
   });
   check('[A11] una respuesta vacía queda BLOQUEADA', out.ok === false && out.blocked === true);
   check('[A11] la respuesta vacía activa fallback', typeof out.fallback === 'string' && out.fallback.includes('¿Cómo has dormido?'));
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+console.log('\n── A12 · Anclaje semántico de preguntas ──');
+
+{
+  const question = {
+    type: 'QUESTION',
+    text: 'Apretamiento dental nocturno o sobretensión involuntaria en mandíbula. ¿Con qué frecuencia te pasa?',
+    allowedClaims: []
+  };
+  const drift = {
+    articulate() {
+      return '¿Cuál es el tipo de apoyo dental que te recomiendo?';
+    }
+  };
+  const art = new Articulator({ model: drift });
+  const out = art.articulate(question);
+  check('[A12] una pregunta que cambia el asunto queda BLOQUEADA', out.ok === false && out.blocked === true);
+  check('[A12] reporta anclajes insuficientes o recomendación no autorizada',
+    out.violations.some((v) => v.includes('anclajes semánticos')
+      || v.includes('recomendación no autorizada')));
+  check('[A12] la pregunta desviada nunca llega al paciente', !out.text || !out.text.includes('apoyo dental'));
+
+  const honestQuestion = {
+    articulate() {
+      return '¿Con qué frecuencia te pasa el apretamiento dental nocturno?';
+    }
+  };
+  const validArt = new Articulator({ model: honestQuestion });
+  const valid = validArt.articulate(question);
+  check('[A12] una reformulación que conserva el asunto pasa', valid.ok === true && valid.usedModel === true);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+console.log('\n── A13 · Mismo gate en ruta asíncrona ──');
+
+{
+  const question = {
+    type: 'QUESTION',
+    text: 'Apretamiento dental nocturno o sobretensión involuntaria en mandíbula. ¿Con qué frecuencia te pasa?',
+    allowedClaims: []
+  };
+  const art = new Articulator({
+    model: {
+      async articulate() {
+        return '¿Cuál es el tipo de apoyo dental que te recomiendo?';
+      }
+    }
+  });
+  const out = await art.articulateAsync(question);
+  check('[A13] la ruta async bloquea el cambio de asunto', out.ok === false && out.blocked === true);
+  check('[A13] la ruta async conserva fallback seguro',
+    typeof out.fallback === 'string' && out.fallback.includes('Apretamiento dental'));
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

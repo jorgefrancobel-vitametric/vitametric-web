@@ -3,7 +3,7 @@
 // Función: Articulador de lenguaje on-device con doble gate — convierte el contrato
 //          allowedClaims del motor conversacional en prosa hacia el paciente, sin que
 //          la capa de lenguaje pueda afirmar nada que la máquina no decidió.
-// v-version: 20260822.01 (S1 — capa separada, consume el contrato de triage-chat.js)
+// v-version: 20260822.02 (S1 — gate semántico mínimo para preguntas)
 
 /**
  * S1 · Articulador SLM on-device con doble gate.
@@ -122,6 +122,73 @@
     return (String(text || '').match(/\b\d+(?:[.,]\d+)?\b/g) || []);
   }
 
+  const QUESTION_STOPWORDS = new Set([
+    'a', 'al', 'algo', 'algunas', 'algunos', 'ante', 'bajo', 'como', 'con',
+    'contra', 'cual', 'cuales', 'cuando', 'cuanto', 'cuantos', 'de', 'del',
+    'desde', 'donde', 'durante', 'e', 'el', 'ella', 'ellas', 'ellos', 'en',
+    'entre', 'es', 'esa', 'esas', 'ese', 'eso', 'esos', 'esta', 'estas',
+    'este', 'esto', 'estos', 'fue', 'hacia', 'hasta', 'has', 'hay', 'la',
+    'las', 'lo', 'los', 'me', 'mi', 'mis', 'nos', 'o', 'para', 'por', 'que',
+    'se', 'si', 'sin', 'sobre', 'su', 'sus', 'te', 'tu', 'tus', 'un', 'una',
+    'unos', 'unas', 'y'
+  ]);
+
+  // Verbos que convierten una pregunta de autoevaluación en consejo o acción
+  // clínica. Solo se rechazan cuando el texto fuente no los contiene: no se
+  // bloquea una pregunta cuyo contrato determinista ya los haya autorizado.
+  const QUESTION_UNSUPPORTED_TERMS = [
+    'recomienda', 'recomiendo', 'recomendacion', 'recomendar', 'deberias',
+    'deberia', 'necesitas', 'necesita', 'tratamiento', 'terapia', 'apoyo'
+  ];
+
+  function semanticWords(text) {
+    return [...new Set(
+      String(text || '')
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]+/g, ' ')
+        .split(/\s+/)
+        .filter((word) => word.length >= 4 && !QUESTION_STOPWORDS.has(word))
+    )];
+  }
+
+  /**
+   * Comprueba el mínimo semántico de una pregunta sin pretender hacer NLU:
+   * conserva dos anclajes del texto original cuando hay suficiente contenido,
+   * o uno en preguntas cortas. Esto bloquea reformulaciones que cambian el
+   * asunto (p. ej. bruxismo → recomendación dental) aunque usen vocabulario
+   * permitido y signos de pregunta correctos.
+   */
+  function questionSemanticCheck(candidate, turn) {
+    if (!turn || turn.type !== 'QUESTION') return { ok: true, matched: [], required: 0 };
+    const source = String(turn.text || '');
+    const sourceWords = semanticWords(source);
+    const candidateWords = new Set(semanticWords(candidate));
+    const matched = sourceWords.filter((word) => candidateWords.has(word));
+    const required = sourceWords.length >= 4 ? 2 : sourceWords.length > 0 ? 1 : 0;
+    const violations = [];
+
+    if (/[¿?]/.test(source) && !/[¿?]/.test(String(candidate || ''))) {
+      violations.push('la reformulación perdió la forma interrogativa');
+    }
+    if (required > 0 && matched.length < required) {
+      violations.push(`anclajes semánticos insuficientes: ${matched.length}/${required}`);
+    }
+
+    const sourceLower = source.toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    const candidateLower = String(candidate || '').toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    QUESTION_UNSUPPORTED_TERMS.forEach((term) => {
+      if (candidateLower.includes(term) && !sourceLower.includes(term)) {
+        violations.push(`lenguaje de recomendación no autorizado: "${term}"`);
+      }
+    });
+
+    return { ok: violations.length === 0, matched, required, violations };
+  }
+
   /** Etiqueta de certeza legible para el paciente, cuando el claim la pide. */
   function certaintyAdverb(certainty) {
     switch (certainty) {
@@ -189,7 +256,7 @@
    * articulador nunca introduce claims suyos. Aqui se verifica el minimo
    * verificable de esa promesa en la salida del LLM.
    */
-  function verifyOutput(candidate, locked, mandatory, check, authorizedNumbers = []) {
+  function verifyOutput(candidate, locked, mandatory, check, authorizedNumbers = [], turn = null) {
     const violations = [];
     if (!String(candidate || '').trim()) violations.push('respuesta vacía');
     const guard = check(candidate);
@@ -224,6 +291,9 @@
     mandatory.forEach((frag) => {
       if (!candidate.includes(frag)) violations.push(`frontera de seguridad omitida: "${frag}"`);
     });
+
+    const semantic = questionSemanticCheck(candidate, turn);
+    if (!semantic.ok) violations.push(...semantic.violations);
     return { ok: violations.length === 0, violations };
   }
 
@@ -278,7 +348,7 @@
           };
         }
         const cand = (typeof candidate === 'string') ? candidate : '';
-        const v = verifyOutput(cand, locked, mandatory, this.check, authorizedNumbers);
+        const v = verifyOutput(cand, locked, mandatory, this.check, authorizedNumbers, turn);
         if (!v.ok) {
           // Degradacion segura: se bloquea la salida del SLM y se cae a plantillas.
           const fb = templateArticulate(turn);
@@ -345,7 +415,7 @@
       }
 
       const cand = (typeof candidate === 'string') ? candidate : '';
-      const violations = verifyOutput(cand, locked, mandatory, this.check, authorizedNumbers);
+      const violations = verifyOutput(cand, locked, mandatory, this.check, authorizedNumbers, turn);
       if (!violations.ok) {
         return {
           ok: false,
@@ -372,6 +442,7 @@
     EVIDENCE,
     CERTAINTY,
     FORBIDDEN,
-    UNHELPFUL_RESPONSES
+    UNHELPFUL_RESPONSES,
+    questionSemanticCheck
   };
 }));
