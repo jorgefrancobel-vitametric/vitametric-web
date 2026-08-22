@@ -211,6 +211,41 @@
       }
     }
 
+    // Listener opcional de texto libre del paciente. On-device por defecto (privado);
+    // el servo (modelo en la nube) solo se usa si el paciente da consentimiento.
+    function renderListenerInput() {
+      if (!runtime.config.listener || !runtime.config.listener.enabled) return;
+      const box = el('div', 'triage-listener');
+      const ta = el('textarea', 'triage-listener__input');
+      ta.placeholder = '¿Quieres contarnos algo en tus palabras? (opcional)';
+      ta.rows = 2;
+      const send = el('button', 'triage-listener__send', 'Enviar');
+      send.type = 'button';
+      const consentWrap = el('label', 'triage-listener__consent');
+      const consent = el('input');
+      consent.type = 'checkbox';
+      consentWrap.appendChild(consent);
+      consentWrap.appendChild(document.createTextNode(' Permitir análisis en la nube para mejor comprensión (opcional)'));
+      consent.checked = !!runtime.config.listener.serverConsent;
+      consent.addEventListener('change', () => runtime.setListenerConsent(consent.checked));
+      send.addEventListener('click', async () => {
+        const text = ta.value;
+        if (!text.trim()) return;
+        ta.value = '';
+        const r = await runtime.listen(text);
+        if (r.ack) say(r.ack);
+        if (r.intent === 'agendar') {
+          const cta = controls.querySelector('.triage-cta');
+          if (cta) cta.scrollIntoView({ behavior: 'smooth' });
+        }
+        scrollToEnd();
+      });
+      box.appendChild(ta);
+      box.appendChild(send);
+      box.appendChild(consentWrap);
+      host.appendChild(box);
+    }
+
     async function step() {
       const turn = session.next();
 
@@ -270,6 +305,7 @@
       updateRuntimeStatus({ status: SLM.STATUS.LOADING, exposure: config.exposure });
     }
     void runtime.prepare().then(updateRuntimeStatus);
+    renderListenerInput();
     void step();
     return { session, runtime, questionsAsked: () => asked };
   }
