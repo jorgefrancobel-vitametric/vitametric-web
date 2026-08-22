@@ -112,6 +112,34 @@ console.log('\n── F1 · Degradación adversarial ──');
       && !('prompt' in runtime.snapshot().telemetry));
 }
 
+console.log('\n── F2 · Timeout de inferencia y fallback ──');
+
+{
+  const runtime = new Runtime({
+    articulator: new Articulator(),
+    config: { mode: MODES.ON, exposure: EXPOSURE.LIVE, telemetry: true },
+    inferenceTimeoutMs: 10,
+    loader: async () => ({
+      async articulate() {
+        await new Promise((resolve) => setTimeout(resolve, 50));
+        return 'Una respuesta editorial tardía.';
+      }
+    }),
+    capabilities: { webgpu: true, secureContext: true }
+  });
+  await runtime.prepare();
+  const started = Date.now();
+  const out = await runtime.articulate(turn());
+  const elapsed = Date.now() - started;
+  check('[F2] una inferencia lenta no bloquea el turno', elapsed < 40 && out.timeout === true);
+  check('[F2] timeout entrega fallback determinista seguro',
+    typeof out.text === 'string' && out.text.includes('11 de 100') && !out.text.includes('tardía'));
+  check('[F2] timeout registra evento sin guardar contenido',
+    runtime.snapshot().telemetry.model_timeout === 1
+      && runtime.snapshot().telemetry.model_fallback === 1
+      && !JSON.stringify(runtime.snapshot()).includes('tardía'));
+}
+
 console.log('\n── F3 · Feature flag y compatibilidad ──');
 
 {
@@ -143,6 +171,9 @@ console.log('\n── F3 · Telemetría ──');
   const snapshot = telemetry.snapshot();
   check('[F3] telemetría solo cuenta eventos', snapshot.model_turn === 1 && snapshot.model_fallback === 1);
   check('[F3] telemetría no admite texto arbitrario', !('prompt' in snapshot) && !('answer' in snapshot));
+  check('[F3] timeout configurable conserva un valor positivo', new Runtime({
+    articulator: new Articulator(), inferenceTimeoutMs: 25
+  }).snapshot().inferenceTimeoutMs === 25);
 }
 
 const total = passed + failed;

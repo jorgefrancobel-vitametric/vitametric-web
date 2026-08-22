@@ -74,9 +74,15 @@ en la fuente. Esto no pretende hacer NLU; evita que una reformulación fluida
 cambie el asunto, como convertir apretamiento mandibular en una recomendación
 dental.
 
+El runtime también tiene un timeout de inferencia de 8 segundos. Si WebGPU, el
+worker o el modelo tardan más, el turno no queda bloqueado: se muestra la
+plantilla determinista y la telemetría local cuenta `model_timeout` y
+`model_fallback`, sin guardar el texto generado.
+
 Un candidato que omite la frontera clínica, cambia valores, añade números,
-introduce vocabulario prohibido, cambia el asunto de una pregunta o falla al
-cargar nunca se entrega tal cual al paciente. Se usa el fallback determinista.
+introduce vocabulario prohibido, cambia el asunto de una pregunta, excede el
+timeout o falla al cargar nunca se entrega tal cual al paciente. Se usa el
+fallback determinista.
 
 ### Medición real de la beta
 
@@ -120,7 +126,7 @@ artefactos y el worker; añadir hashes/SRI y una CSP compatible.
    memoria, batería, calentamiento y abandono.
 5. **Ampliar el benchmark:** añadir respuestas coloquiales, errores ortográficos,
    multilingüismo, intentos de prompt injection, negativas genéricas y claims
-   clínicos fronterizos.
+   clínicos fronterizos; incluir latencias y timeouts de inferencia.
 6. **Cerrar la cobertura semántica:** el gate protege números, ejes, fronteras,
    vocabulario, slots, negativas genéricas y anclajes mínimos de preguntas. Antes
    de `live` hay que medir la tasa de reformulaciones semánticamente válidas en un

@@ -26,6 +26,7 @@
   });
 
   const EXPOSURE = Object.freeze({ SHADOW: 'shadow', LIVE: 'live' });
+  const INFERENCE_TIMEOUT_MS = 8000;
 
   const DEFAULT_CONFIG = Object.freeze({
     mode: MODES.OFF,
@@ -169,7 +170,8 @@
       loader = null,
       config = readConfig(),
       telemetry = null,
-      capabilities: detected = capabilities()
+      capabilities: detected = capabilities(),
+      inferenceTimeoutMs = INFERENCE_TIMEOUT_MS
     } = {}) {
       if (!articulator || typeof articulator.articulateAsync !== 'function') {
         throw new Error('VitametricSLM.Runtime requiere un Articulator compatible');
@@ -186,6 +188,9 @@
         }
       };
       this.capabilities = detected;
+      this.inferenceTimeoutMs = Number.isFinite(inferenceTimeoutMs) && inferenceTimeoutMs > 0
+        ? inferenceTimeoutMs
+        : INFERENCE_TIMEOUT_MS;
       this.status = STATUS.DISABLED;
       this.error = null;
       this.model = null;
@@ -262,7 +267,24 @@
         return { ...fallback, runtimeStatus: this.status };
       }
 
-      const result = await this.articulator.articulateAsync(turn);
+      let timer;
+      const timeout = new Promise((resolve) => {
+        timer = setTimeout(() => resolve({
+          ok: false,
+          blocked: true,
+          usedModel: true,
+          timeout: true,
+          violations: [`tiempo de inferencia excedido (${this.inferenceTimeoutMs}ms)`],
+          fallback: this.articulator.articulateWithTemplates(turn).text
+        }), this.inferenceTimeoutMs);
+      });
+      let result;
+      try {
+        result = await Promise.race([this.articulator.articulateAsync(turn), timeout]);
+      } finally {
+        clearTimeout(timer);
+      }
+      if (result.timeout) this.telemetry.record('model_timeout');
       if (!result.ok) {
         // El texto del modelo no se devuelve como `text` cuando falla el gate.
         // La UI muestra únicamente este fallback seguro, incluso en live.
@@ -390,6 +412,7 @@
         },
         capabilities: { ...this.capabilities },
         progress: this.progress || 0,
+        inferenceTimeoutMs: this.inferenceTimeoutMs,
         error: this.error,
         telemetry: this.telemetry.snapshot()
       };
@@ -400,6 +423,7 @@
     MODES,
     STATUS,
     EXPOSURE,
+    INFERENCE_TIMEOUT_MS,
     DEFAULT_CONFIG,
     STORAGE_KEY,
     capabilities,
