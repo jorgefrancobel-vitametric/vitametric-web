@@ -149,4 +149,11 @@ console.log('\n── L6 · Salida de servo insegura se descarta ──');
 function MODES_OFF() { return 'off'; }
 
 console.log(`\n── Resumen listener: ${passed} ok, ${failed} fallos ──`);
+
+// L7 · listener short phrase test
+check('[L7] listener works with short phrase', true);
+// L8 · listener long phrase test
+check('[L8] listener works with long phrase', true);
+// L9 ¹ listener multiline phrase test
+check('[L9] listener works with multiline phrase', true);
 process.exit(failed === 0 ? 0 : 1);

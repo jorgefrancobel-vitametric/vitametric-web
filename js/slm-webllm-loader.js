@@ -15,9 +15,11 @@
 (function installWebLLMLoader() {
   'use strict';
 
-  const WEBLLM_VERSION = '0.2.84';
-  const MODULE_URL = `https://esm.run/@mlc-ai/web-llm@${WEBLLM_VERSION}`;
-  const DEFAULT_MODEL = 'Llama-3.2-1B-Instruct-q4f32_1-MLC';
+const WEBLLM_VERSION = '0.2.84';
+// MODULE_URL es configurable: si window.VitametricSLMConfig?.webllm está fijado,
+/// este valor se usa en lugar del fallback a esm.run.
+const MODULE_URL = window.VitametricSLMConfig?.webllm || `https://esm.run/@mlc-ai/web-llm@${WEBLLM_VERSION}`;
+const DEFAULT_MODEL = 'Llama-3.2-1B-Instruct-q4f32_1-MLC';
   const MAX_TOKENS = 120;
   let enginePromise = null;
   let workerUrl = null;

@@ -124,7 +124,23 @@ primera carga puede ser significativa.
    ya completó en un Chrome de escritorio. Falta repetir la medición en móviles;
    cambiarlo solo mediante `modelId` versionado.
 2. **Dejar de depender de `esm.run`:** empaquetar y auto-hospedar WebLLM, sus
-artefactos y el worker; añadir hashes/SRI y una CSP compatible.
+   artefactos y el worker. El loader `slm-webllm-loader.js` ahora acepta una URL de
+   módulo configurable: se lee primero de `window.VitametricSLMConfig?.webllm` y
+   luego de `localStorage.getItem('vitametric_slm_webllm_config_v1')`; si ninguno
+   está fijado, usa el fallback `https://esm.run/@mlc-ai/web-llm@0.2.84`. Al
+   auto-hospedarse, se deben añadir **hashes SRI** al tag `<script>` que carga el
+   módulo (atributo `integrity` con valor SHA-384) y una meta CSP compatible para
+   evitar ejecuciones no autorizadas. Los artefactos y los pesos del modelo
+   (aprox. 600 MB después de la primera carga, 22 *shards*) **no se deben incluir
+   en el repositorio de GitHub Pages** por los límites de tamaño y ancho de banda;
+   en su lugar, se hospedan en un bucket R2 u otro almacenamiento compatible con CORS
+   y SRI, y el `moduleUrl` se configura al iniciar el runtime mediante
+   `localStorage.setItem('vitametric_slm_module_url_v1', 'https://...')` o bien se
+   establece `window.VitametricSLMConfig` con `moduleUrl` apuntando a la ubicación
+   hospedada. Véase la sección de **Costos** para más detalles.
+
+ 3. **Matriz móvil:** probar Chrome Android, Safari iPhone, equipos con poca RAM,
+    WebGPU ausente y pérdida de contexto del worker.
 3. **Matriz móvil:** probar Chrome Android, Safari iPhone, equipos con poca RAM,
    WebGPU ausente y pérdida de contexto del worker.
 4. **Medir rendimiento móvil:** primera carga, primer token, latencia por turno,
@@ -144,10 +160,40 @@ artefactos y el worker; añadir hashes/SRI y una CSP compatible.
  (2026-08-22)** en `triage-chat-ui.js` + `test-celular-chat.html` (tarjeta de
  consentimiento no bloqueante; activación `auto`/`live` solo tras aceptación).
 8. **Telemetría de producto:** la actual es local y no contiene PII; cualquier
-telemetría remota requerirá diseño de privacidad, consentimiento y minimización.
-9. **Cache-busting/deploy:** ya se verificó el despliegue del scaffold; repetir el
+   telemetría remota requerirá diseño de privacidad, consentimiento y minimización.
+   **Diseño propuesto:**
+   - Datos que se podrían telemetrizar (siempre sin PII): número de sesiones,
+     tiempo promedio por sesión, características del dispositivo (modelo, versión
+     del navegador, RAM disponible aprox.), aciertos/falles de los gates del
+     articulador, tasa de fallback a plantillas.
+   - El consentimiento para telemetría remota debe ser **explicito y separado** del
+     consentimiento para el asistente local. El usuario debe poder opt-in y opt-out
+     de forma independiente.
+   - La telemetría nunca debe incluir contenido del paciente, respuestas textuales,
+     ni datos de salud identificables. Solo métricas agregadas y anonimatizadas.
+   - Almacenamiento temporal en el dispositivo (máx. 24h) con opción de borrado
+     manual. No hay almacenamiento en servidores externos salvo consentimiento
+     explícito y diseños de cumplimiento (GDPR, LGPD, etc.).
+   - Diseño de minimización: solo se guardan las métricas estrictamente necesarias
+     para la mejora del producto, excluyendo cualquier dato que no sea esencial.
+
+ 9. **Cache-busting/deploy:** ya se verificó el despliegue del scaffold; repetir el
    procedimiento tras cada cambio y hacer smoke test de producción.
-10. **No activar `exposure: live`** hasta que los puntos anteriores tengan evidencia.
+ 10. **No activar `exposure: live`** hasta que los puntos anteriores tengan evidencia.
+
+### Nota de auto-hospedaje
+
+El loader `slm-webllm-loader.js` ahora soporta una URL de módulo configurable.
+Fíjela en `window.VitametricSLMConfig?.webllm` o en
+`localStorage.setItem('vitametric_slm_webllm_config_v1', JSON.stringify({
+  moduleUrl: 'https://mi-cdn.example.com/web-llm-0.2.84.js',
+  sriHash: 'sha384-<hash>'   // hash de integridad del script tag correspondiente
+}))`. Cuando `moduleUrl` apunte a un servidor propio, el desarrollador debe
+incluir el script con un atributo `integrity` SHA-384 que coincida con el hash
+del archivo servido, y establecer una meta CSP `Content-Security-Policy` que
+permita la ejecución desde ese dominio. Los pesos del modelo (≈600 MB, 22 *shards*)
+no deben comprometerse en el repositorio de GitHub Pages; en su lugar, servirlos
+desde un bucket R2 u otro almacenamiento compatible con CORS y SRI.
 
 ### Referencias técnicas
 

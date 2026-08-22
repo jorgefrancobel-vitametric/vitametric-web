@@ -133,6 +133,28 @@
   }
 
   /**
+   * Sondea las capacidades del dispositivo en un solo paso (no bloquea el primer turno).
+   * Devuelve un objeto con las claves webgpu, secureContext y memory (en GB, redondeado).
+   * Se usa principalmente para decisiones de modo: si la memoria disponible es < 1 GB,
+   * el modo `auto` cae graceful a plantillas verificadas.
+   */
+  function probeCapabilities(env = (typeof navigator !== 'undefined' ? navigator : {})) {
+    const webgpu = !!env.gpu;
+    const secureContext = typeof window === 'undefined' || window.isSecureContext !== false;
+    // Memoria aproximada: WebGPU on device suele implicar al menos 1 GB disponible.
+    const memoryGB = webgpu && secureContext ? (navigator.deviceMemory || 2) : 0;
+    return { webgpu, secureContext, memory: Math.round(memoryGB) };
+  }
+
+  /**
+   * Verifica si el modo `auto` debe desactivarse por falta de memoria.
+   * Solo aplica cuando el modo es `auto` y la memoria disponible es < 1 GB.
+   */
+  function lowMemoryGuard() {
+    return VitametricSLM.lowMemoryGuard;
+  }
+
+  /**
    * Contador local sin texto del usuario, claims, respuestas ni prompts.
    * Solo se activa mediante `telemetry: true` y nunca hace una petición de red.
    */
@@ -198,12 +220,13 @@
       this.telemetry = telemetry || new LocalTelemetry({ enabled: this.config.telemetry });
     }
 
-    enabled() {
-      if (this.config.mode === MODES.OFF) return false;
-      if (this.config.mode === MODES.AUTO
-        && (!this.capabilities.webgpu || !this.capabilities.secureContext)) return false;
-      return true;
-    }
+enabled() {
+    if (this.config.mode === MODES.OFF) return false;
+    if (this.config.mode === MODES.AUTO
+      && (!this.capabilities.webgpu || !this.capabilities.secureContext
+          || (typeof navigator !== 'undefined' && navigator.deviceMemory < 1))) return false;
+    return true;
+  }
 
     async prepare() {
       // El on-device (1B) es el default privado del listener siempre que esté
