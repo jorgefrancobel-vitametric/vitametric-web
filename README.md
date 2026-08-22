@@ -66,9 +66,17 @@ exige que cada slot aparezca exactamente una vez y reinyecta el texto original
 antes del doble gate. Si el modelo omite, duplica o deja un slot, la salida queda
 vacía y el runtime usa la plantilla.
 
+La tercera iteración añade un gate semántico mínimo para preguntas: la
+reformulación debe conservar la forma interrogativa y suficientes anclajes del
+texto base (dos cuando la pregunta tiene contenido suficiente, uno en preguntas
+cortas). También se bloquean recomendaciones o lenguaje de acción no presentes
+en la fuente. Esto no pretende hacer NLU; evita que una reformulación fluida
+cambie el asunto, como convertir apretamiento mandibular en una recomendación
+dental.
+
 Un candidato que omite la frontera clínica, cambia valores, añade números,
-introduce vocabulario prohibido o falla al cargar nunca se entrega tal cual al
-paciente. Se usa el fallback determinista.
+introduce vocabulario prohibido, cambia el asunto de una pregunta o falla al
+cargar nunca se entrega tal cual al paciente. Se usa el fallback determinista.
 
 ### Medición real de la beta
 
@@ -114,9 +122,10 @@ artefactos y el worker; añadir hashes/SRI y una CSP compatible.
    multilingüismo, intentos de prompt injection, negativas genéricas y claims
    clínicos fronterizos.
 6. **Cerrar la cobertura semántica:** el gate protege números, ejes, fronteras,
-   vocabulario, slots y ahora rechaza negativas genéricas; antes de `live` hay que
-   medir la tasa de slots válidos, verificar que no se agreguen afirmaciones nuevas
-   aunque sean palabras permitidas y evaluar la calidad de las reformulaciones.
+   vocabulario, slots, negativas genéricas y anclajes mínimos de preguntas. Antes
+   de `live` hay que medir la tasa de reformulaciones semánticamente válidas en un
+   corpus amplio, verificar que no se agreguen afirmaciones nuevas aunque sean
+   palabras permitidas y evaluar la calidad de las reformulaciones.
 
 7. **Definir consentimiento y UX:** explicar la descarga, el procesamiento local,
 el almacenamiento de caché y la opción de continuar sin SLM.
