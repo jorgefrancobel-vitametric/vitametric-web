@@ -1,7 +1,7 @@
 // G-Level: L1
 // Sustrato: Script de Protocolo
 // Función: Capa de presentación de la anamnesis conversacional — renderiza únicamente los turnos que el motor autoriza
-// v-version: 20260822.01
+// v-version: 20260822.02 (consentimiento explícito + activación no bloqueante)
 
 /**
  * Presentación pura de la anamnesis.
@@ -28,6 +28,22 @@
 
   const { TURN, EVIDENCE, CERTAINTY } = Triage;
   const { AXES } = Engine;
+
+  // Clave de consentimiento separada de la config del runtime: permite saber si el
+  // paciente ya decidió sin confundirse con un feature flag manual (dev override).
+  const CONSENT_KEY = 'vitametric_slm_consent_v1';
+
+  function readConsent(storage = safeStorage()) {
+    if (!storage) return null;
+    try { return storage.getItem(CONSENT_KEY); } catch (err) { return null; }
+  }
+  function writeConsent(value, storage = safeStorage()) {
+    if (!storage) return;
+    try { storage.setItem(CONSENT_KEY, value); } catch (err) {}
+  }
+  function safeStorage() {
+    try { return typeof localStorage === 'undefined' ? null : localStorage; } catch (err) { return null; }
+  }
 
   const CERTAINTY_LABEL = {
     [CERTAINTY.PRELIMINARY]: 'información preliminar',
@@ -194,9 +210,30 @@
     }
 
     function updateRuntimeStatus(snapshot) {
-      const active = config.mode !== SLM.MODES.OFF;
-      slmStatus.style.display = active ? 'block' : 'none';
-      if (!active) return;
+      const active = runtime.config.mode !== SLM.MODES.OFF;
+      slmStatus.classList.remove('triage-slm-status--prompt');
+      slmStatus.innerHTML = '';
+      if (!active) {
+        // Si el paciente aún no lo rechazó, ofrecemos reabrir la opción de
+        // activar el asistente local desde la propia barra de estado.
+        if (readConsent() !== 'declined') {
+          slmStatus.style.display = 'block';
+          slmStatus.classList.add('triage-slm-status--prompt');
+          slmStatus.appendChild(document.createTextNode('Asistente local disponible: '));
+          const link = el('button', 'triage-slm-toggle', 'activar');
+          link.type = 'button';
+          link.addEventListener('click', () => {
+            const card = host.querySelector('.triage-consent');
+            if (card) card.scrollIntoView({ behavior: 'smooth' });
+            else showConsentCard();
+          });
+          slmStatus.appendChild(link);
+        } else {
+          slmStatus.style.display = 'none';
+        }
+        return;
+      }
+      slmStatus.style.display = 'block';
       slmStatus.dataset.state = snapshot.status;
       if (snapshot.status === SLM.STATUS.LOADING) {
         slmStatus.textContent = 'Asistente local: preparando el modelo…';
@@ -299,15 +336,68 @@
       }
     }
 
-    // La carga del modelo, si existe, es opcional y no bloquea el primer turno.
-    // Con la configuración por defecto el runtime queda en plantillas verificadas.
-    if (runtime.enabled()) {
-      updateRuntimeStatus({ status: SLM.STATUS.LOADING, exposure: config.exposure });
+    // Flujo de consentimiento: el modelo local solo se carga tras una decisión
+    // explícita del paciente. El dev override (window.VitametricSLMConfig) y una
+    // config ya persistida con mode != off implican consentimiento previo. Si el
+    // paciente nunca decidió, arrancamos con plantillas y ofrecemos el asistente
+    // local de forma no bloqueante.
+    function showConsentCard() {
+      if (host.querySelector('.triage-consent')) return;
+      const card = el('div', 'triage-consent');
+      card.setAttribute('role', 'group');
+      card.setAttribute('aria-label', 'Asistente local opcional');
+      card.appendChild(el('div', 'triage-consent__title', '¿Activamos el asistente local?'));
+      const body = el('p', 'triage-consent__body');
+      body.textContent = 'Este cuestionario puede usar un modelo de lenguaje pequeño que se '
+        + 'descarga una sola vez a tu dispositivo (unos 600 MB; luego queda en caché) y se '
+        + 'ejecuta en tu navegador con WebGPU. Tus respuestas se procesan localmente: no se '
+        + 'envían a ningún servidor. Si tu equipo no soporta WebGPU, el cuestionario sigue '
+        + 'funcionando con respuestas verificadas por plantillas. También podrás escribir en '
+        + 'tus palabras: ese texto se analiza en tu dispositivo. Puedes continuar sin activarlo: '
+        + 'el resultado es el mismo, solo con redacción fija.';
+      const actions = el('div', 'triage-consent__actions');
+      const accept = el('button', 'triage-consent__btn triage-consent__btn--primary', 'Activar asistente local');
+      accept.type = 'button';
+      accept.addEventListener('click', () => activateSLM(card));
+      const decline = el('button', 'triage-consent__btn triage-consent__btn--ghost', 'Continuar sin él');
+      decline.type = 'button';
+      decline.addEventListener('click', () => declineSLM(card));
+      actions.appendChild(accept);
+      actions.appendChild(decline);
+      card.appendChild(body);
+      card.appendChild(actions);
+      host.insertBefore(card, host.firstChild);
     }
-    void runtime.prepare().then(updateRuntimeStatus);
+
+    function activateSLM(card) {
+      writeConsent('granted');
+      runtime.config.mode = SLM.MODES.AUTO;
+      runtime.config.exposure = SLM.EXPOSURE.LIVE;
+      runtime.config.listener = Object.assign({}, runtime.config.listener, { enabled: true });
+      // Persiste la elección para recargas; el dev override sigue teniendo prioridad.
+      SLM.writeConfig(runtime.config);
+      if (card && card.parentNode) card.parentNode.removeChild(card);
+      updateRuntimeStatus({ status: SLM.STATUS.LOADING, exposure: SLM.EXPOSURE.LIVE });
+      renderListenerInput();
+      void runtime.prepare().then(updateRuntimeStatus);
+    }
+
+    function declineSLM(card) {
+      writeConsent('declined');
+      if (card && card.parentNode) card.parentNode.removeChild(card);
+      updateRuntimeStatus({ status: SLM.STATUS.DISABLED, exposure: SLM.EXPOSURE.SHADOW });
+    }
+
+    const decided = readConsent() === 'granted' || readConsent() === 'declined';
+    updateRuntimeStatus({ status: runtime.enabled() ? SLM.STATUS.LOADING : SLM.STATUS.DISABLED, exposure: config.exposure });
+    if (runtime.enabled()) {
+      void runtime.prepare().then(updateRuntimeStatus);
+    } else if (!window.VitametricSLMConfig && !decided) {
+      showConsentCard();
+    }
     renderListenerInput();
     void step();
-    return { session, runtime, questionsAsked: () => asked };
+    return { session, runtime, questionsAsked: () => asked, activateSLM, declineSLM };
   }
 
   document.addEventListener('DOMContentLoaded', () => {

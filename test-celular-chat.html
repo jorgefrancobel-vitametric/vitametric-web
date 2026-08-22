@@ -146,6 +146,67 @@
     .triage-slm-status[data-state="ready"] { color: #10B981; }
     .triage-slm-status[data-state="error"] { color: #F59E0B; }
 
+    .triage-slm-status--prompt {
+      display: block;
+      color: var(--c-muted);
+      font-size: 0.74rem;
+      line-height: 1.4;
+    }
+    .triage-slm-toggle {
+      background: none;
+      border: none;
+      color: var(--c-cyan);
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 0 0.15rem;
+      text-decoration: underline;
+    }
+    .triage-slm-toggle:hover { color: #00e0ff; }
+
+    .triage-consent {
+      padding: 0.9rem 1.1rem 1rem;
+      border-bottom: 1px solid var(--c-border-light);
+      background: rgba(0, 200, 255, 0.05);
+    }
+    .triage-consent__title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+      color: var(--c-text);
+    }
+    .triage-consent__body {
+      font-size: 0.8rem;
+      line-height: 1.5;
+      color: var(--c-muted);
+      margin: 0 0 0.8rem;
+    }
+    .triage-consent__actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .triage-consent__btn {
+      padding: 0.55rem 0.9rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .triage-consent__btn--primary {
+      background: var(--c-cyan);
+      color: #04121a;
+    }
+    .triage-consent__btn--primary:hover { background: #00e0ff; }
+    .triage-consent__btn--ghost {
+      background: transparent;
+      border-color: var(--c-border-light);
+      color: var(--c-text);
+    }
+    .triage-consent__btn--ghost:hover { border-color: var(--c-muted); }
+
     .triage-progress {
       height: 4px;
       background: var(--c-border-light);
@@ -349,9 +410,9 @@
   <!-- El SLM es opcional: por defecto permanece apagado y el chat usa plantillas
        verificadas. El loader WebLLM se registra antes de la UI sin cambiar el
        contrato del motor. -->
-  <script src="js/articulator.js?v=3df189c6"></script>
+  <script src="js/articulator.js?v=a1cf70c4"></script>
   <script src="js/slm-runtime.js?v=1338e29d"></script>
   <script type="module" src="js/slm-webllm-loader.js?v=b88afcdd"></script>
-  <script src="js/triage-chat-ui.js?v=e6795d63"></script>
+  <script src="js/triage-chat-ui.js?v=6b6d65c1"></script>
 </body>
 </html>

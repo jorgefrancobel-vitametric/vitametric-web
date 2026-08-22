@@ -17,8 +17,13 @@ Rasch, branching, interpretación, claims y límites siguen siendo deterministas
 - `test/test-slm-benchmark.mjs`: invariantes del contrato.
 
 **Estado de despliegue:** el scaffold está publicado en producción, pero conserva
-`mode: off`; ningún paciente descarga el modelo sin configurar explícitamente el
-feature flag en su propio navegador.
+`mode: off`; ningún paciente descarga el modelo sin una decisión explícita. Desde
+2026-08-22 el chat ofrece una **tarjeta de consentimiento** no bloqueante al
+primer acceso: explica la descarga local (~600 MB, en caché), el procesamiento en
+dispositivo (WebGPU, nada sale del navegador), la opción de texto libre on-device y
+la posibilidad de continuar con plantillas verificadas. Solo al aceptar pasa a
+`mode: auto` + `exposure: live` y se carga el modelo; la elección persiste en
+`localStorage`. Con `window.VitametricSLMConfig` (dev) se omite el flujo.
 
 ### Modos
 
@@ -127,14 +132,17 @@ artefactos y el worker; añadir hashes/SRI y una CSP compatible.
 5. **Ampliar el benchmark:** añadir respuestas coloquiales, errores ortográficos,
    multilingüismo, intentos de prompt injection, negativas genéricas y claims
    clínicos fronterizos; incluir latencias y timeouts de inferencia.
-6. **Cerrar la cobertura semántica:** el gate protege números, ejes, fronteras,
-   vocabulario, slots, negativas genéricas y anclajes mínimos de preguntas. Antes
-   de `live` hay que medir la tasa de reformulaciones semánticamente válidas en un
-   corpus amplio, verificar que no se agreguen afirmaciones nuevas aunque sean
-   palabras permitidas y evaluar la calidad de las reformulaciones.
+ 6. **Cerrar la cobertura semántica:** el gate protege números, ejes, fronteras,
+    vocabulario, slots, negativas genéricas y anclajes mínimos de preguntas. **Desde
+    2026-08-22 el anclaje temático también cubre turnos no-pregunta** (FRAMING,
+    REFLECTION, RESULT) en `articulator.js: topicAnchorCheck`, de modo que el SLM no
+    puede desviar el asunto ni colar recomendaciones fuera del contrato. Pendiente de
+    medición: tasa de reformulaciones válidas en un corpus amplio y calidad percibida.
 
-7. **Definir consentimiento y UX:** explicar la descarga, el procesamiento local,
-el almacenamiento de caché y la opción de continuar sin SLM.
+ 7. **Definir consentimiento y UX:** ~~explicar la descarga, el procesamiento local,
+ el almacenamiento de caché y la opción de continuar sin SLM~~ **implementado
+ (2026-08-22)** en `triage-chat-ui.js` + `test-celular-chat.html` (tarjeta de
+ consentimiento no bloqueante; activación `auto`/`live` solo tras aceptación).
 8. **Telemetría de producto:** la actual es local y no contiene PII; cualquier
 telemetría remota requerirá diseño de privacidad, consentimiento y minimización.
 9. **Cache-busting/deploy:** ya se verificó el despliegue del scaffold; repetir el

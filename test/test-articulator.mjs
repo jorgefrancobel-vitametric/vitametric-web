@@ -304,6 +304,56 @@ console.log('\n── A13 · Mismo gate en ruta asíncrona ──');
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+console.log('\n── A14 · Cobertura temática en turnos no-pregunta ──');
+
+{
+  const frame = {
+    type: 'FRAMING',
+    text: 'Te voy a hacer unas preguntas sobre cómo te has sentido últimamente.',
+    allowedClaims: [{
+      text: 'Esta conversación recoge lo que tú reportas; no es un diagnóstico ni una medición.',
+      evidence: 'SELF_REPORT'
+    }]
+  };
+  const honestFrame = {
+    articulate() {
+      return 'Vamos a platicar de cómo te has sentido últimamente: lo que me cuentes queda como reporte tuyo, no es un diagnóstico ni una medición.';
+    }
+  };
+  const good = new Articulator({ model: honestFrame }).articulate(frame);
+  check('[A14] reformulación de FRAMING que conserva el tema pasa', good.ok === true && good.usedModel === true);
+
+  const driftFrame = {
+    articulate() {
+      return 'Te recomiendo agendar una resonancia y tomar suplementos para el estrés.';
+    }
+  };
+  const bad = new Articulator({ model: driftFrame }).articulate(frame);
+  check('[A14] FRAMING que cambia el asunto o recomienda queda BLOQUEADO',
+    bad.ok === false && bad.blocked === true);
+  check('[A14] la desviación nunca llega al paciente', !bad.text || !bad.text.includes('resonancia'));
+
+  const result = resultTurn();
+  const honestResult = {
+    articulate() {
+      return 'De lo que me contaste, la mayor carga está en Calidad de Sueño, con 11 de 100. '
+        + 'Medir qué ocurre físicamente en tu cuerpo requiere el estudio en clínica; esta conversación no lo sustituye.';
+    }
+  };
+  const goodR = new Articulator({ model: honestResult }).articulate(result);
+  check('[A14] RESULT honesto con anclajes conservados pasa', goodR.ok === true && goodR.usedModel === true);
+
+  const driftResult = {
+    articulate() {
+      return 'Todo indica que debes acudir a terapia inmediata para tu glucémica.';
+    }
+  };
+  const badR = new Articulator({ model: driftResult }).articulate(result);
+  check('[A14] RESULT que introduce recomendación/glucémica queda BLOQUEADO',
+    badR.ok === false && badR.blocked === true);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 
 const total = passed + failed;
 console.log(`\n${failed === 0 ? '🎉' : '🚨'} Articulador S1: ${passed}/${total} invariantes verdes.`);

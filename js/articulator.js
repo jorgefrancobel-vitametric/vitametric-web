@@ -3,7 +3,7 @@
 // Función: Articulador de lenguaje on-device con doble gate — convierte el contrato
 //          allowedClaims del motor conversacional en prosa hacia el paciente, sin que
 //          la capa de lenguaje pueda afirmar nada que la máquina no decidió.
-// v-version: 20260822.02 (S1 — gate semántico mínimo para preguntas)
+// v-version: 20260822.03 (S1 — gate semántico mínimo + cobertura temática no-pregunta)
 
 /**
  * S1 · Articulador SLM on-device con doble gate.
@@ -189,6 +189,40 @@
     return { ok: violations.length === 0, matched, required, violations };
   }
 
+  /**
+   * Anclaje temático mínimo para turnos que NO son pregunta (FRAMING, REFLECTION,
+   * RESULT). Reutiliza `semanticWords` para exigir que la prosa del modelo conserve
+   * suficientes palabras del texto fuente, y bloquea lenguaje de recomendación/acción
+   * clínica que no estuviera ya en el contrato. Así el SLM no puede desviar el
+   * asunto ni colar consejo: la cobertura semántica deja de depender solo del tipo
+   * QUESTION. No pretende hacer NLU; es el mismo guardián de anclajes que la pregunta.
+   */
+  function topicAnchorCheck(candidate, turn) {
+    const source = [
+      turn.text || '',
+      ...((turn.allowedClaims || []).map((c) => (c && c.text) || ''))
+    ].join(' ');
+    const sourceWords = semanticWords(source);
+    const candidateWords = new Set(semanticWords(candidate));
+    const matched = sourceWords.filter((word) => candidateWords.has(word));
+    const required = sourceWords.length >= 4 ? 2 : sourceWords.length > 0 ? 1 : 0;
+    const violations = [];
+
+    if (required > 0 && matched.length < required) {
+      violations.push(`anclajes temáticos insuficientes: ${matched.length}/${required}`);
+    }
+
+    const sourceLower = source.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+    const candidateLower = String(candidate || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+    QUESTION_UNSUPPORTED_TERMS.forEach((term) => {
+      if (candidateLower.includes(term) && !sourceLower.includes(term)) {
+        violations.push(`lenguaje de recomendación no autorizado: "${term}"`);
+      }
+    });
+
+    return { ok: violations.length === 0, matched, required, violations };
+  }
+
   /** Etiqueta de certeza legible para el paciente, cuando el claim la pide. */
   function certaintyAdverb(certainty) {
     switch (certainty) {
@@ -292,7 +326,9 @@
       if (!candidate.includes(frag)) violations.push(`frontera de seguridad omitida: "${frag}"`);
     });
 
-    const semantic = questionSemanticCheck(candidate, turn);
+    const semantic = (turn && turn.type === 'QUESTION')
+      ? questionSemanticCheck(candidate, turn)
+      : topicAnchorCheck(candidate, turn);
     if (!semantic.ok) violations.push(...semantic.violations);
     return { ok: violations.length === 0, violations };
   }
@@ -443,6 +479,7 @@
     CERTAINTY,
     FORBIDDEN,
     UNHELPFUL_RESPONSES,
-    questionSemanticCheck
+    questionSemanticCheck,
+    topicAnchorCheck
   };
 }));
