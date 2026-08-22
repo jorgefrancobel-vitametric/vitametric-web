@@ -96,14 +96,30 @@
         qSubtitle.textContent = dim.subtitle || '';
       }
 
-      // Estado guardado para esta dimensión (si el usuario ya había seleccionado algo antes en este intento)
+      // Estado guardado para esta dimensión. Cada ítem conserva su grado ordinal
+      // (1..3) o null para "No lo sé"; la ausencia de clave significa que aún no
+      // fue respondido.
       const existingAnswer = engine.answers[dim.id];
-      let selectedIds = existingAnswer ? [...(existingAnswer.selectedItemIds || [])] : [];
+      const responseGrades = existingAnswer ? { ...(existingAnswer.grades || {}) } : {};
+      const hasResponse = (itemId) => Object.prototype.hasOwnProperty.call(responseGrades, itemId);
+      const isSelected = (itemId) => typeof responseGrades[itemId] === 'number' && responseGrades[itemId] >= 1;
+      const isUnknown = (itemId) => hasResponse(itemId) && responseGrades[itemId] === null;
       let isOptimalSelected = existingAnswer ? !!existingAnswer.isOptimal : false;
+
+      function commitResponses() {
+        const entries = Object.entries(responseGrades).map(([id, grade]) => ({ id, grade }));
+        if (entries.length > 0) {
+          engine.answerDimension(dim.id, entries, false);
+        } else {
+          delete engine.answers[dim.id];
+        }
+        isOptimalSelected = false;
+        renderCurrentQuestion();
+      }
 
       function updateNextButtonState() {
         if (!nextBtn) return;
-        const hasSelection = isOptimalSelected || selectedIds.length > 0;
+        const hasSelection = isOptimalSelected || Object.keys(responseGrades).length > 0;
         nextBtn.disabled = !hasSelection;
         nextBtn.style.opacity = hasSelection ? '1' : '0.4';
         nextBtn.style.cursor = hasSelection ? 'pointer' : 'not-allowed';
@@ -124,84 +140,86 @@
           margin-bottom: 1rem;
         `;
 
-        // 1. Renderizar Micro-Chips de Síntomas
+        // 1. Renderizar Micro-Chips de Síntomas con frecuencia explícita.
+        // No se anida un <select> dentro de un <button>: el contenedor es un grupo
+        // accesible y el selector es el control real de la respuesta.
         dim.items.forEach(it => {
-          const isSelected = selectedIds.includes(it.id);
+          const selected = isSelected(it.id);
+          const unknown = isUnknown(it.id);
 
-          const chip = document.createElement('button');
-          chip.type = 'button';
+          const chip = document.createElement('div');
           chip.className = 'test-chip-btn';
-          chip.setAttribute('role', 'checkbox');
-          chip.setAttribute('aria-checked', isSelected ? 'true' : 'false');
-
+          chip.setAttribute('role', 'group');
           chip.style.cssText = `
             display: flex;
-            align-items: flex-start;
+            align-items: center;
+            flex-wrap: wrap;
             gap: 0.85rem;
             padding: 0.9rem 1.15rem;
-            background: ${isSelected ? 'rgba(0, 200, 255, 0.12)' : 'var(--c-bg-mid)'};
-            border: 1.5px solid ${isSelected ? 'var(--c-cyan)' : 'var(--c-border)'};
+            background: ${selected ? 'rgba(0, 200, 255, 0.12)' : unknown ? 'rgba(245, 158, 11, 0.10)' : 'var(--c-bg-mid)'};
+            border: 1.5px solid ${selected ? 'var(--c-cyan)' : unknown ? '#F59E0B' : 'var(--c-border)'};
             border-radius: 8px;
             color: var(--c-heading);
             text-align: left;
             font-size: 0.95rem;
             line-height: 1.45;
-            cursor: pointer;
             transition: all 0.2s ease;
             font-family: var(--font);
             width: 100%;
             box-sizing: border-box;
           `;
 
-          const boxSpan = document.createElement('span');
-          boxSpan.setAttribute('aria-hidden', 'true');
-          boxSpan.style.cssText = `
-            flex-shrink: 0;
-            width: 18px;
-            height: 18px;
-            border-radius: 4px;
-            border: 1.5px solid ${isSelected ? 'var(--c-cyan)' : 'var(--c-muted)'};
-            background: ${isSelected ? 'var(--c-cyan)' : 'transparent'};
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 2px;
-            font-size: 11px;
-            color: #0A0F1D;
-            font-weight: 900;
-            transition: all 0.2s ease;
-          `;
-          if (isSelected) {
-            boxSpan.textContent = '✓';
-          }
-
           const textSpan = document.createElement('span');
           textSpan.style.cssText = `
             flex-grow: 1;
-            font-weight: ${isSelected ? '600' : '400'};
-            color: ${isSelected ? 'var(--c-heading)' : 'var(--c-text)'};
+            font-weight: ${selected || unknown ? '600' : '400'};
+            color: ${selected ? 'var(--c-heading)' : unknown ? '#F59E0B' : 'var(--c-text)'};
           `;
           textSpan.textContent = it.text;
 
-          chip.appendChild(boxSpan);
-          chip.appendChild(textSpan);
-
-          chip.onclick = () => {
-            isOptimalSelected = false;
-            if (selectedIds.includes(it.id)) {
-              selectedIds = selectedIds.filter(id => id !== it.id);
+          const gradeSelect = document.createElement('select');
+          gradeSelect.className = 'test-chip-grade-select';
+          gradeSelect.setAttribute('aria-label', `Frecuencia: ${it.text}`);
+          gradeSelect.style.cssText = `
+            flex: 1 1 13rem;
+            min-width: min(100%, 13rem);
+            min-height: 42px;
+            padding: 0.45rem 0.55rem;
+            border: 1px solid ${selected ? 'var(--c-cyan)' : unknown ? '#F59E0B' : 'var(--c-border)'};
+            border-radius: 6px;
+            background: var(--c-bg-card);
+            color: var(--c-heading);
+            font: inherit;
+            font-size: 0.78rem;
+            cursor: pointer;
+          `;
+          const options = [
+            ['', 'No seleccionado'],
+            ['1', 'Rara vez (alguna vez al mes)'],
+            ['2', 'A menudo (1 a 3 veces por semana)'],
+            ['3', 'Habitualmente (4 o más veces por semana)'],
+            ['unknown', 'No lo sé / No aplica']
+          ];
+          options.forEach(([value, label]) => {
+            const option = document.createElement('option');
+            option.value = value;
+            option.textContent = label;
+            gradeSelect.appendChild(option);
+          });
+          gradeSelect.value = !hasResponse(it.id)
+            ? ''
+            : responseGrades[it.id] === null ? 'unknown' : String(responseGrades[it.id]);
+          gradeSelect.onchange = () => {
+            if (gradeSelect.value === '') {
+              delete responseGrades[it.id];
             } else {
-              selectedIds.push(it.id);
+              responseGrades[it.id] = gradeSelect.value === 'unknown' ? null : Number(gradeSelect.value);
             }
-
-            if (selectedIds.length > 0) {
-              engine.answerDimension(dim.id, selectedIds, false);
-            } else {
-              delete engine.answers[dim.id];
-            }
-            renderCurrentQuestion();
+            commitResponses();
           };
 
+          chip.appendChild(textSpan);
+          chip.appendChild(gradeSelect);
           chipsGrid.appendChild(chip);
         });
 
@@ -269,7 +287,7 @@
               delete engine.answers[dim.id];
             } else {
               isOptimalSelected = true;
-              selectedIds = [];
+              Object.keys(responseGrades).forEach((id) => delete responseGrades[id]);
               engine.answerDimension(dim.id, [], true);
             }
             renderCurrentQuestion();
@@ -408,8 +426,11 @@
               <span style="color: var(--c-heading); font-weight: 600; display: flex; align-items: center; gap: 6px;">
                 <span aria-hidden="true">${ax.icon}</span> ${ax.name}
               </span>
-              <span style="color: ${barColor}; font-weight: 700; font-size: 0.85rem;">
+              <span style="color: ${barColor}; font-weight: 700; font-size: 0.85rem; text-align: right;">
                 ${score}% (${statusLabel})
+                ${results.axisBounds && results.axisBounds[item.key] && results.axisBounds[item.key].uncertainty > 0
+                  ? `<small style="display: block; color: var(--c-muted); font-weight: 500; margin-top: 0.15rem;">Rango: ${results.axisBounds[item.key].lower}–${results.axisBounds[item.key].upper}</small>`
+                  : ''}
               </span>
             </div>
             <div style="width: 100%; height: 8px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; position: relative;">

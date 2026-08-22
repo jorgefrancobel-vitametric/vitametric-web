@@ -293,7 +293,14 @@ console.log('\n── T7 · Revisión de hipótesis declarada ──');
     for (let t = 0; t < 80; t++) {
       const turn = session.next();
       if (turn.type === TURN.FRAMING) continue;
-      if (turn.type === TURN.REFLECTION) { trace.focoComunicado = turn.axis; session.respondToReflection(turn.axis, rand() > 0.5); continue; }
+      // Solo cuenta como hipótesis comunicada la reflexión que AFIRMÓ dominancia
+      // (`ranked`). Las de contraste y desempate declaran justamente lo contrario
+      // —que aún no se puede ordenar—, así que no hay nada que después contradecir.
+      if (turn.type === TURN.REFLECTION) {
+        if (turn.ranked) trace.focoComunicado = turn.axis;
+        session.respondToReflection(turn.axis, rand() > 0.5);
+        continue;
+      }
       if (turn.type === TURN.QUESTION) { session.answer(turn.itemId, Math.floor(rand() * 4)); continue; }
       if (turn.type === TURN.RESULT) { trace.result = turn; break; }
     }

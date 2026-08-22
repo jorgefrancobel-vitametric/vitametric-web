@@ -33,12 +33,16 @@
   if (typeof define === 'function' && define.amd) {
     define([], factory);
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('./rasch.js'), require('./test-celular-engine.js'));
+    module.exports = factory(require('./rasch.js'), require('./test-celular-engine.js'), require('./interpretation.js'));
   } else {
-    root.VitametricTriageChat = factory(root.Rasch, root.VitametricTestEngine);
+    root.VitametricTriageChat = factory(root.Rasch, root.VitametricTestEngine, root.VitametricInterpretation);
   }
-}(typeof self !== 'undefined' ? self : this, function (Rasch, Engine) {
+}(typeof self !== 'undefined' ? self : this, function (Rasch, Engine, Interpretation) {
   'use strict';
+
+  // La lectura hermenéutica es opcional: sin ella el chat sigue dando su resultado
+  // cuantitativo, solo que sin leer la estructura de las respuestas.
+  const HAS_INTERPRETATION = !!(Interpretation && typeof Interpretation.read === 'function');
 
   const { AXES, GRADE, GRADE_LABELS, UNKNOWN_LABEL, BASE_DIMENSIONS, CONDITIONAL_DIMENSIONS } = Engine;
 
@@ -310,6 +314,71 @@
       return ordenados[0];
     }
 
+    /**
+     * ¿La ventaja del primer eje sobre el segundo se distingue del ruido?
+     *
+     * Ordenar por θ siempre produce un ganador, aunque la diferencia sea azar. Un
+     * caso medido: θ=0.30 contra θ=0.00 con error combinado 0.92 — el bot anunciaba
+     * "es donde más carga aparece" sobre una diferencia de 4 puntos en la escala,
+     * que no significa nada. Se exige que la diferencia supere el error combinado
+     * de ambas estimaciones antes de nombrar un área dominante.
+     */
+    function dominanceIsDistinguishable(estimates) {
+      const ordenados = Object.values(estimates).sort((a, b) => b.theta - a.theta);
+      const [primero, segundo] = ordenados;
+      if (!segundo) return { distinguishable: true, first: primero, second: null };
+      const diferencia = primero.theta - segundo.theta;
+      const errorCombinado = Math.sqrt(primero.se * primero.se + segundo.se * segundo.se);
+      return {
+        distinguishable: diferencia > errorCombinado,
+        margin: diferencia,
+        combinedError: errorCombinado,
+        first: primero,
+        second: segundo
+      };
+    }
+
+    /**
+     * Evidencia contable de un eje: lo que el paciente efectivamente respondió.
+     *
+     * Un "54 de 100" no tiene referente — el 50 es la media del catálogo, que no
+     * significa nada para quien contesta. En cambio "3 de las 5 señales, dos casi
+     * a diario" es verificable por el propio paciente, que es el único anclaje
+     * honesto mientras no existan normas poblacionales.
+     */
+    function axisEvidence(axis) {
+      const relevantes = catalog.filter((it) => typeof difficulties[axis][it.id] === 'number');
+      const administrados = relevantes.filter((it) => it.id in state.answers);
+      const grados = administrados.map((it) => state.answers[it.id]);
+      const afirmados = grados.filter((g) => typeof g === 'number' && g >= 1);
+      const frecuentes = grados.filter((g) => g === 3);
+      const desconocidos = grados.filter((g) => g === null);
+      return {
+        asked: administrados.length,
+        pool: relevantes.length,
+        affirmed: afirmados.length,
+        frequent: frecuentes.length,
+        unknown: desconocidos.length
+      };
+    }
+
+    /** Frase de evidencia, en los términos en que el paciente respondió. */
+    function evidencePhrase(axis) {
+      const e = axisEvidence(axis);
+      if (!e.asked) return 'todavía no te he preguntado por esta área';
+      if (!e.affirmed) return `de ${e.asked} ${e.asked === 1 ? 'pregunta' : 'preguntas'} en esta área, no señalaste ninguna`;
+      // La intensidad importa tanto como el recuento: tres señales ocasionales y
+      // tres habituales no describen la misma situación.
+      const partes = [`señalaste ${e.affirmed} de ${e.asked} ${e.asked === 1 ? 'señal' : 'señales'}`];
+      if (e.frequent) {
+        partes.push(`${e.frequent} de forma habitual`);
+      } else {
+        partes.push('ninguna de forma habitual');
+      }
+      if (e.unknown) partes.push(`${e.unknown} sin poder responder`);
+      return partes.join(', ');
+    }
+
     function emit(turn) {
       // Ningún turno sale sin pasar el guardián: el texto que llega al paciente
       // no puede prometer lo que el instrumento no hace.
@@ -390,18 +459,65 @@
           : [];
         if (conCarga.length) {
           const foco = conCarga.sort((a, b) => b.theta - a.theta)[0];
+          const dominancia = dominanceIsDistinguishable(estimates);
           state.reflectedOn[foco.axis] = true;
           state.askedSinceReflection = 0;
-          state.communicatedFocus = foco.axis;
+
+          // Cuando dos áreas no se distinguen entre sí, el modelo no tiene con qué
+          // elegir — pero el paciente sí. Preguntarle a él es mejor información que
+          // inventar un ganador, y es la clase de dato que ningún cálculo aporta.
+          // El desempate solo tiene sentido si el segundo eje fue explorado. Con
+          // θ=0 por prior y cero preguntas, compararlo sería enfrentar un dato
+          // contra una suposición.
+          const segundoExplorado = dominancia.second
+            && axisEvidence(dominancia.second.axis).affirmed > 0;
+
+          if (!dominancia.distinguishable && segundoExplorado) {
+            const a = AXES[dominancia.first.axis];
+            const b = AXES[dominancia.second.axis];
+            // No se toca `communicatedFocus`: si antes se afirmó un área dominante,
+            // ese compromiso sigue vivo y habrá que declarar si al final cambia.
+            // Borrarlo aquí haría desaparecer la contradicción sin resolverla.
+            return emit({
+              type: TURN.REFLECTION,
+              axis: foco.axis,
+              ambiguous: true,
+              text: `Veo señales parecidas en ${a.shortName.toLowerCase()} y en ${b.shortName.toLowerCase()}, `
+                + 'sin que ninguna destaque sobre la otra. ¿Cuál dirías que te pesa más en el día a día?',
+              allowedClaims: [{
+                text: `En ${a.shortName} ${evidencePhrase(dominancia.first.axis)}; `
+                  + `en ${b.shortName} ${evidencePhrase(dominancia.second.axis)}. `
+                  + 'La diferencia entre ambas es menor que el margen de error, así que no puedo ordenarlas por mi cuenta.',
+                evidence: EVIDENCE.MODEL_ESTIMATE,
+                certainty: CERTAINTY.PRELIMINARY
+              }],
+              options: [
+                { value: dominancia.first.axis, label: a.shortName },
+                { value: dominancia.second.axis, label: b.shortName },
+                { value: 'ninguna', label: 'Ninguna de las dos' }
+              ]
+            });
+          }
+
+          // Sin dominancia distinguible no se anuncia un "área que más pesa": se
+          // contrasta lo reportado en esa área, sin ordenar nada.
+          const puedeAfirmarDominancia = dominancia.distinguishable;
+          // Igual que arriba: solo una afirmación de dominancia actualiza el
+          // compromiso; un contraste sin ranking no lo crea ni lo borra.
+          if (puedeAfirmarDominancia) state.communicatedFocus = foco.axis;
           return emit({
             type: TURN.REFLECTION,
             axis: foco.axis,
-            text: `Por lo que me cuentas, el área de ${AXES[foco.axis].shortName.toLowerCase()} `
-              + 'es donde más carga aparece. ¿Lo ves así, o hay algo que no encaje?',
+            ranked: puedeAfirmarDominancia,
+            text: puedeAfirmarDominancia
+              ? `Por lo que me cuentas, el área de ${AXES[foco.axis].shortName.toLowerCase()} `
+                + 'es donde más carga aparece. ¿Lo ves así, o hay algo que no encaje?'
+              : `En ${AXES[foco.axis].shortName.toLowerCase()} ${evidencePhrase(foco.axis)}. `
+                + 'Todavía no puedo decir si es lo que más te pesa. ¿Te encaja como algo que notas?',
             allowedClaims: [{
-              text: `Carga estimada en ${AXES[foco.axis].shortName}: ${foco.scale} de 100.`,
-              evidence: EVIDENCE.MODEL_ESTIMATE,
-              certainty: foco.certainty
+              // La evidencia contable sustituye al número sin referente.
+              text: `En ${AXES[foco.axis].shortName} ${evidencePhrase(foco.axis)}.`,
+              evidence: EVIDENCE.SELF_REPORT
             }],
             options: [
               { value: true, label: 'Sí, es así' },
@@ -437,14 +553,87 @@
         const dominante = dominantAxis(estimates);
         const sinPrecision = Object.values(estimates).filter((e) => e.certainty === CERTAINTY.PRELIMINARY);
 
+        // Lectura de la estructura de las respuestas: discordancias entre lo que
+        // el cuerpo reporta y lo que la introspección acompaña, circunstancias sin
+        // repercusión, y cruces entre ejes que ningún eje dice por separado.
+        const lectura = HAS_INTERPRETATION
+          ? Interpretation.read({ answers: state.answers, estimates })
+          : { patterns: [], softenLowClaims: [], validity: { concern: false } };
+
+        // Cada lectura viaja con su contra-lectura pegada: nunca se afirma un
+        // patrón sin decir en el mismo aliento qué NO significa.
+        const claimsDeLectura = lectura.patterns.flatMap((p) => ([
+          {
+            text: p.meaning,
+            evidence: EVIDENCE.MODEL_ESTIMATE,
+            certainty: p.confidence === 'STRONG' ? CERTAINTY.ESTABLISHED
+              : p.confidence === 'MODERATE' ? CERTAINTY.PROBABLE : CERTAINTY.PRELIMINARY,
+            pattern: p.id,
+            label: p.label
+          },
+          { text: p.notMeaning, evidence: EVIDENCE.NOT_OBSERVABLE, pattern: p.id, isLimit: true }
+        ]));
+
+        const dominancia = dominanceIsDistinguishable(estimates);
+
+        /**
+         * Banda verbal derivada de lo que la persona respondió, no del rasgo
+         * abstracto. "Señalaste 3 de 4, dos habituales" es comprobable por quien
+         * contestó; "54 de 100" no lo es.
+         */
+        const bandOf = (axis) => {
+          const e = axisEvidence(axis);
+          if (!e.asked) return 'sin explorar';
+          if (!e.affirmed) return 'sin señales';
+          const proporcion = e.affirmed / e.asked;
+          if (e.frequent >= 2 || (proporcion >= 0.75 && e.frequent >= 1)) return 'señales frecuentes';
+          if (proporcion >= 0.5) return 'varias señales';
+          return 'algunas señales';
+        };
+
+        const axisSummaries = Object.values(estimates)
+          .map((est) => ({
+            axis: est.axis,
+            name: AXES[est.axis].shortName,
+            icon: AXES[est.axis].icon,
+            color: AXES[est.axis].color,
+            band: bandOf(est.axis),
+            evidence: axisEvidence(est.axis),
+            phrase: evidencePhrase(est.axis),
+            scale: est.scale,
+            certainty: est.certainty,
+            theta: est.theta
+          }))
+          .sort((a, b) => b.theta - a.theta);
+
+        // Titular en lenguaje llano. Si nada destaca de verdad, se dice — es más
+        // informativo que coronar a un ganador por diferencias de ruido.
+        const conSenales = axisSummaries.filter((s) => s.evidence.affirmed > 0);
+        let headline;
+        if (!conSenales.length) {
+          headline = 'De lo que me contaste, no señalaste molestias en ninguna de las áreas que revisamos.';
+        } else if (dominancia.distinguishable) {
+          const top = axisSummaries[0];
+          headline = `De lo que me contaste, lo que más pesa es ${top.name.toLowerCase()}: ${top.phrase}.`;
+        } else {
+          const nombres = conSenales.slice(0, 2).map((s) => s.name.toLowerCase());
+          headline = `De lo que me contaste, hay señales repartidas entre ${nombres.join(' y ')}, `
+            + 'sin que una destaque claramente sobre la otra.';
+        }
+
         return emit({
           type: TURN.RESULT,
-          text: 'Con esto tengo suficiente. Esto es lo que reportaste, resumido.',
+          text: headline,
+          headline,
+          axisSummaries,
+          dominanceDistinguishable: dominancia.distinguishable,
           estimates,
           dominant: dominante.axis,
           itemsAsked: state.asked.length,
           catalogSize: catalog.length,
+          interpretation: lectura,
           allowedClaims: [
+            ...claimsDeLectura,
             // Si durante la conversación se le nombró otro foco, el cambio se
             // declara. Revisar una hipótesis con datos nuevos es correcto; dejar
             // que el paciente descubra la contradicción por su cuenta, no.
@@ -455,12 +644,19 @@
               certainty: dominante.certainty,
               revision: { from: state.communicatedFocus, to: dominante.axis }
             }] : []),
-            {
-              text: `El área con más carga según lo que reportaste es ${AXES[dominante.axis].shortName}: `
-                + `${dominante.scale} de 100.`,
-              evidence: EVIDENCE.MODEL_ESTIMATE,
-              certainty: dominante.certainty
-            },
+            // Lo que se afirma es lo que la persona respondió, contado. El rasgo
+            // estimado sigue disponible en `estimates` para uso interno, pero no
+            // se le presenta como si fuera una medición con referente.
+            ...(conSenales.length ? [{
+              text: dominancia.distinguishable
+                ? `El área con más señales es ${axisSummaries[0].name}: ${axisSummaries[0].phrase}.`
+                : `Las áreas con más señales son ${conSenales.slice(0, 2).map((s) => s.name).join(' y ')}, `
+                  + 'con una diferencia entre ellas menor que el margen de error de este cuestionario.',
+              evidence: EVIDENCE.SELF_REPORT
+            }] : [{
+              text: 'No señalaste molestias en ninguna de las áreas exploradas.',
+              evidence: EVIDENCE.SELF_REPORT
+            }]),
             {
               text: 'Medir qué ocurre físicamente en tu cuerpo requiere el estudio en clínica; '
                 + 'esta conversación no lo sustituye.',

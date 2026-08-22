@@ -203,6 +203,15 @@
     .triage-claim__tag--self_report { background: rgba(16, 185, 129, 0.15); color: #10B981; }
     .triage-claim__tag--model_estimate { background: rgba(0, 200, 255, 0.15); color: #00C8FF; }
     .triage-claim__tag--not_observable { background: rgba(245, 158, 11, 0.15); color: #F59E0B; }
+    /* La contra-lectura se pega visualmente a la lectura que limita. */
+    .triage-claim__tag--limit { background: rgba(160, 210, 240, 0.12); color: var(--c-muted); }
+    .triage-claim--limit { margin-top: -0.2rem; padding-left: 0.6rem; border-left: 2px solid var(--c-border-light); }
+
+    .triage-result__value {
+      font-weight: 700;
+      font-size: 0.78rem;
+      white-space: nowrap;
+    }
 
     .triage-controls {
       display: flex;
@@ -321,7 +330,11 @@
   <script src="js/theme.js?v=e84643f0"></script>
   <script src="js/rasch.js?v=a9650750"></script>
   <script src="js/test-celular-engine.js?v=352cda2c"></script>
-  <script src="js/triage-chat.js?v=a7598ccd"></script>
-  <script src="js/triage-chat-ui.js?v=d01dcda3"></script>
+  <!-- interpretation debe cargarse ANTES que triage-chat: este la resuelve desde
+       window en su factoría UMD y, si falta, el chat pierde la lectura de patrones
+       en silencio (misma clase de fallo que rasch.js sin script tag). -->
+  <script src="js/interpretation.js?v=c9fc4a5a"></script>
+  <script src="js/triage-chat.js?v=8b39764b"></script>
+  <script src="js/triage-chat-ui.js?v=f4dcda76"></script>
 </body>
 </html>

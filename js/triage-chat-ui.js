@@ -74,10 +74,15 @@
         const row = el('div', 'triage-claim');
         // La procedencia va visible: el paciente debe poder distinguir lo que él
         // dijo, lo que el modelo estimó y lo que solo se mide en clínica.
-        const tag = el('span', `triage-claim__tag triage-claim__tag--${claim.evidence.toLowerCase()}`,
-          claim.evidence === EVIDENCE.SELF_REPORT ? 'lo que reportaste'
-            : claim.evidence === EVIDENCE.MODEL_ESTIMATE ? (CERTAINTY_LABEL[claim.certainty] || 'estimación')
-              : 'requiere medición en clínica');
+        // Una contra-lectura no es una afirmación sobre el instrumento: es el
+        // límite de la lectura anterior, y debe leerse pegada a ella.
+        const tag = claim.isLimit
+          ? el('span', 'triage-claim__tag triage-claim__tag--limit', 'lo que no significa')
+          : el('span', `triage-claim__tag triage-claim__tag--${claim.evidence.toLowerCase()}`,
+            claim.evidence === EVIDENCE.SELF_REPORT ? 'lo que reportaste'
+              : claim.evidence === EVIDENCE.MODEL_ESTIMATE ? (CERTAINTY_LABEL[claim.certainty] || 'estimación')
+                : 'requiere medición en clínica');
+        if (claim.isLimit) row.classList.add('triage-claim--limit');
         row.appendChild(tag);
         row.appendChild(el('span', 'triage-claim__text', claim.text));
         box.appendChild(row);
@@ -122,23 +127,25 @@
       const detalle = el('div', 'triage-result');
       detalle.appendChild(el('h3', 'triage-result__title', 'Desglose por área'));
 
-      Object.values(turn.estimates)
-        .sort((a, b) => b.theta - a.theta)
-        .forEach((est) => {
-          const row = el('div', 'triage-result__row');
-          row.appendChild(el('span', 'triage-result__axis', `${AXES[est.axis].icon} ${AXES[est.axis].shortName}`));
-          const meter = el('div', 'triage-result__meter');
-          const fill = el('div', 'triage-result__fill');
-          fill.style.width = `${est.scale}%`;
-          fill.style.background = AXES[est.axis].color;
-          meter.appendChild(fill);
-          row.appendChild(meter);
-          row.appendChild(el('span', 'triage-result__value', `${est.scale}`));
-          // La precisión de cada eje viaja al lado del número: sin esto, un eje
-          // estimado con dos respuestas se lee igual que uno con seis.
-          row.appendChild(el('span', 'triage-result__certainty', CERTAINTY_LABEL[est.certainty]));
-          detalle.appendChild(row);
-        });
+      // Se muestra lo que la persona respondió, no un número sin referente: un
+      // "54 de 100" no es comprobable por quien contestó, "3 de 4 señales, 2
+      // habituales" sí. La barra queda como apoyo visual del orden, sin cifra.
+      (turn.axisSummaries || []).forEach((s) => {
+        const row = el('div', 'triage-result__row');
+        row.appendChild(el('span', 'triage-result__axis', `${s.icon} ${s.name}`));
+
+        const meter = el('div', 'triage-result__meter');
+        const fill = el('div', 'triage-result__fill');
+        const proporcion = s.evidence.asked ? (s.evidence.affirmed / s.evidence.asked) * 100 : 0;
+        fill.style.width = `${Math.max(2, Math.round(proporcion))}%`;
+        fill.style.background = s.color;
+        meter.appendChild(fill);
+        row.appendChild(meter);
+
+        row.appendChild(el('span', 'triage-result__value', s.band));
+        row.appendChild(el('span', 'triage-result__certainty', s.phrase));
+        detalle.appendChild(row);
+      });
 
       const nota = el('p', 'triage-result__note',
         `Respondiste ${turn.itemsAsked} preguntas de las ${turn.catalogSize} posibles. `
@@ -162,13 +169,11 @@
      */
     function buildWhatsAppUrl(turn) {
       const lineas = ['*AUTOEVALUACIÓN DE SÍNTOMAS — VITAMETRIC*', ''];
-      turn.allowedClaims.forEach((c) => lineas.push(`• ${c.text}`));
+      turn.allowedClaims.filter((c) => !c.isLimit).forEach((c) => lineas.push(`• ${c.text}`));
       lineas.push('', '*Desglose por área (según lo que reporté):*');
-      Object.values(turn.estimates)
-        .sort((a, b) => b.theta - a.theta)
-        .forEach((est) => {
-          lineas.push(`• ${AXES[est.axis].icon} ${AXES[est.axis].shortName}: ${est.scale}/100 (${CERTAINTY_LABEL[est.certainty]})`);
-        });
+      (turn.axisSummaries || []).forEach((s) => {
+        lineas.push(`• ${s.icon} ${s.name}: ${s.band} — ${s.phrase}`);
+      });
       lineas.push('', '🎯 Quiero agendar la *Evaluación Multisistémica ES-Complex ($3,900 MXN)*.');
       lineas.push('', '_Autoevaluación de síntomas percibidos: no es un diagnóstico ni una medición._');
       return `https://wa.me/525585327421?text=${encodeURIComponent(lineas.join('\n'))}`;
