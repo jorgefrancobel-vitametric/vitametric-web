@@ -302,7 +302,17 @@
         try {
           // Usar listenDeep para extraer síntomas + relaciones causales.
           const r = await runtime.listenDeep(text);
-          if (r && r.ack) say(r.ack, 'bot');
+          if (r && r.ack) {
+            say(r.ack, 'bot');
+          } else {
+            // Sin modelo listo no hay `ack`, pero la extracción determinista sí
+            // corrió: callar aquí deja al paciente escribiendo al vacío. El
+            // acuse repite sus palabras, no afirma nada clínico.
+            const ack = Triage.acknowledgeExtraction(r && r.extractedSymptoms, {
+              modelLoading: runtime.status === SLM.STATUS.LOADING
+            });
+            say(ack.text, 'bot');
+          }
 
           // Inyectar síntomas extraídos al motor de triaje.
           if (r && r.extractedSymptoms && r.extractedSymptoms.length) {

@@ -191,6 +191,52 @@
     ];
   }
 
+  /**
+   * Acuse determinista de lo que se entendió del texto libre.
+   *
+   * Sin esto, cuando el SLM no está listo el paciente escribe y recibe silencio
+   * absoluto: la extracción por reglas sí corre, pero nada se lo dice. El acuse
+   * repite SUS PROPIAS PALABRAS (`matchedPhrase`), no una traducción clínica —
+   * así el sistema no afirma nada que el paciente no haya dicho, y él puede
+   * corregir si el matcher entendió de más.
+   *
+   * @param {{matchedPhrase?: string}[]} symptoms - salida de extractSymptoms
+   * @param {{modelLoading?: boolean}} [options]
+   * @returns {{ text: string, evidence: string }}
+   */
+  function acknowledgeExtraction(symptoms, options) {
+    const opts = options || {};
+    const frases = [];
+    (symptoms || []).forEach((s) => {
+      const f = s && typeof s.matchedPhrase === 'string' ? s.matchedPhrase.trim() : '';
+      if (f && frases.indexOf(f) === -1) frases.push(f);
+    });
+
+    const cola = opts.modelLoading
+      ? ' El asistente local todavía está cargando, así que por ahora te respondo breve.'
+      : '';
+
+    if (!frases.length) {
+      return {
+        text: 'Te leo. De eso no alcancé a identificar señales concretas, pero queda anotado.'
+          + ' Si quieres, cuéntamelo con otras palabras.' + cola,
+        evidence: EVIDENCE.NOT_OBSERVABLE
+      };
+    }
+
+    const entrecomilladas = frases.map((f) => `«${f}»`);
+    const listado = entrecomilladas.length === 1
+      ? entrecomilladas[0]
+      : entrecomilladas.slice(0, -1).join(', ') + ' y ' + entrecomilladas[entrecomilladas.length - 1];
+
+    return {
+      // "Anoto" y no "tienes": el sistema registra lo dicho, no diagnostica.
+      text: `Te leo. Anoto ${listado} a partir de lo que escribiste, así no vuelvo a preguntártelo.`
+        + ' Si entendí de más, dímelo.' + cola,
+      evidence: EVIDENCE.SELF_REPORT
+    };
+  }
+
   function createSession() {
     const catalog = buildCatalog();
     const difficulties = buildDifficulties(catalog);
@@ -743,12 +789,14 @@
     TURN,
     EVIDENCE,
     CERTAINTY,
+    SOURCE,
     FORBIDDEN,
     TARGET_SE,
     MIN_ITEMS_PER_AXIS,
     MAX_ITEMS_PER_AXIS,
     checkUtterance,
     buildCatalog,
+    acknowledgeExtraction,
     createSession
   };
 }));
