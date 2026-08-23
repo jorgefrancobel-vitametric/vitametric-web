@@ -242,6 +242,8 @@
         setTimeout(() => ta.focus(), 300);
       }
     }
+
+    function updateRuntimeStatus(snapshot) {
       const active = runtime.config.mode !== SLM.MODES.OFF;
       slmStatus.innerHTML = '';
       if (!active) {
