@@ -1,7 +1,7 @@
 // G-Level: L1
 // Sustrato: Script de Protocolo
 // Función: Capa de presentación de la anamnesis conversacional — renderiza únicamente los turnos que el motor autoriza
-// v-version: 20260822.02 (consentimiento explícito + activación no bloqueante)
+// v-version: 20260822.03 (eliminación de toggle redundante en barra de estado)
 
 /**
  * Presentación pura de la anamnesis.
@@ -211,26 +211,9 @@
 
     function updateRuntimeStatus(snapshot) {
       const active = runtime.config.mode !== SLM.MODES.OFF;
-      slmStatus.classList.remove('triage-slm-status--prompt');
       slmStatus.innerHTML = '';
       if (!active) {
-        // Si el paciente aún no lo rechazó, ofrecemos reabrir la opción de
-        // activar el asistente local desde la propia barra de estado.
-        if (readConsent() !== 'declined') {
-          slmStatus.style.display = 'block';
-          slmStatus.classList.add('triage-slm-status--prompt');
-          slmStatus.appendChild(document.createTextNode('Asistente local disponible: '));
-          const link = el('button', 'triage-slm-toggle', 'activar');
-          link.type = 'button';
-          link.addEventListener('click', () => {
-            const card = host.querySelector('.triage-consent');
-            if (card) card.scrollIntoView({ behavior: 'smooth' });
-            else showConsentCard();
-          });
-          slmStatus.appendChild(link);
-        } else {
-          slmStatus.style.display = 'none';
-        }
+        slmStatus.style.display = 'none';
         return;
       }
       slmStatus.style.display = 'block';

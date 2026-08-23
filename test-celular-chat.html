@@ -146,24 +146,6 @@
     .triage-slm-status[data-state="ready"] { color: #10B981; }
     .triage-slm-status[data-state="error"] { color: #F59E0B; }
 
-    .triage-slm-status--prompt {
-      display: block;
-      color: var(--c-muted);
-      font-size: 0.74rem;
-      line-height: 1.4;
-    }
-    .triage-slm-toggle {
-      background: none;
-      border: none;
-      color: var(--c-cyan);
-      font: inherit;
-      font-weight: 700;
-      cursor: pointer;
-      padding: 0 0.15rem;
-      text-decoration: underline;
-    }
-    .triage-slm-toggle:hover { color: #00e0ff; }
-
     .triage-consent {
       padding: 0.9rem 1.1rem 1rem;
       border-bottom: 1px solid var(--c-border-light);
@@ -412,7 +394,21 @@
        contrato del motor. -->
   <script src="js/articulator.js?v=a1cf70c4"></script>
   <script src="js/slm-runtime.js?v=bf64b46e"></script>
+  <script type="module">
+  // Configuración WebLLM: usa moduleUrl configurado o fallback a esm.run.
+  // SRI hash (sha384-...) es opcional: si se provee, el loader verificará que
+  // el script tag del documento tenga un atributo integrity que coincida.
+  // Ejemplo de uso en el HTML:
+  //   window.VitametricSLMConfig = { webllm: { moduleUrl: '...', sriHash: 'sha384-...' } }
+  (function() {
+    var config = window.VitametricSLMConfig?.webllm;
+    if (config && config.moduleUrl) {
+      document._slmModuleUrl = config.moduleUrl;
+      if (config.sriHash) document._slmSRIHash = config.sriHash;
+    }
+  })();
+</script>
   <script type="module" src="js/slm-webllm-loader.js?v=9d4535be"></script>
-  <script src="js/triage-chat-ui.js?v=6b6d65c1"></script>
+  <script src="js/triage-chat-ui.js?v=e0843b67"></script>
 </body>
 </html>
