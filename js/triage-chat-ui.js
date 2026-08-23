@@ -1,7 +1,7 @@
 // G-Level: L1
 // Sustrato: Script de Protocolo
 // Función: Capa de presentación de la anamnesis conversacional — renderiza únicamente los turnos que el motor autoriza
-// v-version: 20260822.03 (eliminación de toggle redundante en barra de estado)
+// v-version: 20260822.04 (rediseño integral del composer de texto libre y experiencia conversacional)
 
 /**
  * Presentación pura de la anamnesis.
@@ -231,38 +231,75 @@
       }
     }
 
-    // Listener opcional de texto libre del paciente. On-device por defecto (privado);
-    // el servo (modelo en la nube) solo se usa si el paciente da consentimiento.
+    // Listener opcional de texto libre del paciente (asistente local).
+    // On-device por defecto (privado); el servo solo se usa si hay endpoint y consentimiento.
     function renderListenerInput() {
       if (!runtime.config.listener || !runtime.config.listener.enabled) return;
+      if (host.querySelector('.triage-listener')) return;
+
       const box = el('div', 'triage-listener');
+      const bar = el('div', 'triage-listener__bar');
       const ta = el('textarea', 'triage-listener__input');
-      ta.placeholder = '¿Quieres contarnos algo en tus palabras? (opcional)';
-      ta.rows = 2;
-      const send = el('button', 'triage-listener__send', 'Enviar');
+      ta.placeholder = 'Cuéntanos en tus palabras si deseas agregar algo…';
+      ta.rows = 1;
+      ta.setAttribute('aria-label', 'Mensaje en texto libre');
+
+      const send = el('button', 'triage-listener__send');
       send.type = 'button';
-      const consentWrap = el('label', 'triage-listener__consent');
-      const consent = el('input');
-      consent.type = 'checkbox';
-      consentWrap.appendChild(consent);
-      consentWrap.appendChild(document.createTextNode(' Permitir análisis en la nube para mejor comprensión (opcional)'));
-      consent.checked = !!runtime.config.listener.serverConsent;
-      consent.addEventListener('change', () => runtime.setListenerConsent(consent.checked));
-      send.addEventListener('click', async () => {
-        const text = ta.value;
-        if (!text.trim()) return;
+      send.setAttribute('aria-label', 'Enviar mensaje');
+      send.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>';
+      send.disabled = true;
+
+      ta.addEventListener('input', () => {
+        ta.style.height = 'auto';
+        ta.style.height = Math.min(ta.scrollHeight, 96) + 'px';
+        send.disabled = !ta.value.trim();
+      });
+
+      async function handleSend() {
+        const text = ta.value.trim();
+        if (!text) return;
         ta.value = '';
-        const r = await runtime.listen(text);
-        if (r.ack) say(r.ack);
-        if (r.intent === 'agendar') {
-          const cta = controls.querySelector('.triage-cta');
-          if (cta) cta.scrollIntoView({ behavior: 'smooth' });
+        ta.style.height = 'auto';
+        send.disabled = true;
+        say(text, 'user');
+        try {
+          const r = await runtime.listen(text);
+          if (r && r.ack) say(r.ack, 'bot');
+          if (r && r.intent === 'agendar') {
+            const cta = controls.querySelector('.triage-cta');
+            if (cta) cta.scrollIntoView({ behavior: 'smooth' });
+          }
+        } catch (err) {
+          console.warn('[triage-listener] error al procesar texto libre:', err);
         }
         scrollToEnd();
+      }
+
+      ta.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          void handleSend();
+        }
       });
-      box.appendChild(ta);
-      box.appendChild(send);
-      box.appendChild(consentWrap);
+
+      send.addEventListener('click', () => void handleSend());
+
+      bar.appendChild(ta);
+      bar.appendChild(send);
+      box.appendChild(bar);
+
+      if (runtime.config.listener.serverEndpoint) {
+        const consentWrap = el('label', 'triage-listener__consent');
+        const consent = el('input');
+        consent.type = 'checkbox';
+        consent.checked = !!runtime.config.listener.serverConsent;
+        consent.addEventListener('change', () => runtime.setListenerConsent(consent.checked));
+        consentWrap.appendChild(consent);
+        consentWrap.appendChild(document.createTextNode(' Permitir análisis en servidor para mejor comprensión (opcional)'));
+        box.appendChild(consentWrap);
+      }
+
       host.appendChild(box);
     }
 
@@ -368,6 +405,8 @@
     function declineSLM(card) {
       writeConsent('declined');
       if (card && card.parentNode) card.parentNode.removeChild(card);
+      const listenerBox = host.querySelector('.triage-listener');
+      if (listenerBox && listenerBox.parentNode) listenerBox.parentNode.removeChild(listenerBox);
       updateRuntimeStatus({ status: SLM.STATUS.DISABLED, exposure: SLM.EXPOSURE.SHADOW });
     }
 
