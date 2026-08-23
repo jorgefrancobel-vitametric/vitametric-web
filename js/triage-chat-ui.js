@@ -396,7 +396,16 @@
       }
 
       updateProgress(session.state().estimates);
-      const articulated = await runtime.articulate(turn);
+
+      // El enunciado de un ítem es un estímulo psicométrico calibrado: su
+      // `difficulty` corresponde a ESE texto. Parafrasearlo con el SLM cuesta
+      // 0.5-1 s medidos por pregunta (más en celular) — acumulado sobre las 12-22
+      // del test — y sólo cambia cosas como "lo notas" → "te pasa". No se articula:
+      // el modelo se reserva para los turnos donde la prosa aporta de verdad
+      // (encuadre, reflexión y cierre).
+      const articulated = turn.type === TURN.QUESTION
+        ? { usedModel: false, text: turn.text }
+        : await runtime.articulate(turn);
       // En modo determinista se conserva exactamente la presentación existente.
       // Cuando un SLM esté listo, su prosa solo entra después del doble gate del
       // articulador; un fallback nunca expone el candidato bloqueado.
