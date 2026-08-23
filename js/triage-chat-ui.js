@@ -1,7 +1,7 @@
 // G-Level: L1
 // Sustrato: Script de Protocolo
 // Función: Capa de presentación de la anamnesis conversacional — renderiza únicamente los turnos que el motor autoriza
-// v-version: 20260822.04 (rediseño integral del composer de texto libre y experiencia conversacional)
+// v-version: 20260822.05 (bocadillos conversacionales: bot sugiere qué detalle aportar + listenDeep con extracción de síntomas)
 
 /**
  * Presentación pura de la anamnesis.
@@ -209,7 +209,39 @@
       return `https://wa.me/525585327421?text=${encodeURIComponent(lineas.join('\n'))}`;
     }
 
-    function updateRuntimeStatus(snapshot) {
+    /**
+     * Emite un bocadillo conversacional del bot sugiriendo al paciente qué
+     * detalle puede aportar sobre el síntoma que acaba de responder.
+     *
+     * Es el modo "entrevistador activo": el bot no se limita a tomar nota
+     * de la respuesta, sino que invita a profundizar con una pregunta
+     * empática y contextual. La pregunta es determinista (plantilla), no
+     * generada por el modelo.
+     */
+    function suggestDetail(itemId, grade) {
+      if (!runtime.config.listener || !runtime.config.listener.enabled) return;
+      // Solo sugiere si el paciente reportó el síntoma (grado >= 2: "A menudo" o "Habitual").
+      if (typeof grade !== 'number' || grade < 2) return;
+      const question = runtime.suggestFollowUp(itemId);
+      if (!question) return;
+
+      const bubble = el('div', 'triage-bubble triage-bubble--bot triage-bubble--suggestion');
+      const icon = el('span', 'triage-suggestion__icon', '💡');
+      const text = el('span', 'triage-suggestion__text', question);
+      const hint = el('span', 'triage-suggestion__hint', 'Puedes responderme aquí abajo si quieres');
+      bubble.appendChild(icon);
+      bubble.appendChild(text);
+      bubble.appendChild(hint);
+      stream.appendChild(bubble);
+      scrollToEnd();
+
+      // Mover el foco a la barra de texto para facilitar la respuesta.
+      const ta = host.querySelector('.triage-listener__input');
+      if (ta) {
+        ta.placeholder = question;
+        setTimeout(() => ta.focus(), 300);
+      }
+    }
       const active = runtime.config.mode !== SLM.MODES.OFF;
       slmStatus.innerHTML = '';
       if (!active) {
@@ -262,10 +294,48 @@
         ta.value = '';
         ta.style.height = 'auto';
         send.disabled = true;
+        // Restaurar placeholder por defecto tras el foco del bocadillo.
+        ta.placeholder = 'Cuéntanos en tus palabras si deseas agregar algo…';
         say(text, 'user');
         try {
-          const r = await runtime.listen(text);
+          // Usar listenDeep para extraer síntomas + relaciones causales.
+          const r = await runtime.listenDeep(text);
           if (r && r.ack) say(r.ack, 'bot');
+
+          // Inyectar síntomas extraídos al motor de triaje.
+          if (r && r.extractedSymptoms && r.extractedSymptoms.length) {
+            const injected = [];
+            r.extractedSymptoms.forEach((s) => {
+              if (s.itemId && typeof s.grade === 'number') {
+                try {
+                  // Solo inyecta si el ítem no fue respondido aún: una respuesta
+                  // explícita del paciente nunca se pisa con una deducción.
+                  const state = session.state();
+                  if (!(s.itemId in state.answers)) {
+                    // 'inferred': el paciente no señaló esto, lo dedujimos de su
+                    // texto libre. La marca viaja al motor para que el articulador
+                    // no pueda decir "señalaste" sobre una lectura del sistema.
+                    session.answer(s.itemId, s.grade, 'inferred');
+                    injected.push(s.itemId);
+                  }
+                } catch (err) {
+                  // Un ítem que el motor no reconoce es un desajuste entre el
+                  // lexicón de extracción y el catálogo: no puede pasar callado.
+                  console.warn('[triage-listener] inyección rechazada por el motor:',
+                    { itemId: s.itemId, grade: s.grade, matchedPhrase: s.matchedPhrase, error: err && err.message });
+                }
+              }
+            });
+            if (injected.length) {
+              console.log('[triage-listener] síntomas inyectados:', injected);
+            }
+          }
+
+          // Acumular enlaces causales para alimentar las constelaciones.
+          if (r && r.causalLinks && r.causalLinks.length) {
+            session.addCausalLinks(r.causalLinks);
+          }
+
           if (r && r.intent === 'agendar') {
             const cta = controls.querySelector('.triage-cta');
             if (cta) cta.scrollIntoView({ behavior: 'smooth' });
@@ -334,6 +404,9 @@
         say(displayText);
         renderOptions(turn.options, (value) => {
           session.answer(turn.itemId, value);
+          // Modo entrevistador activo: el bot sugiere profundizar si el
+          // síntoma se reportó con grado alto.
+          suggestDetail(turn.itemId, value);
           void step();
         });
         return;

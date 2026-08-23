@@ -31,6 +31,7 @@
       id: 'autonomo',
       name: 'Balance Autónomo & Estrés',
       shortName: 'Estrés Autónomo',
+      patientLabel: 'la tensión y el estrés',
       icon: '⚡',
       color: '#00C8FF',
       description: 'Recoge las manifestaciones de tensión sostenida que percibes: contracturas, palpitaciones y dificultad para desconectar.'
@@ -39,6 +40,7 @@
       id: 'sueno',
       name: 'Arquitectura del Sueño & Cronobiología',
       shortName: 'Calidad de Sueño',
+      patientLabel: 'el descanso y el sueño',
       icon: '🌙',
       color: '#818CF8',
       description: 'Recoge cómo describes tu descanso: cuánto tardas en dormirte, si despiertas de noche y con qué energía amaneces.'
@@ -47,6 +49,7 @@
       id: 'cardiometabolico',
       name: 'Resiliencia Cardiometabólica',
       shortName: 'Cardiometabólico',
+      patientLabel: 'la energía y el cansancio durante el día',
       icon: '❤️',
       color: '#EF4444',
       description: 'Recoge las fluctuaciones de energía que notas durante el día y los antecedentes personales y familiares que declaras.'
@@ -55,6 +58,7 @@
       id: 'terreno',
       name: 'Terreno Digestivo y Retención de Líquidos',
       shortName: 'Terreno Digestivo',
+      patientLabel: 'la digestión y la retención de líquidos',
       icon: '🧬',
       color: '#10B981',
       description: 'Recoge los síntomas digestivos y de retención de líquidos tal como los percibes. Es tu experiencia reportada; la medición física del medio interno corresponde al estudio en clínica.'
@@ -63,6 +67,7 @@
       id: 'ocupacional',
       name: 'Carga Ergonómica & Sobreesfuerzo',
       shortName: 'Sobrecarga Laboral',
+      patientLabel: 'la carga del trabajo y las posturas',
       icon: '💼',
       color: '#F59E0B',
       description: 'Cuantifica el impacto del sedentarismo prolongado, tensión por pantallas (VDT) y fatiga postural.'

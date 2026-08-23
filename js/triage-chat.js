@@ -65,6 +65,17 @@
     NOT_OBSERVABLE: 'NOT_OBSERVABLE'  // requiere instrumento; el test NO lo afirma
   });
 
+  /**
+   * Procedencia de una respuesta concreta. Es lo que decide si el sistema puede
+   * decir "señalaste" (el paciente eligió la opción) o solo "por lo que me
+   * contaste" (el sistema lo dedujo del texto libre). Sin esta marca, una
+   * inferencia por reglas es indistinguible de una afirmación del paciente.
+   */
+  const SOURCE = Object.freeze({
+    SELF_REPORT: 'self_report',
+    INFERRED: 'inferred'
+  });
+
   /** Certeza de una estimación, derivada de su error estándar. */
   const CERTAINTY = Object.freeze({
     PRELIMINARY: 'PRELIMINARY',
@@ -186,12 +197,14 @@
 
     const state = {
       answers: {},          // itemId → grade (número) | null ("no lo sé")
+      answerSources: {},    // itemId → 'self_report' | 'inferred' (procedencia de la cópula)
       asked: [],            // orden de administración
       rejectedAxes: {},     // eje → veces que el paciente rechazó la interpretación
       framed: false,
       reflectedOn: {},          // eje → ya se contrastó con el paciente
       askedSinceReflection: 0,  // evita encadenar contrastes sin preguntar nada
       communicatedFocus: null,  // último eje que se le nombró al paciente
+      causalLinks: [],           // enlaces causales extraídos por listenDeep()
       finished: false
     };
 
@@ -353,12 +366,20 @@
       const afirmados = grados.filter((g) => typeof g === 'number' && g >= 1);
       const frecuentes = grados.filter((g) => g === 3);
       const desconocidos = grados.filter((g) => g === null);
+      // Inferidos: afirmados que el paciente NO señaló, sino que el sistema
+      // dedujo de su texto libre. Sostienen una cópula más débil.
+      const inferidos = administrados.filter((it) => {
+        const g = state.answers[it.id];
+        return typeof g === 'number' && g >= 1
+          && state.answerSources[it.id] === SOURCE.INFERRED;
+      });
       return {
         asked: administrados.length,
         pool: relevantes.length,
         affirmed: afirmados.length,
         frequent: frecuentes.length,
-        unknown: desconocidos.length
+        unknown: desconocidos.length,
+        inferred: inferidos.length
       };
     }
 
@@ -369,13 +390,25 @@
       if (!e.affirmed) return `de ${e.asked} ${e.asked === 1 ? 'pregunta' : 'preguntas'} en esta área, no señalaste ninguna`;
       // La intensidad importa tanto como el recuento: tres señales ocasionales y
       // tres habituales no describen la misma situación.
-      const partes = [`señalaste ${e.affirmed} de ${e.asked} ${e.asked === 1 ? 'señal' : 'señales'}`];
+      // El verbo cambia con la procedencia: "señalaste" solo si todo el recuento
+      // salió de opciones que el paciente eligió. Si hay deducciones, el sujeto
+      // de la frase deja de ser él.
+      const verbo = e.inferred
+        ? `aparecen ${e.affirmed} de ${e.asked}`
+        : `señalaste ${e.affirmed} de ${e.asked}`;
+      const partes = [`${verbo} ${e.asked === 1 ? 'señal' : 'señales'}`];
       if (e.frequent) {
         partes.push(`${e.frequent} de forma habitual`);
       } else {
         partes.push('ninguna de forma habitual');
       }
       if (e.unknown) partes.push(`${e.unknown} sin poder responder`);
+      // La procedencia se dice, no se esconde: si parte del recuento salió de lo
+      // que el paciente escribió libremente, no puede presentarse como algo que
+      // él "señaló" en una opción.
+      if (e.inferred) {
+        partes.push(`${e.inferred} ${e.inferred === 1 ? 'deducida' : 'deducidas'} de lo que me contaste`);
+      }
       return partes.join(', ');
     }
 
@@ -403,20 +436,46 @@
 
       state: () => ({
         answers: { ...state.answers },
+        answerSources: { ...state.answerSources },
         asked: [...state.asked],
         finished: state.finished,
         estimates: estimateAll()
       }),
 
-      /** Registra una respuesta. `grade` es 0-3, o null para "no lo sé". */
-      answer(itemId, grade) {
+      /**
+       * Registra una respuesta. `grade` es 0-3, o null para "no lo sé".
+       *
+       * `source` fija la procedencia de la cópula y por tanto lo que el
+       * articulador tiene permitido afirmar:
+       *   - 'self_report' (default): el paciente eligió la opción. Cópula
+       *     existencial sobre el reporte ("señalaste X").
+       *   - 'inferred': el sistema lo dedujo del texto libre. La afirmación es
+       *     una lectura del sistema, no algo que el paciente haya señalado, y
+       *     degrada el eje a MODEL_ESTIMATE.
+       */
+      answer(itemId, grade, source = SOURCE.SELF_REPORT) {
         const item = catalog.find((it) => it.id === itemId);
         if (!item) throw new Error(`Ítem desconocido: ${itemId}`);
         const valor = (grade === null || grade === undefined)
           ? null
           : Math.max(0, Math.min(3, Number(grade)));
         state.answers[itemId] = valor;
+        state.answerSources[itemId] = source === SOURCE.INFERRED
+          ? SOURCE.INFERRED
+          : SOURCE.SELF_REPORT;
         if (!state.asked.includes(itemId)) state.asked.push(itemId);
+        return this;
+      },
+
+      /**
+       * Acumula enlaces causales extraídos del texto libre del paciente.
+       * Se pasan a interpretation.read() al final para modular la confianza
+       * de las constelaciones.
+       */
+      addCausalLinks(links) {
+        if (Array.isArray(links) && links.length) {
+          state.causalLinks.push(...links);
+        }
         return this;
       },
 
@@ -482,18 +541,18 @@
               type: TURN.REFLECTION,
               axis: foco.axis,
               ambiguous: true,
-              text: `Veo señales parecidas en ${a.shortName.toLowerCase()} y en ${b.shortName.toLowerCase()}, `
+              text: `Veo señales parecidas en ${a.patientLabel} y en ${b.patientLabel}, `
                 + 'sin que ninguna destaque sobre la otra. ¿Cuál dirías que te pesa más en el día a día?',
               allowedClaims: [{
-                text: `En ${a.shortName} ${evidencePhrase(dominancia.first.axis)}; `
-                  + `en ${b.shortName} ${evidencePhrase(dominancia.second.axis)}. `
+                text: `En ${a.patientLabel} ${evidencePhrase(dominancia.first.axis)}; `
+                  + `en ${b.patientLabel} ${evidencePhrase(dominancia.second.axis)}. `
                   + 'La diferencia entre ambas es menor que el margen de error, así que no puedo ordenarlas por mi cuenta.',
                 evidence: EVIDENCE.MODEL_ESTIMATE,
                 certainty: CERTAINTY.PRELIMINARY
               }],
               options: [
-                { value: dominancia.first.axis, label: a.shortName },
-                { value: dominancia.second.axis, label: b.shortName },
+                { value: dominancia.first.axis, label: a.patientLabel.charAt(0).toUpperCase() + a.patientLabel.slice(1) },
+                { value: dominancia.second.axis, label: b.patientLabel.charAt(0).toUpperCase() + b.patientLabel.slice(1) },
                 { value: 'ninguna', label: 'Ninguna de las dos' }
               ]
             });
@@ -510,14 +569,18 @@
             axis: foco.axis,
             ranked: puedeAfirmarDominancia,
             text: puedeAfirmarDominancia
-              ? `Por lo que me cuentas, el área de ${AXES[foco.axis].shortName.toLowerCase()} `
+              ? `Por lo que me cuentas, ${AXES[foco.axis].patientLabel} `
                 + 'es donde más carga aparece. ¿Lo ves así, o hay algo que no encaje?'
-              : `En ${AXES[foco.axis].shortName.toLowerCase()} ${evidencePhrase(foco.axis)}. `
+              : `En ${AXES[foco.axis].patientLabel} ${evidencePhrase(foco.axis)}. `
                 + 'Todavía no puedo decir si es lo que más te pesa. ¿Te encaja como algo que notas?',
             allowedClaims: [{
               // La evidencia contable sustituye al número sin referente.
               text: `En ${AXES[foco.axis].shortName} ${evidencePhrase(foco.axis)}.`,
-              evidence: EVIDENCE.SELF_REPORT
+              // Si el recuento incluye deducciones del texto libre, la cópula
+              // deja de ser existencial sobre el reporte: es lectura del sistema.
+              evidence: axisEvidence(foco.axis).inferred
+                ? EVIDENCE.MODEL_ESTIMATE
+                : EVIDENCE.SELF_REPORT
             }],
             options: [
               { value: true, label: 'Sí, es así' },
@@ -557,7 +620,7 @@
         // el cuerpo reporta y lo que la introspección acompaña, circunstancias sin
         // repercusión, y cruces entre ejes que ningún eje dice por separado.
         const lectura = HAS_INTERPRETATION
-          ? Interpretation.read({ answers: state.answers, estimates })
+          ? Interpretation.read({ answers: state.answers, estimates, causalLinks: state.causalLinks })
           : { patterns: [], softenLowClaims: [], validity: { concern: false } };
 
         // Cada lectura viaja con su contra-lectura pegada: nunca se afirma un
@@ -652,7 +715,9 @@
                 ? `El área con más señales es ${axisSummaries[0].name}: ${axisSummaries[0].phrase}.`
                 : `Las áreas con más señales son ${conSenales.slice(0, 2).map((s) => s.name).join(' y ')}, `
                   + 'con una diferencia entre ellas menor que el margen de error de este cuestionario.',
-              evidence: EVIDENCE.SELF_REPORT
+              evidence: Object.values(state.answerSources).includes(SOURCE.INFERRED)
+                ? EVIDENCE.MODEL_ESTIMATE
+                : EVIDENCE.SELF_REPORT
             }] : [{
               text: 'No señalaste molestias en ninguna de las áreas exploradas.',
               evidence: EVIDENCE.SELF_REPORT
