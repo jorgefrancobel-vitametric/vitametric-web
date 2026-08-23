@@ -108,11 +108,37 @@
    * Conectores causales en español. Se usan para detectar relaciones causales
    * implícitas en el texto del paciente ("me duele el cuello CUANDO duermo mal").
    */
-  const CAUSAL_CONNECTORS = Object.freeze([
-    'cuando', 'porque', 'ya que', 'debido a', 'a causa de', 'por culpa de',
-    'si', 'cada vez que', 'desde que', 'tras', 'después de', 'luego de',
+  // La fuerza del nexo no es uniforme: "me provoca" es una afirmación causal
+  // del paciente; "tras" solo describe una sucesión. Tratarlas igual es post hoc
+  // ergo propter hoc — precisamente la distinción (Causalidad vs. mera sucesión)
+  // que la capa simbólica dice gobernar. La confianza la refleja.
+  const CONNECTOR_CONFIDENCE = Object.freeze({
+    EXPLICIT: 0.8,   // el paciente afirma la causa
+    TEMPORAL: 0.4    // el paciente describe una secuencia
+  });
+
+  /** Nexos donde el paciente afirma una causa, no solo un orden. */
+  const CAUSAL_CONNECTORS_EXPLICIT = Object.freeze([
+    'porque', 'ya que', 'debido a', 'a causa de', 'por culpa de',
     'me provoca', 'me genera', 'me causa', 'me produce', 'me dispara'
   ]);
+
+  /** Nexos de sucesión o condición: sugieren, no establecen, una causa. */
+  const CAUSAL_CONNECTORS_TEMPORAL = Object.freeze([
+    'cuando', 'si', 'cada vez que', 'desde que', 'tras', 'después de', 'luego de'
+  ]);
+
+  const CAUSAL_CONNECTORS = Object.freeze([
+    ...CAUSAL_CONNECTORS_EXPLICIT,
+    ...CAUSAL_CONNECTORS_TEMPORAL
+  ]);
+
+  /** Confianza del nexo según su fuerza. Desconocido → temporal (conservador). */
+  function connectorConfidence(connector) {
+    return CAUSAL_CONNECTORS_EXPLICIT.indexOf(connector) >= 0
+      ? CONNECTOR_CONFIDENCE.EXPLICIT
+      : CONNECTOR_CONFIDENCE.TEMPORAL;
+  }
 
   /**
    * Normaliza una palabra a su raíz para matching tolerante.
@@ -601,7 +627,7 @@ enabled() {
               fromItemId: idxA < idxB ? a.itemId : b.itemId,
               toItemId: idxA < idxB ? b.itemId : a.itemId,
               connector,
-              confidence: 0.6
+              confidence: connectorConfidence(connector)
             });
           }
         }

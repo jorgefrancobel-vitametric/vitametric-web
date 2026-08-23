@@ -107,6 +107,10 @@
 
   const CONFIDENCE = Object.freeze({ WEAK: 'WEAK', MODERATE: 'MODERATE', STRONG: 'STRONG' });
 
+  // Confianza mínima de un enlace causal para reforzar una lectura. Coincide con
+  // CONNECTOR_CONFIDENCE.EXPLICIT del extractor: deja fuera los nexos temporales.
+  const MIN_CAUSAL_CONFIDENCE = 0.8;
+
   const ALL_ITEMS = [...BASE_DIMENSIONS, ...Object.values(CONDITIONAL_DIMENSIONS)]
     .flatMap((d) => d.items.map((it) => ({ ...it, axis: d.axis })));
 
@@ -519,6 +523,11 @@
       if (causalLinks && causalLinks.length && c.axes.length >= 2) {
         const axisSet = new Set(c.axes);
         const boosted = causalLinks.some((link) => {
+          // Solo un nexo causal explícito ("me provoca", "porque") sostiene el
+          // boost. Los temporales ("tras", "desde que") describen sucesión, no
+          // causa: promoverlos sería post hoc ergo propter hoc.
+          if (!(typeof link.confidence === 'number'
+            && link.confidence >= MIN_CAUSAL_CONFIDENCE)) return false;
           const fromAxis = itemToAxis(link.fromItemId);
           const toAxis = itemToAxis(link.toItemId);
           return fromAxis && toAxis
@@ -526,8 +535,12 @@
             && axisSet.has(fromAxis)
             && axisSet.has(toAxis);
         });
-        if (boosted) {
-          baseConfidence = baseConfidence === CONFIDENCE.WEAK ? CONFIDENCE.MODERATE : CONFIDENCE.STRONG;
+        // Techo deliberado: una inferencia por reglas sobre texto libre puede
+        // reforzar una lectura, nunca establecerla. STRONG se traduce aguas
+        // abajo en CERTAINTY.ESTABLISHED y el articulador se lo dice al paciente
+        // "con bastante claridad" — eso exige evidencia que un regex no da.
+        if (boosted && baseConfidence === CONFIDENCE.WEAK) {
+          baseConfidence = CONFIDENCE.MODERATE;
         }
       }
 

@@ -461,13 +461,13 @@
   <!-- interpretation debe cargarse ANTES que triage-chat: este la resuelve desde
        window en su factoría UMD y, si falta, el chat pierde la lectura de patrones
        en silencio (misma clase de fallo que rasch.js sin script tag). -->
-  <script src="js/interpretation.js?v=b2b221ca"></script>
+  <script src="js/interpretation.js?v=0595743c"></script>
   <script src="js/triage-chat.js?v=714dd62b"></script>
   <!-- El SLM es opcional: por defecto permanece apagado y el chat usa plantillas
        verificadas. El loader WebLLM se registra antes de la UI sin cambiar el
        contrato del motor. -->
   <script src="js/articulator.js?v=a1cf70c4"></script>
-  <script src="js/slm-runtime.js?v=721ef71b"></script>
+  <script src="js/slm-runtime.js?v=6c61b938"></script>
   <script type="module">
   // Configuración WebLLM: usa moduleUrl configurado o fallback a esm.run.
   // SRI hash (sha384-...) es opcional: si se provee, el loader verificará que

@@ -72,11 +72,13 @@ const itemB = itemsPorEje[ejeB][0];
       === CONFIDENCE.MODERATE);
 }
 
-// --- C2: enlace entre los dos ejes de la constelación → sube un nivel ---
+// --- C2: enlace causal explícito refuerza, pero NO establece ---
 {
-  const p = patronDe([{ fromItemId: itemA, toItemId: itemB, connector: 'porque', confidence: 0.6 }]);
-  check('[C2] enlace cruzando los ejes de la constelación sube a STRONG',
-    p && p.confidence === CONFIDENCE.STRONG, p && p.confidence);
+  const p = patronDe([{ fromItemId: itemA, toItemId: itemB, connector: 'me provoca', confidence: 0.8 }]);
+  check('[C2] un nexo explícito NO lleva a STRONG (techo deliberado)',
+    p && p.confidence !== CONFIDENCE.STRONG, p && p.confidence);
+  check('[C2] la lectura se sostiene en MODERATE',
+    p && p.confidence === CONFIDENCE.MODERATE, p && p.confidence);
 }
 
 // --- C3: enlace dentro del MISMO eje no boostea ---
@@ -111,16 +113,61 @@ const itemB = itemsPorEje[ejeB][0];
   check('[C5] itemIds desconocidos no boostean', p && p.confidence === CONFIDENCE.MODERATE);
 }
 
-// --- C6: OBSERVACIÓN — la confianza del enlace se ignora ---
-// Documenta el comportamiento actual: un enlace extraído por regex con
-// confidence 0.1 promueve igual que uno de 0.9. Si se decide exigir un umbral,
-// este test debe cambiar CONSCIENTEMENTE, no por accidente.
+// --- C6: la confianza del enlace SÍ decide (decisión de Jorge, 2026-08-23) ---
+// Antes se ignoraba: 0.1 promovía igual que 0.99. Ahora solo los nexos causales
+// explícitos (>= 0.8) refuerzan; los temporales quedan fuera.
 {
-  const debil = patronDe([{ fromItemId: itemA, toItemId: itemB, confidence: 0.1 }]);
-  const fuerte = patronDe([{ fromItemId: itemA, toItemId: itemB, confidence: 0.99 }]);
-  check('[C6] hoy el boost IGNORA link.confidence (0.1 promueve igual que 0.99)',
-    debil && fuerte && debil.confidence === fuerte.confidence,
-    `${debil && debil.confidence} vs ${fuerte && fuerte.confidence}`);
+  const temporal = patronDe([{ fromItemId: itemA, toItemId: itemB, connector: 'tras', confidence: 0.4 }]);
+  check('[C6] un nexo temporal (0.4) NO refuerza — no es post hoc ergo propter hoc',
+    temporal && temporal.confidence === CONFIDENCE.MODERATE, temporal && temporal.confidence);
+
+  const sinConfidence = patronDe([{ fromItemId: itemA, toItemId: itemB }]);
+  check('[C6] un enlace sin confidence no refuerza (conservador por defecto)',
+    sinConfidence && sinConfidence.confidence === CONFIDENCE.MODERATE);
+}
+
+// --- C7: extremo a extremo con el extractor real ---
+// La graduación vive en slm-runtime y el umbral en interpretation: si se
+// desincronizan, el pipeline entero deja de discriminar sin que nadie lo note.
+{
+  const rt = require('../js/slm-runtime.js');
+  const extract = (t) => rt.Runtime.prototype.extractCausalLinks.call(Object.create(rt.Runtime.prototype), t);
+
+  const explicito = extract('la acidez me provoca microdespertares');
+  const temporal = extract('me despierto de madrugada y tras eso tengo acidez');
+
+  check('[C7] el extractor marca el nexo explícito por encima del umbral',
+    explicito.length > 0 && explicito.every((l) => l.confidence >= 0.8),
+    JSON.stringify(explicito.map((l) => l.connector + ':' + l.confidence)));
+  check('[C7] el extractor marca el nexo temporal por debajo del umbral',
+    temporal.length > 0 && temporal.every((l) => l.confidence < 0.8),
+    JSON.stringify(temporal.map((l) => l.connector + ':' + l.confidence)));
+  check('[C7] ambos siguen extrayéndose (la información no se pierde, se gradúa)',
+    explicito.length > 0 && temporal.length > 0);
+}
+
+// --- C8: el refuerzo SIGUE VIVO (no se "arregló" desactivándolo) ---
+// Base WEAK (se alto) + nexo explícito debe subir a MODERATE. Sin este caso, un
+// boost inerte pasaría por correcto en todos los tests anteriores.
+{
+  const estimatesWeak = {};
+  c.axes.forEach((a) => { estimatesWeak[a] = { theta: 1.0, se: 0.9, scale: 'alta' }; });
+  const patronWeak = (links) => {
+    const r = read({ answers, estimates: estimatesWeak, causalLinks: links });
+    return (r.patterns || []).find((p) => p.constellation === c.id);
+  };
+
+  const sinNexo = patronWeak([]);
+  check('[C8] con se alto la base es WEAK',
+    sinNexo && sinNexo.confidence === CONFIDENCE.WEAK, sinNexo && sinNexo.confidence);
+
+  const conNexo = patronWeak([{ fromItemId: itemA, toItemId: itemB, connector: 'me provoca', confidence: 0.8 }]);
+  check('[C8] un nexo explícito SÍ refuerza WEAK → MODERATE (el boost sigue vivo)',
+    conNexo && conNexo.confidence === CONFIDENCE.MODERATE, conNexo && conNexo.confidence);
+
+  const conTemporal = patronWeak([{ fromItemId: itemA, toItemId: itemB, connector: 'tras', confidence: 0.4 }]);
+  check('[C8] un nexo temporal no refuerza ni siquiera desde WEAK',
+    conTemporal && conTemporal.confidence === CONFIDENCE.WEAK, conTemporal && conTemporal.confidence);
 }
 
 console.log(`\n── Boost causal de constelaciones: ${ok} ok, ${fail} fallos ──`);
