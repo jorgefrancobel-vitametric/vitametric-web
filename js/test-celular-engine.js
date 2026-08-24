@@ -96,6 +96,18 @@
     storageTtlMs: 24 * 60 * 60 * 1000 // 24 horas
   };
 
+  // Límites de validación de respuestas: previenen perfiles inflados
+  // (usuario marca todos los ítems de un eje y el score sube artificialmente).
+  const ANSWER_LIMITS = {
+    // El tope es items.length - 1: al menos un ítem debe quedar sin marcar
+    // para que la selección sea discriminatoria. Marcar el 100% no constituye
+    // una autoevaluación útil — es "sí a todo" sin discriminar severidad.
+    maxSelectablePerDim: (dim) => Math.max(1, dim.items.length - 1),
+    // Un eje con menos de este número de items afirmados produce un score
+    // poco fiable. Se incluye en el payload para que la UI lo señale.
+    minItemsForScore: 1
+  };
+
   /**
    * Escala ordinal de frecuencia.
    *
@@ -528,6 +540,21 @@
       this.answers = {};
       this.calculatedResult = null;
       this.startedAt = Date.now();
+      this._kioskMode = false;
+    }
+
+    /**
+     * Activa el modo kiosco: saltea branching y muestra solo las 5 dimensiones
+     * base en secuencia fija. Útil para charlas, congresos y demostraciones
+     * donde no se desean preguntas condicionales inesperadas.
+     */
+    enableKioskMode() {
+      this._kioskMode = true;
+      return this;
+    }
+
+    isKioskMode() {
+      return !!this._kioskMode;
     }
 
     /**
@@ -535,6 +562,8 @@
      * según el estado actual de answers (resuelve el bug de backtrack)
      */
     getActiveQuestions() {
+      if (this._kioskMode) return [...BASE_DIMENSIONS];
+
       const questions = [...BASE_DIMENSIONS];
 
       Object.keys(CONDITIONAL_DIMENSIONS).forEach(key => {
@@ -598,6 +627,13 @@
           : { id: entry.id, grade: entry.grade === undefined ? GRADE.HABITUAL : entry.grade }
       ));
 
+      // El cap es INFORMATIVO: la UI debe prevenir la selección excesiva, no el
+      // motor. El score se calcula honestamente con lo que el usuario seleccionó;
+      // cappedCount se incluye en el payload para que la UI lo señale al paciente.
+      const affirmedCount = graded.filter(e => e.grade !== GRADE.UNKNOWN).length;
+      const maxSelectable = ANSWER_LIMITS.maxSelectablePerDim(dim);
+      const cappedCount = Math.max(0, affirmedCount - maxSelectable);
+
       const weights = {};
       const unknownWeights = {};
       const grades = {};
@@ -638,7 +674,8 @@
         selectedItems: affirmed.map(it => ({ id: it.id, text: it.text, grade: grades[it.id] })),
         grades,
         weights,
-        unknownWeights
+        unknownWeights,
+        cappedCount
       };
     }
 
@@ -858,6 +895,23 @@
         physiologicalInsight = 'Lo que reportas se ubica en rangos de estabilidad. Una evaluación periódica en clínica permite detectar cambios en tu composición corporal antes de que se traduzcan en síntomas.';
       }
 
+      // Ejes con < minItemsForScore items afirmados: score poco fiable.
+      const lowCountAxes = Object.keys(AXES).filter(k => {
+        const dim = activeDimensions.find(d => d.axis === k);
+        if (!dim) return false;
+        const ans = this.answers[dim.id];
+        if (!ans || ans.isOptimal) return false;
+        return (ans.selectedItemIds || []).length < ANSWER_LIMITS.minItemsForScore;
+      });
+
+      // Ejes donde alguna dimensión tuvo items capados por exceder el límite.
+      const cappedAxes = activeDimensions
+        .filter(d => {
+          const ans = this.answers[d.id];
+          return ans && ans.cappedCount > 0;
+        })
+        .map(d => ({ axis: d.axis, dimensionId: d.id, cappedCount: this.answers[d.id].cappedCount }));
+
       this.calculatedResult = {
         axisTheta: this.estimateAxisTheta(activeDimensions),
         globalChargeScore,
@@ -875,7 +929,9 @@
         sortedAxes,
         dominantAxis1,
         dominantAxis2,
-        totalDimensionsAnswered: activeDimensions.filter(d => this.answers[d.id] !== undefined).length
+        totalDimensionsAnswered: activeDimensions.filter(d => this.answers[d.id] !== undefined).length,
+        lowCountAxes,
+        cappedAxes
       };
 
       return this.calculatedResult;
@@ -929,6 +985,7 @@
   return {
     AXES,
     AXIS_MAX,
+    ANSWER_LIMITS,
     GRADE,
     GRADE_LABELS,
     UNKNOWN_LABEL,

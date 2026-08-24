@@ -712,6 +712,117 @@ console.log('\n── I10 · Rasch por eje (θ) ──');
   );
 }
 
+// ════════════════════════════════════════════════════════════════════════════
+// I8 · Cap informativo de items por dimensión
+// ════════════════════════════════════════════════════════════════════════════
+{
+  const test = new TestEngine();
+  const dim = BASE_DIMENSIONS.find(d => d.id === 'dim_autonomo');
+
+  // Seleccionar TODOS los items: debe reportar cappedCount > 0
+  const allItemIds = dim.items.map(it => it.id);
+  test.answerDimension('dim_autonomo', allItemIds);
+  const ans = test.answers['dim_autonomo'];
+  check(
+    '[Cap] seleccionar todos los ítems reporta cappedCount > 0',
+    ans.cappedCount > 0,
+    `cappedCount=${ans.cappedCount}, total items=${dim.items.length}`
+  );
+  check(
+    '[Cap] los ítems capados no se descartan (score honesto)',
+    ans.selectedItemIds.length === dim.items.length,
+    `selected=${ans.selectedItemIds.length}, items=${dim.items.length}`
+  );
+
+  // Seleccionar 1 solo ítem: no hay cap
+  const test2 = new TestEngine();
+  test2.answerDimension('dim_autonomo', [dim.items[0].id]);
+  check(
+    '[Cap] selección por debajo del límite no reporta cap',
+    test2.answers['dim_autonomo'].cappedCount === 0
+  );
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// I9 · Min-items y lowCountAxes
+// ════════════════════════════════════════════════════════════════════════════
+{
+  function runOnce(dimId) {
+    const test = new TestEngine();
+    test.answerDimension(dimId, [BASE_DIMENSIONS.find(d => d.id === dimId).items[0].id]);
+    test.getActiveQuestions().forEach(d => {
+      if (!test.answers[d.id]) test.answerDimension(d.id, [], true);
+    });
+    test.calculateResults();
+    return test.calculatedResult;
+  }
+
+  // Una dimensión con 1 ítem afirmado: lowCountAxes debe incluirla si minItemsForScore > 1
+  // (El default es 1, así que con 1 afirmado NO debería aparecer)
+  const r1 = runOnce('dim_autonomo');
+  check(
+    '[MinItems] 1 ítem afirmado no dispara lowCountAxes con threshold=1',
+    !r1.lowCountAxes.includes('autonomo'),
+    `lowCountAxes=[${r1.lowCountAxes}]`
+  );
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// I10 · Modo kiosco sin branching
+// ════════════════════════════════════════════════════════════════════════════
+{
+  const test = new TestEngine();
+  test.enableKioskMode();
+
+  // Aunque las respuestas disparen los condition checks, kiosk solo ve las 5 base
+  test.answerDimension('dim_cardiometabolico', [
+    'item_card_diagnostico_propio',
+    'item_card_herencia_familiar',
+    'item_card_somnolencia_post'
+  ]);
+  test.answerDimension('dim_terreno', [
+    'item_ter_distension',
+    'item_ter_acidez_reflujo'
+  ]);
+  // El branching normal dispararía BOTH ramas condicionales con estas respuestas.
+  // Kiosco debe ver solo 5.
+  check(
+    '[Kiosco] getActiveQuestions() devuelve solo las 5 dimensiones base',
+    test.getActiveQuestions().length === 5
+  );
+
+  // Debe correr hasta finish tras responder las 5
+  for (let i = 0; i < 5; i++) {
+    if (!test.answers[test.getCurrentQuestion().id]) {
+      test.answerDimension(test.getCurrentQuestion().id, [], true);
+    }
+    if (i < 4) test.next();
+  }
+  check('[Kiosco] se completa sin ramas condicionales', test.isFinished());
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// I11 · Modo normal SÍ activa branching
+// ════════════════════════════════════════════════════════════════════════════
+{
+  const test = new TestEngine();
+  // Mismas respuestas que antes, sin kiosk
+  test.answerDimension('dim_cardiometabolico', [
+    'item_card_diagnostico_propio',
+    'item_card_herencia_familiar',
+    'item_card_somnolencia_post'
+  ]);
+  test.answerDimension('dim_terreno', [
+    'item_ter_distension',
+    'item_ter_acidez_reflujo'
+  ]);
+  check(
+    '[Kiosco-off] branching normal activa dimensiones condicionales',
+    test.getActiveQuestions().length > 5,
+    `active=${test.getActiveQuestions().length}`
+  );
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 
 const total = passed + failed;

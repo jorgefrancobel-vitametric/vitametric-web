@@ -59,7 +59,9 @@
   }
 
   function mount(host) {
-    const session = Triage.createSession();
+    const session = Triage.createSession({
+      kiosk: !!(window.__vitametricKiosk)
+    });
     const articulator = new ArticulatorModule.Articulator();
     const config = window.VitametricSLMConfig || SLM.readConfig();
     const runtime = new SLM.Runtime({
@@ -181,6 +183,19 @@
         `Respondiste ${turn.itemsAsked} preguntas de las ${turn.catalogSize} posibles. `
         + 'Las preguntas se eligieron según tus respuestas anteriores, por eso fueron menos.');
       detalle.appendChild(nota);
+
+      // Si algún eje llegó al tope de items, se informa: la autoevaluación
+      // discrimina mejor cuando no se marca todo.
+      if (turn.cappedAxes && turn.cappedAxes.length) {
+        const AXES = window.VitametricTestEngine && window.VitametricTestEngine.AXES || {};
+        const cappedNames = turn.cappedAxes
+          .map((k) => AXES[k] ? AXES[k].shortName : k)
+          .join(', ');
+        const cappedNote = el('p', 'triage-result__note',
+          `⚠️ En ${cappedNames} se alcanzó el máximo de preguntas. `
+          + 'Responder todas las opciones no produce una lectura más precisa.');
+        detalle.appendChild(cappedNote);
+      }
 
       stream.appendChild(detalle);
 

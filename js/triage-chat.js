@@ -237,9 +237,10 @@
     };
   }
 
-  function createSession() {
+  function createSession(config = {}) {
     const catalog = buildCatalog();
     const difficulties = buildDifficulties(catalog);
+    const kioskMode = config.kiosk === true;
 
     const state = {
       answers: {},          // itemId → grade (número) | null ("no lo sé")
@@ -311,6 +312,9 @@
      * Detectado por freebuff con sonda propia y reproducido antes de corregir.
      */
     function unlockedDimensions() {
+      // Modo kiosco: sin branching, solo las 5 dimensiones base.
+      if (kioskMode) return new Set(BASE_DIMENSIONS.map((d) => d.id));
+
       const byDim = answersByDimension();
       const unlocked = new Set(BASE_DIMENSIONS.map((d) => d.id));
       Object.values(CONDITIONAL_DIMENSIONS).forEach((dim) => {
@@ -502,6 +506,23 @@
       answer(itemId, grade, source = SOURCE.SELF_REPORT) {
         const item = catalog.find((it) => it.id === itemId);
         if (!item) throw new Error(`Ítem desconocido: ${itemId}`);
+
+        // Cap por eje: no más de MAX_ITEMS_PER_AXIS respuestas afirmadas.
+        // La pregunta adaptativa ya limita cuántos ítems se PRESENTAN, pero las
+        // respuestas inferidas desde texto libre pueden colar ítems extra que el
+        // sistema no habría preguntado por sí mismo.
+        if (!(itemId in state.answers)) {
+          const axisAnswered = Object.keys(state.answers).filter((id) => {
+            const ci = catalog.find((c) => c.id === id);
+            return ci && ci.axis === item.axis && state.answers[id] !== null;
+          }).length;
+          if (axisAnswered >= MAX_ITEMS_PER_AXIS) {
+            state.cappedAxes = state.cappedAxes || new Set();
+            state.cappedAxes.add(item.axis);
+            return this;
+          }
+        }
+
         const valor = (grade === null || grade === undefined)
           ? null
           : Math.max(0, Math.min(3, Number(grade)));
@@ -740,6 +761,7 @@
           dominant: dominante.axis,
           itemsAsked: state.asked.length,
           catalogSize: catalog.length,
+          cappedAxes: state.cappedAxes ? [...state.cappedAxes] : [],
           interpretation: lectura,
           allowedClaims: [
             ...claimsDeLectura,

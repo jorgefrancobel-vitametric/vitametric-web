@@ -455,14 +455,22 @@
     </p>
   </main>
 
+  <script>
+  // Modo kiosco: sin branching, 5 dimensiones en secuencia fija.
+  // Activar con ?mode=kiosk en la URL.
+  (function() {
+    var params = new URLSearchParams(window.location.search);
+    window.__vitametricKiosk = params.get('mode') === 'kiosk';
+  })();
+  </script>
   <script src="js/theme.js?v=e84643f0"></script>
   <script src="js/rasch.js?v=a9650750"></script>
-  <script src="js/test-celular-engine.js?v=df4b3dc8"></script>
+  <script src="js/test-celular-engine.js?v=1e30c3bf"></script>
   <!-- interpretation debe cargarse ANTES que triage-chat: este la resuelve desde
        window en su factoría UMD y, si falta, el chat pierde la lectura de patrones
        en silencio (misma clase de fallo que rasch.js sin script tag). -->
   <script src="js/interpretation.js?v=0595743c"></script>
-  <script src="js/triage-chat.js?v=714dd62b"></script>
+  <script src="js/triage-chat.js?v=bf0207dd"></script>
   <!-- El SLM es opcional: por defecto permanece apagado y el chat usa plantillas
        verificadas. El loader WebLLM se registra antes de la UI sin cambiar el
        contrato del motor. -->
@@ -483,6 +491,6 @@
   })();
 </script>
   <script type="module" src="js/slm-webllm-loader.js?v=9d4535be"></script>
-  <script src="js/triage-chat-ui.js?v=c61eb458"></script>
+  <script src="js/triage-chat-ui.js?v=7c3b0086"></script>
 </body>
 </html>
