@@ -170,6 +170,18 @@
 
   // ── Auto-wiring ──
   function autoWire() {
+    // Auto-detectar endpoint: /api/analytics en el mismo origen.
+    // Si no se configuró explícitamente, usamos el endpoint relativo.
+    // Esto funciona en Cloudflare Pages (functions/api/analytics.js) y en
+    // localhost con `npx wrangler pages dev`.
+    if (!ENDPOINT) {
+      try {
+        ENDPOINT = new URL('/api/analytics', window.location.origin).href;
+      } catch (e) {
+        // Sin URL constructor (IE11), no hacemos nada.
+      }
+    }
+
     var host = document.querySelector('[data-triage-chat]');
     if (!host) return;
 
