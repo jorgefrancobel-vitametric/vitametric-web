@@ -181,13 +181,14 @@
    * requieren un observador —roncar, dejar de respirar— y forzar un sí/no ahí
    * fabrica un dato inexistente.
    */
-  function answerOptions() {
+  function answerOptions(t) {
+    var _t = t || function(k, p) { return k; };
     return [
-      { value: 0, label: 'Nunca o casi nunca' },
-      { value: GRADE.RARA_VEZ, label: GRADE_LABELS[1] },
-      { value: GRADE.A_MENUDO, label: GRADE_LABELS[2] },
-      { value: GRADE.HABITUAL, label: GRADE_LABELS[3] },
-      { value: null, label: UNKNOWN_LABEL }
+      { value: 0, label: _t('grade_0', null, { default: 'Nunca o casi nunca' }) },
+      { value: GRADE.RARA_VEZ, label: _t('grade_1') },
+      { value: GRADE.A_MENUDO, label: _t('grade_2') },
+      { value: GRADE.HABITUAL, label: _t('grade_3') },
+      { value: null, label: _t('grade_unknown') }
     ];
   }
 
@@ -241,6 +242,13 @@
     const catalog = buildCatalog();
     const difficulties = buildDifficulties(catalog);
     const kioskMode = config.kiosk === true;
+    // i18n: wrapper sobre VitametricI18n.t() o identidad (español nativo)
+    const I18N = config.i18n || (typeof window !== 'undefined' && window.VitametricI18n) || null;
+    function _t(key, params) {
+      if (I18N && typeof I18N.t === 'function') return I18N.t(key, null, params);
+      // fallback: devolver la clave o un default si se pasó
+      return (params && params.default) || key;
+    }
 
     const state = {
       answers: {},          // itemId → grade (número) | null ("no lo sé")
@@ -252,7 +260,8 @@
       askedSinceReflection: 0,  // evita encadenar contrastes sin preguntar nada
       communicatedFocus: null,  // último eje que se le nombró al paciente
       causalLinks: [],           // enlaces causales extraídos por listenDeep()
-      finished: false
+      finished: false,
+      baseline: null             // ES-Complex baseline para comparación longitudinal
     };
 
     /** Respuestas de un eje en el formato que espera el modelo. */
@@ -535,6 +544,15 @@
       },
 
       /**
+       * Establece un baseline ES-Complex para comparación longitudinal.
+       * @param {object} baseline - { scanDate, axes: { autonomo: {score}, ... } }
+       */
+      setBaseline(baseline) {
+        state.baseline = baseline || null;
+        return this;
+      },
+
+      /**
        * Acumula enlaces causales extraídos del texto libre del paciente.
        * Se pasan a interpretation.read() al final para modular la confianza
        * de las constelaciones.
@@ -565,14 +583,12 @@
           state.framed = true;
           return emit({
             type: TURN.FRAMING,
-            text: 'Te voy a hacer unas preguntas sobre cómo te has sentido últimamente. '
-              + 'Responde según lo que notes: no hay respuestas correctas, y si algo no lo sabes, dilo — '
-              + 'es una respuesta válida y me sirve igual.',
+            text: _t('chat_framing'),
             allowedClaims: [{
-              text: 'Esta conversación recoge lo que tú reportas; no es un diagnóstico ni una medición.',
+              text: _t('chat_disclaimer'),
               evidence: EVIDENCE.SELF_REPORT
             }],
-            options: [{ value: 'ok', label: 'Empecemos' }]
+            options: [{ value: 'ok', label: _t('ui_consent_accept') }]
           });
         }
 
@@ -608,8 +624,7 @@
               type: TURN.REFLECTION,
               axis: foco.axis,
               ambiguous: true,
-              text: `Veo señales parecidas en ${a.patientLabel} y en ${b.patientLabel}, `
-                + 'sin que ninguna destaque sobre la otra. ¿Cuál dirías que te pesa más en el día a día?',
+              text: _t('chat_reflection_ambiguous', { area1: a.patientLabel, area2: b.patientLabel }),
               allowedClaims: [{
                 text: `En ${a.patientLabel} ${evidencePhrase(dominancia.first.axis)}; `
                   + `en ${b.patientLabel} ${evidencePhrase(dominancia.second.axis)}. `
@@ -630,16 +645,13 @@
           const puedeAfirmarDominancia = dominancia.distinguishable;
           // Igual que arriba: solo una afirmación de dominancia actualiza el
           // compromiso; un contraste sin ranking no lo crea ni lo borra.
-          if (puedeAfirmarDominancia) state.communicatedFocus = foco.axis;
-          return emit({
-            type: TURN.REFLECTION,
-            axis: foco.axis,
-            ranked: puedeAfirmarDominancia,
-            text: puedeAfirmarDominancia
-              ? `Por lo que me cuentas, ${AXES[foco.axis].patientLabel} `
-                + 'es donde más carga aparece. ¿Lo ves así, o hay algo que no encaje?'
-              : `En ${AXES[foco.axis].patientLabel} ${evidencePhrase(foco.axis)}. `
-                + 'Todavía no puedo decir si es lo que más te pesa. ¿Te encaja como algo que notas?',
+          if (puedeAfirmarDominancia) state.communicatedFocus = foco.axis;            return emit({
+              type: TURN.REFLECTION,
+              axis: foco.axis,
+              ranked: puedeAfirmarDominancia,
+              text: puedeAfirmarDominancia
+                ? _t('chat_reflection_dominant', { area: AXES[foco.axis].patientLabel })
+                : _t('chat_reflection_uncertain', { area: AXES[foco.axis].patientLabel, phrase: evidencePhrase(foco.axis) }),
             allowedClaims: [{
               // La evidencia contable sustituye al número sin referente.
               text: `En ${AXES[foco.axis].shortName} ${evidencePhrase(foco.axis)}.`,
@@ -650,8 +662,8 @@
                 : EVIDENCE.SELF_REPORT
             }],
             options: [
-              { value: true, label: 'Sí, es así' },
-              { value: false, label: 'No, no lo veo así' }
+              { value: true, label: _t('chat_reflection_yes') },
+              { value: false, label: _t('chat_reflection_no') }
             ]
           });
         }
@@ -665,7 +677,7 @@
               type: TURN.QUESTION,
               axis,
               itemId: item.id,
-              text: `${item.text} ¿Con qué frecuencia te pasa?`,
+              text: item.text + ' ' + _t('chat_freq_question'),
               // Se declara por qué se pregunta esto y no otra cosa: es el ítem
               // que más puede cambiar la estimación actual.
               rationale: {
@@ -674,7 +686,7 @@
                 criterion: 'máxima información de Fisher en la estimación actual'
               },
               allowedClaims: [],
-              options: answerOptions()
+              options: answerOptions(_t)
             });
           }
         }
@@ -741,14 +753,32 @@
         const conSenales = axisSummaries.filter((s) => s.evidence.affirmed > 0);
         let headline;
         if (!conSenales.length) {
-          headline = 'De lo que me contaste, no señalaste molestias en ninguna de las áreas que revisamos.';
+          headline = _t('chat_result_headline_none');
         } else if (dominancia.distinguishable) {
           const top = axisSummaries[0];
-          headline = `De lo que me contaste, lo que más pesa es ${top.name.toLowerCase()}: ${top.phrase}.`;
+          headline = _t('chat_result_headline_single', { area: top.name.toLowerCase(), phrase: top.phrase });
         } else {
           const nombres = conSenales.slice(0, 2).map((s) => s.name.toLowerCase());
-          headline = `De lo que me contaste, hay señales repartidas entre ${nombres.join(' y ')}, `
-            + 'sin que una destaque claramente sobre la otra.';
+          headline = _t('chat_result_headline_multi', { areas: nombres.join(' y ') });
+        }
+
+        // Baseline ES-Complex: comparar autoreporte actual contra medición física previa.
+        var baselineComparison = null;
+        if (state.baseline && state.baseline.axes) {
+          baselineComparison = { scanDate: state.baseline.scanDate, device: state.baseline.device, axes: {} };
+          Object.keys(state.baseline.axes).forEach(function (k) {
+            var curEst = estimates[k];
+            var curScore = curEst ? Math.round(curEst.scale || 0) : 0;
+            var blScore = state.baseline.axes[k].score;
+            var delta = curScore - blScore;
+            baselineComparison.axes[k] = {
+              baseline: blScore,
+              current: curScore,
+              delta: delta,
+              trend: delta > 5 ? 'worse' : delta < -5 ? 'better' : 'stable',
+              label: state.baseline.axes[k].label || ''
+            };
+          });
         }
 
         return emit({
@@ -762,6 +792,7 @@
           itemsAsked: state.asked.length,
           catalogSize: catalog.length,
           cappedAxes: state.cappedAxes ? [...state.cappedAxes] : [],
+          baselineComparison: baselineComparison,
           interpretation: lectura,
           allowedClaims: [
             ...claimsDeLectura,
@@ -769,30 +800,24 @@
             // declara. Revisar una hipótesis con datos nuevos es correcto; dejar
             // que el paciente descubra la contradicción por su cuenta, no.
             ...(state.communicatedFocus && state.communicatedFocus !== dominante.axis ? [{
-              text: `Antes te mencioné ${AXES[state.communicatedFocus].shortName} como el área principal. `
-                + `Con lo que me contaste después, ${AXES[dominante.axis].shortName} aparece por encima.`,
+              text: _t('chat_result_focus_changed', { old: AXES[state.communicatedFocus].shortName, new: AXES[dominante.axis].shortName }),
               evidence: EVIDENCE.MODEL_ESTIMATE,
               certainty: dominante.certainty,
               revision: { from: state.communicatedFocus, to: dominante.axis }
             }] : []),
-            // Lo que se afirma es lo que la persona respondió, contado. El rasgo
-            // estimado sigue disponible en `estimates` para uso interno, pero no
-            // se le presenta como si fuera una medición con referente.
             ...(conSenales.length ? [{
               text: dominancia.distinguishable
-                ? `El área con más señales es ${axisSummaries[0].name}: ${axisSummaries[0].phrase}.`
-                : `Las áreas con más señales son ${conSenales.slice(0, 2).map((s) => s.name).join(' y ')}, `
-                  + 'con una diferencia entre ellas menor que el margen de error de este cuestionario.',
+                ? _t('chat_result_top_area', { area: axisSummaries[0].name, phrase: axisSummaries[0].phrase })
+                : _t('chat_result_multi_area', { areas: conSenales.slice(0, 2).map((s) => s.name).join(' y ') }),
               evidence: Object.values(state.answerSources).includes(SOURCE.INFERRED)
                 ? EVIDENCE.MODEL_ESTIMATE
                 : EVIDENCE.SELF_REPORT
             }] : [{
-              text: 'No señalaste molestias en ninguna de las áreas exploradas.',
+              text: _t('chat_result_none'),
               evidence: EVIDENCE.SELF_REPORT
             }]),
             {
-              text: 'Medir qué ocurre físicamente en tu cuerpo requiere el estudio en clínica; '
-                + 'esta conversación no lo sustituye.',
+              text: _t('chat_result_needs_clinic'),
               evidence: EVIDENCE.NOT_OBSERVABLE
             },
             ...(sinPrecision.length ? [{

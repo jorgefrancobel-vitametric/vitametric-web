@@ -75,26 +75,42 @@
   };
 
   // Parámetros y Ponderaciones del Scoring Global (Desacoplados para A/B Testing)
-  const SCORING_CONFIG = {
-    weights: {
-      autonomo: 0.25,
-      sueno: 0.20,
-      cardiometabolico: 0.25,
-      terreno: 0.20,
-      ocupacional: 0.10
-    },
-    // Recalibrados tras el paso a escala absoluta (ver scripts/recalibrate-thresholds.mjs).
-    // Son los cortes que reproducen la estratificación anterior en el mayor número
-    // de casos: concordancia 93.73%, κ=0.8988, sin ningún salto bajo↔alto.
-    thresholds: {
-      highGlobal: 50,
-      highMaxAxis: 64,
-      moderateGlobal: 16,
-      moderateMaxAxis: 30
-    },
-    storageKey: 'vitametric_test_state_v3',
-    storageTtlMs: 24 * 60 * 60 * 1000 // 24 horas
-  };
+  const SCORING_CONFIG = (function() {
+    var base = {
+      weights: {
+        autonomo: 0.25,
+        sueno: 0.20,
+        cardiometabolico: 0.25,
+        terreno: 0.20,
+        ocupacional: 0.10
+      },
+      // Recalibrados tras el paso a escala absoluta (ver scripts/recalibrate-thresholds.mjs).
+      // Son los cortes que reproducen la estratificación anterior en el mayor número
+      // de casos: concordancia 93.73%, κ=0.8988, sin ningún salto bajo↔alto.
+      thresholds: {
+        highGlobal: 50,
+        highMaxAxis: 64,
+        moderateGlobal: 16,
+        moderateMaxAxis: 30
+      },
+      storageKey: 'vitametric_test_state_v3',
+      storageTtlMs: 24 * 60 * 60 * 1000 // 24 horas
+    };
+
+    // A/B testing: si el router está cargado y tiene overrides, se aplican.
+    // Solo se sobrescriben las claves que la variante define explícitamente.
+    var ab = (typeof window !== 'undefined' && window.VitametricABRouter) || null;
+    if (ab && ab.scoringOverrides) {
+      var ov = ab.scoringOverrides;
+      if (ov.weights) {
+        Object.keys(ov.weights).forEach(function (k) { base.weights[k] = ov.weights[k]; });
+      }
+      if (ov.thresholds) {
+        Object.keys(ov.thresholds).forEach(function (k) { base.thresholds[k] = ov.thresholds[k]; });
+      }
+    }
+    return base;
+  })();
 
   // Límites de validación de respuestas: previenen perfiles inflados
   // (usuario marca todos los ítems de un eje y el score sube artificialmente).
@@ -780,6 +796,15 @@
     /**
      * Calcula los resultados multidimensionales y el triaje clínico
      */
+    /**
+     * Establece un baseline ES-Complex para comparación longitudinal.
+     * @param {object} baseline - objeto validado de VitametricESBaseline.import()
+     */
+    setBaseline(baseline) {
+      this.baseline = baseline;
+      return this;
+    }
+
     calculateResults() {
       const activeDimensions = this.getActiveQuestions();
       const axisRaw = { autonomo: 0, sueno: 0, cardiometabolico: 0, terreno: 0, ocupacional: 0 };
@@ -912,6 +937,24 @@
         })
         .map(d => ({ axis: d.axis, dimensionId: d.id, cappedCount: this.answers[d.id].cappedCount }));
 
+      // Comparación contra baseline ES-Complex (si existe).
+      // Permite ver si el autoreporte actual difiere de la medición física previa.
+      let baselineComparison = null;
+      if (this.baseline && this.baseline.axes) {
+        baselineComparison = { scanDate: this.baseline.scanDate, device: this.baseline.device, axes: {} };
+        Object.keys(this.baseline.axes).forEach(k => {
+          var blScore = this.baseline.axes[k].score;
+          var curScore = axisScores[k] || 0;
+          baselineComparison.axes[k] = {
+            baseline: blScore,
+            current: curScore,
+            delta: curScore - blScore,
+            trend: (curScore - blScore) > 5 ? 'worse' : (curScore - blScore) < -5 ? 'better' : 'stable',
+            label: this.baseline.axes[k].label || ''
+          };
+        });
+      }
+
       this.calculatedResult = {
         axisTheta: this.estimateAxisTheta(activeDimensions),
         globalChargeScore,
@@ -931,7 +974,8 @@
         dominantAxis2,
         totalDimensionsAnswered: activeDimensions.filter(d => this.answers[d.id] !== undefined).length,
         lowCountAxes,
-        cappedAxes
+        cappedAxes,
+        baselineComparison
       };
 
       return this.calculatedResult;

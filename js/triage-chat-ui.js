@@ -45,10 +45,16 @@
     try { return typeof localStorage === 'undefined' ? null : localStorage; } catch (err) { return null; }
   }
 
+  const I18N = window.VitametricI18n || null;
+  function _t(key, params) {
+    if (I18N && typeof I18N.t === 'function') return I18N.t(key, null, params);
+    return (params && params.default) || key;
+  }
+
   const CERTAINTY_LABEL = {
-    [CERTAINTY.PRELIMINARY]: 'información preliminar',
-    [CERTAINTY.PROBABLE]: 'estimación probable',
-    [CERTAINTY.ESTABLISHED]: 'estimación consolidada'
+    [CERTAINTY.PRELIMINARY]: _t('cert_preliminary', { default: 'información preliminar' }),
+    [CERTAINTY.PROBABLE]: _t('cert_probable', { default: 'estimación probable' }),
+    [CERTAINTY.ESTABLISHED]: _t('cert_established', { default: 'estimación consolidada' })
   };
 
   function el(tag, className, text) {
@@ -62,6 +68,16 @@
     const session = Triage.createSession({
       kiosk: !!(window.__vitametricKiosk)
     });
+
+    // ES-Complex baseline: si hay un escaneo previo cargado, se lo pasamos al
+    // motor para que la comparación longitudinal aparezca en el resultado.
+    if (window.VitametricESBaseline) {
+      var baseline = window.VitametricESBaseline.get();
+      if (baseline && session.setBaseline) {
+        session.setBaseline(baseline);
+      }
+    }
+
     const articulator = new ArticulatorModule.Articulator();
     const config = window.VitametricSLMConfig || SLM.readConfig();
     const runtime = new SLM.Runtime({
@@ -109,11 +125,11 @@
         // Una contra-lectura no es una afirmación sobre el instrumento: es el
         // límite de la lectura anterior, y debe leerse pegada a ella.
         const tag = claim.isLimit
-          ? el('span', 'triage-claim__tag triage-claim__tag--limit', 'lo que no significa')
+          ? el('span', 'triage-claim__tag triage-claim__tag--limit', _t('claim_is_limit', { default: 'lo que no significa' }))
           : el('span', `triage-claim__tag triage-claim__tag--${claim.evidence.toLowerCase()}`,
-            claim.evidence === EVIDENCE.SELF_REPORT ? 'lo que reportaste'
-              : claim.evidence === EVIDENCE.MODEL_ESTIMATE ? (CERTAINTY_LABEL[claim.certainty] || 'estimación')
-                : 'requiere medición en clínica');
+            claim.evidence === EVIDENCE.SELF_REPORT ? _t('claim_self_report', { default: 'lo que reportaste' })
+              : claim.evidence === EVIDENCE.MODEL_ESTIMATE ? (CERTAINTY_LABEL[claim.certainty] || _t('claim_estimate', { default: 'estimación' }))
+                : _t('claim_needs_clinic', { default: 'requiere medición en clínica' }));
         if (claim.isLimit) row.classList.add('triage-claim--limit');
         row.appendChild(tag);
         row.appendChild(el('span', 'triage-claim__text', claim.text));
@@ -157,7 +173,7 @@
       renderClaims(turn.allowedClaims);
 
       const detalle = el('div', 'triage-result');
-      detalle.appendChild(el('h3', 'triage-result__title', 'Desglose por área'));
+      detalle.appendChild(el('h3', 'triage-result__title', _t('chat_result_title', { default: 'Desglose por área' })));
 
       // Se muestra lo que la persona respondió, no un número sin referente: un
       // "54 de 100" no es comprobable por quien contestó, "3 de 4 señales, 2
@@ -180,8 +196,7 @@
       });
 
       const nota = el('p', 'triage-result__note',
-        `Respondiste ${turn.itemsAsked} preguntas de las ${turn.catalogSize} posibles. `
-        + 'Las preguntas se eligieron según tus respuestas anteriores, por eso fueron menos.');
+        _t('chat_result_responded', { asked: turn.itemsAsked, catalog: turn.catalogSize }));
       detalle.appendChild(nota);
 
       // Si algún eje llegó al tope de items, se informa: la autoevaluación
@@ -192,15 +207,26 @@
           .map((k) => AXES[k] ? AXES[k].shortName : k)
           .join(', ');
         const cappedNote = el('p', 'triage-result__note',
-          `⚠️ En ${cappedNames} se alcanzó el máximo de preguntas. `
-          + 'Responder todas las opciones no produce una lectura más precisa.');
+          _t('chat_capped_notice', { axes: cappedNames }));
         detalle.appendChild(cappedNote);
       }
 
       stream.appendChild(detalle);
 
+      // Email gate: ofrecer guardar email tras ver el resultado.
+      // No bloquea: se muestra debajo del resultado.
+      if (window.VitametricEmailGate && typeof window.VitametricEmailGate.show === 'function') {
+        var ab = window.VitametricABRouter;
+        window.VitametricEmailGate.show({
+          questionsAnswered: asked,
+          riskLevel: (turn.axisSummaries && turn.axisSummaries[0]) ? turn.axisSummaries[0].band : 'unknown',
+          globalScore: 0,
+          variant: ab ? ab.variant : 'unknown'
+        });
+      }
+
       clearControls();
-      const cta = el('a', 'triage-cta', 'Agendar mi evaluación en clínica');
+      const cta = el('a', 'triage-cta', _t('ui_cta_whatsapp', { default: 'Agendar mi evaluación en clínica' }));
       cta.href = buildWhatsAppUrl(turn);
       cta.target = '_blank';
       cta.rel = 'noopener';
@@ -213,14 +239,14 @@
      * números que él calculó. No se redacta nada nuevo aquí.
      */
     function buildWhatsAppUrl(turn) {
-      const lineas = ['*AUTOEVALUACIÓN DE SÍNTOMAS — VITAMETRIC*', ''];
+      const lineas = [_t('wa_header', { default: '*AUTOEVALUACIÓN DE SÍNTOMAS — VITAMETRIC*' }), ''];
       turn.allowedClaims.filter((c) => !c.isLimit).forEach((c) => lineas.push(`• ${c.text}`));
-      lineas.push('', '*Desglose por área (según lo que reporté):*');
+      lineas.push('', _t('wa_breakdown_header', { default: '*Desglose por área (según lo que reporté):*' }));
       (turn.axisSummaries || []).forEach((s) => {
         lineas.push(`• ${s.icon} ${s.name}: ${s.band} — ${s.phrase}`);
       });
-      lineas.push('', '🎯 Quiero agendar la *Evaluación Multisistémica ES-Complex ($3,900 MXN)*.');
-      lineas.push('', '_Autoevaluación de síntomas percibidos: no es un diagnóstico ni una medición._');
+      lineas.push('', _t('wa_motive', { default: '🎯 Quiero agendar la *Evaluación Multisistémica ES-Complex ($3,900 MXN)*.' }));
+      lineas.push('', _t('wa_disclaimer', { default: '_Autoevaluación de síntomas percibidos: no es un diagnóstico ni una medición._' }));
       return `https://wa.me/525585327421?text=${encodeURIComponent(lineas.join('\n'))}`;
     }
 
@@ -243,7 +269,7 @@
       const bubble = el('div', 'triage-bubble triage-bubble--bot triage-bubble--suggestion');
       const icon = el('span', 'triage-suggestion__icon', '💡');
       const text = el('span', 'triage-suggestion__text', question);
-      const hint = el('span', 'triage-suggestion__hint', 'Puedes responderme aquí abajo si quieres');
+      const hint = el('span', 'triage-suggestion__hint', _t('listener_hint', { default: 'Puedes responderme aquí abajo si quieres' }));
       bubble.appendChild(icon);
       bubble.appendChild(text);
       bubble.appendChild(hint);
@@ -268,15 +294,15 @@
       slmStatus.style.display = 'block';
       slmStatus.dataset.state = snapshot.status;
       if (snapshot.status === SLM.STATUS.LOADING) {
-        slmStatus.textContent = 'Asistente local: preparando el modelo…';
+        slmStatus.textContent = _t('slm_loading', { default: 'Asistente local: preparando el modelo…' });
       } else if (snapshot.status === SLM.STATUS.READY) {
         slmStatus.textContent = snapshot.exposure === SLM.EXPOSURE.SHADOW
-          ? 'Asistente local: evaluación en segundo plano; respuesta verificada.'
-          : 'Asistente local: activo con salida verificada.';
+          ? _t('slm_shadow', { default: 'Asistente local: evaluación en segundo plano; respuesta verificada.' })
+          : _t('slm_active', { default: 'Asistente local: activo con salida verificada.' });
       } else if (snapshot.status === SLM.STATUS.ERROR) {
-        slmStatus.textContent = 'Asistente local no disponible; continuamos con respuestas verificadas.';
+        slmStatus.textContent = _t('slm_error', { default: 'Asistente local no disponible; continuamos con respuestas verificadas.' });
       } else {
-        slmStatus.textContent = 'Asistente local no disponible; continuamos con respuestas verificadas.';
+        slmStatus.textContent = _t('slm_error', { default: 'Asistente local no disponible; continuamos con respuestas verificadas.' });
       }
     }
 
@@ -289,13 +315,13 @@
       const box = el('div', 'triage-listener');
       const bar = el('div', 'triage-listener__bar');
       const ta = el('textarea', 'triage-listener__input');
-      ta.placeholder = 'Cuéntanos en tus palabras si deseas agregar algo…';
+      ta.placeholder = _t('listener_placeholder', { default: 'Cuéntanos en tus palabras si deseas agregar algo…' });
       ta.rows = 1;
       ta.setAttribute('aria-label', 'Mensaje en texto libre');
 
       const send = el('button', 'triage-listener__send');
       send.type = 'button';
-      send.setAttribute('aria-label', 'Enviar mensaje');
+      send.setAttribute('aria-label', _t('listener_send', { default: 'Enviar mensaje' }));
       send.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>';
       send.disabled = true;
 
@@ -312,7 +338,7 @@
         ta.style.height = 'auto';
         send.disabled = true;
         // Restaurar placeholder por defecto tras el foco del bocadillo.
-        ta.placeholder = 'Cuéntanos en tus palabras si deseas agregar algo…';
+        ta.placeholder = _t('listener_placeholder', { default: 'Cuéntanos en tus palabras si deseas agregar algo…' });
         say(text, 'user');
         try {
           // Usar listenDeep para extraer síntomas + relaciones causales.
@@ -393,7 +419,7 @@
         consent.checked = !!runtime.config.listener.serverConsent;
         consent.addEventListener('change', () => runtime.setListenerConsent(consent.checked));
         consentWrap.appendChild(consent);
-        consentWrap.appendChild(document.createTextNode(' Permitir análisis en servidor para mejor comprensión (opcional)'));
+        consentWrap.appendChild(document.createTextNode(' ' + _t('listener_consent_label', { default: 'Permitir análisis en servidor para mejor comprensión (opcional)' })));
         box.appendChild(consentWrap);
       }
 
@@ -475,20 +501,16 @@
       const card = el('div', 'triage-consent');
       card.setAttribute('role', 'group');
       card.setAttribute('aria-label', 'Asistente local opcional');
-      card.appendChild(el('div', 'triage-consent__title', '¿Activamos el asistente local?'));
+      card.appendChild(el('div', 'triage-consent__title', _t('consent_title', { default: '¿Activamos el asistente local?' })));
       const body = el('p', 'triage-consent__body');
-      body.textContent = 'Este cuestionario puede usar un modelo de lenguaje pequeño que se '
-        + 'descarga una sola vez a tu dispositivo (unos 600 MB; luego queda en caché) y se '
-        + 'ejecuta en tu navegador con WebGPU. Tus respuestas se procesan localmente: no se '
-        + 'envían a ningún servidor. Si tu equipo no soporta WebGPU, el cuestionario sigue '
-        + 'funcionando con respuestas verificadas por plantillas. También podrás escribir en '
-        + 'tus palabras: ese texto se analiza en tu dispositivo. Puedes continuar sin activarlo: '
-        + 'el resultado es el mismo, solo con redacción fija.';
+      body.textContent = _t('consent_body', {
+        default: 'Este cuestionario puede usar un modelo de lenguaje pequeño que se descarga una sola vez a tu dispositivo (unos 600 MB; luego queda en caché) y se ejecuta en tu navegador con WebGPU. Tus respuestas se procesan localmente: no se envían a ningún servidor. Si tu equipo no soporta WebGPU, el cuestionario sigue funcionando con respuestas verificadas por plantillas. También podrás escribir en tus palabras: ese texto se analiza en tu dispositivo. Puedes continuar sin activarlo: el resultado es el mismo, solo con redacción fija.'
+      });
       const actions = el('div', 'triage-consent__actions');
-      const accept = el('button', 'triage-consent__btn triage-consent__btn--primary', 'Activar asistente local');
+      const accept = el('button', 'triage-consent__btn triage-consent__btn--primary', _t('consent_activate', { default: 'Activar asistente local' }));
       accept.type = 'button';
       accept.addEventListener('click', () => activateSLM(card));
-      const decline = el('button', 'triage-consent__btn triage-consent__btn--ghost', 'Continuar sin él');
+      const decline = el('button', 'triage-consent__btn triage-consent__btn--ghost', _t('consent_decline', { default: 'Continuar sin él' }));
       decline.type = 'button';
       decline.addEventListener('click', () => declineSLM(card));
       actions.appendChild(accept);
