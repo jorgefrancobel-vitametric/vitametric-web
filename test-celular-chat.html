@@ -372,8 +372,8 @@
       padding: 0.35rem 0;
       resize: none;
       outline: none;
-      max-height: 96px;
-      min-height: 24px;
+      overflow: hidden;
+      min-height: 56px;
     }
     .triage-listener__input::placeholder {
       color: var(--c-muted);
@@ -669,7 +669,7 @@
        verificadas. El loader WebLLM se registra antes de la UI sin cambiar el
        contrato del motor. -->
   <script src="js/articulator.js?v=a1cf70c4"></script>
-  <script src="js/email-gate.js?v=655a5601"></script>
+  <script src="js/email-gate.js?v=0267c06d"></script>
   <script src="js/analytics-beacon.js?v=aee6c2e3"></script>
   <script src="js/slm-runtime.js?v=6c61b938"></script>
   <script type="module">
@@ -687,6 +687,6 @@
   })();
 </script>
   <script type="module" src="js/slm-webllm-loader.js?v=9d4535be"></script>
-  <script src="js/triage-chat-ui.js?v=b26efa52"></script>
+  <script src="js/triage-chat-ui.js?v=ba6be3f7"></script>
 </body>
 </html>

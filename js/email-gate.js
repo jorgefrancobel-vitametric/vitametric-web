@@ -10,7 +10,7 @@
  *
  * Integración:
  *   <script src="js/email-gate.js"></script>
- *   // El gate se auto-inicializa al DOMContentLoaded.
+ *   // La UI del triaje llama a VitametricEmailGate.show(...) al terminar el test.
  */
 
 (function (root) {
@@ -164,6 +164,14 @@
       var host = document.querySelector('[data-triage-chat]');
       if (!host) { resolve({ email: null, skipped: true }); return; }
 
+      // Idempotencia: nunca dos prompts de email en el mismo host, aunque mi
+      // disparador se invoque más de una vez (los dos caminos del flujo del
+      // resultado) o haya quedado un prompt previo sin limpiar.
+      if (host.querySelector('.email-gate')) {
+        resolve({ email: null, skipped: true });
+        return;
+      }
+
       var ui = buildPrompt();
       host.appendChild(ui.container);
 
@@ -207,38 +215,11 @@
   }
 
   /**
-   * Escucha eventos de la UI del triaje para disparar el prompt.
-   * Se auto-configura al detectar el elemento [data-triage-chat].
+   * Solo se muestra de forma explícita. El disparador vive en la UI del triaje
+   * (triage-chat-ui.js), que llama a show() cuando renderiza el resultado.
+   * Un observer de mutaciones aquí duplicaba el prompt: emitía el segundo
+   * input de email junto al que ya lanzaba renderResult.
    */
-  function autoWire() {
-    var host = document.querySelector('[data-triage-chat]');
-    if (!host) return;
-
-    // Observar cuándo aparecen burbujas de resultado (RESULT turn).
-    var observer = new MutationObserver(function () {
-      // Solo mostrar el prompt si ya hay al menos 3 preguntas respondidas
-      // y no se mostró antes.
-      var results = host.querySelectorAll('.triage-result');
-      if (results.length > 0 && !getStoredEmail()) {
-        var bubbles = host.querySelectorAll('.triage-bubble--bot');
-        if (bubbles.length >= 3) {
-          // Contar preguntas aproximadas por las opciones respondidas
-          var options = host.querySelectorAll('.triage-option');
-          // Ya hay suficiente interacción para pedir email
-          observer.disconnect();
-          showEmailPrompt({
-            questionsAnswered: bubbles.length,
-            variant: (root.VitametricABRouter && root.VitametricABRouter.variant) || 'unknown'
-          });
-        }
-      }
-    });
-
-    observer.observe(host, { childList: true, subtree: true });
-  }
-
-  // Auto-inicializar al DOMContentLoaded
-  document.addEventListener('DOMContentLoaded', autoWire);
 
   root.VitametricEmailGate = {
     show: showEmailPrompt,

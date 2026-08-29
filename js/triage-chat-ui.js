@@ -327,7 +327,7 @@
 
       ta.addEventListener('input', () => {
         ta.style.height = 'auto';
-        ta.style.height = Math.min(ta.scrollHeight, 96) + 'px';
+        ta.style.height = ta.scrollHeight + 'px';
         send.disabled = !ta.value.trim();
       });
 
