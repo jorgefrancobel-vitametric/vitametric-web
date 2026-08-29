@@ -472,27 +472,6 @@
     .email-gate__btn:disabled { opacity: 0.5; cursor: not-allowed; }
     .email-gate__feedback { margin: 0.4rem 0 0; font-size: 0.75rem; color: #ef4444; }
 
-    /* ES-Complex Import */
-    .escomplex-import { margin: 0 auto 0.8rem; max-width: var(--max-w, 700px); padding: 0 1rem; }
-    .escomplex-import__summary { cursor: pointer; font-size: 0.82rem; color: var(--c-text-dim); font-weight: 600; padding: 0.4rem 0; user-select: none; }
-    .escomplex-import__summary:hover { color: var(--c-cyan); }
-    .escomplex-import__body { padding: 0.8rem 0; }
-    .escomplex-import__desc { margin: 0 0 0.6rem; font-size: 0.78rem; color: var(--c-text-dim); line-height: 1.4; }
-    .escomplex-import__textarea {
-      width: 100%; padding: 0.5rem; border: 1px solid var(--c-border-light); border-radius: 6px;
-      font-size: 0.75rem; background: var(--c-bg); color: var(--c-text); box-sizing: border-box;
-      resize: vertical; font-family: monospace;
-    }
-    .escomplex-import__actions { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
-    .escomplex-import__btn {
-      padding: 0.35rem 0.8rem; border-radius: 6px; font-size: 0.78rem; font-weight: 600;
-      cursor: pointer; border: none; transition: opacity 0.15s;
-    }
-    .escomplex-import__btn--primary { background: var(--c-cyan); color: #000; }
-    .escomplex-import__btn--ghost { background: transparent; color: var(--c-text-dim); border: 1px solid var(--c-border-light); }
-    .escomplex-import__feedback { margin: 0.4rem 0 0; font-size: 0.75rem; }
-    .escomplex-import__feedback--success { color: #10B981; }
-    .escomplex-import__feedback--error { color: #ef4444; }
   </style>
 </head>
 <body>
@@ -524,25 +503,6 @@
       </noscript>
     </div>
 
-    <!-- ES-Complex Baseline Import (collapsible) -->
-    <details class="escomplex-import" id="escomplexImport" style="display:none">
-      <summary class="escomplex-import__summary">📋 Cargar escaneo ES-Complex previo (opcional)</summary>
-      <div class="escomplex-import__body">
-        <p class="escomplex-import__desc">
-          Si ya te hiciste un escaneo ES-Complex, pega aquí el archivo JSON de resultados
-          para comparar tu autoevaluación actual contra la medición física.
-        </p>
-        <textarea class="escomplex-import__textarea" id="escomplexTextarea"
-          placeholder='Pega aquí el JSON del escaneo: {"scanDate":"...", "axes":{...}}'
-          rows="6"></textarea>
-        <div class="escomplex-import__actions">
-          <button class="escomplex-import__btn escomplex-import__btn--primary" id="escomplexLoad">Cargar baseline</button>
-          <button class="escomplex-import__btn escomplex-import__btn--ghost" id="escomplexClear" style="display:none">Quitar baseline</button>
-        </div>
-        <p class="escomplex-import__feedback" id="escomplexFeedback" aria-live="polite"></p>
-      </div>
-    </details>
-
     <p class="triage-disclaimer">
       Esta conversación recoge síntomas que tú reportas. No es un diagnóstico ni una medición:
       medir lo que ocurre físicamente en tu cuerpo requiere la evaluación en clínica.
@@ -560,60 +520,9 @@
   <script src="js/theme.js?v=e84643f0"></script>
   <script src="js/ab-router.js?v=ad6ebf7a"></script>
   <script src="js/i18n.js?v=6c35daa0"></script>
-  <script src="js/escomplex-baseline.js?v=3c993d95"></script>
   <script>
   // i18n: actualizar metadatos de la página y wiring del lang switcher.
   (function() {
-    // ES-Complex baseline: mostrar el importador (siempre visible, colapsado).
-    var escomplex = document.getElementById('escomplexImport');
-    if (escomplex) escomplex.style.display = '';
-
-    // Wiring del import
-    var textarea = document.getElementById('escomplexTextarea');
-    var loadBtn = document.getElementById('escomplexLoad');
-    var clearBtn = document.getElementById('escomplexClear');
-    var feedback = document.getElementById('escomplexFeedback');
-
-    if (textarea && loadBtn && clearBtn && feedback) {
-      // Mostrar estado actual del baseline
-      var ESB = window.VitametricESBaseline;
-      if (ESB) {
-        var current = ESB.get();
-        if (current) {
-          textarea.value = JSON.stringify(current, null, 2);
-          clearBtn.style.display = '';
-          feedback.textContent = '✓ Baseline cargado: escaneo del ' + current.scanDate;
-          feedback.className = 'escomplex-import__feedback escomplex-import__feedback--success';
-        }
-      }
-
-      loadBtn.addEventListener('click', function() {
-        var raw = textarea.value.trim();
-        if (!raw) {
-          feedback.textContent = 'Pega el JSON del escaneo primero.';
-          feedback.className = 'escomplex-import__feedback escomplex-import__feedback--error';
-          return;
-        }
-        var result = ESB.import(raw);
-        if (result.success) {
-          feedback.textContent = '✓ Baseline cargado: escaneo del ' + result.baseline.scanDate;
-          feedback.className = 'escomplex-import__feedback escomplex-import__feedback--success';
-          clearBtn.style.display = '';
-        } else {
-          feedback.textContent = '✗ ' + result.error;
-          feedback.className = 'escomplex-import__feedback escomplex-import__feedback--error';
-        }
-      });
-
-      clearBtn.addEventListener('click', function() {
-        ESB.clear();
-        textarea.value = '';
-        clearBtn.style.display = 'none';
-        feedback.textContent = '';
-        feedback.className = 'escomplex-import__feedback';
-      });
-    }
-
     var I18N = window.VitametricI18n;
     if (!I18N) return;
     var lang = I18N.detectLang();
@@ -687,6 +596,6 @@
   })();
 </script>
   <script type="module" src="js/slm-webllm-loader.js?v=9d4535be"></script>
-  <script src="js/triage-chat-ui.js?v=ba6be3f7"></script>
+  <script src="js/triage-chat-ui.js?v=8fee067d"></script>
 </body>
 </html>

@@ -69,15 +69,9 @@
       kiosk: !!(window.__vitametricKiosk)
     });
 
-    // ES-Complex baseline: si hay un escaneo previo cargado, se lo pasamos al
-    // motor para que la comparación longitudinal aparezca en el resultado.
-    if (window.VitametricESBaseline) {
-      var baseline = window.VitametricESBaseline.get();
-      if (baseline && session.setBaseline) {
-        session.setBaseline(baseline);
-      }
-    }
-
+    // ES-Complex baseline: integración retirada de producción. El motor conserva
+    // setBaseline() como capacidad interna; la carga del JSON vive en la rama dev
+    // (a la espera de que los pacientes reciban el formato exportable).
     const articulator = new ArticulatorModule.Articulator();
     const config = window.VitametricSLMConfig || SLM.readConfig();
     const runtime = new SLM.Runtime({
