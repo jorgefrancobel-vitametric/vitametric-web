@@ -21,7 +21,7 @@
  */
 
 import Rasch from '../js/rasch.js';
-import Engine from '../js/test-celular-engine.js';
+import Engine from '../js/mapa-senales-engine.js';
 import Triage from '../js/triage-chat.js';
 
 const { AXES, CONDITIONAL_DIMENSIONS } = Engine;

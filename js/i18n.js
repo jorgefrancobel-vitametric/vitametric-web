@@ -31,31 +31,31 @@
   // ═══════════════════════════════════════════════════════════════════════════
   var STRINGS = {
     // ── AXES ──
-    'axe_autonomo_name':        { es: 'Balance Autónomo & Estrés',                en: 'Autonomic Balance & Stress' },
-    'axe_autonomo_short':       { es: 'Estrés Autónomo',                          en: 'Autonomic Stress' },
+    'axe_autonomo_name':        { es: 'Tensión y Estrés Percibidos',                en: 'Perceived Tension & Stress' },
+    'axe_autonomo_short':       { es: 'Tensión y Estrés',                          en: 'Tension & Stress' },
     'axe_autonomo_patient':     { es: 'la tensión y el estrés',                    en: 'tension and stress' },
     'axe_autonomo_desc':        { es: 'Recoge las manifestaciones de tensión sostenida que percibes: contracturas, palpitaciones y dificultad para desconectar.', en: 'Captures the signs of sustained tension you notice: contractures, palpitations, and difficulty unwinding.' },
-    'axe_sueno_name':           { es: 'Arquitectura del Sueño & Cronobiología',    en: 'Sleep Architecture & Chronobiology' },
+    'axe_sueno_name':           { es: 'Descanso y Sueño Reportados',    en: 'Reported Rest & Sleep' },
     'axe_sueno_short':          { es: 'Calidad de Sueño',                         en: 'Sleep Quality' },
     'axe_sueno_patient':        { es: 'el descanso y el sueño',                    en: 'rest and sleep' },
     'axe_sueno_desc':           { es: 'Recoge cómo describes tu descanso: cuánto tardas en dormirte, si despiertas de noche y con qué energía amaneces.', en: 'Captures how you describe your rest: how long you take to fall asleep, whether you wake at night, and how energized you feel in the morning.' },
-    'axe_cardiometabolico_name':{ es: 'Resiliencia Cardiometabólica',              en: 'Cardiometabolic Resilience' },
-    'axe_cardiometabolico_short':{ es: 'Cardiometabólico',                        en: 'Cardiometabolic' },
+    'axe_cardiometabolico_name':{ es: 'Energía Diaria y Antecedentes',              en: 'Daily Energy & Reported History' },
+    'axe_cardiometabolico_short':{ es: 'Energía y Antecedentes',                        en: 'Energy & History' },
     'axe_cardiometabolico_patient':{ es: 'la energía y el cansancio durante el día', en: 'energy and fatigue during the day' },
     'axe_cardiometabolico_desc':{ es: 'Recoge las fluctuaciones de energía que notas durante el día y los antecedentes personales y familiares que declaras.', en: 'Captures the energy fluctuations you notice during the day and the personal and family history you report.' },
-    'axe_terreno_name':         { es: 'Terreno Digestivo y Retención de Líquidos', en: 'Digestive Terrain & Fluid Retention' },
-    'axe_terreno_short':        { es: 'Terreno Digestivo',                        en: 'Digestive Terrain' },
+    'axe_terreno_name':         { es: 'Digestión y Retención Reportadas', en: 'Reported Digestion & Fluid Retention' },
+    'axe_terreno_short':        { es: 'Digestión',                        en: 'Digestion' },
     'axe_terreno_patient':      { es: 'la digestión y la retención de líquidos',    en: 'digestion and fluid retention' },
     'axe_terreno_desc':         { es: 'Recoge los síntomas digestivos y de retención de líquidos tal como los percibes. Es tu experiencia reportada; la medición física del medio interno corresponde al estudio en clínica.', en: 'Captures digestive and fluid retention symptoms as you perceive them. This is your reported experience; physical measurement of your internal environment requires the in-clinic study.' },
     'axe_ocupacional_name':     { es: 'Carga Ergonómica & Sobreesfuerzo',          en: 'Ergonomic Load & Overexertion' },
     'axe_ocupacional_short':    { es: 'Sobrecarga Laboral',                       en: 'Occupational Load' },
     'axe_ocupacional_patient':  { es: 'la carga del trabajo y las posturas',        en: 'workload and posture' },
-    'axe_ocupacional_desc':     { es: 'Cuantifica el impacto del sedentarismo prolongado, tensión por pantallas (VDT) y fatiga postural.', en: 'Quantifies the impact of prolonged sitting, screen-related strain, and postural fatigue.' },
+    'axe_ocupacional_desc':     { es: 'Recoge la carga postural, el sedentarismo y la tensión por pantallas tal como los percibes.', en: 'Records postural load, sitting and screen strain as you perceive them.' },
 
     // ── BASE DIMENSIONS ──
     'dim_autonomo_category':  { es: 'Tensión Sostenida y Reactividad al Estrés', en: 'Sustained Tension & Stress Reactivity' },
     'dim_autonomo_title':     { es: '¿Cuáles de las siguientes manifestaciones de sobretensión o reactividad experimentas habitualmente?', en: 'Which of the following signs of over-tension or reactivity do you regularly experience?' },
-    'dim_autonomo_subtitle':  { es: 'Permite estimar la reactividad neurovegetativa y la sobrecarga simpática sostenida.', en: 'Helps estimate neurovegetative reactivity and sustained sympathetic overload.' },
+    'dim_autonomo_subtitle':  { es: 'Recoge las manifestaciones de tensión sostenida que percibes, tal como tú las experimentas.', en: 'Records the signs of sustained tension you notice, as you experience them.' },
     'dim_autonomo_opt':       { es: 'Sin sobretensión ni manifestaciones de estrés significativas (estado de relajación y balance estable).', en: 'No over-tension or significant stress signs (relaxed state and stable balance).' },
 
     'dim_sueno_category':     { es: 'Arquitectura del Sueño & Recuperación Nocturna', en: 'Sleep Architecture & Nighttime Recovery' },
@@ -65,7 +65,7 @@
 
     'dim_cardiometabolico_category': { es: 'Energía a lo Largo del Día y Antecedentes', en: 'Energy Throughout the Day & History' },
     'dim_cardiometabolico_title':    { es: '¿Presentas alguna de las siguientes señales de fluctuación metabólica o antecedentes familiares?', en: 'Do you have any of the following signs of metabolic fluctuation or family history?' },
-    'dim_cardiometabolico_subtitle': { es: 'Analiza la estabilidad energética postprandial y la carga de susceptibilidad metabólica preclínica.', en: 'Analyzes postprandial energy stability and preclinical metabolic susceptibility load.' },
+    'dim_cardiometabolico_subtitle': { es: 'Recoge las fluctuaciones de energía que notas durante el día y los antecedentes que declaras.', en: 'Analyzes postprandial energy stability and preclinical metabolic susceptibility load.' },
     'dim_cardiometabolico_opt':      { es: 'Claridad mental constante, niveles estables de glucosa/energía a lo largo del día y sin antecedentes directos.', en: 'Consistent mental clarity, stable glucose/energy levels throughout the day, and no direct family history.' },
 
     'dim_terreno_category':   { es: 'Terreno Digestivo y Dinámica de Líquidos', en: 'Digestive Terrain & Fluid Dynamics' },
@@ -75,7 +75,7 @@
 
     'dim_ocupacional_category': { es: 'Carga Ergonómica, Postural & Exposición a Pantallas', en: 'Ergonomic, Postural & Screen Exposure Load' },
     'dim_ocupacional_title':    { es: '¿Cuáles son las condiciones predominantes en tu dinámica laboral y postura diaria?', en: 'What are the prevailing conditions in your daily work dynamic and posture?' },
-    'dim_ocupacional_subtitle': { es: 'Evalúa el impacto del sedentarismo prolongado y la tensión visual en la fascia y tono muscular.', en: 'Assesses the impact of prolonged sitting and visual strain on fascia and muscle tone.' },
+    'dim_ocupacional_subtitle': { es: 'Recoge la carga postural y la tensión por pantallas tal como las percibes.', en: 'Records postural load and screen strain as you perceive them.' },
     'dim_ocupacional_opt':      { es: 'Dinámica laboral activa, movilidad frecuente, pausas ergonómicas regulares y sin fatiga postural.', en: 'Active work dynamic, frequent mobility, regular ergonomic breaks, and no postural fatigue.' },
 
     // ── ITEMS (35 total) ──
@@ -134,14 +134,14 @@
     'grade_unknown': { es: 'No lo sé',                             en: 'I don\'t know' },
 
     // ── RISK LEVELS ──
-    'risk_bajo_badge':   { es: 'Carga Celular Baja 🟢',                          en: 'Low Cellular Load 🟢' },
-    'risk_bajo_title':   { es: 'Equilibrio Bioeléctrico en Rango Compensatorio',  en: 'Bioelectric Balance in Compensatory Range' },
+    'risk_bajo_badge':   { es: 'Carga sintomática baja 🟢',                          en: 'Low reported symptom load 🟢' },
+    'risk_bajo_title':   { es: 'Baja carga de síntomas reportados',  en: 'Low reported symptom load' },
     'risk_bajo_summary': { es: 'Lo que reportas describe una buena capacidad de adaptación: descanso, tolerancia al estrés y digestión se mantienen en rangos funcionales estables.', en: 'What you report describes good adaptive capacity: rest, stress tolerance, and digestion remain in stable functional ranges.' },
-    'risk_moderado_badge':   { es: 'Carga Celular Moderada 🟡',                   en: 'Moderate Cellular Load 🟡' },
-    'risk_moderado_title':   { es: 'Desequilibrios Funcionales Silenciosos Detectados', en: 'Silent Functional Imbalances Detected' },
+    'risk_moderado_badge':   { es: 'Carga sintomática moderada 🟡',                   en: 'Moderate reported symptom load 🟡' },
+    'risk_moderado_title':   { es: 'Señales tempranas en lo que reportas', en: 'Early signals in what you report' },
     'risk_moderado_summary': { es: 'Tu perfil muestra signos tempranos de sobrecarga digestiva, tensión sostenida o fatiga de recuperación. Tu organismo todavía compensa, y ese margen es precisamente la ventana preventiva.', en: 'Your profile shows early signs of digestive overload, sustained tension, or recovery fatigue. Your body still compensates, and that margin is precisely the preventive window.' },
-    'risk_alto_badge':   { es: 'Sobrecarga Multisistémica Activa 🔴',              en: 'Active Multisystem Overload 🔴' },
-    'risk_alto_title':   { es: 'Señales de Estrés Celular y Fatiga Funcional Sostenida', en: 'Signs of Cellular Stress and Sustained Functional Fatigue' },
+    'risk_alto_badge':   { es: 'Carga sintomática alta 🔴',              en: 'High reported symptom load 🔴' },
+    'risk_alto_title':   { es: 'Carga alta de síntomas en varios ejes', en: 'High symptom load across several axes' },
     'risk_alto_summary': { es: 'Lo que reportas muestra acumulación simultánea de tensión sostenida, sobrecarga digestiva y fatiga de recuperación. Un patrón así, mantenido en el tiempo, suele preceder a alteraciones que conviene atender temprano.', en: 'What you report shows simultaneous accumulation of sustained tension, digestive overload, and recovery fatigue. Such a pattern, maintained over time, often precedes alterations that should be addressed early.' },
 
     // ── PHYSIOLOGICAL INSIGHTS ──

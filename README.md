@@ -11,7 +11,7 @@ Rasch, branching, interpretación, claims y límites siguen siendo deterministas
 - `js/articulator.js`: doble gate para plantillas y adaptadores SLM.
 - `js/slm-runtime.js`: runtime asíncrono con modos `off`, `auto` y `on`.
 - `js/slm-webllm-loader.js`: loader experimental de WebLLM `0.2.84`, con Web Worker.
-- `test-celular-chat.html`: carga el runtime, pero el modo predeterminado es `off`.
+- `mapa-de-senales-chat.html`: carga el runtime, pero el modo predeterminado es `off`.
 - `test/slm-benchmark-cases.json`: corpus sintético sin PII.
 - `test/test-slm-runtime.mjs`: invariantes del runtime y degradación.
 - `test/test-slm-benchmark.mjs`: invariantes del contrato.
@@ -157,7 +157,7 @@ primera carga puede ser significativa.
 
  7. **Definir consentimiento y UX:** ~~explicar la descarga, el procesamiento local,
  el almacenamiento de caché y la opción de continuar sin SLM~~ **implementado
- (2026-08-22)** en `triage-chat-ui.js` + `test-celular-chat.html` (tarjeta de
+ (2026-08-22)** en `triage-chat-ui.js` + `mapa-de-senales-chat.html` (tarjeta de
  consentimiento no bloqueante; activación `auto`/`live` solo tras aceptación).
 8. **Telemetría de producto:** la actual es local y no contiene PII; cualquier
    telemetría remota requerirá diseño de privacidad, consentimiento y minimización.

@@ -18,7 +18,7 @@
  *   H7 · Frontera        · la interpretación tampoco se atribuye mediciones
  */
 
-import Engine from '../js/test-celular-engine.js';
+import Engine from '../js/mapa-senales-engine.js';
 import Interpretation from '../js/interpretation.js';
 
 const { CHANNEL, PATTERN, CONFIDENCE, ITEM_CHANNEL, channelOf, read } = Interpretation;

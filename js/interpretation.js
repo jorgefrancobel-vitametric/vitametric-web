@@ -39,7 +39,7 @@
   if (typeof define === 'function' && define.amd) {
     define([], factory);
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('./test-celular-engine.js'));
+    module.exports = factory(require('./mapa-senales-engine.js'));
   } else {
     root.VitametricInterpretation = factory(root.VitametricTestEngine);
   }

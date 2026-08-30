@@ -1,5 +1,5 @@
 /**
- * Vitametric — Motor Clínico de Autoevaluación Celular y Triaje Multidimensional
+ * Vitametric — Motor del Mapa de Señales y Triaje Multidimensional
  * 
  * Arquitectura v2026.08 (Orthogonal Micro-Chips Engine):
  * 1. 5 Dimensiones Fisiológicas Basales (Autónomo, Sueño, Cardiometabólico, Terreno, Ocupacional)
@@ -29,8 +29,8 @@
   const AXES = {
     autonomo: {
       id: 'autonomo',
-      name: 'Balance Autónomo & Estrés',
-      shortName: 'Estrés Autónomo',
+      name: 'Tensión y Estrés Percibidos',
+      shortName: 'Tensión y Estrés',
       patientLabel: 'la tensión y el estrés',
       icon: '⚡',
       color: '#00C8FF',
@@ -38,7 +38,7 @@
     },
     sueno: {
       id: 'sueno',
-      name: 'Arquitectura del Sueño & Cronobiología',
+      name: 'Descanso y Sueño Reportados',
       shortName: 'Calidad de Sueño',
       patientLabel: 'el descanso y el sueño',
       icon: '🌙',
@@ -47,8 +47,8 @@
     },
     cardiometabolico: {
       id: 'cardiometabolico',
-      name: 'Resiliencia Cardiometabólica',
-      shortName: 'Cardiometabólico',
+      name: 'Energía Diaria y Antecedentes',
+      shortName: 'Energía y Antecedentes',
       patientLabel: 'la energía y el cansancio durante el día',
       icon: '❤️',
       color: '#EF4444',
@@ -56,8 +56,8 @@
     },
     terreno: {
       id: 'terreno',
-      name: 'Terreno Digestivo y Retención de Líquidos',
-      shortName: 'Terreno Digestivo',
+      name: 'Digestión y Retención Reportadas',
+      shortName: 'Digestión',
       patientLabel: 'la digestión y la retención de líquidos',
       icon: '🧬',
       color: '#10B981',
@@ -70,7 +70,7 @@
       patientLabel: 'la carga del trabajo y las posturas',
       icon: '💼',
       color: '#F59E0B',
-      description: 'Cuantifica el impacto del sedentarismo prolongado, tensión por pantallas (VDT) y fatiga postural.'
+      description: 'Recoge la carga postural, el sedentarismo y la tensión por pantallas tal como los percibes.'
     }
   };
 
@@ -193,7 +193,7 @@
       axis: 'autonomo',
       category: 'Tensión Sostenida y Reactividad al Estrés',
       title: '¿Cuáles de las siguientes manifestaciones de sobretensión o reactividad experimentas habitualmente?',
-      subtitle: 'Permite estimar la reactividad neurovegetativa y la sobrecarga simpática sostenida.',
+      subtitle: 'Recoge las manifestaciones de tensión sostenida que percibes, tal como tú las experimentas.',
       items: [
         {
           id: 'item_aut_tension_cervical',
@@ -229,7 +229,7 @@
     {
       id: 'dim_sueno',
       axis: 'sueno',
-      category: 'Arquitectura del Sueño & Recuperación Nocturna',
+      category: 'Descanso Nocturno y Recuperación',
       title: '¿Qué factores interfieren con tu descanso o tu nivel de vitalidad matutina?',
       subtitle: 'Registra cómo duermes y cómo amaneces, tal como tú lo experimentas.',
       items: [
@@ -263,8 +263,8 @@
       id: 'dim_cardiometabolico',
       axis: 'cardiometabolico',
       category: 'Energía a lo Largo del Día y Antecedentes',
-      title: '¿Presentas alguna de las siguientes señales de fluctuación metabólica o antecedentes familiares?',
-      subtitle: 'Analiza la estabilidad energética postprandial y la carga de susceptibilidad metabólica preclínica.',
+      title: '¿Cuáles de las siguientes experiencias o antecedentes reconoces en ti?',
+      subtitle: 'Recoge las fluctuaciones de energía que notas durante el día y los antecedentes que declaras.',
       items: [
         {
           id: 'item_card_somnolencia_post',
@@ -300,7 +300,7 @@
     {
       id: 'dim_terreno',
       axis: 'terreno',
-      category: 'Terreno Digestivo y Dinámica de Líquidos',
+      category: 'Digestión y Retención Percibidas',
       title: '¿Cuáles de estas alteraciones digestivas o de fluidos corporales experimentas habitualmente?',
       subtitle: 'Registra las molestias digestivas y de retención tal como las experimentas en tu día a día.',
       items: [
@@ -340,7 +340,7 @@
       axis: 'ocupacional',
       category: 'Carga Ergonómica, Postural & Exposición a Pantallas',
       title: '¿Cuáles son las condiciones predominantes en tu dinámica laboral y postura diaria?',
-      subtitle: 'Evalúa el impacto del sedentarismo prolongado y la tensión visual en la fascia y tono muscular.',
+      subtitle: 'Recoge la carga postural y la tensión por pantallas tal como las percibes.',
       items: [
         {
           id: 'item_ocu_sedentarismo_6h',
@@ -833,7 +833,6 @@
       // valor puntual es el punto medio. Sin respuestas "no lo sé" el intervalo
       // colapsa a un punto y el resultado es idéntico al del cálculo directo.
       const axisScores = {};
-      const axisResilience = {};
       const axisBounds = {};
 
       Object.keys(AXES).forEach(k => {
@@ -844,7 +843,6 @@
         const point = Math.round((lower + upper) / 2);
 
         axisScores[k] = point;
-        axisResilience[k] = 100 - point;
         axisBounds[k] = { lower, upper, uncertainty: upper - lower };
       });
 
@@ -885,22 +883,22 @@
       // Estratificación de Riesgo con Override Uniaxial
       const t = SCORING_CONFIG.thresholds;
       let riskLevel = 'bajo';
-      let riskBadge = 'Carga Celular Baja 🟢';
+      let riskBadge = 'Carga sintomática baja 🟢';
       let riskColor = '#10B981';
-      let riskTitle = 'Equilibrio Bioeléctrico en Rango Compensatorio';
+      let riskTitle = 'Baja carga de síntomas reportados';
       let riskSummary = 'Lo que reportas describe una buena capacidad de adaptación: descanso, tolerancia al estrés y digestión se mantienen en rangos funcionales estables.';
 
       if (globalChargeScore > t.highGlobal || maxAxisScore >= t.highMaxAxis) {
         riskLevel = 'alto';
-        riskBadge = 'Sobrecarga Multisistémica Activa 🔴';
+        riskBadge = 'Carga sintomática alta 🔴';
         riskColor = '#EF4444';
-        riskTitle = 'Señales de Estrés Celular y Fatiga Funcional Sostenida';
+        riskTitle = 'Carga alta de síntomas en varios ejes';
         riskSummary = 'Lo que reportas muestra acumulación simultánea de tensión sostenida, sobrecarga digestiva y fatiga de recuperación. Un patrón así, mantenido en el tiempo, suele preceder a alteraciones que conviene atender temprano.';
       } else if (globalChargeScore >= t.moderateGlobal || maxAxisScore >= t.moderateMaxAxis) {
         riskLevel = 'moderado';
-        riskBadge = 'Carga Celular Moderada 🟡';
+        riskBadge = 'Carga sintomática moderada 🟡';
         riskColor = '#F59E0B';
-        riskTitle = 'Desequilibrios Funcionales Silenciosos Detectados';
+        riskTitle = 'Señales tempranas en lo que reportas';
         riskSummary = 'Tu perfil muestra signos tempranos de sobrecarga digestiva, tensión sostenida o fatiga de recuperación. Tu organismo todavía compensa, y ese margen es precisamente la ventana preventiva.';
       }
 
@@ -958,7 +956,6 @@
       this.calculatedResult = {
         axisTheta: this.estimateAxisTheta(activeDimensions),
         globalChargeScore,
-        globalResilienceScore: 100 - globalChargeScore,
         riskLevel,
         riskBadge,
         riskColor,
@@ -966,7 +963,6 @@
         riskSummary,
         physiologicalInsight,
         axisScores,
-        axisResilience,
         axisBounds,
         globalBounds: { lower: globalLower, upper: globalUpper, uncertainty: globalUpper - globalLower },
         sortedAxes,

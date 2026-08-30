@@ -1,5 +1,5 @@
 /**
- * Vitametric — Interfaz de Usuario y Telemetría del Test Celular
+ * Vitametric — Interfaz de Usuario y Telemetría del Mapa de Señales
  * Controlador visual del wizard con matriz de micro-chips ortogonales,
  * navegación manual obligatoria, progreso determinista e inicio limpio.
  */
@@ -366,7 +366,7 @@
         `;
       }
 
-      // Renderizar Barras Multidimensionales de Telemetría Bioeléctrica
+      // Renderizar Barras Multidimensionales de Telemetría de Carga Sintomática
       if (telemetryContainer) {
         telemetryContainer.innerHTML = generateTelemetryHtml(results);
       }
@@ -387,7 +387,7 @@
       }
 
       // Scroll suave hacia los resultados
-      const testCard = document.getElementById('test-card-wrapper') || document.getElementById('test-celular');
+      const testCard = document.getElementById('test-card-wrapper') || document.getElementById('mapa-senales');
       if (testCard) {
         testCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
       } else {
@@ -400,11 +400,11 @@
      */
     function generateTelemetryHtml(results) {
       const items = [
-        { key: 'autonomo', score: results.axisScores.autonomo, res: results.axisResilience.autonomo },
-        { key: 'sueno', score: results.axisScores.sueno, res: results.axisResilience.sueno },
-        { key: 'cardiometabolico', score: results.axisScores.cardiometabolico, res: results.axisResilience.cardiometabolico },
-        { key: 'terreno', score: results.axisScores.terreno, res: results.axisResilience.terreno },
-        { key: 'ocupacional', score: results.axisScores.ocupacional, res: results.axisResilience.ocupacional }
+        { key: 'autonomo', score: results.axisScores.autonomo },
+        { key: 'sueno', score: results.axisScores.sueno },
+        { key: 'cardiometabolico', score: results.axisScores.cardiometabolico },
+        { key: 'terreno', score: results.axisScores.terreno },
+        { key: 'ocupacional', score: results.axisScores.ocupacional }
       ];
 
       let barsHtml = items.map(item => {
@@ -444,7 +444,7 @@
         <div style="background: var(--c-bg-mid); border: 1px solid var(--c-border); border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0; text-align: left;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 1px solid var(--c-border); padding-bottom: 0.75rem;">
             <span style="font-size: 0.9rem; color: var(--c-cyan); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">
-              Telemetría de Carga Celular por Ejes
+              Telemetría de carga sintomática por ejes
             </span>
             <span style="font-size: 0.85rem; color: var(--c-heading); font-weight: 800; background: rgba(0,200,255,0.1); padding: 0.2rem 0.6rem; border-radius: 4px; border: 1px solid var(--c-cyan);">
               Score Global: ${results.globalChargeScore}/100

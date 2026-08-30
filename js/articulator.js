@@ -34,12 +34,19 @@
   if (typeof define === 'function' && define.amd) {
     define([], factory);
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory();
+    module.exports = factory(require('./guards/provenance-guard.js'));
   } else {
-    root.VitametricArticulator = factory();
+    root.VitametricArticulator = factory(root.VitametricProvenanceGuard);
   }
-}(typeof self !== 'undefined' ? self : this, function () {
+}(typeof self !== 'undefined' ? self : this, function (ProvenanceGuard) {
   'use strict';
+
+  // gate3 · Procedencia. FORBIDDEN veta un vocabulario; este gate veta AFIRMAR
+  // una magnitud que el instrumento no midió, citar un número ausente de la
+  // matriz, leer una ausencia de datos como normalidad, o usar el indicativo
+  // sobre auto-reporte. Opcional igual que Rasch: si la página no lo cargó, el
+  // articulador conserva sus dos gates en vez de romperse.
+  const HAS_PROVENANCE = !!(ProvenanceGuard && typeof ProvenanceGuard.runProvenanceGuards === 'function');
 
   // Mismo vocabulario prohibido que triage-chat.js: el guardian de salida del motor.
   // Mantenerlo aqui como copia de defensa en profundidad: el articulador nunca
@@ -75,9 +82,13 @@
   });
 
   /** Guardián de salida: identico al del motor. Devuelve {ok, violations}. */
-  function checkUtterance(text) {
+  function checkUtterance(text, facts) {
     const t = (text || '').toLowerCase();
     const hits = FORBIDDEN.filter((term) => t.includes(term));
+    if (HAS_PROVENANCE) {
+      const prov = ProvenanceGuard.runProvenanceGuards(text, facts || null, { mode: 'generated' });
+      if (!prov.ok) return { ok: false, violations: hits.concat(prov.violations) };
+    }
     return { ok: hits.length === 0, violations: hits };
   }
 
@@ -339,9 +350,17 @@
      * @param {object} [opts.model]  adaptador SLM opcional con API {articulate({turn, claims, locked}) -> string}
      * @param {function} [opts.check] funcion de guardian de salida (default checkUtterance)
      */
-    constructor({ model = null, check = checkUtterance } = {}) {
+    constructor({ model = null, check = checkUtterance, facts = null } = {}) {
       this.model = model;
       this.check = check;
+      this.facts = facts;
+    }
+
+    /** Matriz de hechos del motor: sin ella el gate de procedencia sólo puede
+     *  juzgar léxico y modo verbal, no la integridad numérica. */
+    setFacts(facts) {
+      this.facts = facts;
+      return this;
     }
 
     /** Inyecta (o reemplaza) el adaptador SLM on-device. */
@@ -462,7 +481,7 @@
         };
       }
 
-      const guard = this.check(cand);
+      const guard = this.check(cand, this.facts);
       if (!guard.ok) {
         return { ok: false, blocked: true, usedModel: true, violations: guard.violations };
       }

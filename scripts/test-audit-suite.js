@@ -4,7 +4,7 @@
  * el branching determinista puro, los tests de frontera y la resiliencia en backtrack.
  */
 
-const Engine = require('../js/test-celular-engine.js');
+const Engine = require('../js/mapa-senales-engine.js');
 
 function runCohortTests() {
   console.log('════════════════════════════════════════════════════════════');
@@ -41,7 +41,7 @@ function runCohortTests() {
   assert(r1.riskLevel === 'bajo', 'Nivel de riesgo clasificado como bajo 🟢');
   assert(r1.totalDimensionsAnswered === 5, 'Exactamente 5 dimensiones respondidas');
   assert(t1.getQuestionsCount() === 5, 'Banco activo permanece en 5 dimensiones (sin branching)');
-  assert(r1.globalResilienceScore === 100, 'Resiliencia celular al 100%');
+  assert(r1.globalResilienceScore === undefined, 'globalResilienceScore retirado: complementariedad carga↔resiliencia nunca verificada');
   assert(r1.axisScores.autonomo === 0 && r1.axisScores.sueno === 0, 'Todos los ejes en 0%');
 
   // -------------------------------------------------------------

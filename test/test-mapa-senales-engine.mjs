@@ -1,10 +1,10 @@
 // G-Level: L1
 // Sustrato: Script Test
-// Función: Suite de invariantes del motor de autoevaluación celular — monotonicidad, estabilidad de escala, bandas y fidelidad numérica del payload
+// Función: Suite de invariantes del motor del Mapa de Señales — monotonicidad, estabilidad de escala, bandas y fidelidad numérica del payload
 // v-version: 20260821.01
 
 /**
- * Invariantes del Motor Clínico de Autoevaluación Celular (Vitametric).
+ * Invariantes del Motor del Mapa de Señales (Vitametric).
  *
  * Un test de tamizaje que puede BAJAR su score cuando el paciente reporta MÁS
  * síntomas no es un instrumento: es ruido con branding clínico. Esta suite fija
@@ -26,7 +26,7 @@
  */
 
 import { readFileSync } from 'node:fs';
-import Engine from '../js/test-celular-engine.js';
+import Engine from '../js/mapa-senales-engine.js';
 
 const { AXES, GRADE, SCORING_CONFIG, BASE_DIMENSIONS, CONDITIONAL_DIMENSIONS, TestEngine } = Engine;
 
@@ -199,9 +199,9 @@ console.log('\n── I3 · Rango y extremos ──');
 {
   const optimo = runWith({}).result;
   check(
-    '[Extremo] óptimo en todas las dimensiones ⇒ carga 0 y resiliencia 100',
-    optimo.globalChargeScore === 0 && optimo.globalResilienceScore === 100,
-    `carga=${optimo.globalChargeScore} · resiliencia=${optimo.globalResilienceScore}`
+    '[Extremo] óptimo en todas las dimensiones ⇒ carga 0',
+    optimo.globalChargeScore === 0,
+    `carga=${optimo.globalChargeScore}`
   );
   check(
     '[Extremo] óptimo total ⇒ banda baja',
@@ -236,10 +236,10 @@ console.log('\n── I3 · Rango y extremos ──');
     const r = runWith(randomSelection(rand, 0.5)).result;
     const ok = r.globalChargeScore >= 0 && r.globalChargeScore <= 100
       && AXIS_KEYS.every((k) => r.axisScores[k] >= 0 && r.axisScores[k] <= 100)
-      && r.globalChargeScore + r.globalResilienceScore === 100;
+      && r.globalChargeScore >= r.globalBounds.lower && r.globalChargeScore <= r.globalBounds.upper;
     if (!ok) fuera++;
   }
-  check('[Rango] 200 estados aleatorios: carga+resiliencia=100 y todo en rango', fuera === 0, `${fuera} fuera de rango`);
+  check('[Rango] 200 estados aleatorios: carga en 0-100 y dentro de su banda de incertidumbre', fuera === 0, `${fuera} fuera de rango`);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -617,7 +617,7 @@ console.log('\n── I9 · Frontera epistémica ──');
   // La atribución al instrumento se busca en una ventana de contexto, no en la
   // misma línea: en el HTML el nombre del equipo suele ir en el encabezado de la
   // tarjeta y la descripción de lo que mide, unas líneas más abajo.
-  const html = readFileSync(new URL('../test-celular.html', import.meta.url), 'utf8');
+  const html = readFileSync(new URL('../mapa-de-senales.html', import.meta.url), 'utf8');
   const lineas = html.split('\n');
   const VENTANA = 4;
   const lineasConFuga = lineas
@@ -630,13 +630,13 @@ console.log('\n── I9 · Frontera epistémica ──');
     });
 
   if (lineasConFuga.length) {
-    lineasConFuga.forEach(({ n, linea }) => console.log(`   ⚠️  test-celular.html:${n}: "${linea.trim().slice(0, 80)}…"`));
+    lineasConFuga.forEach(({ n, linea }) => console.log(`   ⚠️  mapa-de-senales.html:${n}: "${linea.trim().slice(0, 80)}…"`));
   }
 
   check(
     '[Frontera] la plantilla del test tampoco promete una medición que no hace',
     lineasConFuga.length === 0,
-    `${lineasConFuga.length} línea(s) con fuga en test-celular.html`
+    `${lineasConFuga.length} línea(s) con fuga en mapa-de-senales.html`
   );
 }
 
@@ -924,7 +924,7 @@ console.log('\n── I9 · A/B Router ──');
 // ─────────────────────────────────────────────────────────────────────────────
 
 const total = passed + failed;
-console.log(`\n${failed === 0 ? '🎉' : '🚨'} Motor de autoevaluación celular: ${passed}/${total} invariantes verdes.`);
+console.log(`\n${failed === 0 ? '🎉' : '🚨'} Motor del Mapa de Señales: ${passed}/${total} invariantes verdes.`);
 if (failed > 0) {
   console.log(`   ${failed} invariante(s) roto(s).`);
   process.exit(1);

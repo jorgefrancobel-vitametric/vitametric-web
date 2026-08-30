@@ -1,6 +1,6 @@
 // G-Level: L1
 // Sustrato: Contrato Ejecutable
-// Función: Motor conversacional del test de carga celular — anamnesis adaptativa gobernada por contrato, con selección de pregunta por falsación y frontera epistémica ejecutable
+// Función: Motor conversacional del Mapa de Señales — anamnesis adaptativa gobernada por contrato, con selección de pregunta por falsación y frontera epistémica ejecutable
 // v-version: 20260822.01
 
 /**
@@ -33,7 +33,7 @@
   if (typeof define === 'function' && define.amd) {
     define([], factory);
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('./rasch.js'), require('./test-celular-engine.js'), require('./interpretation.js'));
+    module.exports = factory(require('./rasch.js'), require('./mapa-senales-engine.js'), require('./interpretation.js'));
   } else {
     root.VitametricTriageChat = factory(root.Rasch, root.VitametricTestEngine, root.VitametricInterpretation);
   }

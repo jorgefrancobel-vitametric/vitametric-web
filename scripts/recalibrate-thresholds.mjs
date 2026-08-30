@@ -1,6 +1,6 @@
 // G-Level: L1
 // Sustrato: Script de Protocolo
-// Función: Recalibra los umbrales de banda del test celular tras el paso a escala absoluta, maximizando la concordancia con la estratificación previa
+// Función: Recalibra los umbrales de banda del Mapa de Señales tras el paso a escala absoluta, maximizando la concordancia con la estratificación previa
 // v-version: 20260821.01
 
 /**
@@ -25,7 +25,7 @@
  * Uso: node scripts/recalibrate-thresholds.mjs
  */
 
-import Engine from '../js/test-celular-engine.js';
+import Engine from '../js/mapa-senales-engine.js';
 
 const { AXES, SCORING_CONFIG, BASE_DIMENSIONS, CONDITIONAL_DIMENSIONS } = Engine;
 
@@ -214,4 +214,4 @@ matriz.forEach((fila, i) => {
 
 const desacuerdos = matriz.flatMap((fila, i) => fila.map((n, j) => (i === j ? 0 : n))).reduce((a, b) => a + b, 0);
 console.log(`\nCasos reclasificados: ${desacuerdos} (${((desacuerdos / N_MUESTRAS) * 100).toFixed(2)}%)`);
-console.log('Aplicar estos valores a SCORING_CONFIG.thresholds en js/test-celular-engine.js');
+console.log('Aplicar estos valores a SCORING_CONFIG.thresholds en js/mapa-senales-engine.js');

@@ -9,7 +9,7 @@
  * SCORING_CONFIG del scope y no sabe qué variante lo pobló. Esto permite probar
  * thresholds, pesos y copy sin tocar el core del scoring.
  *
- * Activación: incluir ab-router.js ANTES de test-celular-engine.js.
+ * Activación: incluir ab-router.js ANTES de mapa-senales-engine.js.
  *   <script src="js/ab-router.js"></script>
  */
 

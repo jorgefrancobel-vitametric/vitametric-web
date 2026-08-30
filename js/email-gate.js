@@ -63,9 +63,9 @@
   function submitToFormspree(email, metadata) {
     var formData = new FormData();
     formData.append('email', email);
-    formData.append('_subject', 'Lead Vitametric — Test Celular');
+    formData.append('_subject', 'Lead Vitametric — Mapa de Señales');
     if (metadata) {
-      formData.append('source', 'test-celular-chat');
+      formData.append('source', 'mapa-senales-chat');
       formData.append('variant', metadata.variant || 'unknown');
       formData.append('questions_answered', metadata.questionsAnswered || 0);
       formData.append('risk_level', metadata.riskLevel || 'unknown');
