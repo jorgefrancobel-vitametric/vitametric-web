@@ -102,8 +102,30 @@
       stream.scrollTop = stream.scrollHeight;
     }
 
+    // Matriz de hechos del motor, cuando ya existe. Sin ella el gate juzga
+    // léxico y modo verbal; G2 se abstiene por diseño.
+    let provenanceFacts = null;
+    function setProvenanceFacts(facts) { provenanceFacts = facts || null; }
+
+    /**
+     * Último gate antes de que una burbuja llegue al paciente. Sólo se vigila
+     * lo que dice el bot: lo que escribe la persona es su propio reporte y no
+     * se censura. Al fallar se degrada a un texto seguro — nunca se reintenta
+     * con el modelo, porque fallar hacia lo determinista es la regla.
+     */
+    function vetBubble(text, kind) {
+      const guard = (typeof window !== 'undefined' && window.VitametricProvenanceGuard) || null;
+      if (!guard || kind !== 'bot' || !text) return text;
+      const verdict = guard.runProvenanceGuards(text, provenanceFacts, { mode: 'generated' });
+      if (verdict.ok) return text;
+      if (typeof console !== 'undefined' && console.warn) {
+        console.warn('[provenance-guard] burbuja bloqueada:', verdict.violations, text);
+      }
+      return 'Anotado. Sigamos con lo que me cuentas.';
+    }
+
     function say(text, kind = 'bot') {
-      const bubble = el('div', `triage-bubble triage-bubble--${kind}`, text);
+      const bubble = el('div', `triage-bubble triage-bubble--${kind}`, vetBubble(text, kind));
       stream.appendChild(bubble);
       scrollToEnd();
       return bubble;
@@ -421,6 +443,17 @@
     }
 
     async function step() {
+      // Refresca la matriz que juzga el gate antes de emitir el turno: los
+      // estimates son los únicos números que el bot tiene derecho a citar.
+      try {
+        const st = session.state();
+        setProvenanceFacts({
+          estimates: st.estimates || null,
+          responseValidity: { lowCountAxes: [] },
+          measured: null
+        });
+      } catch (e) { /* el gate sigue juzgando léxico y modo verbal sin matriz */ }
+
       const turn = session.next();
 
       if (turn.blocked) {

@@ -66,7 +66,7 @@
     ocupacional: {
       id: 'ocupacional',
       name: 'Carga Ergonómica & Sobreesfuerzo',
-      shortName: 'Sobrecarga Laboral',
+      shortName: 'Carga Laboral',
       patientLabel: 'la carga del trabajo y las posturas',
       icon: '💼',
       color: '#F59E0B',
@@ -151,6 +151,18 @@
   });
 
   const UNKNOWN_LABEL = 'No lo sé';
+
+  /**
+   * Procedencia de cada magnitud que sale del motor. El instrumento recoge
+   * frecuencia de síntomas declarados: nada de lo que calcula es una medición.
+   * ABSENT no es cero — un eje sin reportes no es un eje sano.
+   */
+  const PROVENANCE = Object.freeze({
+    SELF_REPORT: 'self_report',
+    DERIVED: 'derived',
+    MEASURED: 'measured',
+    ABSENT: 'absent'
+  });
 
   /** Puntuación ordinal lineal: el grado máximo aporta el peso íntegro del ítem. */
   function gradeFactor(grade) {
@@ -953,7 +965,105 @@
         });
       }
 
+      // Matriz de hechos con procedencia explícita: es lo que consume el guard
+      // y lo único que el articulador puede convertir en prosa. `measured` sólo
+      // existe si se importó un ES-Complex real — el motor no puede fabricarlo.
+      const measured = (this.baseline && this.baseline.bodyComposition)
+        ? Object.assign({ scanDate: this.baseline.scanDate || null, device: this.baseline.device || null },
+                        this.baseline.bodyComposition)
+        : null;
+
+      const axisSymptomLoad = {};
+      Object.keys(AXES).forEach(k => {
+        const answered = lowCountAxes.indexOf(k) === -1;
+        axisSymptomLoad[k] = {
+          value: axisScores[k],
+          bounds: axisBounds[k],
+          provenance: answered ? PROVENANCE.DERIVED : PROVENANCE.ABSENT
+        };
+      });
+
+      // ── Prioridad de escaneo ──────────────────────────────────────────
+      // Lo único que una entrevista puede predecir legítimamente NO es el
+      // estado celular: es cuánto vale la pena objetivarlo. Cada razón es
+      // trazable a un dato reportado, y la incertidumbre del propio
+      // autorreporte cuenta A FAVOR de medir, no en contra.
+      const scanReasons = [];
+
+      sortedAxes.slice(0, 2).forEach(a => {
+        if (a.score >= t.moderateMaxAxis) {
+          scanReasons.push({
+            kind: 'carga_reportada',
+            axis: a.id,
+            weight: a.score >= t.highMaxAxis ? 2 : 1,
+            detail: 'El eje de ' + a.meta.shortName + ' concentra ' + a.score +
+                    '/100 de la carga que reportas.'
+          });
+        }
+      });
+
+      if (lowCountAxes.length) {
+        scanReasons.push({
+          kind: 'muestra_insuficiente',
+          axes: lowCountAxes.slice(),
+          weight: 1,
+          detail: 'Hay ejes sin datos suficientes (' + lowCountAxes.length +
+                  '): el cuestionario no puede decir nada sobre ellos, y medir sí puede.'
+        });
+      }
+
+      const spread = globalUpper - globalLower;
+      if (spread >= 20) {
+        scanReasons.push({
+          kind: 'incertidumbre_alta',
+          weight: 1,
+          detail: 'Lo que respondiste deja un margen amplio (' + globalLower + '–' + globalUpper +
+                  '): la medición en clínica es lo que lo cierra.'
+        });
+      }
+
+      if (cappedAxes.length) {
+        scanReasons.push({
+          kind: 'respuestas_topadas',
+          weight: 1,
+          detail: 'Señalaste más elementos de los que el cuestionario puntúa en algún bloque; ' +
+                  'el instrumento se queda corto para lo que describes.'
+        });
+      }
+
+      const scanWeight = scanReasons.reduce((acc, r) => acc + r.weight, 0);
+      const scanPriority = {
+        tier: scanWeight >= 3 ? 'alta' : (scanWeight >= 1 ? 'media' : 'baja'),
+        weight: scanWeight,
+        reasons: scanReasons,
+        focusAxes: sortedAxes.slice(0, 2).map(a => a.id),
+        // La prioridad es una HIPÓTESIS mientras no haya pares
+        // (autorreporte, escaneo) suficientes para medir su concordancia.
+        // Se declara, en vez de aparentar validación.
+        calibration: 'uncalibrated',
+        calibrationNote: 'Prioridad no calibrada: aún no hay pares (autorreporte, ES-Complex) ' +
+                         'suficientes para medir su poder predictivo.'
+      };
+
+      const factMatrix = {
+        scanPriority,
+        symptomLoad: {
+          value: globalChargeScore,
+          bounds: { lower: globalLower, upper: globalUpper },
+          provenance: PROVENANCE.DERIVED
+        },
+        axisSymptomLoad,
+        responseValidity: {
+          lowCountAxes,
+          cappedAxes,
+          totalDimensionsAnswered: activeDimensions.filter(d => this.answers[d.id] !== undefined).length
+        },
+        measured
+      };
+
       this.calculatedResult = {
+        factMatrix,
+        provenanceOf: (field) => (factMatrix[field] && factMatrix[field].provenance) || PROVENANCE.ABSENT,
         axisTheta: this.estimateAxisTheta(activeDimensions),
         globalChargeScore,
         riskLevel,
@@ -971,10 +1081,61 @@
         totalDimensionsAnswered: activeDimensions.filter(d => this.answers[d.id] !== undefined).length,
         lowCountAxes,
         cappedAxes,
+        scanPriority,
         baselineComparison
       };
 
       return this.calculatedResult;
+    }
+
+    /**
+     * Registra el par (autorreporte, escaneo) que hace posible calibrar.
+     *
+     * `scanPriority.calibration` seguirá siendo 'uncalibrated' mientras no
+     * haya pares suficientes para medir concordancia por eje (κ, o correlación
+     * de θ contra phaseAngle) — el mismo método que ya usó
+     * scripts/recalibrate-thresholds.mjs para fijar los cortes actuales.
+     * Sin este registro, esa calibración no llega nunca.
+     *
+     * Sólo guarda magnitudes y scores: ningún dato identificable.
+     */
+    recordCalibrationPair() {
+      if (!this.baseline || !this.calculatedResult) return null;
+      const res = this.calculatedResult;
+      const pair = {
+        recordedAt: new Date().toISOString(),
+        selfReport: {
+          axisScores: res.axisScores,
+          axisTheta: res.axisTheta || null,
+          globalChargeScore: res.globalChargeScore,
+          globalBounds: res.globalBounds,
+          lowCountAxes: res.lowCountAxes,
+          scanPriorityTier: res.scanPriority ? res.scanPriority.tier : null
+        },
+        scan: {
+          scanDate: this.baseline.scanDate || null,
+          device: this.baseline.device || null,
+          axes: this.baseline.axes || null,
+          bodyComposition: this.baseline.bodyComposition || null
+        }
+      };
+      try {
+        if (typeof localStorage === 'undefined') return pair;
+        const KEY = 'vitametric_calibration_pairs_v1';
+        const prev = JSON.parse(localStorage.getItem(KEY) || '[]');
+        prev.push(pair);
+        // Cota dura: el navegador no es un almacén de investigación.
+        localStorage.setItem(KEY, JSON.stringify(prev.slice(-50)));
+      } catch (e) { /* almacenamiento lleno o bloqueado: el par se pierde, no rompe el test */ }
+      return pair;
+    }
+
+    /** Pares acumulados; entrada para el análisis de concordancia. */
+    getCalibrationPairs() {
+      try {
+        if (typeof localStorage === 'undefined') return [];
+        return JSON.parse(localStorage.getItem('vitametric_calibration_pairs_v1') || '[]');
+      } catch (e) { return []; }
     }
 
     /**
@@ -996,11 +1157,9 @@
         `📊 *Carga de síntomas reportados:* ${res.globalChargeScore}/100 (${res.riskBadge})`,
         ``,
         `*Desglose por área (según lo que reporté):*`,
-        `• ⚡ *Autónomo/Estrés:* ${res.axisScores.autonomo}/100`,
-        `• 🌙 *Sueño/Circadiano:* ${res.axisScores.sueno}/100`,
-        `• ❤️ *Cardiometabólico:* ${res.axisScores.cardiometabolico}/100`,
-        `• 🧬 *Terreno Digestivo:* ${res.axisScores.terreno}/100`,
-        `• 💼 *Carga Laboral:* ${res.axisScores.ocupacional}/100`,
+        // Generado desde AXES: los nombres estaban duplicados aquí a mano y
+        // habían quedado desincronizados del motor.
+        ...Object.keys(AXES).map(k => `• ${AXES[k].icon} *${AXES[k].shortName}:* ${res.axisScores[k]}/100`),
         ``,
         `⚠️ *Área con mayor carga:* ${res.dominantAxis1.meta.name} (${res.dominantAxis1.score}/100)`
       ];
@@ -1009,6 +1168,15 @@
       // ocultarlo daría una precisión que el dato no tiene.
       if (res.globalBounds && res.globalBounds.uncertainty > 0) {
         lines.push(`❓ *Rango por preguntas sin respuesta:* ${res.globalBounds.lower} a ${res.globalBounds.upper}/100`);
+      }
+
+      // Por qué conviene medir: cada razón es trazable a un dato reportado.
+      // El mensaje deja de ser "esto es lo que tengo" y pasa a ser "esto es lo
+      // que conviene objetivar, y por qué" — lo único que la entrevista puede
+      // sostener.
+      if (res.scanPriority && res.scanPriority.reasons.length) {
+        lines.push(``, `*Por qué conviene medirlo (prioridad ${res.scanPriority.tier}):*`);
+        res.scanPriority.reasons.forEach(r => lines.push(`• ${r.detail}`));
       }
 
       lines.push(
@@ -1024,6 +1192,7 @@
 
   return {
     AXES,
+    PROVENANCE,
     AXIS_MAX,
     ANSWER_LIMITS,
     GRADE,

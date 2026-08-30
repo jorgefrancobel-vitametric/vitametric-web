@@ -33,6 +33,9 @@ const factsMeasured = {
   measured: { scanDate: '2026-06-15', phaseAngle: 5.8, intracellularWater: 24.3 }
 };
 
+/** Matriz sin cifras: G2 se abstiene, de modo que estos casos aíslan G1/G1b. */
+const factSelfReportSafe = { responseValidity: { lowCountAxes: [] }, measured: null };
+
 console.log('\n── G1 · Léxico de medición sin medición ──');
 
 // Fixtures literales de mapa-senales-engine.js (riskTitle y riskBadge actuales).
@@ -71,6 +74,25 @@ check('[G1-i] la prosa ya saneada del motor NO es violación',
     factsSelfReport, { mode: 'deterministic' }).ok === true,
   JSON.stringify(runProvenanceGuards('Esto es el patrón que tú reportas, no una medición: el paso siguiente es objetivarlo.',
     factsSelfReport, { mode: 'deterministic' }).violations));
+
+console.log('\n── G1b · Nombrar un parámetro ≠ atribuir un valor ──');
+
+// Detectado por test-provenance-integration: el insight del motor nombra lo
+// que el ES-Complex mide ("agua intracelular, ángulo de fase") sin atribuir
+// ningún valor. Vetar eso obligaría a mutilar el texto que explica el estudio.
+check('[G1b-a] describir lo que el estudio mide NO es violación',
+  runProvenanceGuards('La evaluación en clínica mide directamente tu composición corporal —agua intracelular y extracelular, ángulo de fase— que suele modificarse antes.',
+    factSelfReportSafe).ok === true,
+  JSON.stringify(runProvenanceGuards('La evaluación en clínica mide directamente tu composición corporal —agua intracelular y extracelular, ángulo de fase— que suele modificarse antes.', factSelfReportSafe).violations));
+
+check('[G1b-b] atribuir un valor al paciente SÍ es violación',
+  runProvenanceGuards('Tu ángulo de fase es 5.8', factSelfReportSafe).ok === false);
+
+check('[G1b-c] atribuir un estado sin cifra también viola',
+  runProvenanceGuards('Tu ángulo de fase está bajo.', factSelfReportSafe).ok === false);
+
+check('[G1b-d] contexto de servicio no blanquea una cifra atribuida',
+  runProvenanceGuards('En clínica se mide el ángulo de fase; el tuyo es 5.8', factSelfReportSafe).ok === false);
 
 console.log('\n── G2 · Integridad numérica (la v1 la dejó decorativa) ──');
 

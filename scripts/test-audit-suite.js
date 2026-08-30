@@ -145,7 +145,13 @@ function runCohortTests() {
   const waUrl = t2.generateWhatsAppUrl('Jorge Franco');
   assert(waUrl.startsWith('https://wa.me/525585327421?text='), 'URL base apunta al WhatsApp oficial de Vitametric');
   assert(waUrl.includes('Jorge%20Franco'), 'Nombre del paciente embebido correctamente');
-  assert(waUrl.includes('Aut%C3%B3nomo') || waUrl.includes('Autonomo'), 'Desglose de ejes en payload');
+  // Verifica estructura, no un nombre literal: el assert anterior fijaba
+  // 'Autónomo' y se rompió al sanear los nombres de eje. Los 5 ejes deben
+  // aparecer, se llamen como se llamen.
+  const waText = decodeURIComponent(waUrl.split('text=')[1] || '');
+  const ejesEnPayload = Object.keys(Engine.AXES).filter((k) => waText.includes(Engine.AXES[k].shortName));
+  assert(ejesEnPayload.length === Object.keys(Engine.AXES).length, 'Desglose de los 5 ejes en payload');
+  assert(/Por qu[ée] conviene medirlo/.test(waText) || /prioridad/.test(waText), 'Payload explica por qué conviene medir');
   assert(waUrl.includes('ES-Complex'), 'Anclaje al estudio ES-Complex');
 
   console.log('\n════════════════════════════════════════════════════════════');

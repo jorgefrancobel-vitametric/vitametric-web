@@ -341,27 +341,41 @@
       const telemetryContainer = document.getElementById('result-telemetry-container');
 
       if (badge) {
-        badge.textContent = `Veredicto: ${results.riskBadge}`;
+        badge.textContent = `Lo que reportas: ${results.riskBadge}`;
         badge.style.background = `${results.riskColor}18`;
         badge.style.color = results.riskColor;
         badge.style.border = `1.5px solid ${results.riskColor}`;
       }
 
+      // Gate de procedencia sobre la prosa que se va a pintar. Modo
+      // 'deterministic': el motor cita frecuencias y rangos de su propio
+      // catálogo, así que G2 no aplica; lo que se vigila es que ninguna
+      // cadena afirme una magnitud que el cuestionario no midió.
+      const guardUi = (typeof window !== 'undefined' && window.VitametricProvenanceGuard) || null;
+      const vet = function (text) {
+        if (!guardUi || !text) return text;
+        const verdict = guardUi.runProvenanceGuards(text, results.factMatrix || null, { mode: 'deterministic' });
+        if (!verdict.ok && typeof console !== 'undefined' && console.warn) {
+          console.warn('[provenance-guard] render bloqueado:', verdict.violations, text);
+        }
+        return verdict.ok ? text : 'Esto resume los síntomas que reportaste; no es una medición.';
+      };
+
       if (title) {
-        title.textContent = results.riskTitle;
+        title.textContent = vet(results.riskTitle);
       }
 
       if (desc) {
-        desc.textContent = results.riskSummary;
+        desc.textContent = vet(results.riskSummary);
       }
 
       if (insightBox) {
         insightBox.innerHTML = `
           <div style="font-size: 0.85rem; font-weight: 700; color: var(--c-cyan); text-transform: uppercase; margin-bottom: 0.5rem; letter-spacing: 0.05em;">
-            ⚡ Hallazgo Funcional Dominante:
+            ⚡ Foco principal de lo que reportas:
           </div>
           <div style="font-size: 0.95rem; color: var(--c-text); line-height: 1.6;">
-            ${results.physiologicalInsight.replace(/\*\*(.*?)\*\*/g, '<strong style="color: var(--c-heading);">$1</strong>')}
+            ${vet(results.physiologicalInsight).replace(/\*\*(.*?)\*\*/g, '<strong style="color: var(--c-heading);">$1</strong>')}
           </div>
         `;
       }
@@ -411,13 +425,13 @@
         const ax = axes[item.key];
         const score = item.score;
         let barColor = '#10B981'; // verde
-        let statusLabel = 'Estable';
+        let statusLabel = 'Pocos síntomas reportados';
         if (score > 65) {
           barColor = '#EF4444'; // rojo
-          statusLabel = 'Sobrecarga Alta';
+          statusLabel = 'Carga alta reportada';
         } else if (score > 35) {
           barColor = '#F59E0B'; // amarillo
-          statusLabel = 'Alerta Funcional';
+          statusLabel = 'Carga media reportada';
         }
 
         return `

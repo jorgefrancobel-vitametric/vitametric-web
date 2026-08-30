@@ -38,14 +38,49 @@
     'carga celular',
     'milivolt', 'potencial de membrana',
     'mitocondri',
-    'ángulo de fase', 'angulo de fase',
-    'agua intracelular', 'agua extracelular',
     'acidez tisular',
     'reactividad neurovegetativa',
     'tono simpático', 'tono simpatico',
     'susceptibilidad metabólica', 'susceptibilidad metabolica',
     'fascia'
   ]);
+
+  /**
+   * Parámetros que el ES-Complex sí mide y que el copy puede NOMBRAR sin
+   * mentir ("la evaluación en clínica mide tu composición corporal —agua
+   * intracelular, ángulo de fase—"). Nombrar el parámetro es describir el
+   * servicio; ATRIBUIR un valor al paciente es afirmar una medición que la
+   * entrevista no hizo. Sólo lo segundo es violación.
+   */
+  var MEASURABLE_PARAMS = Object.freeze([
+    'ángulo de fase', 'angulo de fase',
+    'agua intracelular', 'agua extracelular',
+    'composición corporal', 'composicion corporal'
+  ]);
+
+  /**
+   * Marcadores de que la oración DESCRIBE el servicio en vez de atribuir un
+   * resultado: "la evaluación en clínica mide tu composición corporal" anuncia
+   * lo que el estudio hará, no lo que el paciente tiene.
+   */
+  var SERVICE_CONTEXT = /\b(mide|miden|medir[áa]?n?|evalúa|eval[uú]a|evaluaci[oó]n|estudio|escaneo|es-complex|en cl[ií]nica|se mide)\b/i;
+
+  /** Atribución: el parámetro viene con un valor, o se declara como del paciente. */
+  function attributesValue(text, term) {
+    var lower = text.toLowerCase();
+    var idx = lower.indexOf(term);
+    while (idx !== -1) {
+      // Ventana de la oración alrededor del término.
+      var start = Math.max(0, lower.lastIndexOf('.', idx) + 1);
+      var end = lower.indexOf('.', idx);
+      var sentence = lower.slice(start, end === -1 ? lower.length : end);
+      if (/\d/.test(sentence)) return true;                       // trae una cifra
+      if (new RegExp('tus? ' + term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).test(sentence)
+          && !SERVICE_CONTEXT.test(sentence)) return true;         // "tu X" sin hablar del estudio
+      idx = lower.indexOf(term, idx + 1);
+    }
+    return false;
+  }
 
   /** Verbos que convierten un reporte en un hecho medido. */
   var INDICATIVE_CLAIM = /\b(tienes|padeces|presentas|tu nivel de|se detect[oó]|tu estado (?:celular|bioel[eé]ctrico)|mides)\b/i;
@@ -96,6 +131,12 @@
           violations.push('G1 procedencia: "' + term + '" afirma una magnitud que el cuestionario no midió.');
         }
       });
+      // G1b — Parámetros medibles: sólo violan si se atribuye un valor.
+      MEASURABLE_PARAMS.forEach(function (term) {
+        if (lower.indexOf(term) !== -1 && attributesValue(text, term)) {
+          violations.push('G1b atribución: "' + term + '" se presenta con un valor sin escaneo que lo respalde.');
+        }
+      });
     }
 
     // G2 — Integridad numérica: todo número citado debe existir en la matriz.
@@ -138,6 +179,7 @@
   return {
     PROVENANCE: PROVENANCE,
     MEASURED_ONLY_TERMS: MEASURED_ONLY_TERMS,
+    MEASURABLE_PARAMS: MEASURABLE_PARAMS,
     runProvenanceGuards: runProvenanceGuards
   };
 }));

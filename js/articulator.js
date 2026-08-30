@@ -82,6 +82,22 @@
   });
 
   /** Guardián de salida: identico al del motor. Devuelve {ok, violations}. */
+  /**
+   * Modo verbal según la procedencia del dato. El indicativo ("tienes") sólo
+   * es lícito sobre algo medido; sobre auto-reporte la cópula correcta es
+   * "lo que reportas indica", y sobre un dato ausente no hay cópula posible.
+   */
+  const CONNECTOR = Object.freeze({
+    self_report: 'lo que reportas indica',
+    derived: 'lo que reportas indica',
+    measured: 'tu escaneo muestra',
+    absent: 'no hay datos suficientes en este eje para decir'
+  });
+
+  function connectorFor(provenance) {
+    return CONNECTOR[provenance] || CONNECTOR.absent;
+  }
+
   function checkUtterance(text, facts) {
     const t = (text || '').toLowerCase();
     const hits = FORBIDDEN.filter((term) => t.includes(term));
@@ -492,6 +508,8 @@
   return {
     Articulator,
     checkUtterance,
+    connectorFor,
+    CONNECTOR,
     lockedValuesFrom,
     templateArticulate,
     EVIDENCE,

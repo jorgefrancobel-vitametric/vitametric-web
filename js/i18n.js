@@ -48,7 +48,7 @@
     'axe_terreno_patient':      { es: 'la digestión y la retención de líquidos',    en: 'digestion and fluid retention' },
     'axe_terreno_desc':         { es: 'Recoge los síntomas digestivos y de retención de líquidos tal como los percibes. Es tu experiencia reportada; la medición física del medio interno corresponde al estudio en clínica.', en: 'Captures digestive and fluid retention symptoms as you perceive them. This is your reported experience; physical measurement of your internal environment requires the in-clinic study.' },
     'axe_ocupacional_name':     { es: 'Carga Ergonómica & Sobreesfuerzo',          en: 'Ergonomic Load & Overexertion' },
-    'axe_ocupacional_short':    { es: 'Sobrecarga Laboral',                       en: 'Occupational Load' },
+    'axe_ocupacional_short':    { es: 'Carga Laboral',                       en: 'Work Load' },
     'axe_ocupacional_patient':  { es: 'la carga del trabajo y las posturas',        en: 'workload and posture' },
     'axe_ocupacional_desc':     { es: 'Recoge la carga postural, el sedentarismo y la tensión por pantallas tal como los percibes.', en: 'Records postural load, sitting and screen strain as you perceive them.' },
 
