@@ -43,5 +43,27 @@ for (const fn of ['updateRuntimeStatus', 'suggestDetail', 'renderListenerInput',
   else { fail++; console.log(`❌ [S] se usa pero NO está declarada: ${fn}()`); }
 }
 
+// Tercera red: el píxel de Google Ads jamás inline ni incondicional. Nació
+// porque el snippet de gtag en <head> disparaba cookies de DoubleClick sin
+// consentimiento (best-practices 0.78, same visitor sin preguntar). El tag solo
+// puede entrar vía js/analytics-gate.js tras opt-in explícito.
+const htmls = readdirSync(dirname(jsDir)).filter((f) => f.endsWith('.html'));
+for (const f of htmls) {
+  const html = readFileSync(join(dirname(jsDir), f), 'utf8');
+  if (/googletagmanager\.com\/gtag/.test(html)) {
+    fail++;
+    console.log(`❌ [S] ${f}: tag de Google inline — debe cargar vía js/analytics-gate.js`);
+  } else if (html.includes('analytics-gate.js')) {
+    ok++;
+    console.log(`✅ [S] ${f}: píxel consent-gated (sin tag inline)`);
+  }
+}
+const gate = readFileSync(join(jsDir, 'analytics-gate.js'), 'utf8');
+for (const fn of ['loadGtag', 'grant', 'decline', 'requestConsent']) {
+  const declarada = new RegExp(`function\\s+${fn}\\s*\\(|${fn}\\s*:`).test(gate);
+  if (declarada) { ok++; console.log(`✅ [S] analytics-gate declara: ${fn}`); }
+  else { fail++; console.log(`❌ [S] analytics-gate sin: ${fn}`); }
+}
+
 console.log(`\n── Sintaxis y declaraciones de UI: ${ok} ok, ${fail} fallos ──`);
 process.exit(fail > 0 ? 1 : 0);

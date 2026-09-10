@@ -27,6 +27,7 @@ import hashlib
 import pathlib
 import re
 import sys
+from typing import Optional
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 ASSET_RE = re.compile(r'(?P<attr>href|src)="(?P<path>[^"?#]+\.(?:css|js|webp|png|jpg|jpeg|svg))(?:\?v=[^"#]*)?"')
@@ -34,7 +35,7 @@ ASSET_RE = re.compile(r'(?P<attr>href|src)="(?P<path>[^"?#]+\.(?:css|js|webp|png
 _hashes: dict[pathlib.Path, str] = {}
 
 
-def asset_hash(path: pathlib.Path) -> str | None:
+def asset_hash(path: pathlib.Path) -> Optional[str]:
     if path not in _hashes:
         if not path.is_file():
             return None

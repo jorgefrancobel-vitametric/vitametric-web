@@ -1,15 +1,9 @@
 <!DOCTYPE html>
 <html lang="es-MX">
 <head>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18397567827"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'AW-18397567827');
-  </script>
+  <!-- Google tag (gtag.js) — consent-gated: se carga solo si el usuario acepta.
+       Sin aceptación no hay píxel, ni cookies de terceros, ni issues de DevTools. -->
+  <script src="js/analytics-gate.js?v=8d4d8e44"></script>
   <meta charset="UTF-8">
   <script>
   (function () {
@@ -1180,22 +1174,22 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
         <div style="display: flex; flex-direction: column; gap: 0.85rem;">
           <button onclick="showClinicalTech('escomplex')" id="btn-tech-escomplex" class="tech-tab-btn active-tech-btn" style="padding: 1.125rem 1.25rem; border-radius: 4px; background: var(--c-cyan-soft); border: 1px solid var(--c-cyan); color: var(--c-heading); font-weight: var(--fw-semibold); text-align: left; cursor: pointer; transition: all 0.2s; font-family: var(--font);">
             <div style="font-size: 1.05rem; color: var(--c-heading);">ES-Complex — Pre-Diagnóstico Electrointersticial</div>
-            <div style="font-size: 0.8rem; color: var(--c-muted); font-weight: normal; margin-top: 0.25rem;">Conductividad intersticial · HRV · Balance Autónomo</div>
+            <div style="font-size: 0.8rem; color: var(--c-text); font-weight: normal; margin-top: 0.25rem;">Conductividad intersticial · HRV · Balance Autónomo</div>
           </button>
           
           <button onclick="showClinicalTech('rife')" id="btn-tech-rife" class="tech-tab-btn" style="padding: 1.125rem 1.25rem; border-radius: 4px; background: var(--c-bg-card); border: 1px solid var(--c-border-light); color: var(--c-text); font-weight: var(--fw-semibold); text-align: left; cursor: pointer; transition: all 0.2s; font-family: var(--font);">
             <div style="font-size: 1.05rem; color: var(--c-primary);">Frecuencias de Rife — Resonancia Biológica</div>
-            <div style="font-size: 0.8rem; color: var(--c-muted); font-weight: normal; margin-top: 0.25rem;">Espectro electromagnético (1 Hz – 10 kHz) · Armonización celular</div>
+            <div style="font-size: 0.8rem; color: var(--c-text); font-weight: normal; margin-top: 0.25rem;">Espectro electromagnético (1 Hz – 10 kHz) · Armonización celular</div>
           </button>
 
           <button onclick="showClinicalTech('scenar')" id="btn-tech-scenar" class="tech-tab-btn" style="padding: 1.125rem 1.25rem; border-radius: 4px; background: var(--c-bg-card); border: 1px solid var(--c-border-light); color: var(--c-text); font-weight: var(--fw-semibold); text-align: left; cursor: pointer; transition: all 0.2s; font-family: var(--font);">
             <div style="font-size: 1.05rem; color: var(--c-primary);">Scenar — Terapia de Biorretroalimentación</div>
-            <div style="font-size: 0.8rem; color: var(--c-muted); font-weight: normal; margin-top: 0.25rem;">Impulsos neuroadaptativos (15 Hz – 350 Hz) · Alivio neuromodulado</div>
+            <div style="font-size: 0.8rem; color: var(--c-text); font-weight: normal; margin-top: 0.25rem;">Impulsos neuroadaptativos (15 Hz – 350 Hz) · Alivio neuromodulado</div>
           </button>
 
           <button onclick="showClinicalTech('immunocal')" id="btn-tech-immunocal" class="tech-tab-btn" style="padding: 1.125rem 1.25rem; border-radius: 4px; background: var(--c-bg-card); border: 1px solid var(--c-border-light); color: var(--c-text); font-weight: var(--fw-semibold); text-align: left; cursor: pointer; transition: all 0.2s; font-family: var(--font);">
             <div style="font-size: 1.05rem; color: var(--c-primary);">Immunocal — Nutrición & Glutatión Celular</div>
-            <div style="font-size: 0.8rem; color: var(--c-muted); font-weight: normal; margin-top: 0.25rem;">Donador de Cisteína Enlazada · Síntesis de Glutatión (GSH)</div>
+            <div style="font-size: 0.8rem; color: var(--c-text); font-weight: normal; margin-top: 0.25rem;">Donador de Cisteína Enlazada · Síntesis de Glutatión (GSH)</div>
           </button>
         </div>
       </div>
