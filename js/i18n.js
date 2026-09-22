@@ -259,7 +259,7 @@
     'wa_score':               { es: '📊 *Carga de síntomas reportados:* {score}/100 ({badge})', en: '📊 *Reported symptom load:* {score}/100 ({badge})' },
     'wa_breakdown_header':    { es: '*Desglose por área (según lo que reporté):*', en: '*Breakdown by area (as I reported):*' },
     'wa_range':               { es: '❓ *Rango por preguntas sin respuesta:* {lower} a {upper}/100', en: '❓ *Range due to unanswered questions:* {lower} to {upper}/100' },
-    'wa_motive':              { es: '🎯 *Motivo:* Quiero agendar la *Evaluación Multisistémica ES-Complex ($3,900 MXN)* para que se me midan en clínica los parámetros de composición corporal y balance de fluidos.', en: '🎯 *Reason:* I want to schedule the *ES-Complex Multisystem Evaluation ($3,900 MXN)* to have my body composition and fluid balance parameters measured in clinic.' },
+    'wa_motive':              { es: '🎯 *Motivo:* Quiero agendar la *Evaluación Multisistémica ES-Complex ($5,990 MXN)* para que se me midan en clínica los parámetros de composición corporal y balance de fluidos.', en: '🎯 *Reason:* I want to schedule the *ES-Complex Multisystem Evaluation ($5,990 MXN)* to have my body composition and fluid balance parameters measured in clinic.' },
     'wa_disclaimer':          { es: '_Esto es una autoevaluación de síntomas percibidos: no es un diagnóstico ni una medición._', en: '_This is a self-assessment of perceived symptoms: it is not a diagnosis or a measurement._' },
     'wa_axis_line':           { es: '• {icon} *{name}:* {score}/100', en: '• {icon} *{name}:* {score}/100' },
     'wa_dominant':            { es: '⚠️ *Área con mayor carga:* {name} ({score}/100)', en: '⚠️ *Area with highest load:* {name} ({score}/100)' }

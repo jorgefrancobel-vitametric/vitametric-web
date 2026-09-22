@@ -1181,7 +1181,7 @@
 
       lines.push(
         ``,
-        `🎯 *Motivo:* Quiero agendar la *Evaluación Multisistémica ES-Complex ($3,900 MXN)* para que se me midan en clínica los parámetros de composición corporal y balance de fluidos.`,
+        `🎯 *Motivo:* Quiero agendar la *Evaluación Multisistémica ES-Complex ($5,990 MXN)* para que se me midan en clínica los parámetros de composición corporal y balance de fluidos.`,
         ``,
         `_Esto es una autoevaluación de síntomas percibidos: no es un diagnóstico ni una medición._`
       );

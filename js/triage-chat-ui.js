@@ -261,7 +261,7 @@
       (turn.axisSummaries || []).forEach((s) => {
         lineas.push(`• ${s.icon} ${s.name}: ${s.band} — ${s.phrase}`);
       });
-      lineas.push('', _t('wa_motive', { default: '🎯 Quiero agendar la *Evaluación Multisistémica ES-Complex ($3,900 MXN)*.' }));
+      lineas.push('', _t('wa_motive', { default: '🎯 Quiero agendar la *Evaluación Multisistémica ES-Complex ($5,990 MXN)*.' }));
       lineas.push('', _t('wa_disclaimer', { default: '_Autoevaluación de síntomas percibidos: no es un diagnóstico ni una medición._' }));
       return `https://wa.me/525585327421?text=${encodeURIComponent(lineas.join('\n'))}`;
     }

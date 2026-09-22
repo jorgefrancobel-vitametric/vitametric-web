@@ -335,7 +335,7 @@ console.log('\n── I6 · Fidelidad numérica ──');
     ...AXIS_KEYS.map((k) => String(result.axisScores[k])),
     String(result.dominantAxis1.score),
     '100',   // denominador de la escala
-    '3900'   // precio de la evaluación ES-Complex
+    '5990'   // precio de la evaluación ES-Complex
   ]);
 
   const cifras = (mensaje.match(/\d[\d,]*/g) || []).map((n) => n.replace(/,/g, ''));
@@ -377,7 +377,7 @@ console.log('\n── I6 · Fidelidad numérica ──');
     String(result.dominantAxis1.score),
     String(result.globalBounds.lower),
     String(result.globalBounds.upper),
-    '100', '3900'
+    '100', '5990'
   ]);
   const intrusas = (mensaje.match(/\d[\d,]*/g) || [])
     .map((n) => n.replace(/,/g, ''))
