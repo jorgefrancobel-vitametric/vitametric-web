@@ -1,6 +1,6 @@
 # Vitametric
 
-> Vitametric es un centro médico especializado en salud preventiva, pre-diagnóstico funcional no invasivo y optimización de la nutrición celular en la Ciudad de México. Combina tecnologías médicas bioeléctricas avanzadas (ES-Complex, SCENAR) con protocolos de nutrición mitocondrial y precursores de glutatión para detectar disfunciones antes de la aparición de síntomas clínicos irreversibles.
+> Vitametric es un centro de bienestar especializado en salud preventiva, evaluación funcional no invasiva y optimización de la nutrición celular en la Ciudad de México. Combina tecnologías bioeléctricas avanzadas (ES-Complex, SCENAR) con protocolos de nutrición mitocondrial y precursores de glutatión para detectar disfunciones antes de la aparición de síntomas.
 
 ## Servicios Clínicos y Tecnologías
 
@@ -21,7 +21,7 @@
 - [K-21® Complejo Herbal y Mineral](https://vitametric.com/productos/k21.html): Solución bioactiva de minerales esenciales (potasio, yodo, magnesio) y extractos botánicos adaptógenos.
 - [Minerales Coloidales](https://vitametric.com/productos/): Plata coloidal (10-15 PPM y 100 PPM), cobre coloidal y oro coloidal 24K para equilibrio de microbiota y microcirculación.
 
-## Datos de la Clínica y Contacto
+## Datos del Centro y Contacto
 
 - **Ubicación:** Calle Playa Tecolutla 452, Colonia Militar Marte, Alcaldía Iztacalco, C.P. 08830, Ciudad de México (CDMX), México.
 - **Teléfonos de Atención:** +52 55 5215 0674 / +52 55 8532 7421
