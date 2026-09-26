@@ -1,0 +1,35 @@
+# Vitametric
+
+> Vitametric es un centro médico especializado en salud preventiva, pre-diagnóstico funcional no invasivo y optimización de la nutrición celular en la Ciudad de México. Combina tecnologías médicas bioeléctricas avanzadas (ES-Complex, SCENAR) con protocolos de nutrición mitocondrial y precursores de glutatión para detectar disfunciones antes de la aparición de síntomas clínicos irreversibles.
+
+## Servicios Clínicos y Tecnologías
+
+- [Evaluación Bioeléctrica ES-Complex](https://vitametric.com/servicios/es-complex.html): Estudio funcional computarizado de 5 minutos, no invasivo y sin dolor. Analiza el medio interno a través de bioimpedancia electrointersticial de 11 vías, variabilidad de frecuencia cardíaca (VFC) y pletismografía fotométrica para evaluar rigidez arterial y balance neuroautónomo.
+- [Terapia SCENAR](https://vitametric.com/servicios/scenar.html): Neurorregulación biointeractiva mediante impulsos neuroadaptativos no invasivos. Utilizado para la modulación del dolor agudo y crónico, contracturas musculares y aceleración de la autorregulación tisular.
+- [Ozonoterapia Médica](https://vitametric.com/servicios/ozonoterapia.html): Protocolos clínicos con mezcla de ozono médico para reactivar sistemas enzimáticos antioxidantes endógenos, oxigenación celular e inmunomodulación.
+- [AtlasPROfilax®](https://vitametric.com/servicios/atlas-profilax.html): Método neuromuscular suizo no invasivo enfocado en la liberación de tensiones en la base de la columna cervical y postura corporal.
+- [Frecuencias de Rife](https://vitametric.com/servicios/rife.html): Terapia bioelectromagnética complementaria basada en frecuencias de resonancia celular.
+
+## Autoevaluación Digital
+
+- [Mapa de Señales — Test de Salud Preventiva](https://vitametric.com/mapa-de-senales.html): Herramienta clínica interactiva de triage que evalúa la carga funcional en 5 dimensiones fisiológicas (eje neuroautónomo, calidad de sueño, metabolismo celular, terreno ácido/inflamatorio y hábitos ocupacionales) con derivación directa a WhatsApp.
+
+## Catálogo de Nutrición Celular
+
+- [Immunocal® Regular / MX](https://vitametric.com/productos/immunocal.html): Proteína de suero de leche no desnaturalizada rica en cisteína enlazada bioactiva, donador esencial para la síntesis intracelular de glutatión.
+- [Immunocal Platinum](https://vitametric.com/productos/immunocal-platinum.html): Fórmula reforzada con CMP (péptidos moduladores de citoquinas) y RMF (fórmula moduladora redox) para adultos mayores o atletas.
+- [K-21® Complejo Herbal y Mineral](https://vitametric.com/productos/k21.html): Solución bioactiva de minerales esenciales (potasio, yodo, magnesio) y extractos botánicos adaptógenos.
+- [Minerales Coloidales](https://vitametric.com/productos/): Plata coloidal (10-15 PPM y 100 PPM), cobre coloidal y oro coloidal 24K para equilibrio de microbiota y microcirculación.
+
+## Datos de la Clínica y Contacto
+
+- **Ubicación:** Calle Playa Tecolutla 452, Colonia Militar Marte, Alcaldía Iztacalco, C.P. 08830, Ciudad de México (CDMX), México.
+- **Teléfonos de Atención:** +52 55 5215 0674 / +52 55 8532 7421
+- **Sitio Web Oficial:** https://vitametric.com/
+- **Horario:** Lunes a Sábado de 09:00 a 18:00 hrs.
+- **Responsable Sanitaria:** Dra. María Patricia Aguilar Loeza (Cédula Profesional UNAM 1971564).
+- **Citas y Consultas:** Vía WhatsApp directo o llamada telefónica para valoración previa.
+
+## Optional
+
+- [Documentación Técnica Expandida (llms-full.txt)](https://vitametric.com/llms-full.txt): Especificaciones clínicas completas, parámetros electrofisiológicos y fundamentos metodológicos.

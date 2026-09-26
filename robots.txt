@@ -1,0 +1,33 @@
+# Robots.txt — Vitametric (vitametric.com)
+# Centro de Medicina Preventiva y Evaluación Bioeléctrica Celular (CDMX)
+
+User-agent: *
+Allow: /
+Disallow: /test/
+Disallow: /.githooks/
+Disallow: /functions/
+
+# Rastreadores y motores de búsqueda generativa (GEO / AI Search)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# Sitemap canónico
+Sitemap: https://vitametric.com/sitemap.xml
