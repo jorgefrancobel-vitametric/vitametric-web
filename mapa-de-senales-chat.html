@@ -154,6 +154,11 @@
     }
 
     .triage-shell {
+      /* CLS: el mount() de triage-chat-ui llena este contenedor (vacío en el
+         HTML estático) después del primer paint — en runners lentos el disclaimer
+         salta ~600px y Lighthouse CI penaliza CLS 0.23. La reserva alinea el
+         pre-paint con el layout final; solo aplica al estado inicial de carga. */
+      min-height: 660px;
       border: 1px solid var(--c-border-light);
       border-radius: 12px;
       background: var(--c-bg-mid);
