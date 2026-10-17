@@ -36,7 +36,7 @@
   --c-primary:      #E0F4FF;
   --c-heading:      #FFFFFF;
   --c-text:         rgba(210,235,255,0.82);
-  --c-muted:        rgba(160,210,240,0.6);
+  --c-muted:        rgba(160,210,240,0.68); /* 0.6 daba 4.38:1 sobre --c-bg-card, por debajo del mínimo AA */
 
   /* Accents — electric cyan + bio-green */
   --c-cyan:         #00C8FF;
@@ -144,7 +144,7 @@
   --c-primary:      #071E3D;
   --c-heading:      #071E3D;
   --c-text:         rgba(7,30,61,0.85);
-  --c-muted:        rgba(7,30,61,0.60);
+  --c-muted:        rgba(7,30,61,0.65); /* 0.60 daba <4.5:1 sobre las tarjetas claras */
 
   --c-cyan:         #0077B6;
   --c-cyan-dark:    #005B8C;
