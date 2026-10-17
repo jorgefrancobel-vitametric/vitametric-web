@@ -44,19 +44,69 @@
     // GitHub Pages sirve este archivo con status 404, así que ninguna ruta viva se ve afectada.
     (function () {
       var map = {
+        /* Servicios y tecnologías */
         '/bioroyalrife.html': '/servicios/rife.html',
         '/bioroyal-rife.html': '/servicios/rife.html',
+        '/bio-royalrife.html': '/servicios/rife.html',
+        '/bio-royal-rife.html': '/servicios/rife.html',
         '/bioroyal.html': '/servicios/rife.html',
         '/rife.html': '/servicios/rife.html',
         '/escomplex.html': '/servicios/es-complex.html',
         '/es-complex.html': '/servicios/es-complex.html',
+        '/analisis-pormenorizado.html': '/servicios/es-complex.html',
+        '/analiza....html': '/servicios/es-complex.html',
+        '/cobertura-de-analisis.html': '/servicios/es-complex.html',
+        '/novedosa-aportacion.html': '/servicios/es-complex.html',
+        '/proceso-y-resultados.html': '/servicios/es-complex.html',
+        '/scaner.html': '/servicios/es-complex.html',
+        '/-que-es-.html': '/servicios/es-complex.html',
         '/scenar.html': '/servicios/scenar.html',
         '/ozonoterapia.html': '/servicios/ozonoterapia.html',
+        '/ozonoterapia-para-adelgazar.html': '/servicios/ozonoterapia.html',
         '/atlasprofilax.html': '/servicios/atlas-profilax.html',
         '/atlas-profilax.html': '/servicios/atlas-profilax.html',
+        '/columna.html': '/servicios/atlas-profilax.html',
+        '/servicios.html': '/servicios/',
+        '/-como-funciona-.html': '/servicios/',
+        '/informacion-tecnica.html': '/servicios/',
+        '/tecnologias-incorporadas.html': '/servicios/',
+        '/otros-beneficios.html': '/servicios/',
+
+        /* Productos y nutrición */
         '/immunocal.html': '/productos/immunocal.html',
+        '/plata-coloidal.html': '/productos/plata-coloidal.html',
+        '/herbolaria.html': '/productos/k21.html',
         '/productos.html': '/productos/',
-        '/servicios.html': '/servicios/'
+        '/nutricion-celular.html': '/productos/',
+        '/consejos-nutricionales.html': '/productos/',
+        '/enzacta.html': '/productos/',
+        '/usana.html': '/productos/',
+        '/usana-nutritionals.html': '/productos/',
+        '/vitamina-b12-sublingual.html': '/productos/',
+
+        /* Marca, confianza y contacto */
+        '/nosotros.html': '/#nosotros',
+        '/certificaciones.html': '/#nosotros',
+        '/testimonios.html': '/#testimonios',
+        '/testimonio01.html': '/#testimonios',
+        '/testimonio02.html': '/#testimonios',
+        '/testimonio03.html': '/#testimonios',
+        '/testimonio04.html': '/#testimonios',
+        '/testimonio05.html': '/#testimonios',
+        '/testimonio06.html': '/#testimonios',
+        '/testimonio07.html': '/#testimonios',
+        '/testimonio08.html': '/#testimonios',
+        '/testimonio09.html': '/#testimonios',
+        '/testimonio10.html': '/#testimonios',
+        '/testimonio11.html': '/#testimonios',
+        '/ubicacion-y-contacto.html': '/#contacto',
+        '/preguntas-frecuentes.html': '/#contacto',
+        '/blog.html': '/',
+        '/entrevistas.html': '/',
+        '/eventos-tecnologicos.html': '/',
+        '/salud-inteligente.html': '/',
+        '/videos.html': '/',
+        '/imsitemap.html': '/'
       };
       var path = window.location.pathname.toLowerCase().replace(/\/+$/, '/');
       var dest = map[path];
