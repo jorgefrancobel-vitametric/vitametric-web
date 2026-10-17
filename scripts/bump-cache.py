@@ -51,7 +51,9 @@ def process(html: pathlib.Path, write: bool) -> bool:
         rel = m.group("path")
         if rel.startswith(("http://", "https://", "//")):
             return m.group(0)
-        target = (html.parent / rel).resolve()
+        # Las rutas root-absolute (/css/style.css) se resuelven contra ROOT:
+        # 404.html se sirve a cualquier profundidad y por eso usa rutas absolutas.
+        target = (ROOT / rel.lstrip("/")).resolve() if rel.startswith("/") else (html.parent / rel).resolve()
         h = asset_hash(target)
         if h is None:
             missing.append(rel)

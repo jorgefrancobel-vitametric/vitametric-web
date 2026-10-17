@@ -626,6 +626,23 @@ li.theme-toggle-item { display: flex; align-items: center; }
     display: none;
   }
 }
+/* Con 8 items (Inicio/Servicios/Test/Nosotros/Tecnología/Productos/Testimonios/Contacto)
+   el menú desborda entre ~1024 y ~1114px. Se aprieta solo en ese rango; el drawer
+   móvil (<=900px) conserva su tipografía. */
+@media (max-width: 1180px) and (min-width: 901px) {
+  .nav-link {
+    padding-left: 0.55rem;
+    padding-right: 0.55rem;
+    font-size: 0.88rem;
+  }
+}
+@media (max-width: 1100px) and (min-width: 901px) {
+  .nav-menu { gap: 0; }
+  .nav-link {
+    padding-left: 0.45rem;
+    padding-right: 0.45rem;
+  }
+}
 
 
 

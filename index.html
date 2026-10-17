@@ -35,7 +35,7 @@
   <link rel="preload" href="assets/img/hero-visual.webp?v=0455d5d1" imagesrcset="assets/img/responsive/hero-visual-768.webp 768w, assets/img/hero-visual.webp 1024w" imagesizes="380px" as="image" type="image/webp" fetchpriority="high">
   <link rel="preload" href="assets/fonts/clash-display-600.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/clash-display-700.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="css/style.css?v=7d66d576">
+  <link rel="stylesheet" href="css/style.css?v=0c5f2db6">
   <style>
 
 /* Clash Display Fontshare Embedded */
@@ -271,6 +271,15 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
 .navbar.scrolled .nav-link { color: var(--c-text); }
 .navbar.scrolled .nav-link:hover { color: var(--c-cyan); }
 .navbar.scrolled .nav-link.active { color: var(--c-cyan); }
+  /* 8 items: el menú desborda entre ~1024 y ~1114px. Aprieta solo ese rango;
+     el drawer móvil (<=900px) conserva su tipografía. */
+  @media (max-width: 1180px) and (min-width: 901px) {
+    .nav-link { padding-left: 0.55rem; padding-right: 0.55rem; font-size: 0.88rem; }
+  }
+  @media (max-width: 1100px) and (min-width: 901px) {
+    .nav-menu { gap: 0; }
+    .nav-link { padding-left: 0.45rem; padding-right: 0.45rem; }
+  }
 .nav-cta { background: linear-gradient(135deg, var(--c-cyan) 0%, #0099EE 100%); color: #020C1B !important; font-weight: var(--fw-bold); padding: 0.45rem 1.15rem; border-radius: var(--radius-full); margin-left: 0.4rem; white-space: nowrap; }
 .nav-cta:hover { box-shadow: var(--glow-cyan); transform: translateY(-1px); color: #020C1B !important; }
 .nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; z-index: 10; }
@@ -495,6 +504,7 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
       </div>
       <ul class="nav-menu" id="navMenu">
         <li><a href="#inicio" class="nav-link active">Inicio</a></li>
+        <li><a href="servicios/" class="nav-link">Servicios</a></li>
         <li><a href="mapa-de-senales.html" class="nav-link" style="color: var(--c-cyan);">Test de Salud</a></li>
         <li><a href="#nosotros" class="nav-link">Nosotros</a></li>
         <li><a href="#tecnología" class="nav-link">Tecnología</a></li>
@@ -638,7 +648,7 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
         <div class="nosotros-card reveal">
           <div class="nosotros-icon"><svg aria-hidden="true" focusable="false" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg></div>
           <h3>Enfoque humano</h3>
-          <p>Cada persona es unica. Acompanamiento personalizado y centrado en tu bienestar.</p>
+          <p>Cada persona es única. Acompañamiento personalizado y centrado en tu bienestar.</p>
         </div>
         <div class="nosotros-card reveal">
           <div class="nosotros-icon"><svg aria-hidden="true" focusable="false" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
@@ -655,15 +665,15 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
         </div>
         <div class="nosotros-split-right">
           <div class="stat-counter">
-            <span class="counter-number" data-target="95" data-suffix="%">0%</span>
+            <span class="counter-number" data-target="95" data-suffix="%">95%</span>
             <span class="counter-label">Precisión en pre-diagnóstico predictivo</span>
           </div>
           <div class="stat-counter">
-            <span class="counter-number" data-target="100" data-suffix="%">0%</span>
+            <span class="counter-number" data-target="100" data-suffix="%">100%</span>
             <span class="counter-label">Tratamientos no invasivos y seguros</span>
           </div>
           <div class="stat-counter">
-            <span class="counter-number" data-target="1500" data-suffix="+">0+</span>
+            <span class="counter-number" data-target="1500" data-suffix="+">1500+</span>
             <span class="counter-label">Pacientes beneficiados en Ciudad de México</span>
           </div>
         </div>
@@ -706,11 +716,11 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
             <div class="tech-card-badge">Bio-cibernética</div>
             <img src="assets/img/technology/scenar.webp?v=c9d89092" alt="Terapia de biorretroalimentación con dispositivo Scenar" class="tech-card-img" width="1376" height="768" srcset="assets/img/responsive/scenar-640.webp 640w, assets/img/technology/scenar.webp 1376w" sizes="(max-width: 768px) calc(100vw - 2.5rem), (max-width: 1024px) 45vw, 280px" loading="lazy" decoding="async" fetchpriority="low">
             <h3 class="tech-card-title">Scenar</h3>
-            <p class="tech-card-desc">Tecnología bio-cibernética desarrollada por neurologos rusos de la Agencia Aeroespacial Soviética. Estimula la autorregulación del cuerpo.</p>
+            <p class="tech-card-desc">Tecnología bio-cibernética desarrollada por neurólogos rusos de la Agencia Aeroespacial Soviética. Estimula la autorregulación del cuerpo.</p>
             <ul class="tech-card-features">
               <li>Alivio de dolor crónico y agudo</li>
               <li>Origen aeroespacial ruso</li>
-              <li>Autorregulacion corporal</li>
+              <li>Autorregulación corporal</li>
             </ul>
             <div class="tech-card-action-bar">
               <span>Explorar Tratamiento y Detalles</span>

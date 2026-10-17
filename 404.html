@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, follow">
+  <title>Página no encontrada | Vitametric</title>
+  <meta name="description" content="La página que buscas no existe o cambió de dirección. Te llevamos a los servicios, productos y al Mapa de Señales de Vitametric.">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/css/style.css?v=0c5f2db6">
+  <style>
+    .nf-wrap { min-height: 78vh; display: flex; align-items: center; justify-content: center; padding: 2.5rem 1rem; }
+    .nf-card { max-width: 780px; text-align: center; }
+    .nf-code { font-family: "Clash Display", system-ui, sans-serif; font-size: clamp(3.5rem, 10vw, 6rem); line-height: 1; color: var(--c-cyan, #22d3ee); margin: 0; }
+    .nf-title { font-size: clamp(1.35rem, 3vw, 2rem); margin: 0.75rem 0 0.5rem; }
+    .nf-desc { opacity: 0.85; margin: 0 auto 1.75rem; max-width: 560px; line-height: 1.6; }
+    .nf-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.75rem; margin: 0 auto 1.5rem; max-width: 640px; }
+    .nf-link { display: block; padding: 0.85rem 1rem; border: 1px solid rgba(34, 211, 238, 0.28); border-radius: 12px; color: inherit; text-decoration: none; font-size: 0.92rem; transition: border-color .2s ease, transform .2s ease; }
+    .nf-link:hover, .nf-link:focus-visible { border-color: var(--c-cyan, #22d3ee); transform: translateY(-1px); }
+    .nf-note { font-size: 0.8rem; opacity: 0.65; margin-top: 1.25rem; }
+  </style>
+</head>
+<body>
+  <main class="nf-wrap">
+    <div class="nf-card">
+      <p class="nf-code">404</p>
+      <h1 class="nf-title">Esta página cambió de lugar</h1>
+      <p class="nf-desc">El enlace que seguiste ya no existe. Si venías de una dirección antigua del sitio, te redirigimos automáticamente al servicio correspondiente.</p>
+
+      <div class="nf-grid">
+        <a class="nf-link" href="/servicios/">Servicios</a>
+        <a class="nf-link" href="/productos/">Productos</a>
+        <a class="nf-link" href="/mapa-de-senales.html">Mapa de Señales</a>
+        <a class="nf-link" href="/#contacto">Contacto</a>
+      </div>
+
+      <a class="btn btn-primary btn-lg" href="/">Volver al inicio</a>
+      <p class="nf-note">Vitametric · Calle Playa Tecolutla 452, Col. Militar Marte, 08830 CDMX</p>
+    </div>
+  </main>
+
+  <script>
+    // Redirección de URLs legacy del sitio anterior (solo si la ruta no existe ya).
+    // GitHub Pages sirve este archivo con status 404, así que ninguna ruta viva se ve afectada.
+    (function () {
+      var map = {
+        '/bioroyalrife.html': '/servicios/rife.html',
+        '/bioroyal-rife.html': '/servicios/rife.html',
+        '/bioroyal.html': '/servicios/rife.html',
+        '/rife.html': '/servicios/rife.html',
+        '/escomplex.html': '/servicios/es-complex.html',
+        '/es-complex.html': '/servicios/es-complex.html',
+        '/scenar.html': '/servicios/scenar.html',
+        '/ozonoterapia.html': '/servicios/ozonoterapia.html',
+        '/atlasprofilax.html': '/servicios/atlas-profilax.html',
+        '/atlas-profilax.html': '/servicios/atlas-profilax.html',
+        '/immunocal.html': '/productos/immunocal.html',
+        '/productos.html': '/productos/',
+        '/servicios.html': '/servicios/'
+      };
+      var path = window.location.pathname.toLowerCase().replace(/\/+$/, '/');
+      var dest = map[path];
+      if (dest) {
+        window.location.replace(dest);
+      }
+    })();
+  </script>
+</body>
+</html>
