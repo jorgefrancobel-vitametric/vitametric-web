@@ -2,7 +2,7 @@
 <html lang="es-MX">
 <head>
   <!-- Medición consent-first: gtag solo se carga tras aceptar (js/analytics-gate.js) -->
-  <script src="../js/analytics-gate.js?v=b05d6b10"></script>
+  <script src="../js/analytics-gate.js?v=1d5e97b8"></script>
   <meta charset="UTF-8">
   <script>
   (function () {
@@ -38,7 +38,7 @@
   </script>
   <meta name="description" content="Historia, principios biofísicos y microscopía óptica de Royal Raymond Rife. Resumen documental y aplicación clínica de bio-frecuencias en Vitametric CDMX.">
   <link rel="canonical" href="https://vitametric.com/servicios/rife.html">
-  <link rel="stylesheet" href="../css/style.css?v=6886816b">
+  <link rel="stylesheet" href="../css/style.css?v=ea3cfecb">
   <link rel="stylesheet" href="../css/rizo-nav.css?v=5e2eb16d">
   
   <style>
@@ -304,6 +304,12 @@
     .rife-preset-btn.active::before {
       box-shadow: 0 0 8px currentColor;
     }
+
+    /* Colores de contraste (WCAG AA) — sustituyen los hex fijos #DC2626/var(--c-muted) */
+    .rife-neg, .rife-neg-title { color: #FF7A7A; }
+    [data-theme="light"] .rife-neg, [data-theme="light"] .rife-neg-title { color: #C62828; }
+    .rife-meta { color: #8FB3D0; }
+    [data-theme="light"] .rife-meta { color: #41627F; }
 
     /* Comparison Matrix */
     .rife-matrix-grid {
@@ -655,15 +661,15 @@
 
           <!-- Interactive Tab Selector -->
           <div class="rife-tabs-nav" role="tablist">
-            <button class="rife-tab-btn active" onclick="switchRifeTab('optica', this)">🔬 1. Microscopio Universal</button>
-            <button class="rife-tab-btn" onclick="switchRifeTab('resonancia', this)">⚡ 2. Resonancia M.O.R.</button>
-            <button class="rife-tab-btn" onclick="switchRifeTab('pleomorfismo', this)">🌱 3. Terreno Celular</button>
-            <button class="rife-tab-btn" onclick="switchRifeTab('cronologia', this)">📜 4. Historia & Archivos</button>
-            <button class="rife-tab-btn" onclick="switchRifeTab('vitametric', this)">🏥 5. Aplicación en CDMX</button>
+            <button id="rife-tab-btn-optica" class="rife-tab-btn active" role="tab" aria-controls="tab-optica" aria-selected="true" tabindex="0" onclick="switchRifeTab('optica', this)">🔬 1. Microscopio Universal</button>
+            <button id="rife-tab-btn-resonancia" class="rife-tab-btn" role="tab" aria-controls="tab-resonancia" aria-selected="false" tabindex="-1" onclick="switchRifeTab('resonancia', this)">⚡ 2. Resonancia M.O.R.</button>
+            <button id="rife-tab-btn-pleomorfismo" class="rife-tab-btn" role="tab" aria-controls="tab-pleomorfismo" aria-selected="false" tabindex="-1" onclick="switchRifeTab('pleomorfismo', this)">🌱 3. Terreno Celular</button>
+            <button id="rife-tab-btn-cronologia" class="rife-tab-btn" role="tab" aria-controls="tab-cronologia" aria-selected="false" tabindex="-1" onclick="switchRifeTab('cronologia', this)">📜 4. Historia & Archivos</button>
+            <button id="rife-tab-btn-vitametric" class="rife-tab-btn" role="tab" aria-controls="tab-vitametric" aria-selected="false" tabindex="-1" onclick="switchRifeTab('vitametric', this)">🏥 5. Aplicación en CDMX</button>
           </div>
 
           <!-- TAB 1: EL MICROSCOPIO UNIVERSAL -->
-          <section id="tab-optica" class="rife-tab-content">
+          <section id="tab-optica" class="rife-tab-content" role="tabpanel" aria-labelledby="rife-tab-btn-optica" tabindex="0">
             <div class="rife-card-panel">
               <div style="font-size: 0.8rem; color: var(--c-cyan-bright); font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem;">Pilar 01 · Óptica de Cristal de Cuarzo</div>
               <h2>El Microscopio Universal: Superando el Límite de la Luz</h2>
@@ -686,14 +692,14 @@
                   <div class="rife-matrix-header">
                     <span style="font-size: 1.5rem;">🧪</span>
                     <div>
-                      <strong style="color: #DC2626; font-size: 0.95rem; display: block;">Microscopía Electrónica</strong>
-                      <span style="font-size: 0.75rem; color: var(--c-muted);">Estándar Académico</span>
+                      <strong class="rife-neg-title" style="font-size: 0.95rem; display: block;">Microscopía Electrónica</strong>
+                      <span class="rife-meta" style="font-size: 0.75rem;">Estándar Académico</span>
                     </div>
                   </div>
                   <ul class="rife-matrix-list">
-                    <li><span style="color:#DC2626;">✖</span> Requiere cámara de alto vacío (deshidrata).</li>
-                    <li><span style="color:#DC2626;">✖</span> Muestras teñidas con metales pesados.</li>
-                    <li><span style="color:#DC2626;">✖</span> <strong>Solo observa materia biológica muerta.</strong></li>
+                    <li><span class="rife-neg">✖</span> Requiere cámara de alto vacío (deshidrata).</li>
+                    <li><span class="rife-neg">✖</span> Muestras teñidas con metales pesados.</li>
+                    <li><span class="rife-neg">✖</span> <strong>Solo observa materia biológica muerta.</strong></li>
                   </ul>
                 </div>
 
@@ -717,7 +723,7 @@
           </section>
 
           <!-- TAB 2: RESONANCIA M.O.R. -->
-          <section id="tab-resonancia" class="rife-tab-content" style="display: none;">
+          <section id="tab-resonancia" class="rife-tab-content" role="tabpanel" aria-labelledby="rife-tab-btn-resonancia" tabindex="0" style="display: none;">
             <div class="rife-card-panel">
               <div style="font-size: 0.8rem; color: var(--c-green-bright); font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem;">Pilar 02 · Física de Ondas y Plasma</div>
               <h2>La Tasa de Oscilación Mortal (M.O.R.)</h2>
@@ -760,7 +766,7 @@
           </section>
 
           <!-- TAB 3: PLEOMORFISMO -->
-          <section id="tab-pleomorfismo" class="rife-tab-content" style="display: none;">
+          <section id="tab-pleomorfismo" class="rife-tab-content" role="tabpanel" aria-labelledby="rife-tab-btn-pleomorfismo" tabindex="0" style="display: none;">
             <div class="rife-card-panel">
               <div style="font-size: 0.8rem; color: var(--c-cyan); font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem;">Pilar 03 · La Escuela del Terreno Biológico</div>
               <h2>Pleomorfismo: La Disputa Béchamp vs. Pasteur</h2>
@@ -787,7 +793,7 @@
           </section>
 
           <!-- TAB 4: CRONOLOGÍA HISTÓRICA -->
-          <section id="tab-cronologia" class="rife-tab-content" style="display: none;">
+          <section id="tab-cronologia" class="rife-tab-content" role="tabpanel" aria-labelledby="rife-tab-btn-cronologia" tabindex="0" style="display: none;">
             <div class="rife-card-panel">
               <div style="font-size: 0.8rem; color: var(--c-cyan); font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem;">Pilar 04 · Archivo Documentado</div>
               <h2>Línea de Tiempo Histórica (1920–1944)</h2>
@@ -833,7 +839,7 @@
           </section>
 
           <!-- TAB 5: APLICACIÓN VITAMETRIC -->
-          <section id="tab-vitametric" class="rife-tab-content" style="display: none;">
+          <section id="tab-vitametric" class="rife-tab-content" role="tabpanel" aria-labelledby="rife-tab-btn-vitametric" tabindex="0" style="display: none;">
             <div class="rife-card-panel" style="border-color: var(--c-cyan);">
               <div style="font-size: 0.8rem; color: var(--c-green-bright); font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem;">Pilar 05 · Terapia en Ciudad de México</div>
               <h2>Bio-Resonancia de Frecuencias en Vitametric</h2>
@@ -951,7 +957,11 @@
     // Tab Switching Logic
     function switchRifeTab(tabId, btn) {
       document.querySelectorAll(".rife-tab-content").forEach(el => el.style.display = "none");
-      document.querySelectorAll(".rife-tab-btn").forEach(el => el.classList.remove("active"));
+      document.querySelectorAll(".rife-tab-btn").forEach(el => {
+        el.classList.remove("active");
+        el.setAttribute("aria-selected", "false");
+        el.setAttribute("tabindex", "-1");
+      });
       
       const target = document.getElementById("tab-" + tabId);
       if (target) {
@@ -959,6 +969,8 @@
       }
       if (btn) {
         btn.classList.add("active");
+        btn.setAttribute("aria-selected", "true");
+        btn.setAttribute("tabindex", "0");
       }
       if (tabId === "resonancia") {
         initWaveCanvas();
@@ -1234,6 +1246,8 @@
       document.querySelectorAll(".rife-preset-btn").forEach(b => b.classList.remove("active"));
       if (btn) {
         btn.classList.add("active");
+        btn.setAttribute("aria-selected", "true");
+        btn.setAttribute("tabindex", "0");
       }
     }
 

@@ -1699,7 +1699,9 @@ li.theme-toggle-item { display: flex; align-items: center; }
   min-width: 0;
   width: 100%;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  /* minmax(0, 1fr) en lugar de 1fr: sin eso, el contenido min-content del
+     bloque (palabras largas) engorda la columna y el aside se sale del grid. */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1.5rem;
   align-items: start;
 }
@@ -1937,7 +1939,7 @@ li.theme-toggle-item { display: flex; align-items: center; }
 }
 @media (max-width: 900px) {
   .subpage-sidebar {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -2097,7 +2099,7 @@ li.theme-toggle-item { display: flex; align-items: center; }
   .subpage-feature-card p { font-size: 0.82rem; line-height: 1.5; }
 
   /* ── SUBPAGE SIDEBAR MOBILE ── */
-  .subpage-sidebar { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+  .subpage-sidebar { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; }
   .subpage-sidebar-card { padding: 1rem; }
   .subpage-sidebar-card h3 { font-size: 0.85rem; }
   .subpage-sidebar-card p, .subpage-sidebar-card li { font-size: 0.78rem; }
@@ -2654,6 +2656,7 @@ li.theme-toggle-item { display: flex; align-items: center; }
 
 /* ── Sidebar Block (compact, rizomatic) ── */
 .rizo-sidebar-block {
+  min-width: 0;
   padding: 1.5rem;
   margin-bottom: 1.5rem;
   background: rgba(0, 200, 255, 0.03);
@@ -2675,9 +2678,10 @@ li.theme-toggle-item { display: flex; align-items: center; }
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin-bottom: 1rem;
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
+  /* block y no flex: como contenedor flex, el texto anónimo del título no se
+     contrae por debajo de su min-content y desbordaba la columna en 1024px. */
+  display: block;
+  overflow-wrap: anywhere;
 }
 
 .rizo-sidebar-block h3 svg {
@@ -2686,6 +2690,8 @@ li.theme-toggle-item { display: flex; align-items: center; }
   stroke: var(--c-cyan);
   fill: none;
   flex-shrink: 0;
+  vertical-align: -3px;
+  margin-right: 0.55rem;
 }
 
 .rizo-sidebar-block p,
@@ -2693,6 +2699,7 @@ li.theme-toggle-item { display: flex; align-items: center; }
   font-size: var(--fs-sm);
   color: var(--c-muted);
   line-height: 1.6;
+  overflow-wrap: anywhere;
 }
 
 .rizo-sidebar-block ul {
@@ -3472,7 +3479,9 @@ li.theme-toggle-item { display: flex; align-items: center; }
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 9000;
+  /* por encima de los elementos fijos del sitio (sticky-cta 9999, otros 10001)
+     para que no tapen los botones del aviso */
+  z-index: 11000;
   background: var(--c-bg-surface);
   border-top: 1px solid var(--c-border);
   box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.45);
@@ -3527,6 +3536,7 @@ li.theme-toggle-item { display: flex; align-items: center; }
   font-size: 0.85rem;
   font-weight: 600;
   padding: 0.55rem 1.1rem;
+  min-height: 44px;
   border-radius: 6px;
   border: 1px solid var(--c-border);
   cursor: pointer;
@@ -3542,7 +3552,7 @@ li.theme-toggle-item { display: flex; align-items: center; }
 .vt-cookie-btn--reject:hover { border-color: var(--c-cyan); color: var(--c-primary); }
 .vt-cookie-btn:focus-visible { outline: 2px solid var(--c-green); outline-offset: 2px; }
 @media (max-width: 640px) {
-  .vt-cookie-inner { padding: 0.85rem 1rem; }
-  .vt-cookie-actions { width: 100%; }
-  .vt-cookie-btn { flex: 1 1 0; }
+  .vt-cookie-inner { padding: 0.85rem 1rem calc(0.85rem + env(safe-area-inset-bottom, 0px)); }
+  .vt-cookie-actions { width: 100%; gap: 0.75rem; }
+  .vt-cookie-btn { flex: 1 1 0; min-height: 48px; }
 }

@@ -65,6 +65,18 @@
     window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
     /* eslint-enable */
 
+    /* Consent Mode v2: por defecto todo denegado; la aceptación explícita
+       dispara el 'consent update' en grant(). Así Google recibe la señal de
+       consentimiento en lugar de ningún hit, y los modelos de conversión
+       funcionan sin instalar cookies a quien no acepta. */
+    window.gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'denied',
+      wait_for_update: 500
+    });
+
     var first = document.getElementsByTagName('script')[0];
     for (var i = 0; i < TAG_IDS.length; i++) {
       var id = TAG_IDS[i];
@@ -82,6 +94,14 @@
     writeConsent(true);
     consented = true;
     loadGtag();
+    if (typeof window.gtag === 'function') {
+      window.gtag('consent', 'update', {
+        ad_storage: 'granted',
+        ad_user_data: 'granted',
+        ad_personalization: 'granted',
+        analytics_storage: 'granted'
+      });
+    }
   }
 
   function decline() {
