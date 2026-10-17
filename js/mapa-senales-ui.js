@@ -400,6 +400,15 @@
         });
       }
 
+      // Conversión hacia Meta vía Conversions API server-side (sin píxel en
+      // el navegador). Solo se envía con consentimiento del gate; el
+      // globalChargeScore NO se manda como value porque no es dinero.
+      if (window.VitametricMetaCapi) {
+        window.VitametricMetaCapi.track('CompleteRegistration', {
+          contentName: 'Mapa de Senales'
+        });
+      }
+
       // Scroll suave hacia los resultados
       const testCard = document.getElementById('test-card-wrapper') || document.getElementById('mapa-senales');
       if (testCard) {
