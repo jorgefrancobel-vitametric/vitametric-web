@@ -29,7 +29,7 @@
 
   var CONSENT_KEY = 'vitametric_analytics_consent_v1';
   var GTAG_SRC = 'https://www.googletagmanager.com/gtag/js?id=';
-  var TAG_IDS = ['AW-18397567827'];
+  var TAG_IDS = ['AW-18397567827', 'G-5EVEFP9BNS'];
 
   var loaded = false;
   var consented = false;
