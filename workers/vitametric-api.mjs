@@ -1,0 +1,242 @@
+/**
+ * Vitametric — API Worker (POST /api/analytics y POST /api/meta-capi)
+ *
+ * Por qué existe: el sitio vive en GitHub Pages detrás del proxy de Cloudflare.
+ * GH Pages responde 405 a cualquier POST, así que las Pages Functions del repo
+ * (functions/api/analytics.js y functions/api/meta-capi.js) no corren. Este
+ * Worker reproduce EXACTAMENTE su lógica y se monta con rutas de zona
+ * `vitametric.com/api/*` y `www.vitametric.com/api/*`. Es el único host que
+ * intercepta POST bajo /api/*; el contenido del sitio no pasa por aquí.
+ *
+ * Fuente de verdad: functions/api/api-*.js (mismo orden de validaciones,
+ * mismos códigos de error). Si cambia la lógica, cambiar aquí también.
+ * Bindings:
+ *   META_PIXEL_ID (plain_text) — id del dataset/píxel de Meta.
+ *   META_CAPI_TOKEN (secret_text) — token de Conversions API. SIN este token
+ *     el endpoint /api/meta-capi responde 503 y el sitio sigue funcionando.
+ *   VITAMETRIC_ANALYTICS (opcional, Analytics Engine) — mismo contrato que
+ *     la función Pages; sin binding cae al log estructurado.
+ */
+
+const GRAPH_VERSION = 'v21.0';
+const ALLOWED_EVENTS = new Set([
+  'Lead',
+  'Contact',
+  'Schedule',
+  'CompleteRegistration',
+  'ViewContent'
+]);
+
+const ANALYTICS_ALLOWED_ORIGINS = [
+  'https://vitametric.com',
+  'https://www.vitametric.com',
+  'https://vitametric.pages.dev',
+  'http://localhost:8080',
+  'http://localhost:3000'
+];
+
+const CAPI_ALLOWED_ORIGINS = [
+  'https://vitametric.com',
+  'https://www.vitametric.com',
+  'https://vitametric.pages.dev',
+  'http://localhost:8899',
+  'http://localhost:8080',
+  'http://localhost:3000'
+];
+
+export default {
+  async fetch(request, env, ctx) {
+    const url = new URL(request.url);
+    const path = url.pathname.replace(/\/+$/, '');
+
+    if (path === '/api/analytics') {
+      if (request.method === 'OPTIONS' || request.method === 'POST') {
+        return handleAnalytics(request, env);
+      }
+      return jsonResponse({ ok: true, service: 'vitametric-analytics' }, 200, {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      });
+    }
+
+    if (path === '/api/meta-capi') {
+      if (request.method === 'OPTIONS' || request.method === 'POST') {
+        return handleMetaCapi(request, env);
+      }
+    }
+
+    return jsonResponse({ ok: false, reason: 'not_found' }, 404, {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': 'https://vitametric.com'
+    });
+  }
+};
+
+function jsonResponse(body, status, headers) {
+  return new Response(JSON.stringify(body), { status, headers });
+}
+
+/* ---------------- /api/analytics (params: functions/api/analytics.js) ---------------- */
+
+function analyticsCors(origin) {
+  return {
+    'Access-Control-Allow-Origin': ANALYTICS_ALLOWED_ORIGINS.includes(origin) ? origin : 'https://vitametric.com',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Max-Age': '86400'
+  };
+}
+
+async function handleAnalytics(request, env) {
+  const cors = analyticsCors(request.headers.get('Origin') || '');
+
+  // Preflight (en la función Pages vive dentro de onRequestPost).
+  if (request.method === 'OPTIONS') {
+    return new Response(null, { status: 204, headers: cors });
+  }
+
+  try {
+    const body = await request.json();
+
+    // Soporte para batch (flushQueue envía { batch: [...] })
+    const events = Array.isArray(body.batch) ? body.batch : [body];
+
+    for (const event of events) {
+      if (env && env.VITAMETRIC_ANALYTICS) {
+        env.VITAMETRIC_ANALYTICS.writeDataPoint({
+          blobs: [
+            event.event || 'unknown',            // event type
+            event.sessionId || '',               // session id
+            event.variant || 'unknown',          // A/B variant
+            event.pageUrl || '',                 // page URL
+            event.referrer || ''                 // referrer
+          ],
+          doubles: [
+            event.timestamp || 0,                // timestamp
+            event.elapsedMs || 0,                // elapsed ms
+            event.questionNumber || 0,           // question number
+            event.totalQuestions || 0,           // total questions
+            event.globalScore || 0               // global score
+          ],
+          indexes: [
+            String(event.riskLevel || '')        // risk level
+          ]
+        });
+      }
+
+      // Fallback: log estructurado para Cloudflare Logs
+      console.log(JSON.stringify({
+        ts: new Date().toISOString(),
+        session: event.sessionId,
+        event: event.event,
+        variant: event.variant,
+        elapsedMs: event.elapsedMs,
+        payload: event
+      }));
+    }
+
+    return jsonResponse({ ok: true, received: events.length }, 200, {
+      ...cors,
+      'Content-Type': 'application/json'
+    });
+  } catch (err) {
+    console.error('[analytics] error:', err && err.message);
+    return jsonResponse({ ok: false, error: 'Invalid JSON' }, 400, {
+      ...cors,
+      'Content-Type': 'application/json'
+    });
+  }
+}
+
+/* ---------------- /api/meta-capi (params: functions/api/meta-capi.js) ---------------- */
+
+function capiCors(origin) {
+  return {
+    'Access-Control-Allow-Origin': CAPI_ALLOWED_ORIGINS.includes(origin) ? origin : 'https://vitametric.com',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Max-Age': '86400'
+  };
+}
+
+async function handleMetaCapi(request, env) {
+  const cors = capiCors(request.headers.get('Origin') || '');
+
+  if (request.method === 'OPTIONS') {
+    return new Response(null, { status: 204, headers: cors });
+  }
+
+  if (!env || !env.META_PIXEL_ID || !env.META_CAPI_TOKEN) {
+    return jsonResponse({ ok: false, reason: 'capi_not_configured' }, 503, {
+      'Content-Type': 'application/json', ...cors
+    });
+  }
+
+  let payload;
+  try {
+    payload = await request.json();
+  } catch (e) {
+    return jsonResponse({ ok: false, reason: 'invalid_json' }, 400, {
+      'Content-Type': 'application/json', ...cors
+    });
+  }
+
+  const eventName = typeof payload.eventName === 'string' ? payload.eventName : '';
+  if (!ALLOWED_EVENTS.has(eventName)) {
+    return jsonResponse({ ok: false, reason: 'event_not_allowed' }, 400, {
+      'Content-Type': 'application/json', ...cors
+    });
+  }
+
+  const userData = {
+    client_ip_address: request.headers.get('cf-connecting-ip') || '',
+    client_user_agent: (request.headers.get('User-Agent') || '').slice(0, 300)
+  };
+  /* fbp/fbc llegan del front (cookie _fbp y parámetro fbclid). Sin ellos Meta
+     hace emparejamiento menos fiable, pero nunca se inventan. */
+  if (typeof payload.fbp === 'string' && payload.fbp.startsWith('fb.')) userData.fbp = payload.fbp;
+  if (typeof payload.fbc === 'string' && payload.fbc.length < 120) userData.fbc = payload.fbc;
+
+  const customData = {};
+  if (typeof payload.value === 'number' && isFinite(payload.value)) customData.value = payload.value;
+  if (typeof payload.currency === 'string' && /^[A-Z]{3}$/.test(payload.currency)) customData.currency = payload.currency;
+  if (typeof payload.contentName === 'string') customData.content_name = payload.contentName.slice(0, 120);
+
+  const event = {
+    event_name: eventName,
+    event_time: Math.floor(Date.now() / 1000),
+    action_source: 'website',
+    event_source_url: typeof payload.sourceUrl === 'string' ? payload.sourceUrl.slice(0, 300) : 'https://vitametric.com/',
+    user_data: userData
+  };
+  if (typeof payload.eventId === 'string' && payload.eventId) event.event_id = payload.eventId.slice(0, 80);
+  if (Object.keys(customData).length) event.custom_data = customData;
+
+  const url = 'https://graph.facebook.com/' + GRAPH_VERSION + '/' + env.META_PIXEL_ID + '/events?access_token=' + encodeURIComponent(env.META_CAPI_TOKEN);
+
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ data: [event] })
+    });
+    const text = await res.text();
+    /* Nunca devolvemos el token ni el cuerpo completo de Graph al front. */
+    return jsonResponse({ ok: res.ok, status: res.status, events_received: safeCount(text) }, 200, {
+      'Content-Type': 'application/json', ...cors
+    });
+  } catch (e) {
+    return jsonResponse({ ok: false, reason: 'graph_unreachable' }, 502, {
+      'Content-Type': 'application/json', ...cors
+    });
+  }
+}
+
+function safeCount(text) {
+  try {
+    const parsed = JSON.parse(text);
+    return parsed && parsed.events_received != null ? parsed.events_received : 0;
+  } catch (e) {
+    return 0;
+  }
+}
