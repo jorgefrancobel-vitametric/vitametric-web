@@ -1,0 +1,27 @@
+name: HTML well-formed
+
+# Red de seguridad: bloquea HTML malformado antes de que llegue a main y a
+# producción. Motivo: el div del .subpage-nav-overlay que perdió su cierre en
+# d2603c1 enganchó el resto del documento y dejó la ficha de ozonoterapia en
+# blanco en móvil (<768px) desde el despliegue del 20-ago hasta el 22-oct,
+# sin que Lighthouse ni ningún test lo detectara.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  balance:
+    name: HTML balance check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Validate HTML nesting (tags closed, no orphan closings)
+        run: python3 scripts/check-html-balance.py
