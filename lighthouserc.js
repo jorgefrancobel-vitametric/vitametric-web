@@ -3,6 +3,13 @@ module.exports = {
     collect: {
       // Serve the static files from the repo root.
       staticDistDir: './',
+      // Sin URLs declaradas, LHCI autodescubre HTML (tope 5, prof. 2) y siempre
+      // incluye 404.html. Esa página lleva `noindex` — correcto en una página de
+      // error, pero Lighthouse lo marca como "page is blocked from indexing"
+      // (is-crawlable) y hunde su SEO a 0.63 < 0.95, enrojeciendo todo el gate.
+      // Se excluye del autodescubrimiento; los umbrales siguen intactos para las
+      // páginas de contenido.
+      autodiscoverUrlBlocklist: ['404.html'],
       // Five runs reduce CI noise; LHCI asserts against the median.
       numberOfRuns: 5,
       // Chrome headless flags for the CI environment.
