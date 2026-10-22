@@ -204,6 +204,9 @@ async function handleMetaCapi(request, env) {
     const res = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      /* VB5: cota dura de 8s — si Graph se cuelga, el abort cae al catch y
+         responde 502 graph_unreachable en vez de atorar la invocación. */
+      signal: AbortSignal.timeout(8000),
       body: JSON.stringify({ data: [event] })
     });
     const text = await res.text();
