@@ -1,16 +1,13 @@
 /**
  * Vitametric — Analytics Endpoint (Cloudflare Pages Function)
  *
- * Recibe eventos del funnel de la anamnesis conversacional vía sendBeacon.
- * Las métricas se envían a Workers Analytics Engine si está configurada,
- * o se registran en consola como fallback.
- *
+ * Solo admite eventos administrativos genéricos. Nunca persiste el cuerpo
+ * recibido: acepta el nombre del evento y descarta cualquier otro campo.
  * Ruta: POST /api/analytics
- * Body: JSON con { sessionId, event, timestamp, ... } o { batch: [...] }
- *
- * Headers necesarios en el frontend:
- *   Content-Type: application/json
  */
+
+const ALLOWED_EVENTS = new Set(['Contact', 'Lead', 'Schedule']);
+const MAX_BATCH_SIZE = 20;
 
 export async function onRequestPost(context) {
   const { request, env } = context;
@@ -39,47 +36,38 @@ export async function onRequestPost(context) {
 
   try {
     const body = await request.json();
-
-    // Soporte para batch (flushQueue envía { batch: [...] })
-    const events = Array.isArray(body.batch) ? body.batch : [body];
-
-    for (const event of events) {
-      // Workers Analytics Engine (si está configurada):
-      // https://developers.cloudflare.com/analytics/analytics-engine/
-      if (env && env.VITAMETRIC_ANALYTICS) {
-        env.VITAMETRIC_ANALYTICS.writeDataPoint({
-          blobs: [
-            event.event || 'unknown',           // event type
-            event.sessionId || '',              // session id
-            event.variant || 'unknown',          // A/B variant
-            event.pageUrl || '',                // page URL
-            event.referrer || ''                // referrer
-          ],
-          doubles: [
-            event.timestamp || 0,               // timestamp
-            event.elapsedMs || 0,               // elapsed ms
-            event.questionNumber || 0,           // question number
-            event.totalQuestions || 0,           // total questions
-            event.globalScore || 0              // global score
-          ],
-          indexes: [
-            String(event.riskLevel || '')       // risk level
-          ]
-        });
-      }
-
-      // Fallback: log estructurado para Cloudflare Logs
-      console.log(JSON.stringify({
-        ts: new Date().toISOString(),
-        session: event.sessionId,
-        event: event.event,
-        variant: event.variant,
-        elapsedMs: event.elapsedMs,
-        payload: event
-      }));
+    const submitted = body && Array.isArray(body.batch) ? body.batch : [body];
+    if (submitted.length < 1 || submitted.length > MAX_BATCH_SIZE) {
+      return new Response(JSON.stringify({ ok: false, reason: 'invalid_batch' }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
     }
 
-    return new Response(JSON.stringify({ ok: true, received: events.length }), {
+    const eventNames = [];
+    for (const item of submitted) {
+      const eventName = item && typeof item === 'object' && !Array.isArray(item)
+        ? item.eventName
+        : null;
+      if (typeof eventName !== 'string' || !ALLOWED_EVENTS.has(eventName)) {
+        return new Response(JSON.stringify({ ok: false, reason: 'event_not_allowed' }), {
+          status: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+      eventNames.push(eventName);
+    }
+
+    for (const eventName of eventNames) {
+      if (env && env.VITAMETRIC_ANALYTICS) {
+        env.VITAMETRIC_ANALYTICS.writeDataPoint({ blobs: [eventName] });
+      } else {
+        // Sin binding, no registrar payload, identidad, ruta ni datos del test.
+        console.log(JSON.stringify({ event: eventName }));
+      }
+    }
+
+    return new Response(JSON.stringify({ ok: true, received: eventNames.length }), {
       status: 200,
       headers: {
         ...corsHeaders,
@@ -88,7 +76,7 @@ export async function onRequestPost(context) {
     });
 
   } catch (err) {
-    console.error('[analytics] error:', err && err.message);
+    console.error('[analytics] invalid request');
 
     return new Response(JSON.stringify({ ok: false, error: 'Invalid JSON' }), {
       status: 400,

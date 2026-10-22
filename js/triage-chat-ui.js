@@ -232,13 +232,7 @@
       // Email gate: ofrecer guardar email tras ver el resultado.
       // No bloquea: se muestra debajo del resultado.
       if (window.VitametricEmailGate && typeof window.VitametricEmailGate.show === 'function') {
-        var ab = window.VitametricABRouter;
-        window.VitametricEmailGate.show({
-          questionsAnswered: asked,
-          riskLevel: (turn.axisSummaries && turn.axisSummaries[0]) ? turn.axisSummaries[0].band : 'unknown',
-          globalScore: 0,
-          variant: ab ? ab.variant : 'unknown'
-        });
+        window.VitametricEmailGate.show();
       }
 
       clearControls();

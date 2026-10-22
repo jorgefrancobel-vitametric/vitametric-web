@@ -243,12 +243,14 @@
     'consent_decline':        { es: 'Continuar sin él', en: 'Continue without it' },
 
     // ── EMAIL GATE ──
-    'email_title':            { es: '¿Quieres guardar tu avance?', en: 'Want to save your progress?' },
-    'email_body':             { es: 'Deja tu correo y te enviaremos tus resultados cuando termines. No compartimos tu información.', en: 'Leave your email and we\'ll send you your results when you\'re done. We don\'t share your information.' },
+    'email_title':            { es: '¿Quieres que Vitametric te contacte?', en: 'Would you like Vitametric to contact you?' },
+    'email_body':             { es: 'Deja tu correo para que Vitametric pueda responderte. El formulario envía solo tu correo; no incluye tus respuestas ni el puntaje del test.', en: 'Leave your email so Vitametric can reply. The form sends only your email; it does not include your test answers or score.' },
+    'email_privacy_link':     { es: 'Ver aviso de privacidad', en: 'Read the privacy notice' },
     'email_placeholder':      { es: 'tu@correo.com', en: 'you@email.com' },
     'email_save':             { es: 'Guardar y continuar', en: 'Save & continue' },
     'email_skip':             { es: 'No gracias, continuar sin guardar', en: 'No thanks, continue without saving' },
-    'email_saved':            { es: '✓ Guardado. Te enviaremos tus resultados al terminar.', en: '✓ Saved. We\'ll send your results when you\'re done.' },
+    'email_saved':            { es: '✓ Envío recibido. Tus respuestas y puntaje no se enviaron.', en: '✓ Submission received. Your answers and score were not sent.' },
+    'email_error':            { es: 'No se pudo enviar el correo. Revisa tu conexión e inténtalo de nuevo.', en: 'We could not send the email. Check your connection and try again.' },
 
     // ── A/B TESTING ──
     'ab_variant_label':       { es: 'Variante', en: 'Variant' },

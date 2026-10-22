@@ -57,21 +57,23 @@
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   }
 
+  function trackLead() {
+    if (typeof root.gtag === 'function') {
+      root.gtag('event', 'generate_lead', { method: 'email' });
+    }
+    if (root.VitametricMetaCapi) {
+      root.VitametricMetaCapi.track('Lead');
+    }
+  }
+
   /**
-   * Envía el email a Formspree con los metadatos del test.
+   * Envía solo el correo a Formspree; los resultados del test no salen con el lead.
    */
-  function submitToFormspree(email, metadata) {
+  function submitToFormspree(email) {
     var formData = new FormData();
     formData.append('email', email);
-    formData.append('_subject', 'Lead Vitametric — Mapa de Señales');
-    if (metadata) {
-      formData.append('source', 'mapa-senales-chat');
-      formData.append('variant', metadata.variant || 'unknown');
-      formData.append('questions_answered', metadata.questionsAnswered || 0);
-      formData.append('risk_level', metadata.riskLevel || 'unknown');
-      formData.append('global_score', metadata.globalScore || 0);
-      formData.append('page_url', window.location.href);
-    }
+    formData.append('_subject', 'Lead Vitametric');
+    formData.append('source', 'website');
 
     return fetch(FORMSPREE_ENDPOINT, {
       method: 'POST',
@@ -104,6 +106,12 @@
     body.className = 'email-gate__body';
     body.textContent = t('email_body');
     container.appendChild(body);
+
+    var privacyLink = document.createElement('a');
+    privacyLink.className = 'email-gate__privacy';
+    privacyLink.href = '/aviso-privacidad.html#formularios';
+    privacyLink.textContent = t('email_privacy_link');
+    container.appendChild(privacyLink);
 
     var form = document.createElement('form');
     form.className = 'email-gate__form';
@@ -152,10 +160,9 @@
 
   /**
    * Muestra el prompt de email. Se puede llamar en cualquier momento del flujo.
-   * @param {object} [metadata] - datos del test para enviar junto con el email
    * @returns {Promise<{email: string|null, skipped: boolean}>}
    */
-  function showEmailPrompt(metadata) {
+  function showEmailPrompt() {
     // Si ya tenemos email guardado, no preguntar.
     var stored = getStoredEmail();
     if (stored) return Promise.resolve({ email: stored, skipped: false });
@@ -191,16 +198,20 @@
         ui.saveBtn.disabled = true;
         ui.saveBtn.textContent = '…';
 
-        submitToFormspree(email, metadata).then(function () {
+        submitToFormspree(email).then(function () {
+          trackLead();
           storeEmail(email);
-          cleanup();
+          ui.input.disabled = true;
+          ui.saveBtn.disabled = true;
+          ui.skipBtn.style.display = 'none';
+          ui.feedback.classList.add('email-gate__feedback--success');
+          ui.feedback.textContent = t('email_saved');
           resolve({ email: email, skipped: false });
         }).catch(function (err) {
           console.warn('[email-gate] Formspree falló:', err && err.message);
-          // Guardamos localmente aunque falle el envío: reintento diferido.
-          storeEmail(email);
-          cleanup();
-          resolve({ email: email, skipped: false });
+          ui.saveBtn.disabled = false;
+          ui.saveBtn.textContent = t('email_save');
+          ui.feedback.textContent = t('email_error');
         });
       });
 

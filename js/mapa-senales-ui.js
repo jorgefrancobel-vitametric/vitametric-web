@@ -389,24 +389,19 @@
       const waBtn = document.getElementById('btn-enviar-wa-test');
       if (waBtn) {
         waBtn.href = engine.generateWhatsAppUrl('Paciente');
-      }
-
-      // Enviar evento analítico si Google Tag está activo
-      if (typeof window.gtag === 'function') {
-        window.gtag('event', 'conversion_test_completed', {
-          event_category: 'engagement',
-          event_label: results.riskLevel,
-          value: results.globalChargeScore
-        });
-      }
-
-      // Conversión hacia Meta vía Conversions API server-side (sin píxel en
-      // el navegador). Solo se envía con consentimiento del gate; el
-      // globalChargeScore NO se manda como value porque no es dinero.
-      if (window.VitametricMetaCapi) {
-        window.VitametricMetaCapi.track('CompleteRegistration', {
-          contentName: 'Mapa de Senales'
-        });
+        if (waBtn.dataset.contactTrackingBound !== 'true') {
+          waBtn.dataset.contactTrackingBound = 'true';
+          waBtn.addEventListener('click', function () {
+            if (typeof window.gtag === 'function') {
+              window.gtag('event', 'whatsapp_contact_click', {
+                event_category: 'contact'
+              });
+            }
+            if (window.VitametricMetaCapi) {
+              window.VitametricMetaCapi.track('Contact');
+            }
+          });
+        }
       }
 
       // Scroll suave hacia los resultados

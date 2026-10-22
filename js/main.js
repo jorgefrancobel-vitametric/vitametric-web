@@ -358,6 +358,12 @@
           })
           .then(function (r) {
             if (r.ok) {
+              if (typeof window.gtag === 'function') {
+                window.gtag('event', 'generate_lead', { method: 'website_form' });
+              }
+              if (window.VitametricMetaCapi) {
+                window.VitametricMetaCapi.track('Lead');
+              }
               formSuccess.style.display = 'flex';
               formError.style.display = 'none';
               contactForm.reset();
@@ -395,6 +401,25 @@
         submitBtn.disabled = false;
       });
     });
+  }
+
+  function setupWhatsAppContactTracking() {
+    document.addEventListener('click', function (e) {
+      var target = e.target;
+      var link = target && typeof target.closest === 'function'
+        ? target.closest('a[href*="wa.me"], a[href*="api.whatsapp.com"]')
+        : null;
+      if (!link) return;
+
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'whatsapp_contact_click', {
+          event_category: 'contact'
+        });
+      }
+      if (window.VitametricMetaCapi) {
+        window.VitametricMetaCapi.track('Contact');
+      }
+    }, true);
   }
 
   function setupHeroParticles() {
@@ -645,6 +670,7 @@
     setupFormValidation();
     var ensureTurnstile = setupTurnstile();
     setupContactForm(ensureTurnstile);
+    setupWhatsAppContactTracking();
     setupSmoothScroll();
     setupHeroParticles();
     setupCounters();

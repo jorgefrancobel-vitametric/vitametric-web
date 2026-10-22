@@ -22,9 +22,7 @@ const GRAPH_VERSION = 'v21.0';
 const ALLOWED_EVENTS = new Set([
   'Lead',
   'Contact',
-  'Schedule',
-  'CompleteRegistration',
-  'ViewContent'
+  'Schedule'
 ]);
 
 const ANALYTICS_ALLOWED_ORIGINS = [
@@ -34,6 +32,8 @@ const ANALYTICS_ALLOWED_ORIGINS = [
   'http://localhost:8080',
   'http://localhost:3000'
 ];
+
+const MAX_ANALYTICS_BATCH_SIZE = 20;
 
 const CAPI_ALLOWED_ORIGINS = [
   'https://vitametric.com',
@@ -97,50 +97,42 @@ async function handleAnalytics(request, env) {
 
   try {
     const body = await request.json();
-
-    // Soporte para batch (flushQueue envía { batch: [...] })
-    const events = Array.isArray(body.batch) ? body.batch : [body];
-
-    for (const event of events) {
-      if (env && env.VITAMETRIC_ANALYTICS) {
-        env.VITAMETRIC_ANALYTICS.writeDataPoint({
-          blobs: [
-            event.event || 'unknown',            // event type
-            event.sessionId || '',               // session id
-            event.variant || 'unknown',          // A/B variant
-            event.pageUrl || '',                 // page URL
-            event.referrer || ''                 // referrer
-          ],
-          doubles: [
-            event.timestamp || 0,                // timestamp
-            event.elapsedMs || 0,                // elapsed ms
-            event.questionNumber || 0,           // question number
-            event.totalQuestions || 0,           // total questions
-            event.globalScore || 0               // global score
-          ],
-          indexes: [
-            String(event.riskLevel || '')        // risk level
-          ]
-        });
-      }
-
-      // Fallback: log estructurado para Cloudflare Logs
-      console.log(JSON.stringify({
-        ts: new Date().toISOString(),
-        session: event.sessionId,
-        event: event.event,
-        variant: event.variant,
-        elapsedMs: event.elapsedMs,
-        payload: event
-      }));
+    const submitted = body && Array.isArray(body.batch) ? body.batch : [body];
+    if (submitted.length < 1 || submitted.length > MAX_ANALYTICS_BATCH_SIZE) {
+      return jsonResponse({ ok: false, reason: 'invalid_batch' }, 400, {
+        ...cors,
+        'Content-Type': 'application/json'
+      });
     }
 
-    return jsonResponse({ ok: true, received: events.length }, 200, {
+    const eventNames = [];
+    for (const item of submitted) {
+      const eventName = item && typeof item === 'object' && !Array.isArray(item)
+        ? item.eventName
+        : null;
+      if (typeof eventName !== 'string' || !ALLOWED_EVENTS.has(eventName)) {
+        return jsonResponse({ ok: false, reason: 'event_not_allowed' }, 400, {
+          ...cors,
+          'Content-Type': 'application/json'
+        });
+      }
+      eventNames.push(eventName);
+    }
+
+    for (const eventName of eventNames) {
+      if (env && env.VITAMETRIC_ANALYTICS) {
+        env.VITAMETRIC_ANALYTICS.writeDataPoint({ blobs: [eventName] });
+      } else {
+        console.log(JSON.stringify({ event: eventName }));
+      }
+    }
+
+    return jsonResponse({ ok: true, received: eventNames.length }, 200, {
       ...cors,
       'Content-Type': 'application/json'
     });
   } catch (err) {
-    console.error('[analytics] error:', err && err.message);
+    console.error('[analytics] invalid request');
     return jsonResponse({ ok: false, error: 'Invalid JSON' }, 400, {
       ...cors,
       'Content-Type': 'application/json'
@@ -197,20 +189,14 @@ async function handleMetaCapi(request, env) {
   if (typeof payload.fbp === 'string' && payload.fbp.startsWith('fb.')) userData.fbp = payload.fbp;
   if (typeof payload.fbc === 'string' && payload.fbc.length < 120) userData.fbc = payload.fbc;
 
-  const customData = {};
-  if (typeof payload.value === 'number' && isFinite(payload.value)) customData.value = payload.value;
-  if (typeof payload.currency === 'string' && /^[A-Z]{3}$/.test(payload.currency)) customData.currency = payload.currency;
-  if (typeof payload.contentName === 'string') customData.content_name = payload.contentName.slice(0, 120);
-
   const event = {
     event_name: eventName,
     event_time: Math.floor(Date.now() / 1000),
     action_source: 'website',
-    event_source_url: typeof payload.sourceUrl === 'string' ? payload.sourceUrl.slice(0, 300) : 'https://vitametric.com/',
+    event_source_url: 'https://vitametric.com/',
     user_data: userData
   };
   if (typeof payload.eventId === 'string' && payload.eventId) event.event_id = payload.eventId.slice(0, 80);
-  if (Object.keys(customData).length) event.custom_data = customData;
 
   const url = 'https://graph.facebook.com/' + GRAPH_VERSION + '/' + env.META_PIXEL_ID + '/events?access_token=' + encodeURIComponent(env.META_CAPI_TOKEN);
 

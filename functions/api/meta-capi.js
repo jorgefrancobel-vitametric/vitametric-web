@@ -29,9 +29,7 @@
 const ALLOWED_EVENTS = new Set([
   'Lead',
   'Contact',
-  'Schedule',
-  'CompleteRegistration',
-  'ViewContent'
+  'Schedule'
 ]);
 
 const GRAPH_VERSION = 'v21.0';
@@ -91,20 +89,14 @@ export async function onRequestPost(context) {
   if (typeof payload.fbp === 'string' && payload.fbp.startsWith('fb.')) userData.fbp = payload.fbp;
   if (typeof payload.fbc === 'string' && payload.fbc.length < 120) userData.fbc = payload.fbc;
 
-  const customData = {};
-  if (typeof payload.value === 'number' && isFinite(payload.value)) customData.value = payload.value;
-  if (typeof payload.currency === 'string' && /^[A-Z]{3}$/.test(payload.currency)) customData.currency = payload.currency;
-  if (typeof payload.contentName === 'string') customData.content_name = payload.contentName.slice(0, 120);
-
   const event = {
     event_name: eventName,
     event_time: Math.floor(Date.now() / 1000),
     action_source: 'website',
-    event_source_url: typeof payload.sourceUrl === 'string' ? payload.sourceUrl.slice(0, 300) : 'https://vitametric.com/',
+    event_source_url: 'https://vitametric.com/',
     user_data: userData
   };
   if (typeof payload.eventId === 'string' && payload.eventId) event.event_id = payload.eventId.slice(0, 80);
-  if (Object.keys(customData).length) event.custom_data = customData;
 
   const url = 'https://graph.facebook.com/' + GRAPH_VERSION + '/' + env.META_PIXEL_ID + '/events?access_token=' + encodeURIComponent(env.META_CAPI_TOKEN);
 

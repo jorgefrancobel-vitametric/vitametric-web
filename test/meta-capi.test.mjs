@@ -47,23 +47,25 @@ test('body inválido responde 400', async () => {
 });
 
 test('eventos fuera de la lista permitida se rechazan', async () => {
-  for (const eventName of ['Purchase', 'hack', '', 'LEAD']) {
+  for (const eventName of ['Purchase', 'hack', '', 'LEAD', 'CompleteRegistration', 'ViewContent']) {
     const res = await onRequestPost({ request: req({ eventName }), env: ENV });
     assert.equal(res.status, 400, 'debía rechazar ' + JSON.stringify(eventName));
   }
 });
 
-test('evento permitido llega a Graph con IP, fbp, fbc, dedup y custom_data saneados', async () => {
+test('evento Contact permitido llega a Graph sin metadata del test', async () => {
   stubGraph();
   const res = await onRequestPost({
     request: req({
-      eventName: 'CompleteRegistration',
+      eventName: 'Contact',
       eventId: 'abc-123',
       fbp: 'fb.1.1700000000000.123',
       fbc: 'fb.1.1700000000000.AbCdEf',
-      value: 999,
+      value: 99,
       currency: 'MXN',
-      contentName: 'Mapa de Senales',
+      contentName: 'Resultado de salud',
+      riskLevel: 'alto',
+      globalChargeScore: 99,
       sourceUrl: 'https://vitametric.com/mapa-de-senales.html'
     }),
     env: ENV
@@ -79,13 +81,13 @@ test('evento permitido llega a Graph con IP, fbp, fbc, dedup y custom_data sanea
   assert.ok(u.includes('/1234567890123456/events'), 'usaba el pixel configurado');
   assert.ok(u.includes('access_token=' + encodeURIComponent(ENV.META_CAPI_TOKEN)), 'token como query param');
   const ev = o.data[0];
-  assert.equal(ev.event_name, 'CompleteRegistration');
+  assert.equal(ev.event_name, 'Contact');
   assert.equal(ev.action_source, 'website');
   assert.equal(ev.event_id, 'abc-123');
   assert.equal(ev.user_data.client_ip_address, '200.1.2.3');
   assert.equal(ev.user_data.fbp, 'fb.1.1700000000000.123');
   assert.equal(ev.user_data.fbc, 'fb.1.1700000000000.AbCdEf');
-  assert.deepEqual(ev.custom_data, { value: 999, currency: 'MXN', content_name: 'Mapa de Senales' });
+  assert.equal(ev.custom_data, undefined);
   assert.ok(!text.includes(ENV.META_CAPI_TOKEN), 'la respuesta nunca filtra el token');
   globalThis.fetch = realFetch;
 });

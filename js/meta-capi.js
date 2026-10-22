@@ -10,7 +10,7 @@
  * Meta comparten decisión.
  *
  * API:
- *   VitametricMetaCapi.track('CompleteRegistration', { value, currency, contentName })
+ *   VitametricMetaCapi.track('Contact')
  *
  * Deduplicacion: cada evento lleva un eventId generado aqui. Si en el futuro
  * se añade píxel navegador, basta reutilizar ese mismo id en fbq() para que
@@ -20,7 +20,7 @@
   'use strict';
 
   var ENDPOINT = '/api/meta-capi';
-  var ALLOWED = ['Lead', 'Contact', 'Schedule', 'CompleteRegistration', 'ViewContent'];
+  var ALLOWED = ['Lead', 'Contact', 'Schedule'];
 
   function cookie(name) {
     var m = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
@@ -36,7 +36,7 @@
     }
   }
 
-  function track(eventName, extra) {
+  function track(eventName) {
     try {
       if (!eventName || ALLOWED.indexOf(eventName) === -1) return null;
       if (!root.VitametricAnalyticsGate || !root.VitametricAnalyticsGate.hasConsented()) return null;
@@ -45,16 +45,9 @@
       var body = {
         eventName: eventName,
         eventId: eventId,
-        sourceUrl: root.location.href,
         fbp: cookie('_fbp'),
         fbc: fbc()
       };
-      if (extra && typeof extra === 'object') {
-        if (typeof extra.value === 'number') body.value = extra.value;
-        if (typeof extra.currency === 'string') body.currency = extra.currency;
-        if (typeof extra.contentName === 'string') body.contentName = extra.contentName;
-      }
-
       if (root.fetch && typeof root.fetch === 'function') {
         root.fetch(ENDPOINT, {
           method: 'POST',
