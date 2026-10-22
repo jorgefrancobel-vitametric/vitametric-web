@@ -35,6 +35,42 @@ const ANALYTICS_ALLOWED_ORIGINS = [
 
 const MAX_ANALYTICS_BATCH_SIZE = 20;
 
+/* VB4/VB10 — cuota de aplicación: 5 POST / 10 s por IP (precedente del
+   engagement Casa Tapputi). Espejo idéntico de las validaciones que ya viven
+   en functions/api/analytics.js y functions/api/meta-capi.js; este worker es
+   la entrada EN VIVO (ruta de zona /api/*), así que la cota decide aquí. */
+const RATE_WINDOW_MS = 10000;
+const RATE_MAX = 5;
+const rateBuckets = new Map();
+
+function checkRateLimit(ip) {
+  const now = Date.now();
+  if (rateBuckets.size > 10000) {
+    for (const [key, bucket] of rateBuckets) {
+      if (now - bucket.start >= RATE_WINDOW_MS) rateBuckets.delete(key);
+    }
+  }
+  let bucket = rateBuckets.get(ip);
+  if (!bucket || now - bucket.start >= RATE_WINDOW_MS) {
+    bucket = { start: now, count: 0 };
+    rateBuckets.set(ip, bucket);
+  }
+  bucket.count += 1;
+  if (bucket.count > RATE_MAX) {
+    return { allowed: false, retryAfter: Math.max(1, Math.ceil((bucket.start + RATE_WINDOW_MS - now) / 1000)) };
+  }
+  return { allowed: true };
+}
+
+function rateLimitedResponse(request, rate, allowedOrigins) {
+  const origin = request.headers.get('Origin') || '';
+  return jsonResponse({ ok: false, reason: 'rate_limited' }, 429, {
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': allowedOrigins.includes(origin) ? origin : 'https://vitametric.com',
+    'Retry-After': String(rate.retryAfter)
+  });
+}
+
 const CAPI_ALLOWED_ORIGINS = [
   'https://vitametric.com',
   'https://www.vitametric.com',
@@ -50,6 +86,10 @@ export default {
     const path = url.pathname.replace(/\/+$/, '');
 
     if (path === '/api/analytics') {
+      if (request.method === 'POST') {
+        const rate = checkRateLimit(request.headers.get('cf-connecting-ip') || 'unknown');
+        if (!rate.allowed) return rateLimitedResponse(request, rate, ANALYTICS_ALLOWED_ORIGINS);
+      }
       if (request.method === 'OPTIONS' || request.method === 'POST') {
         return handleAnalytics(request, env);
       }
@@ -60,6 +100,10 @@ export default {
     }
 
     if (path === '/api/meta-capi') {
+      if (request.method === 'POST') {
+        const rate = checkRateLimit(request.headers.get('cf-connecting-ip') || 'unknown');
+        if (!rate.allowed) return rateLimitedResponse(request, rate, CAPI_ALLOWED_ORIGINS);
+      }
       if (request.method === 'OPTIONS' || request.method === 'POST') {
         return handleMetaCapi(request, env);
       }

@@ -33,6 +33,34 @@ const ALLOWED_EVENTS = new Set([
 ]);
 
 const GRAPH_VERSION = 'v21.0';
+
+/* VB4/VB10 — cuota de aplicación: 5 POST / 10 s por IP (precedente del
+   engagement Casa Tapputi). Va DESPUÉS del allowlist y ANTES de Graph, para
+   que ningún volumen de eventos válidos consuma la cuota de Meta desde una
+   sola IP. Espejo idéntico en functions/api/analytics.js y
+   workers/vitametric-api.mjs. */
+const RATE_WINDOW_MS = 10000;
+const RATE_MAX = 5;
+const rateBuckets = new Map();
+
+function checkRateLimit(ip) {
+  const now = Date.now();
+  if (rateBuckets.size > 10000) {
+    for (const [key, bucket] of rateBuckets) {
+      if (now - bucket.start >= RATE_WINDOW_MS) rateBuckets.delete(key);
+    }
+  }
+  let bucket = rateBuckets.get(ip);
+  if (!bucket || now - bucket.start >= RATE_WINDOW_MS) {
+    bucket = { start: now, count: 0 };
+    rateBuckets.set(ip, bucket);
+  }
+  bucket.count += 1;
+  if (bucket.count > RATE_MAX) {
+    return { allowed: false, retryAfter: Math.max(1, Math.ceil((bucket.start + RATE_WINDOW_MS - now) / 1000)) };
+  }
+  return { allowed: true };
+}
 const ALLOWED_ORIGINS = [
   'https://vitametric.com',
   'https://www.vitametric.com',
@@ -77,6 +105,14 @@ export async function onRequestPost(context) {
     return new Response(JSON.stringify({ ok: false, reason: 'event_not_allowed' }), {
       status: 400,
       headers: { 'Content-Type': 'application/json', ...cors }
+    });
+  }
+
+  const rate = checkRateLimit(request.headers.get('cf-connecting-ip') || 'unknown');
+  if (!rate.allowed) {
+    return new Response(JSON.stringify({ ok: false, reason: 'rate_limited' }), {
+      status: 429,
+      headers: { 'Content-Type': 'application/json', ...cors, 'Retry-After': String(rate.retryAfter) }
     });
   }
 
