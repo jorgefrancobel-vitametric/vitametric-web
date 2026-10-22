@@ -475,6 +475,7 @@
     @keyframes emailGateIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
     .email-gate__title { margin: 0 0 0.4rem; font-size: 0.95rem; font-weight: 700; color: var(--c-cyan); }
     .email-gate__body { margin: 0 0 0.8rem; font-size: 0.8rem; color: var(--c-text-dim); line-height: 1.4; }
+    .email-gate__privacy { display: inline-block; margin: 0 0 0.8rem; font-size: 0.78rem; color: var(--c-cyan); }
     .email-gate__form { display: flex; flex-direction: column; gap: 0.5rem; }
     .email-gate__input {
       padding: 0.55rem 0.7rem;
@@ -501,10 +502,11 @@
     .email-gate__btn--ghost { background: transparent; color: var(--c-text-dim); border: 1px solid var(--c-border-light); }
     .email-gate__btn:disabled { opacity: 0.5; cursor: not-allowed; }
     .email-gate__feedback { margin: 0.4rem 0 0; font-size: 0.75rem; color: #ef4444; }
+    .email-gate__feedback--success { color: var(--c-green); }
 
   </style>
   <script src="js/analytics-gate.js?v=aecc2d21"></script>
-  <script src="js/meta-capi.js?v=d26a00af"></script>
+  <script src="js/meta-capi.js?v=b9b2ec83"></script>
 </head>
 <body>
   <a href="#main-content" class="skip-link">Saltar al contenido</a>
@@ -551,7 +553,7 @@
   </script>
   <script src="js/theme.js?v=e84643f0"></script>
   <script src="js/ab-router.js?v=db3575c4"></script>
-  <script src="js/i18n.js?v=e00354d1"></script>
+  <script src="js/i18n.js?v=415bb416"></script>
   <script>
   // i18n: actualizar metadatos de la página y wiring del lang switcher.
   (function() {
@@ -611,8 +613,8 @@
        verificadas. El loader WebLLM se registra antes de la UI sin cambiar el
        contrato del motor. -->
   <script src="js/articulator.js?v=5e4393ee"></script>
-  <script src="js/email-gate.js?v=47045964"></script>
-  <script src="js/analytics-beacon.js?v=aee6c2e3"></script>
+  <script src="js/email-gate.js?v=d22ce985"></script>
+  <script src="js/analytics-beacon.js?v=46d624ac"></script>
   <script src="js/slm-runtime.js?v=6c61b938"></script>
   <script type="module">
   // Configuración WebLLM: usa moduleUrl configurado o fallback a esm.run.
@@ -629,6 +631,6 @@
   })();
 </script>
   <script type="module" src="js/slm-webllm-loader.js?v=9d4535be"></script>
-  <script src="js/triage-chat-ui.js?v=90765805"></script>
+  <script src="js/triage-chat-ui.js?v=556f5a23"></script>
 </body>
 </html>
