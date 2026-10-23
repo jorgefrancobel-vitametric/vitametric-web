@@ -1,16 +1,36 @@
+# Vitametric — caché y cabeceras (actualizado 2026-10-23)
+#
+# REGLA DE ORO: Cloudflare Pages CONCATENA las cabeceras de todas las reglas que
+# coinciden con la URL (no las sobrescribe). Por eso cada regla específica usa
+# "! Cache-Control" para soltar la global antes de fijar la suya. Si se añade una
+# regla nueva sin ese "!" , heredará el no-cache de /* y quedará sin caché.
+# Doc: https://developers.cloudflare.com/pages/configuration/headers/
+
+# HTML y rutas sin huella: revalidar siempre. "no-cache" (no "no-store") permite
+# guardar la respuesta y usar el 304 si el ETag no cambió.
 /*
-  Cache-Control: no-cache, no-store, must-revalidate
+  Cache-Control: no-cache
   Pragma: no-cache
   Expires: 0
 
+# CSS y JS: el HTML los pide con ?v=<hash>, así que al cambiar el contenido cambia
+# la URL. Un año es seguro porque la versión va en la query.
 /css/*
-  Cache-Control: max-age=3600
-  Pragma: public
+  ! Cache-Control
+  ! Pragma
+  ! Expires
+  Cache-Control: public, max-age=31536000, immutable
 
 /js/*
-  Cache-Control: max-age=31536000
-  Pragma: public
+  ! Cache-Control
+  ! Pragma
+  ! Expires
+  Cache-Control: public, max-age=31536000, immutable
 
+# Imágenes, fuentes, vídeo y subtítulos: NO llevan versión en la URL → una semana.
+# Un 1 año "immutable" aquí congelaría una imagen reemplazada sin cambiar el nombre.
 /assets/*
-  Cache-Control: max-age=31536000
-  Pragma: public
+  ! Cache-Control
+  ! Pragma
+  ! Expires
+  Cache-Control: public, max-age=604800
