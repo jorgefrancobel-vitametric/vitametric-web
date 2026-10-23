@@ -1,5 +1,21 @@
 # Vitametric Web
 
+> ## Dónde vive el sitio (actualizado 2026-10-23)
+>
+> **Producción: Cloudflare Pages**, proyecto `vitametric`, servido en `https://vitametric.com`.
+> **GitHub Pages sigue publicado a propósito, pero NO es el origen**: se conserva como
+> respaldo de rollback. Si una respuesta trae `x-github-request-id`, estás mirando el
+> origen viejo, no producción.
+>
+> - El deploy **no** es automático desde este repo: el proyecto de Pages no tiene
+>   integración Git. Se despliega con `wrangler pages deploy` sobre un `git archive HEAD`.
+> - El archivo `CNAME` **no se borra**: es lo que hace que
+>   `jorgefrancobel-vitametric.github.io/vitametric-web/` redirija 301 al dominio
+>   canónico. Sin él, GitHub serviría una copia duplicada del sitio.
+> - Comprobación rápida (vacío = Cloudflare Pages; con valor = origen viejo):
+>   `curl -sI https://vitametric.com/ | grep -i x-github`
+> - Detalle y rollback: `wiki/proyectos/migracion-web/Runbook — Pendientes de Auditoría de Seguridad Vitametric (2026-10-22).md` en el repo de la bóveda.
+
 ## SLM local: WebLLM + WebGPU
 
 La autoevaluación conversacional tiene una integración progresiva de un modelo de
