@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{title}} | Vitametric</title>
+<meta name="description" content="{{description}}">
+<link rel="canonical" href="https://vitametric.com/blog/{{slug}}.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="{{title}}">
+<meta property="og:description" content="{{description}}">
+<meta property="og:url" content="https://vitametric.com/blog/{{slug}}.html">
+<meta name="theme-color" content="#0f2e2a">
+<link rel="stylesheet" href="/css/style.css?v=c503a1f3">
+<style>
+/* Los enlaces dentro de texto (footer) necesitan subrayado: el cian del sitio
+   da solo 1.07:1 contra el gris del parrafo y Lighthouse lo baja a 94. */
+footer a { text-decoration: underline; text-underline-offset: 3px; }
+</style>
+<script type="application/ld+json">
+{{jsonld}}
+</script>
+</head>
+<body>
+<nav aria-label="principal">
+  <a href="/">Vitametric</a>
+  <a href="/servicios/">Servicios</a>
+  <a href="/blog/index.html">Blog</a>
+</nav>
+<main>
+{{content}}
+</main>
+<footer>
+  <p>Vitametric · Consultor de salud en Ciudad de México · <a href="https://wa.me/525585327421">Reservar evaluación</a></p>
+  <p><a href="/aviso-privacidad.html">Aviso de privacidad</a> · <a href="/terminos-condiciones.html">Términos y condiciones</a></p>
+</footer>
+</body>
+</html>

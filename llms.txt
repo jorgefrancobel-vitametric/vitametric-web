@@ -14,6 +14,10 @@
 
 - [Mapa de Señales — Test de Salud Preventiva](https://vitametric.com/mapa-de-senales.html): Herramienta clínica interactiva de triage que evalúa la carga funcional en 5 dimensiones fisiológicas (eje neuroautónomo, calidad de sueño, metabolismo celular, terreno ácido/inflamatorio y hábitos ocupacionales) con derivación directa a WhatsApp.
 
+## Clientes y Alianzas Corporativas
+
+- [Nuestros Clientes](https://vitametric.com/clientes.html): Programa Integral de Salud Preventiva corporativo. Clientes y alianzas institucionales en México que incluyen Grupo Bimbo, BBVA, FEMSA, Televisa, TV Azteca, Grupo ADO, Devlyn, Laboratorios Liomont, PPG Industries, Manpower y USANA.
+
 ## Catálogo de Nutrición Celular
 
 - [Immunocal® Regular / MX](https://vitametric.com/productos/immunocal.html): Proteína de suero de leche no desnaturalizada rica en cisteína enlazada bioactiva, donador esencial para la síntesis intracelular de glutatión.

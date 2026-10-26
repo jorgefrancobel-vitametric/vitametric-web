@@ -193,6 +193,7 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  min-height: 100svh;
   width: 100%;
   max-width: 100vw;
   -webkit-font-smoothing: antialiased;
@@ -463,7 +464,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 .navbar.scrolled {
   background: rgba(var(--c-navbar-rgb), 0.92);
-  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%); backdrop-filter: blur(20px) saturate(180%);
   border-bottom: 1px solid var(--c-border);
   box-shadow: 0 2px 20px rgba(0,0,0,0.5);
 }
@@ -621,26 +622,26 @@ li.theme-toggle-item { display: flex; align-items: center; }
   color: var(--c-muted);
   border-left-color: var(--c-border);
 }
-@media (max-width: 1180px) {
+@media (max-width: 1340px) {
   .nav-logo-tagline {
     display: none;
   }
 }
-/* Con 8 items (Inicio/Servicios/Test/Nosotros/Tecnología/Productos/Testimonios/Contacto)
-   el menú desborda entre ~1024 y ~1114px. Se aprieta solo en ese rango; el drawer
-   móvil (<=900px) conserva su tipografía. */
-@media (max-width: 1180px) and (min-width: 901px) {
+/* Con 9 items (Inicio/Servicios/Test/Nosotros/Tecnología/Productos/Testimonios/Clientes/Contacto)
+   el menú necesita acomodarse con holgura en pantallas de 1280px. */
+@media (max-width: 1340px) and (min-width: 901px) {
   .nav-link {
-    padding-left: 0.55rem;
-    padding-right: 0.55rem;
-    font-size: 0.88rem;
+    padding-left: 0.45rem;
+    padding-right: 0.45rem;
+    font-size: 0.86rem;
   }
 }
 @media (max-width: 1100px) and (min-width: 901px) {
   .nav-menu { gap: 0; }
   .nav-link {
-    padding-left: 0.45rem;
-    padding-right: 0.45rem;
+    padding-left: 0.35rem;
+    padding-right: 0.35rem;
+    font-size: 0.82rem;
   }
 }
 
@@ -789,13 +790,13 @@ li.theme-toggle-item { display: flex; align-items: center; }
   background: linear-gradient(135deg, var(--c-cyan) 0%, var(--c-green) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  background-clip: text;
+  -webkit-background-clip: text; background-clip: text;
 }
 [data-theme="light"] .hero-accent {
   background: linear-gradient(135deg, #1A36B8 0%, #3658F1 50%, #068A5B 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  background-clip: text;
+  -webkit-background-clip: text; background-clip: text;
 }
 .hero-subtitle {
   font-size: clamp(1.25rem, 1.15rem + 0.6vw, 1.55rem);
@@ -863,7 +864,7 @@ li.theme-toggle-item { display: flex; align-items: center; }
   border: none;
   border-top: 1px solid rgba(0,200,255,0.35);
   border-radius: 0;
-  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px);
   color: var(--c-heading);
   font-size: var(--fs-sm); font-weight: var(--fw-medium);
   animation: float 6s ease-in-out infinite;
@@ -1046,7 +1047,7 @@ li.theme-toggle-item { display: flex; align-items: center; }
   transition: all var(--t-base) var(--ease-out);
   overflow: hidden;
   position: relative;
-  backdrop-filter: blur(10px) saturate(130%);
+  -webkit-backdrop-filter: blur(10px) saturate(130%); backdrop-filter: blur(10px) saturate(130%);
 }
 .tech-card::before {
   content: '';
@@ -1120,7 +1121,7 @@ li.theme-toggle-item { display: flex; align-items: center; }
   transition: all var(--t-base) var(--ease-out);
   overflow: hidden;
   position: relative;
-  backdrop-filter: blur(10px) saturate(130%);
+  -webkit-backdrop-filter: blur(10px) saturate(130%); backdrop-filter: blur(10px) saturate(130%);
 }
 .product-card::after {
   content: '';
@@ -1253,7 +1254,7 @@ li.theme-toggle-item { display: flex; align-items: center; }
   border-radius: var(--radius-xl);
   padding: var(--sp-xl);
   position: relative; overflow: hidden;
-  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%); backdrop-filter: blur(12px) saturate(140%);
 }
 .contacto-form::before {
   content: '';
@@ -1443,7 +1444,7 @@ li.theme-toggle-item { display: flex; align-items: center; }
   align-items: center;
   justify-content: center;
   box-shadow: 0 0 30px rgba(0, 200, 255, 0.6);
-  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
   transition: transform 0.2s ease;
 }
 
@@ -1711,7 +1712,7 @@ li.theme-toggle-item { display: flex; align-items: center; }
   top: 0;
   z-index: 1000;
   background: rgba(var(--c-navbar-rgb), 0.92);
-  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%); backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   border-bottom: 1px solid rgba(0, 200, 255, 0.2);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
@@ -1878,7 +1879,7 @@ li.theme-toggle-item { display: flex; align-items: center; }
   padding: 0.45rem 1.25rem;
   border-radius: 4px;
   margin-bottom: 2.25rem;
-  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
   box-shadow: 0 2px 12px rgba(0,0,0,0.3);
 }
 
@@ -1951,7 +1952,7 @@ li.theme-toggle-item { display: flex; align-items: center; }
 
 /* ── Subpage Header ── */
 
-@media (max-width: 768px) {
+@media (max-width: 1060px) {
   html { width: 100%; height: auto; }
   body { overflow-x: hidden; width: 100%; -webkit-overflow-scrolling: touch; touch-action: pan-y; }
   :root { --fs-4xl: 2.25rem; --fs-3xl: 1.875rem; --nav-h: 64px; }
@@ -1966,7 +1967,7 @@ li.theme-toggle-item { display: flex; align-items: center; }
      display:none es lo unico que lo saca del area de scroll. Se anima al abrir/cerrar. */
   .nav-menu {
     position: fixed; top: 0; right: 0;
-    width: min(300px, 85vw); height: 100vh;
+    width: min(300px, 85vw); height: 100vh; height: 100dvh;
     display: none;
     flex-direction: column;
     background: var(--c-bg-card);
@@ -2024,10 +2025,10 @@ li.theme-toggle-item { display: flex; align-items: center; }
   /* Ver nota en .nav-menu: cerrado = display:none, si no ensancha el documento. */
   .subpage-nav-container > nav {
     position: fixed; top: 0; right: 0;
-    width: min(300px, 85vw); height: 100vh;
+    width: min(300px, 85vw); height: 100vh; height: 100dvh;
     display: none;
     background: rgba(var(--c-navbar-rgb), 0.97);
-    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px);
     border-left: 1px solid rgba(0, 200, 255, 0.2);
     padding: calc(var(--nav-h) + 1.5rem) 1.5rem 1.5rem;
     box-shadow: var(--shadow-xl);
@@ -2169,7 +2170,7 @@ li.theme-toggle-item { display: flex; align-items: center; }
   opacity: 0.98;
   filter: drop-shadow(0 0 35px rgba(0, 200, 255, 0.45)) drop-shadow(0 0 70px rgba(0, 255, 157, 0.25));
   -webkit-mask-image: radial-gradient(ellipse 75% 75% at 50% 50%, #000 50%, rgba(0,0,0,0.6) 78%, transparent 100%);
-  mask-image: radial-gradient(ellipse 75% 75% at 50% 50%, #000 50%, rgba(0,0,0,0.6) 78%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 75% 75% at 50% 50%, #000 50%, rgba(0,0,0,0.6) 78%, transparent 100%); mask-image: radial-gradient(ellipse 75% 75% at 50% 50%, #000 50%, rgba(0,0,0,0.6) 78%, transparent 100%);
 }
 .hero-visual-img-wrap:hover .hero-visual-img {
   opacity: 1;
@@ -2197,7 +2198,7 @@ li.theme-toggle-item { display: flex; align-items: center; }
   content: '';
   position: absolute; inset: 0;
   background: radial-gradient(circle at center, rgba(2, 12, 27, 0.55) 0%, rgba(2, 12, 27, 0.82) 100%);
-  backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(1px); backdrop-filter: blur(1px);
   z-index: 1;
 }
 .dna-divider-content {
@@ -2216,7 +2217,7 @@ li.theme-toggle-item { display: flex; align-items: center; }
   background: linear-gradient(90deg, #FFFFFF 15%, #00C8FF 50%, #00FF9D 85%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  background-clip: text;
+  -webkit-background-clip: text; background-clip: text;
   text-shadow: 0 4px 20px rgba(0, 200, 255, 0.35);
 }
 
@@ -2282,7 +2283,7 @@ li.theme-toggle-item { display: flex; align-items: center; }
   background: linear-gradient(135deg, var(--c-green) 0%, var(--c-cyan) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  background-clip: text;
+  -webkit-background-clip: text; background-clip: text;
   line-height: 1;
 }
 .counter-label {
