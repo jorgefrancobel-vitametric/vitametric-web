@@ -1,20 +1,45 @@
 # Vitametric Web
 
-> ## Dónde vive el sitio (actualizado 2026-10-23)
+> ## Dónde vive el sitio (actualizado 2026-10-25)
 >
 > **Producción: Cloudflare Pages**, proyecto `vitametric`, servido en `https://vitametric.com`.
 > **GitHub Pages sigue publicado a propósito, pero NO es el origen**: se conserva como
 > respaldo de rollback. Si una respuesta trae `x-github-request-id`, estás mirando el
 > origen viejo, no producción.
 >
-> - El deploy **no** es automático desde este repo: el proyecto de Pages no tiene
->   integración Git. Se despliega con `wrangler pages deploy` sobre un `git archive HEAD`.
+> - Despliegue de producción directo:
+>   `wrangler pages deploy vitametric-web --project-name vitametric`
 > - El archivo `CNAME` **no se borra**: es lo que hace que
 >   `jorgefrancobel-vitametric.github.io/vitametric-web/` redirija 301 al dominio
 >   canónico. Sin él, GitHub serviría una copia duplicada del sitio.
 > - Comprobación rápida (vacío = Cloudflare Pages; con valor = origen viejo):
 >   `curl -sI https://vitametric.com/ | grep -i x-github`
 > - Detalle y rollback: `wiki/proyectos/migracion-web/Runbook — Pendientes de Auditoría de Seguridad Vitametric (2026-10-22).md` en el repo de la bóveda.
+
+## Estado del Arte del Frontend (2026-10-25)
+
+### 1. Pabellón de Clientes y Alianzas Corporativas (`clientes.html`)
+- **Molde editorial Grupo Frabel**: Reemplazo de las tarjetas pesadas por pabellón continuo (`.clients-showcase`, `.relationship-board`, `.wordmark-list`) con separación de sectores mediante hairlines de 2px (`#E2E8F0`).
+- **14 Logotipos Corporativos Íntegros**: Extraídos directamente de la fuente canónica de alta resolución (`.vault-meta/copiloto-vitametric-logos/_lamina-31-completa.png`, 2663×1500 px):
+  - `televisa`: Bounding box `(2187, 41, 2500, 284)` -> Sol y wordmark "Televisa" completos (345×275 px).
+  - `ppg`: Bounding box `(1083, 578, 1389, 816)` -> Rectángulo azul perimetral completo con curvas inferiores cerradas (338×270 px).
+  - `central-de-abasto`: 306×306 px -> Marco redondeado con margen blanco perimetral de 16 px.
+  - `manpower`: 348×304 px -> Rayas horizontales y `Manpower®` sin mutilación ni contaminación.
+  - `liomont`: 784×184 px -> Diamante azul superior e inferior con vértices afilados íntegros.
+  - `usana`: 288×367 px -> Globo terráqueo y "HEALTH SCIENCES" legibles.
+  - `bimbo`, `aon-hewitt`, `femsa`, `bbva`, `tv-azteca`, `ado`, `devlyn`, `hidracolor`.
+- **0% Mutilación y Aislamiento 100% Limpio**: Verificado mediante escaneo perimetral en Python/Pillow (0 píxeles tocando los límites exteriores; 16 px de margen blanco en todos los bordes).
+- **Formatos duales WebP + PNG**: Optimizados para carga rápida con etiquetas `<picture>` y versionado de caché explícito (`?v=20261025e`).
+- **Exclusividad en `clientes.html`**: Los logotipos corporativos residen de forma exclusiva en la página de clientes y fueron retirados por completo de `index.html`.
+- **Botones Corporativos**: Gradiente cian institucional de Vitametric (`.btn-corp-primary`) y vidrio navy/cian translúcido (`.btn-corp-secondary`).
+
+### 2. Hero Transversal y Contraste WCAG AAA (`index.html`)
+- **Hero Transversal Responsivo**: Integrado mediante `assets/img/hero-transversal.webp` y `assets/img/hero-transversal-900.webp`.
+- **Contraste de Tema Claro**: Tipografía oscura de alto contraste (>14:1) sobre fondos claros, superando el estándar WCAG AAA y eliminando problemas de legibilidad.
+
+### 3. Suite de Pruebas Automatizadas
+- `node --test test/*.mjs`: 38 tests automatizados pasando en verde, cubriendo sintaxis de UI, contrato de clientes/logos (`test-clientes-logos.mjs`), ontología de marca, analítica y CAPI consent-gated, limitación de tasa y contratos de inferencia determinista.
+
 
 ## SLM local: WebLLM + WebGPU
 
