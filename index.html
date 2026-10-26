@@ -36,7 +36,7 @@
   <link rel="preload" href="assets/img/hero-transversal.webp?v=0de4d6a7" imagesrcset="assets/img/responsive/hero-transversal-900.webp 900w, assets/img/hero-transversal.webp 1600w" imagesizes="100vw" as="image" type="image/webp" fetchpriority="high">
   <link rel="preload" href="assets/fonts/clash-display-600.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/clash-display-700.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="css/style.css?v=c503a1f3">
+  <link rel="stylesheet" href="css/style.css?v=a696b781">
   <style>
 
 /* Clash Display Fontshare Embedded */
@@ -326,15 +326,15 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
 [data-theme="light"] .hero-stats { background: rgba(255, 255, 255, 0.92); border-color: rgba(0, 119, 182, 0.22); box-shadow: 0 4px 18px rgba(0, 50, 100, 0.08); }
 @media (max-width: 900px) {
   [data-theme="light"] .hero-veil {
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.97) 0%, rgba(244, 248, 252, 0.92) 48%, rgba(255, 255, 255, 0.98) 100%);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.88) 0%, rgba(244, 248, 252, 0.70) 45%, rgba(255, 255, 255, 0.94) 100%);
   }
 }
 .hero-container { position: relative; z-index: 2; width: 100%; max-width: 1280px; margin: 0 auto; padding: 0 var(--sp-md); }
 .hero-content { max-width: 680px; }
 @media (max-width: 900px) {
-  .hero { min-height: 0; padding-top: calc(var(--nav-h) + 2.5rem); padding-bottom: 3rem; }
+  .hero { min-height: 0; padding-top: calc(var(--nav-h) + 1.5rem); padding-bottom: 2.5rem; }
   .hero-media img { object-position: 72% 40%; }
-  .hero-veil { background: linear-gradient(180deg, rgba(1,10,22,0.94) 0%, rgba(1,10,22,0.86) 46%, rgba(1,10,22,0.94) 100%); }
+  .hero-veil { background: linear-gradient(180deg, rgba(1,10,22,0.84) 0%, rgba(1,10,22,0.62) 45%, rgba(1,10,22,0.90) 100%); }
   .hero-content { max-width: 100%; }
 }
 @media (max-width: 768px) {
@@ -391,7 +391,7 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
   .hero-stats { justify-content: center; }
   .trust-items { grid-template-columns: repeat(2, 1fr); }
   .nav-logo-tagline { display: none; }
-  .nav-logo-img { height: 130px; }
+  .nav-logo-img { height: 48px; max-height: 48px; }
   .hero-container { position: relative; z-index: 2; }
 }
 
@@ -413,6 +413,9 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
 
 @media (max-width: 768px) {
   :root { --fs-4xl: 2.65rem; --fs-3xl: 2.2rem; --nav-h: 64px; }
+  .navbar { height: 64px !important; }
+  .nav-logo-img { height: 40px !important; max-height: 42px !important; width: auto !important; }
+  .nav-container { padding: 0 1rem !important; }
   .section { padding: 3rem 0; }
   .section-header { margin-bottom: 2rem; }
   .hero { min-height: auto !important; padding: calc(var(--nav-h) + 1.25rem) 0 1.75rem !important; }
@@ -420,8 +423,8 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
   .hero-badge { margin-bottom: 0.65rem; }
   .hero-title { font-size: clamp(1.85rem, 1.4rem + 2vw, 2.4rem) !important; line-height: 1.15 !important; max-width: 100% !important; margin-bottom: 0.65rem; }
   .hero-subtitle { font-size: 0.95rem !important; line-height: 1.5 !important; max-width: 100% !important; margin-bottom: 1.15rem; }
-  .hero-actions { gap: 0.5rem; margin-bottom: 1.25rem; }
-  .hero-actions .btn { padding: 0.75rem 1.15rem; font-size: 0.88rem; }
+  .hero-actions { display: flex; flex-direction: column; width: 100%; gap: 0.65rem; margin-bottom: 1.25rem; }
+  .hero-actions .btn { width: 100%; justify-content: center; padding: 0.8rem 1.15rem; font-size: 0.88rem; }
   .hero-stats {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -433,6 +436,7 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
     padding: 0.65rem 0.5rem;
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
+    width: 100%;
   }
   .stat { text-align: center; }
   .stat-number { font-size: 1.2rem; line-height: 1.15; }
@@ -446,8 +450,8 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
   :root { --fs-4xl: 2.25rem; --fs-3xl: 1.85rem; }
   .section { padding: 2.5rem 0; }
   .hero { min-height: auto !important; }
-  .hero-actions { flex-direction: column; }
-  .hero-actions .btn { width: 100%; }
+  .hero-actions { flex-direction: column; width: 100%; }
+  .hero-actions .btn { width: 100%; justify-content: center; }
 }
 
 @media (prefers-reduced-motion: reduce) {

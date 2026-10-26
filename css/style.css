@@ -1993,7 +1993,9 @@ li.theme-toggle-item { display: flex; align-items: center; }
   .whatsapp-fab    { width: 52px; height: 52px; bottom: var(--sp-sm); right: var(--sp-sm); }
   .whatsapp-fab svg { width: 24px; height: 24px; }
   .hero-scroll-indicator { display: none; }
-  .nav-logo-img    { height: 86px; max-height: 90px; max-width: calc(100vw - 90px); width: auto; object-fit: contain; }
+  .navbar          { height: 64px; }
+  .nav-logo-img    { height: 40px; max-height: 42px; max-width: calc(100vw - 90px); width: auto; object-fit: contain; }
+  .nav-container   { padding: 0 1rem; }
   .hero-orb-1 { width: 200px; height: 200px; }
   .hero-orb-2 { width: 140px; height: 140px; }
   .hero-orb-3 { width: 100px; height: 100px; }

@@ -34,7 +34,7 @@
   <meta property="og:locale" content="es_MX">
 
   <link rel="preload" href="assets/fonts/clash-display-600.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="css/style.css?v=c503a1f3">
+  <link rel="stylesheet" href="css/style.css?v=a696b781">
 
   <style>
     /* Estilos dedicados para la página de clientes siguiendo el molde editorial Frabel */
@@ -177,12 +177,6 @@
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 1.5rem 1.25rem;
     }
-    @media (max-width: 520px) {
-      .wordmark-list {
-        grid-template-columns: 1fr;
-        gap: 1.25rem;
-      }
-    }
     .relationship-mark {
       display: flex;
       flex-direction: column;
@@ -235,6 +229,126 @@
       text-align: center;
       letter-spacing: -0.01em;
       line-height: 1.3;
+    }
+
+    @media (max-width: 768px) {
+      .navbar { height: 64px !important; }
+      .nav-logo-img { height: 40px !important; max-height: 42px !important; width: auto !important; }
+      .nav-container { padding: 0 1rem !important; }
+
+      .clientes-hero {
+        padding: calc(64px + 1.25rem) 0 1.75rem !important;
+      }
+      .clientes-hero h1 {
+        font-size: clamp(1.85rem, 4.5vw, 2.3rem) !important;
+        margin-bottom: 0.65rem !important;
+        line-height: 1.2 !important;
+      }
+      .clientes-hero p.lead {
+        font-size: 0.95rem !important;
+        line-height: 1.5 !important;
+        margin-bottom: 1.25rem !important;
+      }
+      .clientes-stats {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 0.5rem !important;
+        margin-top: 1rem !important;
+      }
+      .cliente-stat-num {
+        font-size: 1.35rem !important;
+      }
+      .cliente-stat-lbl {
+        font-size: 0.62rem !important;
+        letter-spacing: 0.03em !important;
+        line-height: 1.15 !important;
+      }
+
+      .clients-showcase {
+        padding: 1.25rem 0.85rem !important;
+        border-radius: 16px !important;
+      }
+      .clients-showcase-header {
+        margin-bottom: 1.25rem !important;
+      }
+      .clients-showcase-header h2 {
+        font-size: 1.35rem !important;
+        line-height: 1.2 !important;
+        margin-bottom: 0.4rem !important;
+      }
+      .clients-showcase-header p {
+        font-size: 0.82rem !important;
+        line-height: 1.45 !important;
+      }
+
+      .relationship-board {
+        row-gap: 1.25rem !important;
+      }
+      .relationship-section {
+        padding: 1rem 0 0.85rem !important;
+      }
+      .relationship-section-header h3 {
+        font-size: 1.05rem !important;
+        margin-bottom: 0.2rem !important;
+      }
+      .relationship-section-header p {
+        font-size: 0.78rem !important;
+        margin-bottom: 0.75rem !important;
+      }
+
+      .wordmark-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 0.65rem 0.5rem !important;
+      }
+      .relationship-mark {
+        padding: 0.55rem 0.35rem !important;
+        background: #F8FAFC !important;
+        border: 1px solid #E2E8F0 !important;
+        border-radius: 8px !important;
+      }
+      .logo-viewport {
+        height: 52px !important;
+      }
+      .logo-viewport img {
+        max-height: 42px !important;
+        max-width: 105px !important;
+      }
+      .logo-viewport img.logo-vertical {
+        max-height: 46px !important;
+        max-width: 90px !important;
+      }
+      .logo-viewport img.logo-square {
+        max-height: 44px !important;
+        max-width: 80px !important;
+      }
+      .logo-label {
+        font-size: 0.72rem !important;
+        margin-top: 0.25rem !important;
+        line-height: 1.15 !important;
+      }
+
+      .corp-wellness {
+        margin-top: 2rem !important;
+        padding: 1.5rem 1rem !important;
+      }
+      .corp-wellness h2 {
+        font-size: 1.35rem !important;
+      }
+      .corp-cta-card {
+        padding: 1.25rem 1rem !important;
+        gap: 1rem !important;
+      }
+      .corp-cta-actions {
+        width: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.65rem !important;
+      }
+      .btn-corp-primary, .btn-corp-secondary {
+        width: 100% !important;
+        padding: 0.8rem 1rem !important;
+        font-size: 0.85rem !important;
+      }
     }
 
     /* Sección de propuesta corporativa */
