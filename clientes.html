@@ -34,7 +34,7 @@
   <meta property="og:locale" content="es_MX">
 
   <link rel="preload" href="assets/fonts/clash-display-600.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="css/style.css?v=a696b781">
+  <link rel="stylesheet" href="css/style.css?v=736aa109">
 
   <style>
     /* Estilos dedicados para la página de clientes siguiendo el molde editorial Frabel */
@@ -232,12 +232,12 @@
     }
 
     @media (max-width: 768px) {
-      .navbar { height: 64px !important; }
-      .nav-logo-img { height: 40px !important; max-height: 42px !important; width: auto !important; }
+      .navbar { min-height: 86px; }
+      .nav-logo-img { height: 86px; max-height: 90px; max-width: calc(100vw - 90px); width: auto; object-fit: contain; }
       .nav-container { padding: 0 1rem !important; }
 
       .clientes-hero {
-        padding: calc(64px + 1.25rem) 0 1.75rem !important;
+        padding: calc(90px + 1.25rem) 0 1.75rem !important;
       }
       .clientes-hero h1 {
         font-size: clamp(1.85rem, 4.5vw, 2.3rem) !important;

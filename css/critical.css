@@ -299,7 +299,9 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
 }
 
 @media (max-width: 768px) {
-  :root { --fs-4xl: 2.65rem; --fs-3xl: 2.2rem; --nav-h: 64px; }
+  :root { --fs-4xl: 2.65rem; --fs-3xl: 2.2rem; --nav-h: 90px; }
+  .navbar { min-height: 86px; }
+  .nav-logo-img { height: 86px; max-height: 90px; max-width: calc(100vw - 90px); width: auto; object-fit: contain; }
   .section { padding: 3rem 0; }
   .section-header { margin-bottom: 2rem; }
   .section-title { max-width: 100%; }

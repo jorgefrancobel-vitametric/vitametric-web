@@ -36,7 +36,7 @@
   <link rel="preload" href="assets/img/hero-transversal.webp?v=0de4d6a7" imagesrcset="assets/img/responsive/hero-transversal-900.webp 900w, assets/img/hero-transversal.webp 1600w" imagesizes="100vw" as="image" type="image/webp" fetchpriority="high">
   <link rel="preload" href="assets/fonts/clash-display-600.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/clash-display-700.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="css/style.css?v=a696b781">
+  <link rel="stylesheet" href="css/style.css?v=736aa109">
   <style>
 
 /* Clash Display Fontshare Embedded */
@@ -391,7 +391,7 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
   .hero-stats { justify-content: center; }
   .trust-items { grid-template-columns: repeat(2, 1fr); }
   .nav-logo-tagline { display: none; }
-  .nav-logo-img { height: 48px; max-height: 48px; }
+  .nav-logo-img { height: 130px; }
   .hero-container { position: relative; z-index: 2; }
 }
 
@@ -412,9 +412,9 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
 }
 
 @media (max-width: 768px) {
-  :root { --fs-4xl: 2.65rem; --fs-3xl: 2.2rem; --nav-h: 64px; }
-  .navbar { height: 64px !important; }
-  .nav-logo-img { height: 40px !important; max-height: 42px !important; width: auto !important; }
+  :root { --fs-4xl: 2.65rem; --fs-3xl: 2.2rem; --nav-h: 90px; }
+  .navbar { min-height: 86px; }
+  .nav-logo-img { height: 86px; max-height: 90px; max-width: calc(100vw - 90px); width: auto; object-fit: contain; }
   .nav-container { padding: 0 1rem !important; }
   .section { padding: 3rem 0; }
   .section-header { margin-bottom: 2rem; }
@@ -1184,7 +1184,7 @@ h1, h2, h3, h4, h5, h6 { color: var(--c-heading); font-weight: var(--fw-bold); l
               </label>
             </div>
             <input type="text" name="_gotcha" style="display:none">
-            <div class="cf-turnstile" id="contactTurnstile" data-sitekey="0x4AAAAAAD2DNBXtGXkUnHXM" data-action="turnstile-spin-v1"></div>
+            <div class="cf-turnstile" id="contactTurnstile" data-sitekey="0x4AAAAAAD2DNBXtGXkUnHXM" data-action="turnstile-spin-v1" data-size="flexible"></div>
             <button type="submit" class="btn btn-primary btn-lg btn-block" id="submitBtn"><span class="btn-text">Enviar mensaje</span><span class="btn-loading" style="display:none">Enviando...</span></button>
             <div class="form-success" id="formSuccess" style="display:none"><p><strong>¡Mensaje enviado!</strong> Te contactaremos pronto.</p></div>
             <div class="form-error" id="formError" style="display:none"><p><strong>Error al enviar.</strong> Intenta de nuevo o escríbenos a <a href="mailto:jorge.franco@vitametric.com">jorge.franco@vitametric.com</a></p></div>
